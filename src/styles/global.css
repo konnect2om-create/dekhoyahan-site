@@ -328,3 +328,350 @@ button{font:inherit}
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto!important;transition:none!important}
 }
+
+.hero-experience {
+  padding: 42px 0 72px;
+  background:
+    radial-gradient(
+      circle at 78% 28%,
+      rgba(36, 92, 255, 0.09),
+      transparent 34%
+    ),
+    #fbfaf7;
+}
+
+.hero-experience__inner {
+  width: min(1320px, calc(100% - 48px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: 72px;
+  min-height: 650px;
+}
+
+.hero-experience__copy {
+  max-width: 590px;
+}
+
+.hero-experience__copy h1 {
+  margin: 0;
+  color: #11141a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4.6rem, 6.4vw, 7.1rem);
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  font-weight: 500;
+}
+
+.hero-experience__accent {
+  display: block;
+  color: #245cff;
+}
+
+.hero-experience__intro {
+  margin: 34px 0 0;
+  color: #565f6c;
+  font-size: 1.28rem;
+  line-height: 1.55;
+}
+
+.hero-experience__intro span {
+  display: block;
+}
+
+.hero-experience__question {
+  margin: 18px 0 0;
+  color: #11141a;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.hero-experience__cta {
+  margin-top: 27px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 13px 14px 13px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #11141a;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero-experience__cta span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #245cff;
+  font-size: 1.1rem;
+}
+
+.hero-experience__visual {
+  position: relative;
+  min-width: 0;
+  height: 610px;
+  overflow: hidden;
+  border-radius: 34px;
+  background:
+    radial-gradient(
+      circle at 55% 38%,
+      rgba(36, 92, 255, 0.14),
+      transparent 38%
+    ),
+    linear-gradient(145deg, #fffdf9 0%, #f3f5fb 100%);
+  border: 1px solid rgba(17, 20, 26, 0.06);
+}
+
+.hero-experience__visual > div {
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+@media (max-width: 960px) {
+  .hero-experience {
+    padding: 28px 0 56px;
+  }
+
+  .hero-experience__inner {
+    width: min(100% - 32px, 760px);
+    grid-template-columns: 1fr;
+    gap: 34px;
+    min-height: auto;
+  }
+
+  .hero-experience__copy {
+    max-width: 680px;
+  }
+
+  .hero-experience__copy h1 {
+    font-size: clamp(4rem, 12vw, 6.5rem);
+  }
+
+  .hero-experience__visual {
+    height: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-experience__inner {
+    width: min(100% - 24px, 560px);
+  }
+
+  .hero-experience__copy h1 {
+    font-size: clamp(3.5rem, 15vw, 5rem);
+    line-height: 0.9;
+  }
+
+  .hero-experience__intro {
+    margin-top: 26px;
+    font-size: 1.05rem;
+  }
+
+  .hero-experience__visual {
+    height: 410px;
+    border-radius: 24px;
+  }
+}
+
+/* =========================================================
+   HERO EXPERIENCE — REVEAL STATE
+   ========================================================= */
+
+.hero-experience__copy {
+  position: relative;
+}
+
+/* Small contextual line above the reveal question */
+.hero-experience__eyebrow {
+  margin: 0 0 22px;
+  color: #60656f;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Main reveal question */
+.hero-experience__reveal-title {
+  margin: 0;
+  max-width: 540px;
+  color: #11141a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3.7rem, 5.1vw, 5.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.052em;
+  font-weight: 500;
+}
+
+/* Cobalt emphasis inside reveal */
+.hero-experience__reveal-accent {
+  color: #245cff;
+}
+
+/* Short curiosity line */
+.hero-experience__reveal-copy {
+  margin: 28px 0 0;
+  max-width: 430px;
+  color: #565f6c;
+  font-size: 1.16rem;
+  line-height: 1.55;
+}
+
+/* Reveal CTA */
+.hero-experience__reveal-cta {
+  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 13px 14px 13px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #11141a;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(17, 20, 26, 0.1);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.hero-experience__reveal-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(17, 20, 26, 0.15);
+}
+
+.hero-experience__reveal-cta span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #245cff;
+  font-size: 1.1rem;
+}
+
+/* Quiet reset/back control */
+.hero-experience__back {
+  margin: 0 0 25px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #777d86;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0.72;
+  transition:
+    opacity 180ms ease,
+    color 180ms ease;
+}
+
+.hero-experience__back:hover {
+  color: #245cff;
+  opacity: 1;
+}
+
+/* Gentle entrance for each story state */
+.hero-experience__reveal {
+  animation: heroRevealIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes heroRevealIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 960px) {
+  .hero-experience__reveal-title {
+    font-size: clamp(3.5rem, 10vw, 5.6rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-experience__eyebrow {
+    margin-bottom: 16px;
+    font-size: 0.82rem;
+  }
+
+  .hero-experience__reveal-title {
+    font-size: clamp(3rem, 13vw, 4.4rem);
+    line-height: 0.94;
+  }
+
+  .hero-experience__reveal-copy {
+    margin-top: 22px;
+    font-size: 1rem;
+  }
+
+  .hero-experience__reveal-cta {
+    margin-top: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-experience__reveal {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   DEKHOYAHAN HERO V1 — DISCOVERY COLOR SYSTEM
+   Brand/discovery = saffron
+   Technology/location = semantic blue
+   ========================================================= */
+
+:root {
+  --dy-saffron: #e87524;
+  --dy-saffron-deep: #cf5f17;
+  --dy-ink: #11141a;
+  --dy-cream: #f7f2e9;
+  --dy-location-blue: #245cff;
+}
+
+/* Main gateway emphasis */
+.hero-experience__accent {
+  color: var(--dy-saffron);
+}
+
+/* Main gateway action */
+.hero-experience__cta {
+  background: var(--dy-ink);
+}
+
+.hero-experience__cta span {
+  background: var(--dy-saffron);
+}
+
+/* Reveal actions belong to the DekhoYahan experience */
+.hero-experience__reveal-cta span {
+  background: var(--dy-saffron);
+}
+
+/*
+   Reveal headline accents are saffron by default.
+   Actual location graphics inside PhoneScreen remain blue.
+*/
+.hero-experience__reveal-accent {
+  color: var(--dy-saffron);
+}
+
+.hero-experience__back:hover {
+  color: var(--dy-saffron);
+}

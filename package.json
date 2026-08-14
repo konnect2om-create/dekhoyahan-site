@@ -9,14 +9,13 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/react": "^4.3.0",
+    "@astrojs/react": "^6.0.2",
     "@react-three/drei": "^10.7.4",
     "@react-three/fiber": "^9.3.0",
-    "astro": "^5.13.0",
+    "astro": "^7.2.1",
     "gsap": "^3.13.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "three": "^0.179.1"
-  },
-  "devDependencies": {}
+  }
 }

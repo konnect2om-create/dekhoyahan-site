@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroScene from '../components/HeroScene.jsx';
+import HeroExperience from '../components/hero/HeroExperience.jsx';
 import DiscoveryGrid from '../components/DiscoveryGrid.jsx';
 
 const around = [
@@ -39,22 +39,9 @@ const ahead = [
   },
 ];
 ---
-<BaseLayout>
-  <section class="hero shell">
-    <div class="hero-copy">
-      <h1>Understand the world that’s <em>arriving.</em></h1>
-      <p>
-        <span>Some of it is already around us.</span>
-        <span>Some of it is just beginning.</span>
-      </p>
-      <p class="hero-question">Let’s see what’s actually happening.</p>
-      <a class="hero-cta" href="#around">Take a look <span>↓</span></a>
-    </div>
 
-    <div class="hero-visual">
-      <HeroScene client:load />
-    </div>
-  </section>
+<BaseLayout>
+  <HeroExperience client:load />
 
   <section class="discovery-section" id="around">
     <div class="shell">
@@ -65,6 +52,7 @@ const ahead = [
         </div>
         <p>A lot happens around us without us noticing.</p>
       </div>
+
       <DiscoveryGrid items={around} client:load />
     </div>
   </section>
@@ -78,6 +66,7 @@ const ahead = [
         </div>
         <p>Some things are about to feel completely normal.</p>
       </div>
+
       <DiscoveryGrid items={ahead} dark client:load />
     </div>
   </section>
