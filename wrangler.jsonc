@@ -12,10 +12,7 @@
     {
       "binding": "DB",
       "database_name": "dekhoyahan",
-      // Required to bind a real database. Get it from:
-      //   npx wrangler d1 create dekhoyahan
-      // (or `npx wrangler d1 list` if it already exists)
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "3cabda58-520b-4e32-91e1-189ef3da2f62",
       "migrations_dir": "migrations"
     }
   ]

@@ -62,8 +62,7 @@ async function handleJoin(request, env) {
         INSERT INTO members (email, status)
         VALUES (?, 'active')
         ON CONFLICT(email) DO UPDATE SET
-          status = 'active',
-          updated_at = datetime('now')
+          status = 'active'
       `,
     )
       .bind(email)
