@@ -1,0 +1,142 @@
+---
+interface Option {
+  label: string;
+  outcome: string;
+  isRecommended?: boolean;
+}
+
+interface Props {
+  prompt: string;
+  options: Option[];
+}
+
+const { prompt, options } = Astro.props;
+---
+
+<section class="decision-moment" data-decision>
+  <p class="decision-moment__kicker">Control it</p>
+  <h3 class="decision-moment__prompt">{prompt}</h3>
+
+  <div class="decision-moment__options">
+    {options.map((option, index) => (
+      <button
+        type="button"
+        class="decision-moment__option"
+        data-decision-option
+        data-index={index}
+        data-recommended={option.isRecommended ? 'true' : 'false'}
+      >
+        {option.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="decision-moment__outcome" data-outcome hidden></div>
+
+  <script type="application/json" data-decision-data set:html={JSON.stringify(options)} />
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-decision]').forEach((root) => {
+    const dataNode = root.querySelector('[data-decision-data]');
+    if (!dataNode?.textContent) return;
+
+    const options = JSON.parse(dataNode.textContent) as Array<{
+      label: string;
+      outcome: string;
+      isRecommended?: boolean;
+    }>;
+
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-decision-option]'));
+    const outcome = root.querySelector<HTMLElement>('[data-outcome]');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const index = Number(button.dataset.index);
+        const option = options[index];
+        if (!option || !outcome) return;
+
+        buttons.forEach((b) => b.classList.remove('is-selected'));
+        button.classList.add('is-selected');
+
+        outcome.hidden = false;
+        outcome.textContent = option.outcome;
+        outcome.dataset.tone = option.isRecommended ? 'safe' : 'warning';
+      });
+    });
+  });
+</script>
+
+<style>
+  .decision-moment {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 2rem 1.75rem;
+    border-radius: 18px;
+    background: var(--navy);
+    text-align: center;
+  }
+
+  .decision-moment__kicker {
+    margin: 0 0 0.6rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cobalt-soft);
+  }
+
+  .decision-moment__prompt {
+    margin: 0 0 1.5rem;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .decision-moment__options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .decision-moment__option {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .decision-moment__option:hover {
+    border-color: var(--cobalt-soft);
+  }
+
+  .decision-moment__option.is-selected {
+    background: var(--cobalt);
+    border-color: var(--cobalt);
+  }
+
+  .decision-moment__outcome {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #fff;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .decision-moment__outcome[data-tone='warning'] {
+    background: rgba(232, 117, 36, 0.18);
+    color: #ffd9b8;
+  }
+</style>

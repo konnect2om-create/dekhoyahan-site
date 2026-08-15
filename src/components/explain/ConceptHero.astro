@@ -1,0 +1,63 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  hook: string;
+}
+
+const { eyebrow, title, hook } = Astro.props;
+---
+
+<header class="concept-hero">
+  <p class="concept-hero__eyebrow"><span></span>{eyebrow}</p>
+  <h1 class="concept-hero__title">{title}</h1>
+  <p class="concept-hero__hook">{hook}</p>
+</header>
+
+<style>
+  .concept-hero {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .concept-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+
+  .concept-hero__eyebrow span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+  }
+
+  .concept-hero__title {
+    margin: 0 0 1rem;
+    font-family: var(--serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-size: clamp(2rem, 4.5vw, 3.1rem);
+    color: var(--ink);
+  }
+
+  .concept-hero__hook {
+    margin: 0 auto;
+    max-width: 34rem;
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+</style>

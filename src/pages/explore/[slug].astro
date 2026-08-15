@@ -1,0 +1,72 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ConceptHero from '../../components/explain/ConceptHero.astro';
+import LayerReveal from '../../components/explain/LayerReveal.astro';
+import DecisionMoment from '../../components/explain/DecisionMoment.astro';
+import DeepDive from '../../components/explain/DeepDive.astro';
+import Sources from '../../components/explain/Sources.astro';
+import PhotoJourney from '../../components/explain/PhotoJourney.astro';
+
+// A topic opts into a signature scene by naming it in frontmatter. Topics
+// without one fall through to the standard template.
+const scenes: Record<string, any> = {
+  'photo-journey': PhotoJourney,
+};
+
+export async function getStaticPaths() {
+  const topics = await getCollection('topics', ({ data }) => data.status === 'published');
+  return topics.map((topic) => ({
+    params: { slug: topic.id },
+    props: { topic },
+  }));
+}
+
+const { topic } = Astro.props;
+const { Content } = await render(topic);
+const Scene = topic.data.scene ? scenes[topic.data.scene] : undefined;
+
+const categoryLabel: Record<string, string> = {
+  'identity-security': 'Identity & security',
+  networks: 'Networks',
+  'ai-agents': 'AI agents',
+  'money-payments': 'Money & payments',
+  'everyday-tech': 'Everyday tech',
+};
+---
+
+<BaseLayout title={`${topic.data.title} — DekhoYahan`} description={topic.data.summary}>
+  <main class="topic-page">
+    <ConceptHero
+      eyebrow={categoryLabel[topic.data.category] ?? topic.data.category}
+      title={topic.data.title}
+      hook={topic.data.hook}
+    />
+
+    {Scene && (
+      <div class="topic-scene">
+        <Scene mode="story" />
+      </div>
+    )}
+
+    <LayerReveal layers={topic.data.layers} />
+
+    {topic.data.decision && (
+      <DecisionMoment prompt={topic.data.decision.prompt} options={topic.data.decision.options} />
+    )}
+
+    <DeepDive>
+      <Content />
+    </DeepDive>
+
+    <Sources sources={topic.data.sources} />
+  </main>
+</BaseLayout>
+
+<style>
+  .topic-scene {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2.5rem;
+  }
+</style>

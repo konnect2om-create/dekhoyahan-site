@@ -1,7 +1,22 @@
 {
   "name": "dekhoyahan-site",
+  "main": "worker.js",
   "compatibility_date": "2026-08-12",
+
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dekhoyahan",
+      // Required to bind a real database. Get it from:
+      //   npx wrangler d1 create dekhoyahan
+      // (or `npx wrangler d1 list` if it already exists)
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

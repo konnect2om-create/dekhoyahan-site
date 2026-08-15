@@ -1,0 +1,769 @@
+---
+// The undersea-cable journey.
+//   mode="still"  → the finished picture, no controls. Used by the homepage
+//                   featured slot and safe to crop for social.
+//   mode="story"  → the stepped reveal with copy and controls. Used on the
+//                   topic page, where there is room to actually read it.
+// One SVG serves both; "still" simply starts at the final step.
+interface Props {
+  mode?: 'still' | 'story';
+}
+
+const { mode = 'story' } = Astro.props;
+const isStory = mode === 'story';
+
+const steps = [
+  {
+    eyebrow: 'One ordinary moment',
+    title: 'You send a photo across the world.',
+    body: 'It leaves your screen in a second. Where does it actually go?',
+  },
+  {
+    eyebrow: 'The obvious guess',
+    title: 'Up to a satellite?',
+    body: 'That is the picture most of us carry. It is almost never what happens.',
+  },
+  {
+    eyebrow: 'What really happens',
+    title: 'It dives into the ocean.',
+    body: 'A pulse of light, racing through glass thinner than a human hair.',
+  },
+  {
+    eyebrow: 'The part nobody mentions',
+    title: '99% of the world’s data travels this way.',
+    body: 'Not through the sky. Through cables lying on the seabed.',
+  },
+];
+---
+
+<div
+  class:list={['pj', `pj--${mode}`]}
+  data-journey={isStory ? '' : undefined}
+  data-step={isStory ? '0' : '3'}
+  style={`--pj-glass:url(#pjGlass-${mode});--pj-pulse:url(#pjPulse-${mode})`}
+>
+  <figure class="pj__frame">
+    <svg
+      class="pj__svg"
+      viewBox="0 0 960 660"
+      role="img"
+      aria-label="A cross-section: a phone on land sends a photo, which travels down into the ocean and along a cable on the seabed to a phone on the far shore."
+    >
+      <defs>
+        <linearGradient id={`pjSea-${mode}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#12406d" />
+          <stop offset="0.42" stop-color="#0a2749" />
+          <stop offset="1" stop-color="#04101f" />
+        </linearGradient>
+        <linearGradient id={`pjSky-${mode}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fdfaf4" />
+          <stop offset="1" stop-color="#f4ece0" />
+        </linearGradient>
+        <linearGradient id={`pjGlass-${mode}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffd9a8" />
+          <stop offset="1" stop-color="#e87524" />
+        </linearGradient>
+        <linearGradient id={`pjPulse-${mode}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff3e0" stop-opacity="0" />
+          <stop offset="0.45" stop-color="#ffd7a0" />
+          <stop offset="0.62" stop-color="#ffffff" />
+          <stop offset="1" stop-color="#ffb45f" stop-opacity="0" />
+        </linearGradient>
+        <clipPath id={`pjBelow-${mode}`}><rect x="0" y="360" width="960" height="300" /></clipPath>
+        <clipPath id={`pjFrame-${mode}`}><rect x="0" y="0" width="960" height="660" rx="26" /></clipPath>
+      </defs>
+
+      <g clip-path={`url(#pjFrame-${mode})`}>
+        <rect x="0" y="0" width="960" height="361" fill={`url(#pjSky-${mode})`} />
+        <g class="pj-clouds" aria-hidden="true">
+          <ellipse cx="196" cy="82" rx="60" ry="14" />
+          <ellipse cx="250" cy="74" rx="38" ry="11" />
+          <ellipse cx="812" cy="178" rx="52" ry="12" />
+        </g>
+
+        <g class="pj-sat" transform="translate(604 74)">
+          <g class="pj-sat__panels">
+            <rect x="-64" y="-13" width="44" height="27" rx="3" />
+            <rect x="22" y="-13" width="44" height="27" rx="3" />
+          </g>
+          <rect x="-19" y="-17" width="38" height="34" rx="6" class="pj-sat__body" />
+          <path d="M0 17v13" class="pj-sat__mast" />
+          <path d="M-13 41a13 13 0 0 1 26 0z" class="pj-sat__dish" />
+          <circle class="pj-sat__blink" cx="0" cy="-24" r="3.4" />
+        </g>
+
+        <path class="pj-guess" pathLength="1000" d="M104 236C224 152 402 106 574 100" />
+        <g transform="translate(338 138)">
+          <g class="pj-guess__no">
+            <circle r="17" />
+            <path d="M-6 -6 6 6M6 -6 -6 6" />
+          </g>
+        </g>
+
+        <rect x="0" y="360" width="960" height="300" fill={`url(#pjSea-${mode})`} />
+        <g class="pj-rays" clip-path={`url(#pjBelow-${mode})`} aria-hidden="true">
+          <path d="M250 360 330 360 214 660 150 660z" />
+          <path d="M470 360 512 360 452 660 402 660z" />
+          <path d="M700 360 764 360 736 660 668 660z" />
+        </g>
+        <path class="pj-waterline" d="M0 361C120 355 190 367 300 363s180-10 300-5 210 12 360 4" />
+
+        <path class="pj-seabed" d="M0 600C148 566 296 596 470 582s298 12 490-10v88H0z" />
+        <path class="pj-seabed__line" d="M0 600C148 566 296 596 470 582s298 12 490-10" />
+
+        <path class="pj-land" d="M0 334h124c30 0 50 9 78 26H0z" />
+        <path class="pj-land" d="M960 334H836c-30 0-50 9-78 26h202z" />
+        <path class="pj-land__edge" d="M0 334h124c30 0 50 9 78 26" />
+        <path class="pj-land__edge" d="M960 334H836c-30 0-50 9-78 26" />
+
+        <path
+          class="pj-cable"
+          clip-path={`url(#pjBelow-${mode})`}
+          d="M104 336C138 382 166 390 206 408 316 456 372 528 500 540 628 552 712 514 800 476c44-19 66-56 76-100V336"
+        />
+        <path
+          class="pj-route"
+          pathLength="1000"
+          d="M104 336C138 382 166 390 206 408 316 456 372 528 500 540 628 552 712 514 800 476c44-19 66-56 76-100V336"
+        />
+        <path
+          class="pj-light"
+          pathLength="1000"
+          d="M104 336C138 382 166 390 206 408 316 456 372 528 500 540 628 552 712 514 800 476c44-19 66-56 76-100V336"
+        />
+
+        <g class="pj-actor" transform="translate(62 202)">
+          <rect class="pj-phone" x="0" y="0" width="72" height="130" rx="13" />
+          <rect class="pj-phone__screen" x="7" y="9" width="58" height="100" rx="7" />
+          <path class="pj-phone__pic" d="M7 80l18-21 14 15 11-10 15 17v18a7 7 0 0 1-7 7H14a7 7 0 0 1-7-7z" />
+          <circle class="pj-phone__sun" cx="50" cy="33" r="7.5" />
+          <g class="pj-waves">
+            <path d="M82 38a19 19 0 0 1 0 28" />
+            <path d="M92 28a32 32 0 0 1 0 48" />
+          </g>
+        </g>
+        <g class="pj-person" transform="translate(176 258)">
+          <circle cx="0" cy="0" r="11" />
+          <path d="M0 13c-12 0-19 9-19 21v42h38v-42c0-12-7-21-19-21z" />
+        </g>
+
+        <g class="pj-actor pj-actor--far" transform="translate(842 222)">
+          <rect class="pj-phone" x="0" y="0" width="64" height="112" rx="12" />
+          <rect class="pj-phone__screen" x="6" y="8" width="52" height="86" rx="6" />
+          <path class="pj-phone__pic" d="M6 68l16-18 12 13 10-9 14 15v15a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6z" />
+          <circle class="pj-phone__sun" cx="45" cy="29" r="6.5" />
+        </g>
+      </g>
+    </svg>
+
+    <span class="pj-tag pj-tag--you">You</span>
+    <span class="pj-tag pj-tag--far">Your friend</span>
+    <span class="pj-tag pj-tag--sat">Not this way</span>
+
+    <div class="pj-stat">
+      <strong>99%</strong>
+      <span>of international data<br />runs through these cables</span>
+    </div>
+  </figure>
+
+  {isStory && (
+    <div class="pj__read">
+      <div class="pj__copy" aria-live="polite">
+        {steps.map((step, index) => (
+          <article class="pj__state" data-state={index} hidden={index !== 0}>
+            <p class="pj__eyebrow">{step.eyebrow}</p>
+            <h2
+              class="pj__title"
+              set:html={step.title.replace(
+                /(across the world\.|a satellite\?|into the ocean\.|travels this way\.)/,
+                '<em>$1</em>',
+              )}
+            />
+            <p class="pj__body">{step.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="pj__controls">
+        <div class="pj__dots" role="tablist" aria-label="Story progress">
+          {steps.map((step, index) => (
+            <button
+              type="button"
+              role="tab"
+              class="pj__dot"
+              data-dot={index}
+              aria-label={`Step ${index + 1}: ${step.eyebrow}`}
+              aria-selected={index === 0 ? 'true' : 'false'}
+            ></button>
+          ))}
+        </div>
+
+        <button class="pj__next" type="button" data-advance>
+          <span class="pj__next-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" /></svg>
+          </span>
+          <span data-next-label>Reveal what’s happening next</span>
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
+{isStory && (
+  <script>
+    document.querySelectorAll('[data-journey]').forEach((root) => {
+      if (!(root instanceof HTMLElement)) return;
+
+      const states = Array.from(root.querySelectorAll('[data-state]'));
+      const dots = Array.from(root.querySelectorAll('[data-dot]'));
+      const next = root.querySelector('[data-advance]');
+      const nextLabel = root.querySelector('[data-next-label]');
+      const last = states.length - 1;
+
+      const labels = [
+        'Reveal what’s happening next',
+        'Follow it further',
+        'See how much travels this way',
+        'Replay the journey',
+      ];
+
+      let step = 0;
+
+      const render = () => {
+        root.dataset.step = String(step);
+        states.forEach((node, index) => {
+          if (node instanceof HTMLElement) node.hidden = index !== step;
+        });
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('is-active', index <= step);
+          dot.setAttribute('aria-selected', index === step ? 'true' : 'false');
+        });
+        if (nextLabel) nextLabel.textContent = labels[step];
+      };
+
+      next?.addEventListener('click', () => {
+        step = step === last ? 0 : step + 1;
+        render();
+      });
+
+      dots.forEach((dot, index) =>
+        dot.addEventListener('click', () => {
+          step = index;
+          render();
+        }),
+      );
+
+      render();
+    });
+  </script>
+)}
+
+<style>
+  [hidden] {
+    display: none !important;
+  }
+
+  .pj {
+    display: grid;
+    gap: 26px;
+  }
+
+  .pj__frame {
+    position: relative;
+    margin: 0;
+    border-radius: 26px;
+    box-shadow: 0 30px 70px rgba(28, 34, 52, 0.14), 0 2px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+
+  .pj__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 26px;
+  }
+
+  /* ---- sky ---- */
+  .pj-clouds ellipse {
+    fill: #fff;
+    opacity: 0.72;
+    animation: pj-drift 34s ease-in-out infinite;
+  }
+  .pj-clouds ellipse:nth-child(2) {
+    animation-duration: 44s;
+    animation-direction: reverse;
+  }
+  .pj-clouds ellipse:nth-child(3) {
+    animation-duration: 52s;
+  }
+  @keyframes pj-drift {
+    50% {
+      transform: translateX(22px);
+    }
+  }
+
+  .pj-sat {
+    opacity: 0;
+    transition: opacity 520ms ease;
+  }
+  .pj-sat__panels rect {
+    fill: #33456b;
+  }
+  .pj-sat__body {
+    fill: #cdd6e6;
+    stroke: #8e9cb8;
+    stroke-width: 1.4;
+  }
+  .pj-sat__mast,
+  .pj-sat__dish {
+    fill: #e4e9f2;
+    stroke: #8e9cb8;
+    stroke-width: 1.4;
+  }
+  .pj-sat__blink {
+    fill: var(--saffron);
+  }
+  [data-step='1'] .pj-sat {
+    opacity: 1;
+  }
+  [data-step='2'] .pj-sat,
+  [data-step='3'] .pj-sat {
+    opacity: 0.26;
+  }
+  [data-step='1'] .pj-sat__blink {
+    animation: pj-blink 1.5s ease-in-out infinite;
+  }
+  @keyframes pj-blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  /* ---- the guess ---- */
+  .pj-guess {
+    fill: none;
+    stroke: var(--saffron);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-dasharray: 7 11;
+    opacity: 0;
+    transition: opacity 480ms ease;
+  }
+  [data-step='1'] .pj-guess {
+    opacity: 0.9;
+    animation: pj-march 1.4s linear infinite;
+  }
+  [data-step='2'] .pj-guess,
+  [data-step='3'] .pj-guess {
+    opacity: 0.16;
+  }
+  @keyframes pj-march {
+    to {
+      stroke-dashoffset: -36;
+    }
+  }
+
+  .pj-guess__no {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.6);
+    transition: opacity 320ms ease, transform 420ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+  .pj-guess__no circle {
+    fill: #fff;
+    stroke: #c8462f;
+    stroke-width: 2;
+  }
+  .pj-guess__no path {
+    stroke: #c8462f;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+  [data-step='2'] .pj-guess__no,
+  [data-step='3'] .pj-guess__no {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ---- sea ---- */
+  .pj-waterline {
+    fill: none;
+    stroke: rgba(190, 226, 255, 0.5);
+    stroke-width: 2;
+  }
+  .pj-rays path {
+    fill: #bfe0ff;
+    opacity: 0.055;
+  }
+  .pj-seabed {
+    fill: #061726;
+  }
+  .pj-seabed__line {
+    fill: none;
+    stroke: rgba(150, 196, 240, 0.2);
+    stroke-width: 1.6;
+  }
+  .pj-land {
+    fill: #e7dcc9;
+  }
+  .pj-land__edge {
+    fill: none;
+    stroke: rgba(17, 21, 28, 0.16);
+    stroke-width: 1.6;
+  }
+
+  /* ---- cable + light ---- */
+  .pj-cable {
+    fill: none;
+    stroke: #16324f;
+    stroke-width: 9;
+    stroke-linecap: round;
+    opacity: 0.42;
+    transition: opacity 520ms ease;
+  }
+  .pj-route {
+    fill: none;
+    stroke: var(--pj-glass);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 1500ms cubic-bezier(0.4, 0.1, 0.2, 1);
+  }
+  .pj-light {
+    fill: none;
+    stroke: var(--pj-pulse);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 70 1000;
+    stroke-dashoffset: 1070;
+    opacity: 0;
+  }
+  [data-step='2'] .pj-cable,
+  [data-step='3'] .pj-cable {
+    opacity: 1;
+  }
+  [data-step='2'] .pj-route,
+  [data-step='3'] .pj-route {
+    stroke-dashoffset: 0;
+  }
+  [data-step='2'] .pj-light,
+  [data-step='3'] .pj-light {
+    opacity: 1;
+    animation: pj-travel 2.9s linear 900ms infinite;
+  }
+  @keyframes pj-travel {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ---- actors ---- */
+  .pj-phone {
+    fill: #141922;
+  }
+  .pj-phone__screen {
+    fill: #b9d6ee;
+  }
+  .pj-phone__pic {
+    fill: #4f7fa8;
+  }
+  .pj-phone__sun {
+    fill: #ffd9a2;
+  }
+  .pj-waves path {
+    fill: none;
+    stroke: var(--saffron);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+  [data-step='0'] .pj-waves path {
+    opacity: 0.9;
+    animation: pj-emit 2.2s ease-in-out infinite;
+  }
+  .pj-waves path:nth-child(2) {
+    animation-delay: 0.35s;
+  }
+  @keyframes pj-emit {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  .pj-person circle,
+  .pj-person path {
+    fill: #2c3547;
+  }
+  .pj-actor--far {
+    opacity: 0.4;
+    transition: opacity 600ms ease;
+  }
+  [data-step='3'] .pj-actor--far {
+    opacity: 1;
+  }
+
+  /* ---- overlay tags ---- */
+  .pj-tag {
+    position: absolute;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(255, 253, 250, 0.92);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 11.5px;
+    font-weight: 640;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 18px rgba(40, 44, 60, 0.08);
+  }
+  .pj-tag--you {
+    left: 5.5%;
+    top: 25%;
+  }
+  .pj-tag--far {
+    right: 4%;
+    top: 27.5%;
+    opacity: 0.45;
+    transition: opacity 600ms ease;
+  }
+  [data-step='3'] .pj-tag--far {
+    opacity: 1;
+  }
+  .pj-tag--sat {
+    left: 20.5%;
+    top: 10%;
+    border-color: rgba(200, 70, 47, 0.3);
+    color: #c8462f;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 380ms ease, transform 420ms ease;
+  }
+  [data-step='2'] .pj-tag--sat,
+  [data-step='3'] .pj-tag--sat {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pj-stat {
+    position: absolute;
+    left: 6%;
+    bottom: 8%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 17px;
+    border-radius: 15px;
+    background: rgba(6, 20, 34, 0.72);
+    border: 1px solid rgba(160, 200, 240, 0.22);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 460ms ease, transform 520ms cubic-bezier(0.2, 0.8, 0.3, 1);
+    pointer-events: none;
+  }
+  [data-step='3'] .pj-stat {
+    opacity: 1;
+    transform: none;
+  }
+  .pj-stat strong {
+    color: #ffce93;
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .pj-stat span {
+    color: rgba(226, 238, 250, 0.82);
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+
+  /* =========================================================
+     STORY MODE — copy + controls
+     ========================================================= */
+  .pj__read {
+    display: grid;
+    gap: 20px;
+  }
+
+  .pj__copy {
+    min-height: 118px;
+  }
+
+  .pj__state {
+    animation: pj-rise 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  @keyframes pj-rise {
+    from {
+      opacity: 0;
+      transform: translateY(7px);
+    }
+  }
+
+  .pj__eyebrow {
+    margin: 0 0 9px;
+    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  .pj__title {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 32px);
+    font-weight: 560;
+    line-height: 1.12;
+    letter-spacing: -0.034em;
+    text-wrap: balance;
+  }
+
+  .pj__title :global(em) {
+    color: var(--saffron-deep);
+    font-style: normal;
+  }
+
+  .pj__body {
+    margin: 11px 0 0;
+    max-width: 46ch;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.56;
+  }
+
+  .pj__controls {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .pj__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .pj__dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(17, 21, 28, 0.16);
+    cursor: pointer;
+    transition: background 220ms ease, transform 220ms ease;
+  }
+
+  .pj__dot.is-active {
+    background: var(--saffron);
+  }
+
+  .pj__dot[aria-selected='true'] {
+    transform: scale(1.32);
+  }
+
+  .pj__next {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px 9px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease;
+  }
+
+  .pj__next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .pj__next:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .pj__next-icon {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--cream);
+  }
+
+  .pj__next-icon svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: var(--saffron-deep);
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* =========================================================
+     STILL MODE — a teaser, not the answer.
+     The satellite, the crossed-out guess and the 99% figure are the
+     story's payoff; they stay in /explore. What's left is the cable,
+     the travelling light and the two people — enough to make you look.
+     ========================================================= */
+  .pj--still .pj-sat,
+  .pj--still .pj-guess,
+  .pj--still .pj-guess__no,
+  .pj--still .pj-tag--sat,
+  .pj--still .pj-stat {
+    display: none;
+  }
+
+  @media (max-width: 680px) {
+    .pj-tag--sat,
+    .pj-tag--far {
+      display: none;
+    }
+
+    .pj-stat {
+      left: 4%;
+      right: 4%;
+      bottom: 6%;
+      padding: 10px 13px;
+    }
+
+    .pj-stat strong {
+      font-size: 25px;
+    }
+
+    .pj__next {
+      font-size: 11.5px;
+      padding-right: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pj-clouds ellipse,
+    .pj-waves path,
+    .pj-sat__blink,
+    .pj-guess,
+    .pj-light,
+    .pj__state {
+      animation: none !important;
+    }
+
+    .pj-route {
+      transition-duration: 1ms;
+    }
+
+    .pj-light {
+      display: none;
+    }
+  }
+</style>
