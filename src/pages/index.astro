@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FeaturedNow from '../components/FeaturedNow.astro';
+import AgentStage from '../components/hero/AgentStage.astro';
 import { getCollection } from 'astro:content';
 
 const published = (
   await getCollection('topics', ({ data }) => data.status === 'published')
 ).sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
 
-// Newest topic carrying a `featured` block takes the hero slot.
+// The hero's right side is an experience now, not a topic slot. The `featured`
+// topic is still held out of the list below so that section keeps showing
+// exactly what it showed before.
 const featuredTopic = published.find((topic) => topic.data.featured);
 
 // Everything else lines up below — the previous feature simply moves down here.
@@ -25,7 +27,7 @@ const categoryLabel = {
 
 <BaseLayout>
   <!-- ============================================================
-       HERO — the brand statement, plus this week's feature
+       HERO — the brand statement, plus the feature stage beside it
        ============================================================ -->
   <section class="dy-hero">
     <div class="shell dy-hero__grid">
@@ -50,7 +52,7 @@ const categoryLabel = {
         </a>
       </div>
 
-      {featuredTopic && <FeaturedNow topic={featuredTopic} />}
+      <AgentStage />
     </div>
   </section>
 
@@ -269,14 +271,14 @@ const categoryLabel = {
     display: grid;
     grid-template-columns: minmax(460px, 0.92fr) minmax(0, 1.08fr);
     /* Top-aligned: centring dropped the headline well below the
-       featured card and left the top-left of the page empty. */
+       feature stage and left the top-left of the page empty. */
     align-items: start;
     gap: clamp(40px, 5vw, 78px);
   }
 
   .dy-hero__brand {
     max-width: 650px;
-    /* Sits just below the "Featured now" eyebrow opposite it. */
+    /* Sits just below the top of the feature stage opposite it. */
     padding-top: clamp(6px, 3.4vh, 34px);
   }
 

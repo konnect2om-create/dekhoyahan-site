@@ -1,0 +1,1725 @@
+---
+// The homepage hero's right-side experience stage.
+//
+// A small interactive exhibit rather than a content card: an ordinary flight
+// an AI agent offers to book, interrupted by DekhoYahan just before the
+// visitor acts. useful → tempting → interruption → curiosity.
+//
+// THE ENVIRONMENT is supplied artwork — a lit stone deck with cloud banks
+// over it. It is one image and nothing more: no procedural deck, no drawn
+// clouds, no generated texture. Everything live sits in its own layer above
+// it and stays editable — which is what lets the environment recede at the
+// end while the journey drawn over it carries on untouched.
+//
+// The stage is sized to the opening viewport: its height is what is left of
+// the fold after the header and the hero's own padding, so the whole of
+// State 1 is visible without scrolling. The artwork is cropped to fit that,
+// not the other way round — it is a stage, not a picture being shown.
+//
+// How the artwork is placed, and why it is anchored by HEIGHT:
+//   The source is 3:2 and the stage is portrait, so `object-fit: cover` would
+//   crop away the deck's left edge and its corner — the two things that stop
+//   it reading as a rectangle. Instead the image is sized by height alone
+//   (`width: auto`, so it can never distort):
+//
+//     --art-h  136.8%  the vertical window: image y 3% … 76.1%
+//     --art-y   -4.1%  which puts the deck's front edge low in the frame
+//     --art-x  -21.5%  shifted left by that much of the image's OWN width,
+//                      so image x 21.5% sits against the stage's left edge
+//
+//   Because every number is a fraction of the image's own size, the crop is
+//   self-correcting: the front edge stays at ~90% at any stage height, and a
+//   wider stage simply reveals more of the deck instead of re-cropping it.
+//   Only very narrow screens re-aim `--art-x`.
+//
+//   Left, top and bottom are masked to a soft fade, so the image dissolves
+//   into the page's cream instead of ending on a straight edge. On desktop
+//   the right is not masked at all — the stage bleeds off the viewport there.
+//
+// THE SEQUENCE: Act → Wait. → Question → Look underneath → the journey alone.
+//
+//   state 1  the offer, ending at "Book it for me"
+//   state 2  the visitor commits, and is stopped: 🟠 Wait., then the
+//            question, then the way in
+//   state 3  the exchange goes and the environment recedes, leaving the
+//            crossing floating on the page with nothing explaining it
+//
+// "Book it for me" is the only control, and it books nothing — the click
+// exists in order to be interrupted. Everything the stage shows is gated on
+// `data-state`, so the later beats are a rule each rather than a rebuild.
+import { Image } from 'astro:assets';
+import deckArt from '../../assets/hero-deck.png';
+---
+
+<section
+  class="ags"
+  data-agent-stage
+  data-state="1"
+  data-stop="1"
+  aria-label="A flight from London to Tokyo that an AI agent offers to book"
+>
+  <!-- Everything the visitor is being shown: the surface, the journey across
+       it and the exchange happening on it. One object, so the last beat can
+       take the surface and the exchange away from under the journey without
+       any of it being rebuilt or repositioned. -->
+  <div class="ags__world">
+    <!-- ---------- environment ---------- -->
+    <div class="ags__art" aria-hidden="true">
+      <div class="ags__artframe">
+        <!-- Through Astro's own pipeline: webp, and a srcset so a phone never
+             pulls the desktop-sized file. `sizes` is large because the image is
+             deliberately drawn wider than the stage in order to crop it. -->
+        <Image
+          src={deckArt}
+          alt=""
+          widths={[768, 1100, 1536]}
+          sizes="(max-width: 680px) 265vw, (max-width: 980px) 195vw, 105vw"
+          format="webp"
+          quality={86}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <!-- ---------- the crossing ---------- -->
+    <svg
+      class="ags__air"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <linearGradient id="agsTrail" x1="0.18" y1="0" x2="0.9" y2="0.5">
+          <stop offset="0" stop-color="#2f6bff" stop-opacity="0.15" />
+          <stop offset="0.45" stop-color="#3d78ff" stop-opacity="0.7" />
+          <stop offset="1" stop-color="#71a2ff" />
+        </linearGradient>
+        <filter id="agsGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="7" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <path class="ags-lane" d="M220 180 C380 96, 560 108, 860 370" vector-effect="non-scaling-stroke" />
+      <path
+        class="ags-wake"
+        pathLength="1000"
+        d="M220 180 C380 96, 560 108, 860 370"
+        vector-effect="non-scaling-stroke"
+        filter="url(#agsGlow)"
+      />
+    </svg>
+
+    <!-- ---------- the two ends ---------- -->
+    <p class="ags__place ags__place--from">
+      <span class="ags__name">London</span>
+      <span class="ags__pin" aria-hidden="true">
+        <svg viewBox="0 0 28 38" focusable="false">
+          <path
+            d="M14 1C7.4 1 2 6.4 2 13c0 7.6 9.5 17.8 11.2 19.6.4.5 1.2.5 1.6 0C16.5 30.8 26 20.6 26 13 26 6.4 20.6 1 14 1Z"
+          />
+          <circle cx="14" cy="13" r="4.3" />
+        </svg>
+      </span>
+    </p>
+
+    <span class="ags__to">to</span>
+
+    <p class="ags__place ags__place--to">
+      <span class="ags__name">Tokyo</span>
+      <span class="ags__pin" aria-hidden="true">
+        <svg viewBox="0 0 28 38" focusable="false">
+          <path
+            d="M14 1C7.4 1 2 6.4 2 13c0 7.6 9.5 17.8 11.2 19.6.4.5 1.2.5 1.6 0C16.5 30.8 26 20.6 26 13 26 6.4 20.6 1 14 1Z"
+          />
+          <circle cx="14" cy="13" r="4.3" />
+        </svg>
+      </span>
+    </p>
+
+    <span class="ags__craft" aria-hidden="true">
+      <svg viewBox="0 0 200 90" focusable="false">
+        <ellipse class="ags-craft__cast" cx="104" cy="74" rx="62" ry="7" />
+        <path class="ags-craft__far" d="M104 40 L60 20 L74 17 L126 37 Z" />
+        <path class="ags-craft__fin" d="M32 40 L21 7 L35 5 L58 38 Z" />
+        <path class="ags-craft__tail" d="M29 44 L6 33 L2 38 L23 51 Z" />
+        <path
+          class="ags-craft__body"
+          d="M188 46 C188 41, 176 37, 152 36 L66 36 C44 36, 30 39, 24 42 L14 46 C12 47, 12 49, 14 50 L26 53 C34 55, 46 56, 66 56 L152 56 C176 55, 188 51, 188 46 Z"
+        />
+        <path
+          class="ags-craft__belly"
+          d="M26 53 C34 55, 46 56, 66 56 L152 56 C176 55, 188 51, 188 46 C182 52, 160 54, 132 54 L26 53 Z"
+        />
+        <path class="ags-craft__near" d="M110 48 L52 78 L70 82 L134 54 Z" />
+        <ellipse class="ags-craft__jet" cx="96" cy="59" rx="14" ry="6" />
+        <ellipse class="ags-craft__jet" cx="76" cy="68" rx="11" ry="5" />
+        <path class="ags-craft__glass" d="M172 42 C178 42, 182 43, 184 45 L174 46 Z" />
+        <path class="ags-craft__win" d="M62 44 L150 43" />
+      </svg>
+    </span>
+
+    <!-- ---------- what the agent says, and what we say back ---------- -->
+    <div class="ags__panel">
+      <div class="ags__offer">
+        <span class="ags__face" aria-hidden="true"><i></i><i></i></span>
+
+        <!-- The live region sits here so that both beats of the interruption
+             are announced as they arrive. Nothing enters or leaves it on load,
+             so there is nothing to announce until the visitor clicks. -->
+        <div class="ags__said" aria-live="polite">
+          <p class="ags__who">Your AI agent</p>
+          <p class="ags__found">Found it.</p>
+          <p class="ags__facts">
+            <svg class="ags__glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M15 8.6 9.4 8l-2.6 5h-1.3l1.3-5-3.2.4-1 1.5H1.4l1.1-2.4L1.4 5h1.2l1 1.5 3.2.4L5.5 2h1.3l2.6 5L15 6.4Z" />
+            </svg>
+            Nonstop · 6:10 PM
+          </p>
+          <p class="ags__says">I can book this for you.</p>
+
+          <!-- The signature beat, and the way into the experience. It books
+               nothing and never will: the click exists so that it can be
+               interrupted. Quieter than the page's own CTA opposite it on
+               purpose — that one is the site's navigation, this one is the
+               agent's offer.
+
+               `See what's happening →` belongs to the left hero and goes to
+               Explore. It has nothing to do with this stage. -->
+          <button class="ags__book" type="button" data-act>
+            Book it for me <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- Grouping only — `display: contents`, so the marker and the
+               question place themselves on the grid above: the marker beside
+               the pill it interrupts, the question on the row beneath. -->
+          <div class="ags__discover">
+            <p class="ags__mark">
+              <span class="ags__markdot" aria-hidden="true"></span>Wait.
+            </p>
+
+            <p class="ags__ask">What would your AI need permission to use?</p>
+
+            <!-- A seam marked on the surface rather than a control: a label
+                 over a saffron hairline, with the arrow pointing down through
+                 it. It takes the surface away, so it is a real button. -->
+            <button class="ags__open" type="button" data-open>
+              <span class="ags__openlabel">
+                Look underneath <span class="ags__openarrow" aria-hidden="true">↓</span>
+              </span>
+              <span class="ags__openseam" aria-hidden="true"></span>
+            </button>
+
+            <button class="ags__show" type="button" data-reveal>
+              Show me <span aria-hidden="true">↓</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What the emptied stage was for. It arrives once the scene has
+         settled, in the column the exchange has just left, with nothing on
+         screen but the crossing above it. Two lines, one sentence: the
+         first states the thing that looked easy, the second turns it. -->
+    <p class="ags__coda">
+      <span class="ags__coda-a">The flight looked simple.</span>
+      <span class="ags__coda-b">The permission journey wasn’t.</span>
+
+      <!-- The second journey, opened but not travelled. Where it starts is
+           the only thing named; the line leaves and thins out before it
+           reaches anything, so what is ahead of it is still a question.
+           It sits inside the sentence's own block so it lands directly
+           under the line it answers, without either one being repositioned. -->
+      <span class="ags__begin">
+        <span class="ags__you">You</span>
+        <!-- One stroke for the whole journey, from YOU to past BOOKED, and
+             the same two cubics as before: joined with matching tangents at
+             252,26, leaving the word dead level — the first control point
+             shares the start's y — and only then lifting, the way a line
+             does when it is being drawn rather than laid down.
+
+             `preserveAspectRatio="none"` because the box is now set by the
+             journey's length and a fixed height rather than by the curve's
+             own proportions; the stroke is held to its weight by
+             `non-scaling-stroke`.
+
+             The gradient no longer runs out to nothing. It used to end the
+             line by dissolving it, but the line now ends wherever the
+             journey has got to, so it only softens with distance — every
+             part of it that has been drawn has to be visible. -->
+        <svg
+          class="ags__road"
+          viewBox="0 0 400 46"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <linearGradient id="agsRoad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#e87524" />
+              <stop offset="0.55" stop-color="#e87524" stop-opacity="0.88" />
+              <stop offset="1" stop-color="#e87524" stop-opacity="0.66" />
+            </linearGradient>
+          </defs>
+          <path
+            class="ags-road"
+            pathLength="1000"
+            d="M3 42 C104 42, 186 35, 252 26 C318 17, 362 12, 397 8"
+            vector-effect="non-scaling-stroke"
+          />
+        </svg>
+      </span>
+
+      <!-- The stops the line passes. A track rather than a list: each one is
+           placed at its own multiple of `--stop-step`, so the six that will
+           eventually be here are evenly paced from the outset and the first
+           one cannot quietly take the width the others need.
+
+           `--at` places a stop; `data-stop` on the stage says how far the
+           journey has got. Nothing here is on a clock — a stop arrives, is
+           explained, and waits. Which one is past, current or still ahead
+           is worked out from those two numbers in the stylesheet.
+
+           Every stop offers to continue, including the last one built so
+           far: the journey rests there with the invitation still standing,
+           and the cue starts working the moment there is a stop past it.
+           Adding one is a span with a number in it. -->
+      <span class="ags__stops" aria-live="polite">
+        <span class="ags__stop" style="--at: 1">
+          <span class="ags__stopname">Identity</span>
+          <span class="ags__stopask">Who am I acting for?</span>
+          <button class="ags__go" type="button" data-go>
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </span>
+
+        <span class="ags__stop" style="--at: 2">
+          <span class="ags__stopname">Context</span>
+          <span class="ags__stopask">What do I need to know about you?</span>
+          <button class="ags__go" type="button" data-go>
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </span>
+
+        <span class="ags__stop" style="--at: 3">
+          <span class="ags__stopname">Access</span>
+          <span class="ags__stopask">What am I allowed to use?</span>
+          <button class="ags__go" type="button" data-go>
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </span>
+
+        <span class="ags__stop" style="--at: 4">
+          <span class="ags__stopname">Authority</span>
+          <span class="ags__stopask">What am I allowed to do?</span>
+          <button class="ags__go" type="button" data-go>
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </span>
+
+        <!-- Where the journey ends, so it carries no cue: the invitation is
+             absent rather than held back, because there is nothing after
+             this to be invited to. -->
+        <span class="ags__stop" style="--at: 5">
+          <span class="ags__stopname">Booked</span>
+          <span class="ags__stopask">And only then can it act for you.</span>
+        </span>
+      </span>
+    </p>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-agent-stage]').forEach((stage) => {
+    if (!(stage instanceof HTMLElement)) return;
+
+    // Everything the stage shows hangs off `data-state`, and each move is
+    // announced, for anything outside the stage that eventually needs to know.
+    const setState = (next) => {
+      stage.dataset.state = String(next);
+      stage.dispatchEvent(
+        new CustomEvent('agentstage:state', { bubbles: true, detail: { state: next } }),
+      );
+    };
+
+    // Act → Wait. The visitor commits to the booking; we stop them. Nothing is
+    // booked, nothing navigates, and the guard makes a second click a no-op.
+    stage.querySelector('[data-act]')?.addEventListener('click', () => {
+      if (stage.dataset.state !== '1') return;
+      setState(2);
+    });
+
+    // Wait. → the journey alone. The exchange leaves and the environment
+    // recedes; the stylesheet runs the whole clock off this one attribute.
+    // Nothing is loaded and nothing new is drawn — what is left is what was
+    // always on top of the artwork.
+    stage.querySelector('[data-open]')?.addEventListener('click', () => {
+      if (stage.dataset.state !== '2') return;
+      setState(3);
+    });
+
+    // The permission journey advances only when it is asked to. Nothing
+    // after the first stop is on a clock: a stop arrives, is explained, and
+    // waits there for as long as the visitor leaves it.
+    //
+    // Delegated, because the cue that is clicked is not the cue that will be
+    // clicked next — each stop carries its own.
+    const stops = stage.querySelectorAll('.ags__stop');
+
+    stage.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest('[data-go]')) return;
+
+      // The cue on the last stop built so far has nowhere to go: the guard
+      // makes it a no-op rather than an error, and it starts working on its
+      // own the moment a stop exists past it.
+      const at = Number(stage.dataset.stop || '1');
+      if (!(at >= 1) || at >= stops.length) return;
+      stage.dataset.stop = String(at + 1);
+
+      // Hand the keyboard on to the cue that has taken its place. `stops` is
+      // zero-based, so index `at` is the stop just arrived at.
+      const next = stops[at]?.querySelector('[data-go]');
+      if (next instanceof HTMLElement) next.focus({ preventScroll: true });
+    });
+
+    // Depth under the pointer. Skipped on touch, and for anyone who asked for
+    // less movement — the scene is complete without it.
+    if (
+      !window.matchMedia('(hover: hover)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
+    let queued = 0;
+
+    stage.addEventListener('pointermove', (event) => {
+      if (queued) return;
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        const box = stage.getBoundingClientRect();
+        stage.style.setProperty('--px', String((event.clientX - box.left) / box.width - 0.5));
+        stage.style.setProperty('--py', String((event.clientY - box.top) / box.height - 0.5));
+      });
+    });
+
+    stage.addEventListener('pointerleave', () => {
+      stage.style.setProperty('--px', '0');
+      stage.style.setProperty('--py', '0');
+    });
+  });
+</script>
+
+<style>
+  /* =========================================================
+     STAGE — no frame of its own; the artwork is the picture
+     ========================================================= */
+  .ags {
+    /* Pointer depth, in the range −0.5 … 0.5. */
+    --px: 0;
+    --py: 0;
+
+    /* Where the artwork is aimed. See the note at the top of this file. */
+    --art-h: 136.8%;
+    --art-y: -4.1%;
+    --art-x: -21.5%;
+
+    /* Where the agent's block sits on the deck. It is the last thing in the
+       opening view, so it sits low, with the deck's edge hinted below it. */
+    --panel-x: 41%;
+    --panel-y: 56%;
+
+    /* The second journey starts under the first one's origin: the same 22%
+       the London marker is pinned at. It is not the exchange's column —
+       that one was placed to sit clear of the flight, and this one is meant
+       to run the whole way under it. */
+    --coda-x: 22%;
+
+    /* One step of the permission journey, as a share of the block's width.
+       Five of them carry YOU → BOOKED, and 5 × 15% lands the last stop at
+       75% of the block — about 77% of the stage, which keeps the whole
+       journey clear of Tokyo at 86%. Every stop is placed off this one
+       number, so nothing has to be re-spaced when the others arrive. */
+    --stop-step: 15%;
+
+    /* Choreography. Every beat is timed from load; the sequence is over in
+       about 3.5s, and the aircraft lands at 2.16s. */
+    --m-art: 0ms;
+    --m-from: 320ms;
+    --m-lane: 420ms;
+    --m-fly: 620ms;
+    --m-to: 1700ms;
+    --m-face: 1900ms;
+    --m-who: 1980ms;
+    --m-found: 2060ms;
+    --m-facts: 2140ms;
+    --m-says: 2220ms;
+    --m-book: 2320ms;
+    /* The scene has finished arriving by 2840ms — the pill's own entrance is
+       the last of it. A breath after that, the pill moves once, so the
+       movement reads as the deck settling and then offering rather than as
+       part of the load. */
+    --m-nudge: 3160ms;
+    /* Not part of the load sequence: these are measured from the click.
+       `Wait.` lands at 120ms and finishes settling at 640ms; the question
+       follows just after that. */
+    --m-wait: 120ms;
+    --m-ask: 620ms;
+    --m-open: 1120ms;
+    /* Held for the last beat, which will be triggered rather than timed. */
+    --m-show: 3020ms;
+
+    /* THE LAST BEAT, measured from the click on "Look underneath". One clock,
+       read by four rules, so the phases cannot drift apart:
+         0 …  150  the click is acknowledged; the scene itself does not move
+       150 …  450  the exchange goes — offer, pill, Wait., question, seam
+       350 … 1150  the environment recedes, and the crossing is left on it
+      1150 … 1450  the crossing settles by itself, and that is the end
+       The two middle phases overlap by 100ms on purpose: the surface starts
+       going before the last of the exchange has, so it reads as one movement
+       rather than as a list. */
+    --r-ack: 150ms;
+    --r-ui: 300ms;
+    --r-art: 800ms;
+    --r-art-in: 350ms;
+    --r-settle: 300ms;
+    --r-settle-in: 1150ms;
+    /* 1450 + 300: a clear beat of nothing after the scene has come to rest,
+       then the line. The second half follows the first by the same interval
+       the load sequence uses between lines, so it reads as one sentence
+       being said rather than as two things appearing. */
+    --r-say: 1750ms;
+    --r-say-b: 1880ms;
+    /* The second journey opens once the sentence has finished settling, and
+       unhurriedly: the flight took 1.54s to cross, and this one has not even
+       reached its first stop in longer than that. */
+    --r-you: 2540ms;
+    --r-road: 2680ms;
+    /* The stroke reaches the first stop about 280ms into its 1250ms draw —
+       the stop is named as the line arrives at it, not after the line has
+       finished somewhere else. */
+    --r-stop: 3010ms;
+    --r-stop-ask: 3180ms;
+    /* The cue waits until the explanation has finished arriving. It is the
+       last timed thing in the whole sequence; after it, nothing moves until
+       the visitor says so. */
+    --r-go: 3860ms;
+
+    --in: 520ms cubic-bezier(0.2, 0.72, 0.28, 1) both;
+
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    /* Whatever the fold has left once the header and the hero's own padding
+       are accounted for — the same expressions the hero uses, plus a small
+       gap so the stage stops just short of the edge. Everything inside is
+       positioned as a percentage of this. */
+    height: calc(
+      100svh - clamp(72px, 6vw, 82px) - clamp(38px, 5.5vh, 60px) - clamp(24px, 3.5vh, 44px)
+    );
+    min-height: 460px;
+    max-height: 880px;
+    overflow: hidden;
+    animation: ags-art 700ms ease both;
+    animation-delay: var(--m-art);
+  }
+
+  /* =========================================================
+     THE WORLD
+
+     `.ags__world` holds the surface, the journey and the exchange as one
+     object. It keeps `inset: 0`, so every percentage inside it resolves
+     exactly as it does against the stage — nothing is repositioned by it.
+
+     `isolation` matters: the artwork sits at `z-index: -1` inside the world,
+     and needs a stacking context of its own to stay tucked behind the
+     journey rather than dropping out of the world altogether.
+     ========================================================= */
+  .ags__world {
+    position: absolute;
+    inset: 0;
+    isolation: isolate;
+    transform: scale(1);
+    /* The last phase, and the only thing that moves in it. */
+    transition: transform var(--r-settle) cubic-bezier(0.24, 0.68, 0.3, 1)
+      var(--r-settle-in);
+  }
+
+  /* Once the surface has gone and nothing else is moving, the crossing comes
+     to rest: eight thousandths, three or four pixels at this size. Not a
+     repositioning — the journey is exactly where it was drawn — just the
+     scene stopping rather than being stopped. */
+  [data-state='3'] .ags__world {
+    transform: scale(0.992);
+  }
+
+  /* =========================================================
+     THE ARTWORK
+     Two nested layers only because one element can carry one mask: the
+     outer fades top and bottom, the inner fades the left.
+     ========================================================= */
+  .ags__art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 7.3%,
+      #000 95%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, transparent 0, #000 7.3%, #000 95%, transparent 100%);
+    transition: opacity var(--r-art) cubic-bezier(0.32, 0, 0.24, 1),
+      transform var(--r-art) cubic-bezier(0.32, 0, 0.24, 1);
+  }
+
+  /* The environment recedes rather than switching off: it settles back a
+     little as it dissolves, so the crossing is left in front of nothing
+     instead of a picture being turned down. The journey is a sibling layer
+     and is not touched by any of this — it never blinks. */
+  [data-state='3'] .ags__art {
+    opacity: 0;
+    transform: scale(0.985);
+    transition-delay: var(--r-art-in);
+  }
+
+  .ags__artframe {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%);
+    mask-image: linear-gradient(to right, transparent 0, #000 10%);
+  }
+
+  .ags__art img {
+    position: absolute;
+    left: 0;
+    top: var(--art-y);
+    /* Height alone drives the size; the width follows the file, so the
+       artwork's proportions are never touched. */
+    height: var(--art-h);
+    width: auto;
+    max-width: none;
+    /* The artwork's ground is #f4eadf; the page's cream around it is a touch
+       lighter and cooler. This is just enough to close that step so the fade
+       at the edges reads as light, not as a seam. */
+    filter: brightness(1.028) saturate(0.98);
+    /* `--art-x` is a share of the image's own width, which is how the crop
+       stays aimed at any stage size. The pointer drift rides on top of it. */
+    translate: calc(var(--art-x) + var(--px) * 14px) calc(var(--py) * 8px);
+    transition: translate 700ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  @keyframes ags-art {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
+  }
+
+  /* One entrance for laid-out html, one for painted svg whose geometry must
+     not be touched. Both animate `translate`, never `transform`, so a filled
+     animation can never freeze a hover. */
+  @keyframes ags-in {
+    from {
+      opacity: 0;
+      translate: 0 9px;
+    }
+  }
+
+  @keyframes ags-lit {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* =========================================================
+     THE CROSSING
+     ========================================================= */
+  .ags__air {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate(calc(var(--px) * 20px), calc(var(--py) * 11px));
+    transition: transform 700ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* The lane, the wake, the two ends and the aircraft carry no state rule at
+     all. That is deliberate: the last beat takes the environment and the
+     exchange away from around them and leaves them exactly as they were
+     drawn, still lit, still where they landed. Nothing here fades out and
+     comes back. */
+
+  .ags-lane {
+    fill: none;
+    stroke: #2f6bff;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    opacity: 0.24;
+    animation: ags-lit 700ms ease both;
+    animation-delay: var(--m-lane);
+  }
+
+  /* The distance already covered. Its dash runs on the same clock as the
+     aircraft's keyframes, and both are uniform in arc length, so the wake
+     head never separates from the aircraft. */
+  .ags-wake {
+    fill: none;
+    stroke: url(#agsTrail);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: ags-cross 1540ms ease-in-out both;
+    animation-delay: var(--m-fly);
+  }
+
+  @keyframes ags-cross {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* =========================================================
+     THE TWO ENDS — anchored by the pin's tip
+     ========================================================= */
+  .ags__place {
+    position: absolute;
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    margin: 0;
+    transform: translate(-50%, -100%);
+    animation: ags-in var(--in);
+  }
+
+  .ags__place--from {
+    left: 22%;
+    top: 18%;
+    animation-delay: var(--m-from);
+  }
+
+  .ags__place--to {
+    left: 86%;
+    top: 37%;
+    animation-delay: var(--m-to);
+  }
+
+  .ags__name {
+    color: #171c26;
+    font-size: clamp(13px, 1.65vw, 21px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(255, 252, 245, 0.75);
+  }
+
+  .ags__pin {
+    display: block;
+    width: clamp(15px, 1.9vw, 24px);
+    filter: drop-shadow(0 3px 9px rgba(30, 78, 200, 0.45));
+  }
+
+  .ags__pin svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .ags__pin path {
+    fill: #2f6bff;
+  }
+
+  .ags__pin circle {
+    fill: #fdfeff;
+  }
+
+  /* Direction, for anyone meeting the two names without the picture. */
+  .ags__to {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* =========================================================
+     THE AIRCRAFT
+     Percentage keyframes, sampled at equal arc length along the lane, so it
+     is welded to the wake and never distorts with the stage.
+     ========================================================= */
+  .ags__craft {
+    position: absolute;
+    left: 86%;
+    top: 37%;
+    width: clamp(78px, 13.5vw, 138px);
+    transform: translate(-50%, -62%);
+    rotate: -4deg;
+    animation: ags-fly 1540ms linear both;
+    animation-delay: var(--m-fly);
+  }
+
+  .ags__craft svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  @keyframes ags-fly {
+    0% {
+      left: 22%;
+      top: 18%;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    19.6% {
+      left: 28.57%;
+      top: 15.2%;
+    }
+    28.7% {
+      left: 35.55%;
+      top: 13.63%;
+    }
+    36.3% {
+      left: 42.69%;
+      top: 13.51%;
+    }
+    43.2% {
+      left: 49.69%;
+      top: 14.79%;
+    }
+    50% {
+      left: 56.46%;
+      top: 17.15%;
+    }
+    56.8% {
+      left: 62.84%;
+      top: 20.24%;
+    }
+    63.7% {
+      left: 68.98%;
+      top: 23.92%;
+    }
+    71.3% {
+      left: 74.91%;
+      top: 28.06%;
+    }
+    80.4% {
+      left: 80.49%;
+      top: 32.38%;
+    }
+    100% {
+      left: 86%;
+      top: 37%;
+      opacity: 1;
+    }
+  }
+
+  .ags-craft__body {
+    fill: #fbfcfe;
+  }
+  .ags-craft__belly {
+    fill: #c9d1de;
+  }
+  .ags-craft__fin {
+    fill: #1d2c4d;
+  }
+  .ags-craft__tail {
+    fill: #e8ecf3;
+  }
+  .ags-craft__near {
+    fill: #dbe1eb;
+  }
+  .ags-craft__far {
+    fill: #b9c2d1;
+  }
+  .ags-craft__jet {
+    fill: #97a1b3;
+  }
+  .ags-craft__glass {
+    fill: #35415a;
+  }
+  .ags-craft__win {
+    fill: none;
+    stroke: #b6bfcd;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-dasharray: 0.5 4;
+  }
+  .ags-craft__cast {
+    fill: #6f6a5e;
+    opacity: 0.16;
+  }
+
+  /* =========================================================
+     PANEL — set straight onto the deck, no card
+     ========================================================= */
+  /* Everything the exchange consisted of — the agent, the offer, the pill,
+     `Wait.`, the question, the seam — goes together, and goes first: it is
+     held for the acknowledgement, then leaves between 150 and 450ms.
+     `visibility` follows the fade so the faded controls leave the tab order
+     rather than sitting there invisible and focusable. */
+  [data-state='3'] .ags__panel {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--r-ui) ease var(--r-ack),
+      visibility 0s linear calc(var(--r-ack) + var(--r-ui));
+  }
+
+  .ags__panel {
+    position: absolute;
+    left: var(--panel-x);
+    right: 4%;
+    transition: opacity 360ms ease;
+    /* Normally `--panel-y`. On a short stage — a laptop, or any window with
+       devtools open — a percentage would push the block past the bottom and
+       `overflow: hidden` would eat the interruption, so it is also held a
+       fixed distance clear of the edge — now 315px, covering the question
+       and the seam beneath it. On a 900px-tall viewport and up the first
+       value still wins and nothing moves; only stages already inside the
+       guard shift further. */
+    top: min(var(--panel-y), calc(100% - 315px));
+  }
+
+  .ags__offer {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(12px, 1.5vw, 20px);
+  }
+
+  /* The agent, given a face rather than a sparkle. */
+  .ags__face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: clamp(40px, 5.4vw, 58px);
+    height: clamp(40px, 5.4vw, 58px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 28%, #253150, #080d18 74%);
+    box-shadow: 0 0 0 5px rgba(47, 107, 255, 0.1), 0 0 24px rgba(47, 107, 255, 0.4),
+      0 8px 20px rgba(12, 20, 42, 0.3);
+    animation: ags-in var(--in);
+    animation-delay: var(--m-face);
+  }
+
+  .ags__face i {
+    flex: none;
+    width: clamp(7px, 0.85vw, 10px);
+    height: clamp(7px, 0.85vw, 10px);
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  /* The four lines run full width; the pill and the interruption share the
+     last row, so `Wait.` arrives next to the thing that was just clicked.
+     Row gaps come from the paragraphs' own margins, exactly as they did when
+     this was a plain block — nothing above the pill moves. */
+  .ags__said {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .ags__who,
+  .ags__found,
+  .ags__facts,
+  .ags__says {
+    grid-column: 1 / -1;
+  }
+
+  .ags__who {
+    margin: 0;
+    color: #2f6bff;
+    font-size: clamp(12px, 1.15vw, 15px);
+    font-weight: 660;
+    letter-spacing: -0.006em;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-who);
+  }
+
+  .ags__found {
+    margin: 5px 0 0;
+    color: #11151c;
+    font-size: clamp(18px, 1.95vw, 26px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-found);
+  }
+
+  /* The tempting part: the concrete flight. */
+  .ags__facts {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 8px 0 0;
+    color: #5a6272;
+    font-size: clamp(12.5px, 1.15vw, 15px);
+    letter-spacing: -0.004em;
+    font-variant-numeric: tabular-nums;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-facts);
+  }
+
+  .ags__glyph {
+    flex: none;
+    width: clamp(13px, 1.1vw, 15px);
+    fill: #2f6bff;
+  }
+
+  .ags__says {
+    margin: 9px 0 0;
+    color: #11151c;
+    font-size: clamp(14px, 1.4vw, 19px);
+    font-weight: 700;
+    letter-spacing: -0.026em;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-says);
+  }
+
+  /* The one thing the visitor is meant to want — and the one thing that
+     starts the experience. It books nothing; it earns the interruption. */
+  .ags__book {
+    grid-column: 1;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(12px, 1.4vw, 20px);
+    margin-top: clamp(14px, 1.6vw, 22px);
+    padding: clamp(12px, 1.25vw, 17px) clamp(18px, 1.9vw, 26px);
+    border: 0;
+    border-radius: 999px;
+    background: #fff;
+    color: #11151c;
+    font-size: clamp(13.5px, 1.3vw, 17px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 2px 3px rgba(28, 36, 58, 0.06), 0 14px 30px rgba(28, 36, 58, 0.16),
+      0 0 0 7px rgba(47, 107, 255, 0.07);
+    transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease,
+      color 220ms ease;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-book);
+  }
+
+  .ags__book:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 3px rgba(28, 36, 58, 0.06), 0 20px 40px rgba(28, 36, 58, 0.2),
+      0 0 0 10px rgba(47, 107, 255, 0.1);
+  }
+
+  /* Approached: the arrow takes a step in the direction it points. The same
+     answer the seam and the journey's cue give, so the whole stage responds
+     to a pointer in one language. Nothing is added to the pill to say it is
+     a button — it just behaves like one. */
+  .ags__book:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Noticed. Once, after the scene has settled: a lift with the shadow and
+     the ring opening under it, and back down. Gated on state 1 so that
+     acting on it cancels it — from state 2 the rule stops matching and the
+     animation goes with it, mid-flight if need be.
+
+     It moves `translate`, not `transform`, so it composes with the hover
+     lift instead of fighting it, and no fill mode, so the pill is left at
+     rest under the entrance's own filled value rather than pinned by this. */
+  [data-state='1'] .ags__book {
+    animation: ags-in var(--in), ags-nudge 1100ms cubic-bezier(0.4, 0, 0.3, 1);
+    animation-delay: var(--m-book), var(--m-nudge);
+  }
+
+  @keyframes ags-nudge {
+    0% {
+      translate: 0 0;
+    }
+    38% {
+      translate: 0 -5px;
+      box-shadow: 0 2px 3px rgba(28, 36, 58, 0.06), 0 22px 44px rgba(28, 36, 58, 0.22),
+        0 0 0 13px rgba(47, 107, 255, 0.13);
+    }
+    100% {
+      translate: 0 0;
+    }
+  }
+
+  /* Once the interruption lands, the action steps back — still entirely
+     present, just no longer the brightest thing on the deck. It softens on
+     the same beat that `Wait.` arrives, so the two read as one movement. */
+  [data-state='2'] .ags__book,
+  [data-state='2'] .ags__book:hover {
+    transform: none;
+    color: #6d7484;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 1px 2px rgba(28, 36, 58, 0.05), 0 5px 12px rgba(28, 36, 58, 0.07);
+    transition-delay: var(--m-wait);
+  }
+
+  [data-state='2'] .ags__book span {
+    color: #99a1b1;
+  }
+
+  .ags__book:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 4px;
+  }
+
+  .ags__book span {
+    color: #46506a;
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  /* =========================================================
+     THE INTERRUPTION
+
+     Act → Wait. is the only beat wired up. The container is always in the
+     DOM so it can carry the live region; what shows inside it is gated on
+     the stage's state.
+
+     The beats after this one — the question and "Show me" — are complete and
+     held back by the one rule at the end of this section. Their markup, type
+     and entrance animations are untouched, and `[data-reveal]` is still on
+     the button, waiting for a handler.
+     ========================================================= */
+  .ags__discover {
+    display: contents;
+  }
+
+  .ags__mark {
+    grid-column: 2;
+    padding-left: clamp(12px, 1.4vw, 20px);
+    display: none;
+    align-items: center;
+    gap: 9px;
+    /* Level with the pill it interrupts. */
+    margin: 0;
+    color: var(--saffron-deep);
+    font-size: clamp(12px, 1.1vw, 14.5px);
+    font-weight: 660;
+    letter-spacing: -0.008em;
+  }
+
+  /* The hand on the arm: a beat after the click, not the same instant. */
+  [data-state='2'] .ags__mark {
+    display: flex;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-wait);
+  }
+
+  /* The established discovery marker. */
+  .ags__markdot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--saffron);
+    box-shadow: 0 0 0 5px rgba(232, 117, 36, 0.14);
+  }
+
+  /* The line the marker was warning about. It takes the row under the pill
+     because there is nowhere near enough width beside it for this type. */
+  .ags__ask {
+    grid-column: 1 / -1;
+    max-width: 20ch;
+    margin: clamp(11px, 1.2vw, 16px) 0 0;
+    color: #11151c;
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.15vw, 31px);
+    font-weight: 500;
+    line-height: 1.11;
+    letter-spacing: -0.038em;
+    text-wrap: balance;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-ask);
+  }
+
+  /* =========================================================
+     THE WAY IN
+     Not a button and not styled like one: a label sitting on a saffron seam
+     ruled across the surface, with the arrow pointing down through it. The
+     invitation is to open the deck, so the affordance is a cut line rather
+     than a control.
+     ========================================================= */
+  .ags__open {
+    grid-column: 1 / -1;
+    display: none;
+    gap: 9px;
+    width: fit-content;
+    margin-top: clamp(14px, 1.5vw, 20px);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ags__open:focus-visible {
+    outline: 2px solid var(--saffron);
+    outline-offset: 6px;
+  }
+
+  [data-state='2'] .ags__open {
+    display: grid;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-open);
+  }
+
+  .ags__openlabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--saffron-deep);
+    font-size: clamp(12px, 1.1vw, 14.5px);
+    font-weight: 660;
+    letter-spacing: -0.008em;
+  }
+
+  .ags__openarrow {
+    color: var(--saffron);
+    transition: transform 240ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  /* Where the surface would come apart: brightest under the label, running
+     out to nothing, so it reads as a seam and not as an underline. */
+  .ags__openseam {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      var(--saffron) 0%,
+      rgba(232, 117, 36, 0.5) 58%,
+      rgba(232, 117, 36, 0) 100%
+    );
+    transition: background 240ms ease;
+  }
+
+  .ags__open:hover .ags__openarrow {
+    transform: translateY(3px);
+  }
+
+  .ags__open:hover .ags__openseam {
+    background: linear-gradient(
+      90deg,
+      var(--saffron) 0%,
+      rgba(232, 117, 36, 0.72) 70%,
+      rgba(232, 117, 36, 0.12) 100%
+    );
+  }
+
+  /* The acknowledgement, and the only thing that happens in the first 150ms:
+     the arrow the visitor just pressed carries on down and the seam takes,
+     right across. It is the seam's own hover behaviour taken further — no
+     new mark, nothing added to the scene — and the panel it belongs to only
+     begins to leave once it has finished.
+
+     Both selectors have to match `.ags__open:hover …` for weight and come
+     after it, because the pointer is by definition on the button. */
+  [data-state='3'] .ags__open .ags__openarrow {
+    transform: translateY(8px);
+    transition: transform var(--r-ack) cubic-bezier(0.3, 0, 0.2, 1);
+  }
+
+  [data-state='3'] .ags__open .ags__openseam {
+    background: linear-gradient(
+      90deg,
+      var(--saffron) 0%,
+      var(--saffron) 62%,
+      rgba(232, 117, 36, 0.45) 100%
+    );
+    transition: background var(--r-ack) ease;
+  }
+
+  .ags__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(14px, 1.5vw, 20px);
+    padding: clamp(11px, 1.1vw, 14px) clamp(17px, 1.7vw, 23px);
+    border: 1px solid rgba(232, 117, 36, 0.38);
+    border-radius: 999px;
+    background: rgba(255, 253, 250, 0.72);
+    color: #11151c;
+    font-size: clamp(13px, 1.2vw, 15.5px);
+    font-weight: 660;
+    line-height: 1;
+    letter-spacing: -0.018em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
+    animation: ags-in var(--in);
+    animation-delay: var(--m-show);
+  }
+
+  .ags__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .ags__show:hover {
+    border-color: var(--saffron);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .ags__show:hover span {
+    transform: translateY(3px);
+  }
+
+  .ags__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* Held back. This has to come after the two rules above, which set a
+     `display` of their own. */
+  .ags__ask,
+  .ags__show {
+    display: none;
+  }
+
+  /* Beat three: a breath after the marker has landed and settled, so the two
+     read as one thought arriving rather than as two things appearing. */
+  [data-state='2'] .ags__ask {
+    display: block;
+  }
+
+  /* =========================================================
+     THE CODA
+     The same editorial voice used everywhere else on the site: a quiet sans
+     line setting it up, and the serif carrying the turn. It takes the
+     column the exchange was standing in, so it lands in a place the eye has
+     already been rather than somewhere new.
+     ========================================================= */
+  .ags__coda {
+    position: absolute;
+    left: var(--coda-x);
+    right: 4%;
+    /* Same shape of guard as the panel's, for the same reason: on a short
+       stage a percentage alone would push the display type and the journey
+       under it past the bottom edge and `overflow: hidden` would take them.
+       Raised again for the stops' row, which is held open whether or not
+       anything is in it yet — a name, its explanation and its cue. */
+    top: min(var(--panel-y), calc(100% - 264px));
+    display: none;
+    gap: clamp(8px, 0.9vw, 13px);
+    margin: 0;
+  }
+
+  [data-state='3'] .ags__coda {
+    display: grid;
+  }
+
+  /* Quieter: the setup, in the muted tone the flight's own details used. */
+  .ags__coda-a {
+    color: #5a6272;
+    font-size: clamp(13px, 1.25vw, 16.5px);
+    font-weight: 560;
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+    animation: ags-in var(--in);
+    animation-delay: var(--r-say);
+  }
+
+  /* The emphasis, at the size the question was asked in. */
+  .ags__coda-b {
+    max-width: 20ch;
+    color: #11151c;
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.15vw, 31px);
+    font-weight: 500;
+    line-height: 1.11;
+    letter-spacing: -0.038em;
+    text-wrap: balance;
+    animation: ags-in var(--in);
+    animation-delay: var(--r-say-b);
+  }
+
+  /* =========================================================
+     THE SECOND JOURNEY — its first inch
+
+     A quieter echo of the crossing above it: the same idea of a place, a
+     line leaving it and a line that hasn't arrived. It is deliberately not
+     a rule across the column — it starts at the word, rises a little, and
+     runs out of ink well before the edge, so the eye is left looking at
+     where it was going rather than at a bar that stopped.
+     ========================================================= */
+  .ags__begin {
+    display: flex;
+    /* Bottoms together, which puts the start of the stroke level with the
+       foot of the word rather than beside it: the line leaves YOU from its
+       baseline, and the whole of the climb is above that. */
+    align-items: flex-end;
+    gap: clamp(9px, 1vw, 14px);
+    /* On top of the block's own row gap: the sentence ends, then this. Less
+       than it was, because the curve now has real height and the row it
+       sits in is taller. */
+    margin-top: clamp(9px, 1vw, 14px);
+  }
+
+  /* The one place on this journey that has a name yet. Set like the two
+     ends of the flight — small, uppercase, widely tracked — a step quieter,
+     because this journey has not been made yet. */
+  .ags__you {
+    flex: none;
+    color: var(--saffron-deep);
+    font-size: clamp(11px, 1.05vw, 13.5px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    animation: ags-in var(--in);
+    animation-delay: var(--r-you);
+  }
+
+  /* The road is the journey's whole length now, not its first segment. It
+     takes the row from where YOU ends to 22% short of the block's right
+     edge — a little past BOOKED at 75%, and still well clear of Tokyo. The
+     height is set rather than derived, so lengthening the line did not make
+     the row it sits in any taller. */
+  .ags__road {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: block;
+    width: auto;
+    margin-right: 22%;
+    height: clamp(20px, 2vw, 27px);
+    overflow: visible;
+  }
+
+  /* One stroke, revealed as far as the journey has got — never a segment
+     per stop, so there is nothing to join up and nothing to leave a seam.
+
+     Where each stop falls along it: the road starts at ~7.5% of the block
+     (YOU plus its gap) and runs to 78%, so a stop at 15% × N sits at
+     (0.15N − 0.075) / 0.705 of the stroke. Carrying ~6% past the stop, so
+     the line arrives and keeps going rather than stopping dead on a label:
+
+       stop 1  0.166      stop 2  0.379      stop 3  0.592
+       stop 4  0.805      stop 5  the whole length
+
+     which is 1000 → 834 → 621 → 408 → 195 → 0 in dash units. Evenly
+     spaced, because the stops are. */
+  .ags-road {
+    fill: none;
+    stroke: url(#agsRoad);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 620ms cubic-bezier(0.4, 0.06, 0.22, 1);
+  }
+
+  /* The first reach is an animation, not a transition: the block it lives
+     in goes from `display: none` to shown at the same moment, and a
+     transition out of `display: none` does not run. `backwards` holds the
+     line at nothing through the delay; no forwards fill, so when it ends it
+     hands the value back to the rule below at exactly the number it
+     finished on — and every reach after this one is a transition. */
+  [data-state='3'][data-stop='1'] .ags-road {
+    stroke-dashoffset: 834;
+    animation: ags-draw 900ms cubic-bezier(0.4, 0.06, 0.22, 1) var(--r-road) backwards;
+  }
+
+  [data-state='3'][data-stop='2'] .ags-road {
+    stroke-dashoffset: 621;
+  }
+
+  [data-state='3'][data-stop='3'] .ags-road {
+    stroke-dashoffset: 408;
+  }
+
+  [data-state='3'][data-stop='4'] .ags-road {
+    stroke-dashoffset: 195;
+  }
+
+  [data-state='3'][data-stop='5'] .ags-road {
+    stroke-dashoffset: 0;
+  }
+
+  @keyframes ags-draw {
+    from {
+      stroke-dashoffset: 1000;
+    }
+  }
+
+  /* ---------- the stops the line passes ----------
+     The track is the full block; a stop is placed at its own multiple of
+     the step and sits under the line rather than on it, so the stroke stays
+     one unbroken sweep and no stop needs a mark of its own to be a stop.
+     The height is held open for a name and its line of explanation, so the
+     block below never moves as the journey fills in. */
+  .ags__stops {
+    position: relative;
+    margin-top: clamp(10px, 1.1vw, 15px);
+    min-height: clamp(58px, 6vw, 72px);
+    /* What a stop that is arriving now is worth. The first stop is the one
+       exception: it comes in on the drawing of the line, so it keeps the
+       delays that were measured against it. Every stop after it is entered
+       from a click, and its clock starts when it is displayed. */
+    --d-name: 70ms;
+    --d-ask: 230ms;
+    --d-go: 760ms;
+  }
+
+  .ags__stop:first-child {
+    --d-name: var(--r-stop);
+    --d-ask: var(--r-stop-ask);
+    --d-go: var(--r-go);
+  }
+
+  .ags__stop {
+    position: absolute;
+    top: 0;
+    left: calc(var(--stop-step) * var(--at));
+    /* Never past the block's own edge, however far along it sits. */
+    max-width: calc(100% - var(--stop-step) * var(--at));
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+  }
+
+  /* The concept, set exactly as YOU is — same case, same tracking, same
+     saffron — a step smaller, because YOU is where the reader is and these
+     are what is ahead. */
+  .ags__stopname {
+    color: var(--saffron-deep);
+    /* Tightened uniformly rather than per stop, so the step stays 15% for
+       everyone: the longest label, AUTHORITY, now takes about three
+       quarters of a step instead of filling it, which is what puts real air
+       back between every pair. Every stop gives up the same amount. */
+    font-size: clamp(9px, 0.78vw, 10.5px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    animation: ags-in var(--in);
+    animation-delay: var(--d-name);
+  }
+
+  /* The human half, in the muted tone the setup line uses, quieter again. */
+  .ags__stopask {
+    color: #5a6272;
+    font-size: clamp(11.5px, 1.05vw, 13.5px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    visibility: visible;
+    animation: ags-in var(--in);
+    animation-delay: var(--d-ask);
+  }
+
+  /* The invitation, and the only thing that moves the journey on. Set as a
+     cue rather than a control: no pill, no rule, just the word and the
+     direction of travel, a shade quieter than the concept it follows. */
+  .ags__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 4px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--saffron-deep);
+    font-family: inherit;
+    font-size: clamp(10.5px, 0.95vw, 12.5px);
+    font-weight: 660;
+    line-height: 1;
+    letter-spacing: -0.004em;
+    text-align: left;
+    cursor: pointer;
+    visibility: visible;
+    animation: ags-in var(--in);
+    animation-delay: var(--d-go);
+  }
+
+  .ags__go span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .ags__go:hover span {
+    transform: translateX(3px);
+  }
+
+  .ags__go:focus-visible {
+    outline: 2px solid var(--saffron);
+    outline-offset: 5px;
+  }
+
+  /* ---------- how far the journey has got ----------
+     `data-stop` is the whole of the progression. Everything past it is not
+     on the track at all; everything before it has been reached, so it keeps
+     its name and gives up its explanation and its cue — only the stop you
+     have just arrived at is being explained.
+
+     One line of each per stop, and nothing is timed: a stop waits here for
+     as long as the visitor leaves it. */
+  [data-stop='1'] .ags__stop:nth-child(n + 2),
+  [data-stop='2'] .ags__stop:nth-child(n + 3),
+  [data-stop='3'] .ags__stop:nth-child(n + 4),
+  [data-stop='4'] .ags__stop:nth-child(n + 5) {
+    display: none;
+  }
+
+  /* The handover. It has to be a second animation rather than a transition
+     or a plain `opacity`, because the entrance above is filled and would
+     keep winning; `forwards` and not `both`, or the backwards fill would
+     hide the line before it had ever arrived. `visibility` follows it so
+     the passed cue leaves the tab order instead of staying reachable. */
+  [data-stop='2'] .ags__stop:nth-child(-n + 1) .ags__stopask,
+  [data-stop='2'] .ags__stop:nth-child(-n + 1) .ags__go,
+  [data-stop='3'] .ags__stop:nth-child(-n + 2) .ags__stopask,
+  [data-stop='3'] .ags__stop:nth-child(-n + 2) .ags__go,
+  [data-stop='4'] .ags__stop:nth-child(-n + 3) .ags__stopask,
+  [data-stop='4'] .ags__stop:nth-child(-n + 3) .ags__go,
+  [data-stop='5'] .ags__stop:nth-child(-n + 4) .ags__stopask,
+  [data-stop='5'] .ags__stop:nth-child(-n + 4) .ags__go {
+    visibility: hidden;
+    animation: ags-in var(--in), ags-fade 320ms ease forwards;
+    animation-delay: 0ms, 0ms;
+    transition: visibility 0s linear 320ms;
+  }
+
+  @keyframes ags-fade {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE
+     The crop corrects itself with the stage, so these blocks only set the
+     stage's height and, on the narrowest screens, re-aim it sideways.
+     ========================================================= */
+
+  /* Beside the headline, the deck runs off the edge of the viewport, exactly
+     as it would if the page were sitting next to it. The hero clips it. */
+  @media (min-width: 981px) {
+    .ags {
+      margin-right: calc(-1 * max(clamp(17px, 2.5vw, 36px), (100vw - 1440px) / 2));
+    }
+  }
+
+  /* The hero has stacked by here: the deck becomes a contained object again,
+     so the right edge needs a fade of its own. */
+  @media (max-width: 980px) {
+    .ags {
+      /* The hero has stacked, so the fold is the headline's to fill. The
+         stage goes back to a proportion of its own. */
+      height: clamp(480px, 74svh, 700px);
+      max-height: none;
+      --panel-x: 34%;
+    }
+
+    .ags__artframe {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 8%,
+        #000 93%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 93%, transparent 100%);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .ags {
+      /* 460px is the floor `min-height` sets for every breakpoint. */
+      height: clamp(460px, 72svh, 600px);
+      /* The window is narrow here, so it is aimed a little further in to
+         keep the deck's edge clear of the London marker. */
+      --art-x: -24%;
+      --panel-x: 6%;
+      /* The stage is narrow enough here that starting under the London
+         marker would cost the journey a fifth of the width it is about to
+         need. It stays at the page's own margin, which is already left of
+         the marker — the same intent, arrived at from the other side. */
+      --coda-x: 6%;
+    }
+
+    .ags__panel,
+    .ags__coda {
+      right: 6%;
+    }
+
+    .ags__ask,
+    .ags__coda-b {
+      max-width: none;
+    }
+
+    .ags__book,
+    .ags__show {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* The action is full width here, so there is no room beside it. The
+       interruption goes directly under, centred on it and kept tight. */
+    .ags__said {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ags__book,
+    .ags__mark {
+      grid-column: 1 / -1;
+    }
+
+    .ags__book {
+      justify-self: stretch;
+    }
+
+    .ags__mark {
+      justify-content: center;
+      padding-left: 0;
+      margin-top: 14px;
+    }
+  }
+
+  /* =========================================================
+     REDUCED MOTION
+     The global sheet already collapses durations; the delays are what would
+     otherwise leave the deck empty for three seconds.
+     ========================================================= */
+  @media (prefers-reduced-motion: reduce) {
+    .ags,
+    .ags * {
+      animation-delay: 0ms !important;
+      transition: none !important;
+    }
+
+    /* Attention-seeking movement is the one thing here that exists purely
+       to be noticed, so it is the one thing dropped outright rather than
+       shortened. The entrance stays. */
+    [data-state='1'] .ags__book {
+      animation-name: ags-in;
+    }
+  }
+</style>
