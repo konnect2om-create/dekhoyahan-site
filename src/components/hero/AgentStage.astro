@@ -325,12 +325,16 @@ import deckArt from '../../assets/hero-deck.png';
           </button>
         </span>
 
-        <!-- Where the journey ends, so it carries no cue: the invitation is
-             absent rather than held back, because there is nothing after
-             this to be invited to. -->
+        <!-- Where the journey ends. Its cue doesn't advance a stop — it
+             starts the whole exhibit over. Same class as every Continue
+             before it, so it reads as the same kind of quiet invitation
+             rather than a new control being introduced. -->
         <span class="ags__stop" style="--at: 5">
           <span class="ags__stopname">Booked</span>
           <span class="ags__stopask">And only then can it act for you.</span>
+          <button class="ags__go" type="button" data-replay>
+            Replay <span aria-hidden="true">↺</span>
+          </button>
         </span>
       </span>
     </p>
@@ -374,21 +378,55 @@ import deckArt from '../../assets/hero-deck.png';
     // clicked next — each stop carries its own.
     const stops = stage.querySelectorAll('.ags__stop');
 
+    // Locked for as long as the road takes to reach the next stop. Without
+    // this, the just-clicked cue is still sitting there — same spot, still
+    // a valid target — for the ~320ms it takes to fade out, and an ordinary
+    // double-click lands a second time on it and advances twice, skipping
+    // whatever the first click was meant to reveal.
+    let advancing = false;
+
     stage.addEventListener('click', (event) => {
       const target = event.target;
-      if (!(target instanceof Element) || !target.closest('[data-go]')) return;
+      const goBtn = target instanceof Element ? target.closest('[data-go]') : null;
+      if (!goBtn || advancing) return;
 
       // The cue on the last stop built so far has nowhere to go: the guard
       // makes it a no-op rather than an error, and it starts working on its
       // own the moment a stop exists past it.
       const at = Number(stage.dataset.stop || '1');
       if (!(at >= 1) || at >= stops.length) return;
+
+      advancing = true;
+      if (goBtn instanceof HTMLButtonElement) goBtn.disabled = true;
       stage.dataset.stop = String(at + 1);
 
       // Hand the keyboard on to the cue that has taken its place. `stops` is
       // zero-based, so index `at` is the stop just arrived at.
       const next = stops[at]?.querySelector('[data-go]');
       if (next instanceof HTMLElement) next.focus({ preventScroll: true });
+
+      // 620ms is the road's own transition — the same clock the line is
+      // already running on, not a new number.
+      window.setTimeout(() => {
+        advancing = false;
+      }, 620);
+    });
+
+    // BOOKED → the beginning again. A clean reset back to the offer, with
+    // the permission journey cleared, so the whole exhibit can be watched
+    // again without a page reload. Every Continue this playthrough disabled
+    // is re-enabled, or the second run would stall the moment it reached
+    // whichever stop was clicked through the first time.
+    stage.querySelector('[data-replay]')?.addEventListener('click', () => {
+      stage.querySelectorAll('[data-go]').forEach((btn) => {
+        if (btn instanceof HTMLButtonElement) btn.disabled = false;
+      });
+      advancing = false;
+      stage.dataset.state = '1';
+      stage.dataset.stop = '1';
+
+      const book = stage.querySelector('[data-act]');
+      if (book instanceof HTMLElement) book.focus({ preventScroll: true });
     });
 
     // Depth under the pointer. Skipped on touch, and for anyone who asked for
