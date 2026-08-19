@@ -7,11 +7,13 @@ import DecisionMoment from '../../components/explain/DecisionMoment.astro';
 import DeepDive from '../../components/explain/DeepDive.astro';
 import Sources from '../../components/explain/Sources.astro';
 import PhotoJourney from '../../components/explain/PhotoJourney.astro';
+import AgentStage from '../../components/explain/AgentStage.astro';
 
 // A topic opts into a signature scene by naming it in frontmatter. Topics
 // without one fall through to the standard template.
 const scenes: Record<string, any> = {
   'photo-journey': PhotoJourney,
+  'agent-stage': AgentStage,
 };
 
 export async function getStaticPaths() {

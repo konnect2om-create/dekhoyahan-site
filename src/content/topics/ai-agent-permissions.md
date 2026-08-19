@@ -3,6 +3,7 @@ title: "What should your AI agent be allowed to do?"
 hook: "Every day you open email, files, calendars and payments. They all recognize the same person: you."
 category: ai-agents
 difficulty: starter
+scene: agent-stage
 summary: >-
   AI agents act on your behalf inside the same apps you already trust. Before
   they get power, someone has to decide who they are, what they may do, and
