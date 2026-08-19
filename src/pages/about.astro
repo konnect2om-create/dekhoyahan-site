@@ -6,69 +6,265 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="About — DekhoYahan"
   description="Why DekhoYahan exists and how we make technology easier to understand."
 >
-  <section class="content-page shell">
-    <p class="section-kicker">About DekhoYahan</p>
+  <article class="about">
+    <header class="about-hero shell">
+      <p class="about-kicker">ABOUT DEKHOYAHAN</p>
 
-    <h1>
-      Technology is easier when you understand
-      <em>why it exists.</em>
-    </h1>
+      <h1 class="about-title">
+        The world keeps changing.<br class="about-title__break" /> Understanding it shouldn't feel impossible.
+      </h1>
 
-    <div class="prose">
-      <p>
-        We hear new technology terms all the time.
-        AI agents. Zero Trust. OSPF. Quantum computing.
-        New names keep appearing.
-      </p>
+      <div class="about-lede">
+        <p>
+          AI can answer a question in seconds. Your phone can approve a payment
+          with a tap. A website can know things about your visit before you
+          type a word.
+        </p>
 
-      <p>
-        But knowing the name is not the same as understanding the idea.
-      </p>
-
-      <h2>That is why we built DekhoYahan.</h2>
-
-      <p>
-        We start with a simple question:
-        what problem was this technology trying to solve?
-      </p>
-
-      <p>
-        Then we explain why it exists, how it works,
-        and where it matters in the real world.
-      </p>
-
-      <p>
-        We use simple language, practical examples and visuals
-        whenever they make the idea easier to see.
-      </p>
-
-      <h2>Simple does not mean less accurate.</h2>
-
-      <p>
-        Technology can be complicated.
-        Our job is not to hide that complexity or make up an easier answer.
-      </p>
-
-      <p>
-        Our job is to find the clearest way into it.
-        When more technical detail matters, we can go deeper.
-      </p>
-
-      <h2>Built to be understood.</h2>
-
-      <p>
-        DekhoYahan is being built carefully, one useful explanation at a time.
-      </p>
-
-      <p>
-        We research the subject, check the explanation,
-        and use AI as a tool where it helps.
-        What we publish is reviewed and shaped by a human.
-      </p>
-
-      <div class="plain-note">
-        Understand why it exists. See how it works. Know where it matters.
+        <p>
+          We use these things every day. But what is actually happening —
+          and why were they built this way?
+        </p>
       </div>
-    </div>
-  </section>
+    </header>
+
+    <section class="about-point shell">
+      <div class="about-point__head">
+        <span class="about-point__mark" aria-hidden="true"></span>
+        <h2>DekhoYahan exists for that moment.</h2>
+      </div>
+
+      <div class="about-point__body">
+        <p>
+          We take technology that's changing the world around you
+          and make the important ideas easier to see.
+        </p>
+
+        <p>
+          We begin with something familiar. Then we reveal what is happening,
+          explain why it works that way, and go deeper when the detail matters.
+        </p>
+
+        <p>
+          No technical background required.
+        </p>
+      </div>
+    </section>
+
+    <section class="about-point about-point--offset shell">
+      <div class="about-point__head">
+        <span class="about-point__mark" aria-hidden="true"></span>
+        <h2>Simple, without pretending it's simple.</h2>
+      </div>
+
+      <div class="about-point__body">
+        <p>
+          Some technology really is complicated.
+        </p>
+
+        <p>
+          We don't remove important details just to make an explanation sound
+          easy. We find a clearer way into them — using familiar situations,
+          useful analogies and visuals when they help.
+        </p>
+
+        <p>
+          And when an analogy has limits, we should tell you.
+        </p>
+      </div>
+    </section>
+
+    <section class="about-point about-point--final shell">
+      <div class="about-point__head">
+        <span class="about-point__mark" aria-hidden="true"></span>
+        <h2>Built for understanding, not just answers.</h2>
+      </div>
+
+      <div class="about-point__body">
+        <p>
+          A quick answer can tell you what something is.
+        </p>
+
+        <p>
+          We want you to leave understanding enough that the next time you
+          encounter it, the world makes a little more sense.
+        </p>
+
+        <p>
+          DekhoYahan is being built one explanation at a time.
+        </p>
+      </div>
+    </section>
+  </article>
 </BaseLayout>
+
+<style>
+  /* All rules below are scoped by Astro to this page's own markup only
+     (data-astro-cid), and every class is About-specific — nothing here
+     touches .content-page / .section-kicker / .prose, which Privacy and
+     Terms still rely on directly from global.css. */
+
+  .about {
+    padding: clamp(56px, 8vh, 96px) 0 clamp(84px, 11vh, 132px);
+  }
+
+  .about-kicker {
+    margin: 0 0 18px;
+    color: var(--cobalt);
+    font-size: 14px;
+    font-weight: 720;
+    letter-spacing: 0.05em;
+  }
+
+  .about-title {
+    margin: 0;
+    max-width: 1000px;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(32px, 3.6vw, 50px);
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.032em;
+  }
+
+  /* The two-line composition ("The world keeps changing." / "Understanding
+     it shouldn't feel impossible.") is intentionally asymmetric — the
+     second line is nearly twice the length of the first — so no width
+     alone produces this split through natural reflow; measured directly,
+     every container width either wraps to 3+ lines or lets "Understanding"
+     drift onto line one. The break is only rendered once there's confirmed
+     room for the (longer) second line to sit on its own line without
+     wrapping again; below that it's suppressed so the sentence just
+     reflows naturally instead of forcing an awkward split. */
+  .about-title__break {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .about-title__break {
+      display: block;
+    }
+  }
+
+  .about-lede {
+    margin-top: clamp(26px, 4vh, 38px);
+    max-width: 640px;
+  }
+
+  .about-lede p {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    font-size: 18.5px;
+    line-height: 1.65;
+  }
+
+  .about-lede p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Each point is a quiet threshold, not a card: a hairline rule marks
+     where the previous thought ends and a label/body grid carries the
+     next one. The label column's width is nudged per-section (see
+     --offset/--final below) so the page reads as an editorial spread
+     rather than one repeating block stamped three times. */
+  .about-point {
+    display: grid;
+    grid-template-columns: minmax(160px, 240px) minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 56px);
+    max-width: 1100px;
+    margin-top: clamp(64px, 10vh, 112px);
+    padding-top: clamp(36px, 6vh, 56px);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .about-point--offset {
+    grid-template-columns: minmax(160px, 300px) minmax(0, 1fr);
+  }
+
+  .about-point__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+  }
+
+  .about-point__mark {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-top: 13px;
+    border-radius: 50%;
+    background: var(--saffron);
+    box-shadow: 0 0 0 5px rgba(232, 117, 36, 0.1);
+  }
+
+  .about-point__head h2 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(23px, 2.1vw, 28px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.028em;
+  }
+
+  .about-point__body {
+    max-width: 58ch;
+  }
+
+  .about-point__body p {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  .about-point__body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* The realization: the closing idea gets more air and a larger,
+     slightly heavier heading so it reads as the destination of the
+     page's progression rather than a third, identical stop. */
+  .about-point--final {
+    grid-template-columns: minmax(180px, 340px) minmax(0, 1fr);
+    margin-top: clamp(80px, 12vh, 132px);
+    padding-top: clamp(44px, 7vh, 68px);
+  }
+
+  .about-point--final .about-point__head h2 {
+    font-size: clamp(28px, 3vw, 38px);
+  }
+
+  @media (max-width: 900px) {
+    .about-point,
+    .about-point--offset {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .about-point__head h2,
+    .about-point--final .about-point__head h2 {
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .about-title {
+      max-width: none;
+    }
+
+    .about-lede p {
+      font-size: 17px;
+    }
+
+    .about-point {
+      margin-top: 48px;
+      padding-top: 28px;
+    }
+
+    .about-point--final {
+      margin-top: 64px;
+      padding-top: 36px;
+    }
+  }
+</style>

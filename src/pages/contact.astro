@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact — DekhoYahan"
+  description="Get in touch with DekhoYahan."
+>
+  <article class="contact">
+    <header class="contact-hero shell">
+      <p class="contact-kicker">CONTACT</p>
+
+      <h1 class="contact-title">Say hello.</h1>
+
+      <p class="contact-intro">
+        Have a question, spotted something we should correct, or have an
+        idea for something DekhoYahan should explain?
+      </p>
+
+      <p class="contact-email">
+        <a class="contact-email__link" href="mailto:hello@dekhoyahan.com">
+          hello@dekhoyahan.com<span class="contact-email__arrow" aria-hidden="true">→</span>
+        </a>
+      </p>
+    </header>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Scoped to this page only. Values match the approved Privacy/Terms
+     document-page family (.privacy-*/.terms-*) so Contact reads as part
+     of the same quiet system — nothing here touches those files. */
+
+  .contact {
+    padding: clamp(56px, 8vh, 96px) 0 clamp(84px, 11vh, 132px);
+  }
+
+  .contact-kicker {
+    margin: 0 0 18px;
+    color: var(--cobalt);
+    font-size: 14px;
+    font-weight: 720;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-title {
+    margin: 0;
+    max-width: 16ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(32px, 3.6vw, 50px);
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.032em;
+  }
+
+  .contact-intro {
+    margin: clamp(22px, 3.5vh, 32px) 0 0;
+    max-width: 640px;
+    color: var(--ink-soft);
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  /* The explicit action the page exists for — a deliberate DekhoYahan
+     text action (sans, cobalt, arrow), not a browser-default link and
+     not a filled/outlined button. */
+  .contact-email {
+    margin: clamp(28px, 4.5vh, 40px) 0 0;
+  }
+
+  .contact-email__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--cobalt);
+    font-family: var(--sans);
+    font-size: 17.5px;
+    font-weight: 640;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .contact-email__arrow {
+    transition: transform 160ms ease;
+  }
+
+  /* Understated: an underline appears rather than a color/weight jump,
+     with the arrow nudging forward slightly. */
+  .contact-email__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .contact-email__link:hover .contact-email__arrow {
+    transform: translateX(2px);
+  }
+
+  .contact-email__link:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 680px) {
+    .contact-title {
+      max-width: none;
+    }
+
+    .contact-intro {
+      font-size: 16.5px;
+    }
+  }
+</style>

@@ -36,6 +36,9 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
   margin: 0;
   min-width: 320px;
   color: var(--ink);
@@ -49,6 +52,14 @@ body {
   background-color: var(--cream);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Header and Footer are fixed-height siblings of main inside this flex
+   column; main is the only one that should absorb leftover viewport
+   height, so short pages (e.g. /contact) still push the Footer to the
+   bottom instead of leaving canvas exposed beneath it. */
+main {
+  flex: 1;
 }
 
 a {
@@ -349,7 +360,7 @@ canvas {
 .footer-grid {
   padding-bottom: 45px;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 60px;
 }
 
@@ -365,16 +376,14 @@ canvas {
   line-height: 1.62;
 }
 
-.footer-grid h2 {
-  margin: 0 0 16px;
-  color: #929daf;
-  font-size: 13px;
-  font-weight: 700;
+.footer-grid > div:not(.footer-brand) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 28px;
 }
 
 .footer-grid > div:not(.footer-brand) a {
-  display: block;
-  margin: 10px 0;
   color: #d8dee9;
   font-size: 14px;
 }

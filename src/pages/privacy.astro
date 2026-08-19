@@ -6,83 +6,207 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Privacy — DekhoYahan"
   description="How DekhoYahan handles your information."
 >
-  <section class="content-page shell">
-    <p class="section-kicker">Privacy</p>
+  <article class="privacy">
+    <header class="privacy-hero shell">
+      <p class="privacy-kicker">PRIVACY</p>
 
-    <h1>
-      Privacy, explained
-      <em>simply.</em>
-    </h1>
+      <h1 class="privacy-title">What happens to your information.</h1>
 
-    <div class="prose">
-      <p>
-        You can read DekhoYahan without creating an account or giving us personal information.
+      <p class="privacy-intro">
+        You can read DekhoYahan without creating an account. You do not need
+        to provide your name, email address, or other profile information
+        just to browse the site.
       </p>
+    </header>
 
-      <h2>If you join DekhoYahan</h2>
+    <div class="privacy-body shell">
+      <section class="privacy-section">
+        <h2>If you join DekhoYahan</h2>
 
-      <p>
-        If you choose to join, we currently ask only for your email address.
-      </p>
+        <p>
+          If you choose to join, we currently ask only for your email address.
+        </p>
 
-      <p>
-        We use it so we can contact you about new DekhoYahan explanations,
-        important updates, and occasional opportunities to help shape what we explain next.
-      </p>
+        <p>
+          We use it to send you DekhoYahan updates and new explanations, and
+          occasionally to invite you to help shape what we explain next.
+        </p>
 
-      <p>
-        We do not ask for your name, company, job title, location, or other profile information
-        as part of joining.
-      </p>
+        <p>
+          We do not ask for your name, company, job title, location, or other
+          profile information as part of joining.
+        </p>
+      </section>
 
-      <h2>How we store it</h2>
+      <section class="privacy-section">
+        <h2>How information is handled</h2>
 
-      <p>
-        DekhoYahan currently uses Cloudflare infrastructure to run and protect the website.
-        Email addresses submitted through the Join form are stored in our Cloudflare database.
-      </p>
+        <p>
+          DekhoYahan currently uses Cloudflare infrastructure to deliver and
+          protect the website. Email addresses submitted through the Join
+          form are stored using Cloudflare infrastructure.
+        </p>
 
-      <p>
-        Like most websites, Cloudflare may process normal technical information needed to
-        deliver and protect the site, such as IP addresses, request information, browser details,
-        and security signals.
-      </p>
+        <p>
+          When you visit the site, Cloudflare may also process technical
+          information needed to deliver, operate, and protect it, such as
+          your IP address, browser and request information, and security
+          signals.
+        </p>
+      </section>
 
-      <h2>What we do not do</h2>
+      <section class="privacy-section">
+        <h2>What we do not do</h2>
 
-      <p>
-        We do not sell your personal information.
-      </p>
+        <p>
+          We do not sell your personal information.
+        </p>
 
-      <p>
-        We are not currently using advertising cookies or building advertising profiles from your activity.
-      </p>
+        <p>
+          We are not currently using advertising cookies or building
+          advertising profiles from your activity on DekhoYahan.
+        </p>
+      </section>
 
-      <h2>If you want to leave</h2>
+      <section class="privacy-section">
+        <h2>If you want to leave</h2>
 
-      <p>
-        You can ask us to stop contacting you or remove your information by emailing
-        <a href="mailto:hello@dekhoyahan.com">hello@dekhoyahan.com</a>.
-      </p>
+        <p>
+          You can ask us to stop contacting you or delete the email address
+          you provided by emailing <a href="mailto:hello@dekhoyahan.com">hello@dekhoyahan.com</a>.
+        </p>
+      </section>
 
-      <h2>If things change</h2>
+      <section class="privacy-section">
+        <h2>If things change</h2>
 
-      <p>
-        DekhoYahan will grow over time. If we later add analytics, accounts,
-        community features, or other services that change how information is handled,
-        we will update this page and explain the change clearly.
-      </p>
+        <p>
+          DekhoYahan will change over time. If we introduce features or
+          services that materially change how personal information is
+          handled, we will update this page.
+        </p>
+      </section>
 
-      <h2>Questions</h2>
+      <section class="privacy-section">
+        <h2>Questions</h2>
 
-      <p>
-        Email us at
-        <a href="mailto:hello@dekhoyahan.com">hello@dekhoyahan.com</a>.
-      </p>
+        <p>
+          Email us at <a href="mailto:hello@dekhoyahan.com">hello@dekhoyahan.com</a>.
+        </p>
+      </section>
 
-      <p>
-        <strong>Last updated:</strong> 14 August 2026
-      </p>
+      <p class="privacy-meta">Last updated: 19 August 2026</p>
     </div>
-  </section>
+  </article>
 </BaseLayout>
+
+<style>
+  /* All rules below are scoped by Astro to this page's own markup only
+     (data-astro-cid), and every class is Privacy-specific — nothing here
+     touches .content-page / .section-kicker / .prose (still used by
+     Terms) or the About-page classes. */
+
+  .privacy {
+    padding: clamp(56px, 8vh, 96px) 0 clamp(84px, 11vh, 132px);
+  }
+
+  .privacy-kicker {
+    margin: 0 0 18px;
+    color: var(--cobalt);
+    font-size: 14px;
+    font-weight: 720;
+    letter-spacing: 0.05em;
+  }
+
+  /* Same family/scale as the About H1 — this reads as the same site —
+     but a single natural sentence, so no forced line break is needed. */
+  .privacy-title {
+    margin: 0;
+    max-width: 16ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(32px, 3.6vw, 50px);
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.032em;
+  }
+
+  .privacy-intro {
+    margin: clamp(22px, 3.5vh, 32px) 0 0;
+    max-width: 640px;
+    color: var(--ink-soft);
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  /* Deliberately narrower than the page shell: a document to be read and
+     scanned, not an editorial spread — so no About-style two-column grid
+     and no saffron markers here. */
+  .privacy-body {
+    max-width: 640px;
+    margin-top: clamp(48px, 7vh, 72px);
+  }
+
+  .privacy-section {
+    margin-top: clamp(36px, 5.5vh, 52px);
+    padding-top: clamp(28px, 4.5vh, 40px);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .privacy-section:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .privacy-section h2 {
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(20px, 1.8vw, 23px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .privacy-section p {
+    margin: 0 0 14px;
+    color: var(--ink-soft);
+    font-size: 16.5px;
+    line-height: 1.72;
+  }
+
+  .privacy-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-section a {
+    color: var(--cobalt);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Quiet document metadata, not another content section. */
+  .privacy-meta {
+    margin: clamp(40px, 6vh, 56px) 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 680px) {
+    .privacy-title {
+      max-width: none;
+    }
+
+    .privacy-intro {
+      font-size: 16.5px;
+    }
+
+    .privacy-section {
+      margin-top: 32px;
+      padding-top: 24px;
+    }
+  }
+</style>

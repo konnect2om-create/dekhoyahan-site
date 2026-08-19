@@ -3,13 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import heroCompanion from '../assets/hero-companion.png';
 import realizeKey from '../assets/realize-key.png';
-import somethingFamiliar from '../assets/something-familiar.png';
-import seeHowItWorks from '../assets/see-how-it-works.png';
-import understandWhy from '../assets/understand-why.png';
-import secret from '../assets/secret.png';
-import car from '../assets/car.png';
-import river from '../assets/river.png';
-import signing from '../assets/signing.png';
 ---
 
 <BaseLayout>
@@ -444,154 +437,11 @@ import signing from '../assets/signing.png';
   </script>
 
   <!-- ============================================================
-       METHOD — shell and typography only for this pass. The three
-       positions below hold layout-only placeholders; the illustrations,
-       the connecting saffron journey between them, and any icons or
-       motion are deliberately not built yet.
-       ============================================================ -->
-  <section class="dy-method">
-    <div class="shell dy-method__inner">
-      <span class="dy-method__dot" aria-hidden="true"></span>
-
-      <h2 class="dy-method__title">
-        How <span class="brand-inline"><span class="brand-inline__dekho">Dekho</span><span class="brand-inline__yahan">Yahan</span></span> makes things click
-      </h2>
-
-      <p class="dy-method__sub">We make complicated things easier to see.</p>
-
-      <!-- `.dy-method__stage` exists only to give the saffron thread a
-           positioned container to overlay — the svg has to be a sibling of
-           the list, not a child of it (a ul's content model doesn't permit
-           arbitrary elements), so it's absolutely positioned over a shared
-           wrapper instead. -->
-      <div class="dy-method__stage">
-        <!-- The saffron thread. Sits behind the three illustrations
-             (z-index, not a gap cut into the path) so it can genuinely pass
-             under Visual 2 rather than fake the effect. Coordinates are
-             plotted as percentages of the row via a 1000-wide, unscaled
-             viewBox — the same technique the hero's flight path uses — so
-             the curve holds its shape as the row's own width changes with
-             the viewport. -->
-        <svg
-          class="dy-method__journey"
-          viewBox="0 0 1000 335"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <defs>
-            <radialGradient id="dyGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#e87524" stop-opacity="0.4" />
-              <stop offset="100%" stop-color="#e87524" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="dyHalo" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#e87524" stop-opacity="0.22" />
-              <stop offset="100%" stop-color="#e87524" stop-opacity="0" />
-            </radialGradient>
-          </defs>
-
-          <!-- Begins low, near Visual 1's own lower-right; the two cubics
-               after it dip into Visual 2's column and pass under its
-               rendered image — genuinely hidden by it, not a drawn gap. -->
-          <path
-            class="dy-journey-line dy-journey-line--a"
-            pathLength="1000"
-            d="M225,272 C265,264 288,251 323,248 C375,244 440,254 500,262 C545,268 585,240 610,222"
-            vector-effect="non-scaling-stroke"
-          />
-          <!-- Picks up where it emerges from behind Visual 2 and carries on
-               into Visual 3's own footprint, ending under its rendered
-               image rather than stopping short of it — the same "hidden by
-               the artwork, not a gap in the path" logic as the Visual 2
-               crossing, so the thread reads as continuous through all
-               three, not stopping in front of the third. -->
-          <path
-            class="dy-journey-line dy-journey-line--b"
-            pathLength="1000"
-            d="M610,222 C630,215 655,213 677,213 C705,213 735,220 763,231 C785,234 810,236 830,236"
-            vector-effect="non-scaling-stroke"
-          />
-
-          <!-- The two discovery points, both sitting in the gap between
-               columns — never inside an illustration's own bounds. -->
-          <circle class="dy-journey-dot dy-journey-dot--1" cx="323" cy="248" r="3.2" />
-
-          <circle class="dy-journey-halo" cx="677" cy="213" r="10" fill="url(#dyHalo)" />
-          <circle class="dy-journey-dot dy-journey-dot--2" cx="677" cy="213" r="3.2" />
-
-          <!-- The closing glow, moved to sit at the path's new end point —
-               it still marks where the thread finishes, just further under
-               Visual 3 than before. -->
-          <circle class="dy-journey-glow" cx="830" cy="236" r="18" fill="url(#dyGlow)" />
-        </svg>
-
-        <ul class="dy-method__row">
-        <li class="dy-method__item">
-          <span class="dy-method__mark dy-method__mark--art" aria-hidden="true">
-            <Image
-              src={somethingFamiliar}
-              alt=""
-              widths={[220, 336, 460, 600]}
-              sizes="(max-width: 680px) 45vw, 19vw"
-              format="webp"
-              quality={86}
-              loading="lazy"
-              decoding="async"
-            />
-          </span>
-          <strong class="dy-method__label">Start with what you know.</strong>
-          <span class="dy-method__note">Something familiar.</span>
-        </li>
-        <li class="dy-method__item">
-          <span class="dy-method__mark dy-method__mark--art2" aria-hidden="true">
-            <Image
-              src={seeHowItWorks}
-              alt=""
-              widths={[220, 336, 460, 600]}
-              sizes="(max-width: 680px) 45vw, 21vw"
-              format="webp"
-              quality={86}
-              loading="lazy"
-              decoding="async"
-            />
-          </span>
-          <strong class="dy-method__label">See how it works.</strong>
-          <span class="dy-method__note">What’s happening underneath.</span>
-        </li>
-        <li class="dy-method__item">
-          <span class="dy-method__mark dy-method__mark--art3" aria-hidden="true">
-            <Image
-              src={understandWhy}
-              alt=""
-              widths={[220, 336, 460, 600]}
-              sizes="(max-width: 680px) 45vw, 15vw"
-              format="webp"
-              quality={86}
-              loading="lazy"
-              decoding="async"
-            />
-          </span>
-          <strong class="dy-method__label">Understand why it matters.</strong>
-          <span class="dy-method__note">What it means for you.</span>
-        </li>
-        </ul>
-      </div>
-
-      <p class="dy-method__signature">
-        <span class="dy-method__rule" aria-hidden="true"></span>
-        <span>See it <i>→</i> Understand it <i>→</i> See differently.</span>
-        <span class="dy-method__rule" aria-hidden="true"></span>
-      </p>
-    </div>
-  </section>
-
-  <!-- ============================================================
        LOOK CLOSER — explore-preview cards (Card 1 of eventual 4)
        ============================================================ -->
   <section class="dy-explore">
     <div class="shell">
       <header class="dy-explore__head">
-        <p class="dy-eyebrow"><span></span> Look closer</p>
         <h2 class="dy-explore__title">There's <span class="dy-explore__title-accent">more</span> to understand.</h2>
         <p class="dy-explore__sub">Pick one and see what's really happening.</p>
       </header>
@@ -600,77 +450,41 @@ import signing from '../assets/signing.png';
         <li class="dy-explore__card">
           <a class="dy-explore__link" href="/explore">
             <span class="dy-explore__art">
-              <Image
-                src={secret}
-                alt=""
-                widths={[320, 440, 560]}
-                sizes="(max-width: 680px) 84vw, (max-width: 1100px) 42vw, 22vw"
-                format="webp"
-                quality={86}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="/images/Street1.png" alt="" loading="lazy" decoding="async" />
             </span>
-            <span class="dy-explore__label">A secret you send today</span>
-            <strong class="dy-explore__q">Could someone steal it now and read it years later?</strong>
-            <span class="dy-explore__arrow" aria-hidden="true">↻</span>
+            <span class="dy-explore__label">That photo looks real.<br class="dy-explore__label-break" /> But is that enough?</span>
+            <strong class="dy-explore__q">Your eyes can only tell you so much.</strong>
+            <span class="dy-explore__arrow" aria-hidden="true">→</span>
           </a>
         </li>
         <li class="dy-explore__card">
           <a class="dy-explore__link" href="/explore">
             <span class="dy-explore__art">
-              <Image
-                src={car}
-                alt=""
-                widths={[320, 440, 560]}
-                sizes="(max-width: 680px) 84vw, (max-width: 1100px) 42vw, 22vw"
-                format="webp"
-                quality={86}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="/images/Phone.png" alt="" loading="lazy" decoding="async" />
             </span>
-            <span class="dy-explore__label">A car you can't see</span>
-            <strong class="dy-explore__q">Could your car know it's there before you do?</strong>
-            <span class="dy-explore__arrow" aria-hidden="true">↻</span>
+            <span class="dy-explore__label">AI answered in seconds. What happened before you saw it?</span>
+            <strong class="dy-explore__q">That quick reply took more than you think.</strong>
+            <span class="dy-explore__arrow" aria-hidden="true">→</span>
           </a>
         </li>
         <li class="dy-explore__card">
           <a class="dy-explore__link" href="/explore">
             <span class="dy-explore__art">
-              <Image
-                src={river}
-                alt=""
-                widths={[320, 440, 560]}
-                sizes="(max-width: 680px) 84vw, (max-width: 1100px) 42vw, 22vw"
-                format="webp"
-                quality={86}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="/images/Browsing.png" alt="" loading="lazy" decoding="async" />
             </span>
-            <span class="dy-explore__label">Where a river meets the sea</span>
-            <strong class="dy-explore__q">Could the difference between fresh water and salt water make electricity?</strong>
-            <span class="dy-explore__arrow" aria-hidden="true">↻</span>
+            <span class="dy-explore__label">You opened this page.<br class="dy-explore__label-break" /> Who else is here?</span>
+            <strong class="dy-explore__q">Some visitors don't browse the way you do.</strong>
+            <span class="dy-explore__arrow" aria-hidden="true">→</span>
           </a>
         </li>
         <li class="dy-explore__card">
           <a class="dy-explore__link" href="/explore">
             <span class="dy-explore__art">
-              <Image
-                src={signing}
-                alt=""
-                widths={[320, 440, 560]}
-                sizes="(max-width: 680px) 84vw, (max-width: 1100px) 42vw, 22vw"
-                format="webp"
-                quality={86}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src="/images/Approved.png" alt="" loading="lazy" decoding="async" />
             </span>
-            <span class="dy-explore__label">Signing in at work</span>
-            <strong class="dy-explore__q">Why does it keep checking it's really you?</strong>
-            <span class="dy-explore__arrow" aria-hidden="true">↻</span>
+            <span class="dy-explore__label">You tapped. It said approved. Who actually said yes?</span>
+            <strong class="dy-explore__q">That tiny ‘yes’ travelled farther than you think.</strong>
+            <span class="dy-explore__arrow" aria-hidden="true">→</span>
           </a>
         </li>
       </ul>
@@ -689,10 +503,10 @@ import signing from '../assets/signing.png';
     <div class="shell">
       <div class="dy-join__panel">
         <div class="dy-join__copy">
-          <p class="dy-eyebrow"><span></span> Join DekhoYahan</p>
-          <h2>Be part of the journey.</h2>
+          <p class="dy-eyebrow"><span></span> DekhoYahan, as it grows</p>
+          <h2>Be part of what we're building.</h2>
           <p class="dy-join__desc">
-            We're building this one explanation at a time. Join us.
+            Get new explanations as they arrive — and occasionally help shape what we explain next.
           </p>
         </div>
 
@@ -723,7 +537,7 @@ import signing from '../assets/signing.png';
               <path d="M12 3l7 3v6c0 4.4-3 8.1-7 9-4-0.9-7-4.6-7-9V6z" />
               <path d="M9 12.2l2.1 2.1L15.2 10" />
             </svg>
-            We use your email only for this. You can stop any time.
+            Just DekhoYahan updates. Unsubscribe anytime.
           </p>
         </form>
       </div>
@@ -798,33 +612,6 @@ import signing from '../assets/signing.png';
         if (buttonText instanceof HTMLElement) buttonText.textContent = 'Join';
       }
     });
-  }
-</script>
-
-<script>
-  // The saffron thread's entrance is passive, scroll-triggered storytelling,
-  // not a gate: nothing here blocks or delays scrolling, and the resting
-  // CSS state (no `[data-armed]` attribute) is already the fully-visible
-  // one, so a visitor with JavaScript disabled — or one whose OS asks for
-  // reduced motion — simply sees the finished section immediately.
-  const methodSection = document.querySelector('.dy-method');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (methodSection instanceof HTMLElement && !reduceMotion) {
-    methodSection.dataset.armed = '';
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          methodSection.dataset.inview = '';
-          observer.unobserve(methodSection);
-        }
-      },
-      { threshold: 0.25 },
-    );
-
-    observer.observe(methodSection);
   }
 </script>
 
@@ -1124,29 +911,56 @@ import signing from '../assets/signing.png';
       opacity: 0;
     }
 
-    /* A brief, brighter entry cue on top of the ambient breathing ring
-       above — switched on only by "See how" (data-entry), and only on
-       the first hotspot, never the layer2/3 points, so the sequential
-       discovery order is untouched. Stands down the moment this point
-       is actually opened, same as the ambient ring does on its own. */
-    [data-entry='1']
-      .dy-hero__discovery-hotspot:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3) {
-      animation: dy-hotspot-entry-pulse 1.5s ease-in-out infinite;
+    /* Guided-attention cue for whichever of the first three points is
+       currently the one actionable target — driven entirely off the
+       stage's own existing state attributes (data-entry/data-reveal/
+       data-reveal2/data-reveal3), never a separate tracked sequence, so
+       it can't desync from the journey and resets for free whenever
+       resetStory() zeroes those attributes for Replay. One shared
+       keyframe/selector block covers all three points rather than three
+       separate implementations: only ever one of these three conditions
+       is true at a time (each one's own upcoming state attribute is
+       still '0'), so only one bubble is ever emphasised at once, and the
+       moment that attribute flips to '1' on activation, the matching
+       selector stops applying and this cue is simply gone — no explicit
+       "settle" step required. The animation itself plays once (no
+       infinite/repeating iteration) and its own final keyframe is a
+       restrained, still-noticeable-but-quiet state, not a return to
+       fully bare rest — "momentarily obvious", not "permanently louder". */
+    [data-entry='1'][data-reveal='0']
+      .dy-hero__discovery-hotspot:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3),
+    [data-reveal='1'][data-reveal2='0'] .dy-hero__discovery-hotspot--layer2,
+    [data-reveal2='1'][data-reveal3='0'] .dy-hero__discovery-hotspot--layer3 {
+      animation: dy-hotspot-attention-arrive 950ms cubic-bezier(0.16, 0.8, 0.3, 1) both;
     }
 
-    @keyframes dy-hotspot-entry-pulse {
-      0%,
-      100% {
+    @keyframes dy-hotspot-attention-arrive {
+      0% {
+        transform: scale(0.85);
         box-shadow: 0 0 0 4px rgba(232, 117, 36, 0.18), 0 0 10px rgba(232, 117, 36, 0.4);
       }
-      50% {
-        box-shadow: 0 0 0 9px rgba(232, 117, 36, 0.34), 0 0 20px rgba(232, 117, 36, 0.68);
+      45% {
+        transform: scale(1.3);
+        box-shadow: 0 0 0 10px rgba(232, 117, 36, 0.3), 0 0 22px rgba(232, 117, 36, 0.65);
+      }
+      100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.22), 0 0 13px rgba(232, 117, 36, 0.46);
       }
     }
 
-    [data-entry='1']
-      .dy-hero__discovery-hotspot[aria-expanded='true']:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3) {
-      animation: none;
+    /* Reduced motion: no pulse/scale animation, but the same restrained
+       emphasis still applies as a static state, so the current target
+       remains clearly identifiable without relying on motion. */
+    @media (prefers-reduced-motion: reduce) {
+      [data-entry='1'][data-reveal='0']
+        .dy-hero__discovery-hotspot:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3),
+      [data-reveal='1'][data-reveal2='0'] .dy-hero__discovery-hotspot--layer2,
+      [data-reveal2='1'][data-reveal3='0'] .dy-hero__discovery-hotspot--layer3 {
+        animation: none;
+        transform: scale(1.05);
+        box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.22), 0 0 13px rgba(232, 117, 36, 0.46);
+      }
     }
 
     .dy-hero__discovery-hotspot:focus-visible {
@@ -2225,351 +2039,16 @@ import signing from '../assets/signing.png';
   }
 
   /* =========================================================
-     METHOD
-     Shell and typography only, for now — see the note in the markup.
-     ========================================================= */
-  .dy-method {
-    padding: clamp(64px, 9vh, 108px) 0 clamp(70px, 10vh, 116px);
-    border-top: 1px solid var(--line-soft);
-    border-bottom: 1px solid var(--line-soft);
-    background: linear-gradient(180deg, rgba(255, 253, 250, 0.6), rgba(246, 240, 231, 0.5));
-  }
-
-  .dy-method__inner {
-    max-width: 900px;
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  .dy-method__dot {
-    display: block;
-    width: 9px;
-    height: 9px;
-    margin: 0 auto clamp(20px, 2.6vh, 28px);
-    border-radius: 50%;
-    background: var(--saffron);
-    box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.12);
-  }
-
-  .dy-method__title {
-    margin: 0;
-    color: var(--ink);
-    font-family: var(--serif);
-    font-size: clamp(34px, 3.6vw, 48px);
-    font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    text-wrap: balance;
-  }
-
-  .dy-method__title .brand-inline {
-    font-weight: 700;
-  }
-
-  .dy-method__sub {
-    margin: clamp(14px, 1.8vh, 18px) 0 0;
-    color: var(--ink-soft);
-    font-size: clamp(15px, 1.15vw, 17px);
-    line-height: 1.5;
-  }
-
-  /* THE THREE POSITIONS.
-
-     `.dy-method__mark` is now a shared SLOT rather than a per-image box: one
-     fixed height, identical for all three, tall enough to hold the largest
-     of them (Visual 3) with room to spare. Labels sit right after it, so a
-     uniform slot height is what keeps the three headings level regardless
-     of how the illustrations inside are sized — that sizing now happens on
-     the `<img>` itself, entirely decoupled from the slot.
-
-     Each image is centred in its slot by flexbox, then nudged with a small
-     percentage-based `translateY` measured from the source file's own
-     alpha channel — how far its visible subject actually sits from the
-     png's geometric middle. That is what "align by visual centre, not png
-     boundary" means in practice: Visual 1's content sits a little low in
-     its frame, Visual 2's is already close to centred, Visual 3's sits a
-     little high — three different corrections for three different files,
-     landing all three subjects on the same line regardless. */
-  /* Exists only to give the saffron thread's svg a positioned ancestor to
-     overlay — it isn't a grid or flex container itself, so it adds nothing
-     to the row's own layout. `z-index: 0` forces it to own its stacking
-     context locally, so the thread's negative z-index is guaranteed to
-     resolve against the three illustrations right here, not against
-     something further up the page.
-
-     The row's own top margin moved here (off `.dy-method__row`, onto its
-     wrapper): a margin on the row could collapse through this plain div and
-     land outside it, which would leave the svg's `inset: 0` — measured
-     against the wrapper's own box — sitting above where the row actually
-     starts. Owning the spacing here instead removes the ambiguity. */
-  .dy-method__stage {
-    position: relative;
-    z-index: 0;
-    margin-top: clamp(56px, 8vh, 84px);
-  }
-
-  .dy-method__row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(28px, 4vw, 56px);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .dy-method__item {
-    display: grid;
-    justify-items: center;
-  }
-
-  .dy-method__mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    height: clamp(269px, 24.9vw, 336px);
-    margin-bottom: clamp(24px, 3vh, 32px);
-    border: 0;
-    background: none;
-  }
-
-  /* Visual 1 — familiar, calm: the smallest of the three, ~90% of Visual
-     2's weight. No frame: the bounding box is feathered into the page with
-     a mask, same as before, so it reads as art sitting on the cream rather
-     than a photo in a rectangle. */
-  .dy-method__mark--art img {
-    display: block;
-    height: clamp(209px, 19.6vw, 274px);
-    width: auto;
-    translate: 0 -3.5%;
-    mask-image: radial-gradient(closest-side, #000 74%, transparent 100%);
-    -webkit-mask-image: radial-gradient(closest-side, #000 74%, transparent 100%);
-  }
-
-  /* Visual 2 — discovery, the most prominent of the three, unchanged in
-     size from before. Bounded on both axes, since its frame is landscape
-     and would otherwise spill past the column. */
-  .dy-method__mark--art2 img {
-    display: block;
-    max-width: clamp(244px, 22.8vw, 320px);
-    max-height: clamp(244px, 22.8vw, 320px);
-    width: auto;
-    height: auto;
-    translate: 0 -0.2%;
-  }
-
-  /* Visual 3 — realization: a step past Visual 2's weight, but visually
-     the simplest of the three, so the extra size reads as presence rather
-     than clutter. */
-  .dy-method__mark--art3 img {
-    display: block;
-    height: clamp(252px, 23.5vw, 329px);
-    width: auto;
-    translate: 0 1%;
-  }
-
-  /* =========================================================
-     THE SAFFRON THREAD
-     A quiet line behind the three illustrations, not a diagram: no
-     arrowheads, no numbers, no repeating connector shape. It sits exactly
-     over the row's own artwork band (same height as `.dy-method__mark`)
-     and stops well short of the labels beneath.
-     ========================================================= */
-  .dy-method__journey {
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: clamp(269px, 24.9vw, 336px);
-    z-index: -1;
-    overflow: visible;
-    pointer-events: none;
-  }
-
-  .dy-journey-line {
-    fill: none;
-    stroke: var(--saffron);
-    stroke-opacity: 0.5;
-    stroke-width: 1.4;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 0;
-  }
-
-  .dy-journey-dot {
-    fill: var(--saffron);
-    opacity: 0.65;
-  }
-
-  /* ---------- entrance choreography ----------
-     Everything above (the fully-drawn line, the settled dots and glow, the
-     illustrations and signature at rest) is also the resting state here —
-     it's what renders with no JavaScript and what `prefers-reduced-motion`
-     falls back to. `[data-armed]` only exists once a script has confirmed
-     motion is allowed and an observer is watching the section, so nothing
-     can ever get stuck invisible. */
-  .dy-method[data-armed] .dy-journey-line {
-    stroke-dashoffset: 1000;
-  }
-
-  .dy-method[data-armed] .dy-journey-dot,
-  .dy-method[data-armed] .dy-journey-halo,
-  .dy-method[data-armed] .dy-journey-glow {
-    opacity: 0;
-  }
-
-  .dy-method[data-armed] .dy-method__mark--art img,
-  .dy-method[data-armed] .dy-method__mark--art2 img,
-  .dy-method[data-armed] .dy-method__mark--art3 img {
-    opacity: 0;
-    filter: blur(9px);
-  }
-
-  .dy-method[data-armed] .dy-method__signature {
-    opacity: 0;
-    filter: blur(6px);
-  }
-
-  /* The sequence, once the section has actually entered the viewport.
-     Visual 1 → thread reaches Visual 2 → Visual 2 → a held pause → thread
-     reaches Visual 3 → Visual 3 → the signature, last. ~2.9s end to end. */
-  .dy-method[data-inview] .dy-method__mark--art img {
-    opacity: 1;
-    filter: blur(0);
-    transition: opacity 600ms ease, filter 600ms ease;
-  }
-
-  .dy-method[data-inview] .dy-journey-line--a {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 650ms ease;
-    transition-delay: 350ms;
-  }
-
-  .dy-method[data-inview] .dy-journey-dot--1 {
-    opacity: 0.65;
-    transition: opacity 300ms ease;
-    transition-delay: 650ms;
-  }
-
-  .dy-method[data-inview] .dy-method__mark--art2 img {
-    opacity: 1;
-    filter: blur(0);
-    transition: opacity 550ms ease, filter 550ms ease;
-    transition-delay: 900ms;
-  }
-
-  .dy-method[data-inview] .dy-journey-line--b {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 550ms ease;
-    transition-delay: 1750ms;
-  }
-
-  .dy-method[data-inview] .dy-journey-dot--2 {
-    opacity: 0.65;
-    transition: opacity 300ms ease;
-    transition-delay: 2000ms;
-  }
-
-  .dy-method[data-inview] .dy-journey-halo {
-    opacity: 1;
-    transition: opacity 500ms ease;
-    transition-delay: 2000ms;
-  }
-
-  .dy-method[data-inview] .dy-method__mark--art3 img {
-    opacity: 1;
-    filter: blur(0);
-    transition: opacity 500ms ease, filter 500ms ease;
-    transition-delay: 2150ms;
-  }
-
-  .dy-method[data-inview] .dy-journey-glow {
-    opacity: 1;
-    transition: opacity 450ms ease;
-    transition-delay: 2280ms;
-  }
-
-  .dy-method[data-inview] .dy-method__signature {
-    opacity: 1;
-    filter: blur(0);
-    transition: opacity 400ms ease, filter 400ms ease;
-    transition-delay: 2500ms;
-  }
-
-  /* Belt and suspenders: the script already declines to arm the sequence
-     at all when motion is reduced, but if that preference changes after
-     load without a refresh, nothing here is left able to hide anything. */
-  @media (prefers-reduced-motion: reduce) {
-    .dy-method[data-armed] .dy-journey-line,
-    .dy-method[data-armed] .dy-journey-dot,
-    .dy-method[data-armed] .dy-journey-halo,
-    .dy-method[data-armed] .dy-journey-glow,
-    .dy-method[data-armed] .dy-method__mark--art img,
-    .dy-method[data-armed] .dy-method__mark--art2 img,
-    .dy-method[data-armed] .dy-method__mark--art3 img,
-    .dy-method[data-armed] .dy-method__signature {
-      opacity: 1;
-      filter: none;
-      stroke-dashoffset: 0;
-      transition: none;
-    }
-  }
-
-  .dy-method__label {
-    color: var(--ink);
-    font-family: var(--serif);
-    font-size: clamp(18px, 1.5vw, 21px);
-    font-weight: 500;
-    line-height: 1.28;
-    letter-spacing: -0.02em;
-  }
-
-  .dy-method__note {
-    display: block;
-    margin-top: 8px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  .dy-method__signature {
-    display: flex;
-    align-items: center;
-    gap: clamp(16px, 2vw, 28px);
-    margin: clamp(56px, 8vh, 80px) 0 0;
-    color: var(--ink-soft);
-    font-family: var(--serif);
-    font-size: clamp(16px, 1.3vw, 19px);
-    font-style: italic;
-    white-space: nowrap;
-  }
-
-  .dy-method__signature i {
-    color: var(--saffron);
-    font-style: normal;
-  }
-
-  .dy-method__rule {
-    flex: 1;
-    height: 1px;
-    background: var(--line);
-  }
-
-  /* =========================================================
      LOOK CLOSER (explore-preview cards)
      ========================================================= */
   .dy-explore {
-    padding: clamp(50px, 7.5vh, 84px) 0;
-    border-top: 1px solid var(--line-soft);
+    padding: clamp(28px, 4vh, 48px) 0 clamp(50px, 7.5vh, 84px);
   }
 
   .dy-explore__head {
     max-width: 640px;
     margin-inline: auto;
     text-align: center;
-  }
-
-  .dy-explore__head .dy-eyebrow {
-    justify-content: center;
   }
 
   .dy-explore__title {
@@ -2650,7 +2129,21 @@ import signing from '../assets/signing.png';
     font-weight: 640;
     line-height: 1.24;
     letter-spacing: -0.005em;
-    text-transform: uppercase;
+  }
+
+  /* Card 1's title carries an intentional two-line composition on
+     desktop — recognition, then the curiosity gap. The break is only
+     rendered once the grid has room for it (see the 981px breakpoint
+     below); at narrower widths it's suppressed so the sentence just
+     wraps naturally instead of forcing an awkward split. */
+  .dy-explore__label-break {
+    display: none;
+  }
+
+  @media (min-width: 981px) {
+    .dy-explore__label-break {
+      display: block;
+    }
   }
 
   .dy-explore__q {
@@ -2673,8 +2166,9 @@ import signing from '../assets/signing.png';
     height: 32px;
     border: 1px solid var(--line);
     border-radius: 50%;
-    color: var(--ink-soft);
+    color: var(--saffron);
     font-size: 14px;
+    line-height: 1;
     transition: border-color 240ms ease, color 240ms ease, background 240ms ease;
   }
 
@@ -2738,19 +2232,20 @@ import signing from '../assets/signing.png';
      ========================================================= */
   .dy-join {
     padding: clamp(50px, 7.5vh, 84px) 0 clamp(70px, 10vh, 116px);
-    border-top: 1px solid var(--line-soft);
-    background: linear-gradient(180deg, rgba(255, 253, 250, 0.6), rgba(246, 240, 231, 0.5));
   }
 
   .dy-join__panel {
     position: relative;
     /* Narrower than the page grid so the copy + form read as one focused
        action rather than a full-width band — no boxed card chrome, so the
-       section continues the same open, editorial feel as the ones above. */
-    max-width: 1020px;
-    margin-inline: auto;
+       section continues the same open, editorial feel as the ones above.
+       Left-aligned (not centered) within the shell so its left edge sits
+       on the same content spine as the Discovery card grid above and the
+       footer below, rather than floating independently centered. */
+    max-width: 1180px;
+    margin-right: auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
     align-items: center;
     gap: clamp(28px, 4vw, 64px);
   }
@@ -2926,44 +2421,20 @@ import signing from '../assets/signing.png';
     }
   }
 
-  @media (max-width: 980px) {
-    .dy-method__row {
-      grid-template-columns: 1fr;
-      gap: 40px;
-      max-width: 320px;
-      margin-inline: auto;
-    }
-
-    .dy-method__signature {
-      white-space: normal;
-      text-align: center;
-    }
-
-    /* Desktop only for this pass — the thread's coordinates are plotted
-       against the three-column layout and mean nothing once the row has
-       stacked. Hidden outright rather than left to misalign, and the
-       choreography it drives is neutralised so the stacked column is never
-       left waiting on a sequence that doesn't run down here. */
-    .dy-method__journey {
-      display: none;
-    }
-
-    .dy-method[data-armed] .dy-method__mark--art img,
-    .dy-method[data-armed] .dy-method__mark--art2 img,
-    .dy-method[data-armed] .dy-method__mark--art3 img,
-    .dy-method[data-armed] .dy-method__signature {
-      opacity: 1;
-      filter: none;
-      transition: none;
-    }
-
-    /* The grid is reserved for 4 columns on desktop; on narrower
-       viewports it degrades to 2-up (and 1-up below that) so a single
-       card never gets squeezed to a quarter-width sliver. */
+  @media (max-width: 1319px) {
+    /* The grid is reserved for 4 columns once each card has enough width
+       to hold its title on two lines (measured directly: card width stays
+       just under what the longest titles need until the viewport clears
+       1320px — the same crossover already used for the hero stage above).
+       Below that it degrades to 2-up (and 1-up further down) so a single
+       card never gets squeezed to a quarter-width sliver with 3-4 line
+       titles. */
     .dy-explore__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
+  @media (max-width: 980px) {
     .dy-join__panel {
       grid-template-columns: 1fr;
       gap: 26px;
