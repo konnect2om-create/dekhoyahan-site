@@ -1,0 +1,942 @@
+---
+// The photo story, told a scene at a time.
+//
+// The same construction as /explore/where-is-the-5g: one grid, copy and the
+// interaction on the left, the visual stage on the right, later scenes gated
+// behind `data-stage` on the root. This deliberately replaces the topic
+// template's ConceptHero + PhotoJourney opening on this URL rather than
+// sitting above it.
+//
+// Nothing downstream is deleted. PhotoJourney's cross-section, its dots and
+// "Reveal what's happening next", the 01/07 layer cards, the decision, the
+// deep dive and the sources all still exist and are wired in
+// src/pages/explore/[slug].astro — they are simply not rendered while the
+// story runs.
+//
+// Scenes so far:
+//   1  PhotoSend1 — the photo here, another phone there, nothing between.
+//   2  PhotoSend2 — it doesn't travel as a photo.
+//   3  PhotoSend3 — the data reaches the service first, not the friend.
+//   4  PhotoSend4 — the wireless hop is short; the rest is physical.
+//   5  PhotoSend5 — sometimes that physical route crosses an ocean floor.
+//   6  PhotoSend6 — pulling back, it's one path through a whole connected network.
+---
+
+<div class="photo" data-photo data-stage="1">
+  <!-- Same reasoning as the 5G opening, and the same grid: no ConceptHero,
+       because its eyebrow plus large-title/small-hook split reads as
+       headline-and-detached-subtitle. The statement and the question are
+       one thought with a turn in it, set at the same weight and scale, a
+       colour apart. Copy left, visual right on wide screens so the question
+       and "Show me" are both readable before the visitor scrolls past the
+       image; below the stacking point they fall back to the same
+       top-to-bottom order, copy first.
+
+       The title does not change between scenes. It is the question the
+       whole story is answering, so it stays put while the scene under it
+       moves. -->
+  <div class="photo__stage shell">
+    <div class="photo__copy">
+      <h1 class="photo__opening">
+        Where does your photo
+        <span class="photo__opening-q">actually go?</span>
+      </h1>
+
+      <p class="photo__noticed">You send one every day.</p>
+
+      <!-- The one thing that starts the story. One way, one time. -->
+      <button type="button" class="photo__show" data-show>
+        Show me <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ====================================================
+         THE SCENE — the supplied renders, used as-is.
+
+         Both assets are 1672 x 941 on the same canvas with the phones in the
+         same places, so they are stacked in one box and cross-faded rather
+         than swapped: the footprint, the position and the scale never change,
+         and the phones do not move when the state does. Nothing is drawn over
+         either of them, and neither is redrawn, cropped or reinterpreted.
+         ==================================================== -->
+    <div class="photo__scene">
+      <img
+        class="photo__art photo__art--send"
+        src="/images/PhotoSend1.png"
+        alt="Two phones far apart. The photo is open on the sender's phone at the left, ready to send. The recipient's phone toward the right is smaller and its screen still shows an empty placeholder. Nothing is shown between them."
+        width="1672"
+        height="941"
+        fetchpriority="high"
+        decoding="async"
+      />
+
+      <!-- Scene 2's frame of the same moment. Present in the DOM from the
+           start so the cross-fade has something decoded to fade to; held at
+           zero opacity and out of the accessibility tree until then. -->
+      <img
+        class="photo__art photo__art--data"
+        src="/images/PhotoSend2.png"
+        alt="The same two phones. The photo is breaking away from the sender's screen into a drift of small blue fragments that thins as it travels toward the distant phone."
+        width="1672"
+        height="941"
+        decoding="async"
+        aria-hidden="true"
+      />
+
+      <!-- Scene 3. The supplied data-centre render, dropped into the world
+           Scene 2 already built rather than replacing it: PhotoSend2 stays
+           underneath with its sender phone and its fragments exactly where
+           they were. Its recipient phone is masked out for this state (see
+           .photo__art--data above) — this reveal's whole point is that the
+           data does not go straight to a second phone, so no second phone
+           is shown yet. The fragment trail fades out before it would cross
+           the building's façade, so nothing large is ever seen scattered
+           over it; it simply narrows away into the data centre.
+
+           Placed by percentage of the stage, so it holds its position and
+           scale at every width. -->
+      <div class="photo__service">
+        <img
+          class="photo__service-art"
+          src="/images/PhotoSend3.png"
+          alt="A large data-centre building — the real destination the photo's data is travelling toward, well before it would ever reach a second phone."
+          width="2032"
+          height="774"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <!-- Scene 4. One complete render standing in for the whole visual —
+           phone, the short wireless hop, the tower, the buried cable
+           cross-section and the service building are all one composition in
+           this asset, at the stage's own 1672 x 941 ratio, so it fills the
+           box exactly as Scene 1 and 2's frames do and is never stretched.
+           It replaces what Scenes 1-3 built rather than sitting beside it:
+           those frames fade out as this fades in, cross-fade fashion, so the
+           change reads as the same world pulling back to show what the
+           wireless hop connects to, not as a cut to a new illustration. -->
+      <img
+        class="photo__art photo__art--physical"
+        src="/images/PhotoSend4.png"
+        alt="The full path from the sender's phone: a short wireless hop to a cell tower, then a buried run of fibre cables in cross-section, arriving at the service building."
+        width="1672"
+        height="941"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+
+      <!-- Scene 5. Another complete render standing in for the whole visual,
+           at its own wider ratio (2172 x 724, 3:1 — the same panorama shape
+           the 5G story's Metro state uses) rather than the 1672 x 941 the
+           earlier frames share, so the coastlines and the ocean between them
+           get the width to read as the scene's focus instead of being
+           letterboxed inside a taller box. The scene's own aspect-ratio
+           changes to match when this is active; every earlier frame fades
+           out under it exactly as Scene 4 faded out what came before it. -->
+      <img
+        class="photo__art photo__art--ocean"
+        src="/images/PhotoSend5.png"
+        alt="The path continues past the service building, along a coastline, and down onto the sea floor as a submarine cable crossing open water to a city on the far shore."
+        width="2172"
+        height="724"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+
+      <!-- Scene 6. The same phone and fragments, now shown against the whole
+           globe rather than one stretch of coastline — the camera pulling
+           dramatically outward from the ocean crossing to the network it's
+           one path through. Back to the 1672 x 941 ratio the earlier frames
+           share, so the stage settles rather than staying at Scene 5's wide
+           panorama. The glowing routes are already inside this render; no
+           lines are drawn or animated independently of it. -->
+      <img
+        class="photo__art photo__art--global"
+        src="/images/PhotoSend6.png"
+        alt="The same phone, now shown against the whole Earth from orbit, with a network of glowing connected routes linking cities across continents."
+        width="1672"
+        height="941"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </div>
+
+    <!-- The scene's own caption, below the visual it describes rather than
+         in the copy column — the same relationship the 5G story uses. Held
+         out of flow until Scene 2. -->
+    <div class="photo__reveal" data-reveal aria-live="polite">
+      <p class="photo__reveal-kicker">It doesn't travel as a photo.</p>
+      <p class="photo__reveal-text">
+        Your phone turns it into digital data that can travel through a network.
+      </p>
+
+      <!-- The way onward: the same quiet page-turn idiom the 5G story uses
+           for every transition, so "Show me" stays this page's one loud
+           control. Real and focusable; Scene 3 is not built yet, so a click
+           is intentionally inert at this checkpoint. -->
+      <button type="button" class="photo__turn" data-onward>
+        So where does it go? <span aria-hidden="true">→</span>
+      </button>
+
+      <!-- Scene 3's caption. It takes over this same block rather than being
+           added under it: at [data-service='1'] the three elements above are
+           removed from flow and this one takes their place, so the scene
+           keeps one caption throughout instead of growing a second text
+           section. Nested one level down on purpose — the rule that hides
+           Scene 2's copy uses a child combinator, so these reuse the
+           identical classes without hiding themselves. -->
+      <div class="photo__service-copy">
+        <p class="photo__reveal-kicker">Usually, not straight to your friend.</p>
+        <p class="photo__reveal-text">The data first reaches the service you're using.</p>
+
+        <!-- Scene 4 is not built yet; real and focusable, intentionally
+             inert at this checkpoint. -->
+        <button type="button" class="photo__turn" data-further>
+          But how does it get there? <span aria-hidden="true">→</span>
+        </button>
+
+        <!-- Scene 4's caption. Nested one level deeper again, on the same
+             hand-over the block above already uses: at [data-physical='1']
+             the kicker, text and turn directly above this leave the flow,
+             and this takes their place — one caption throughout, not a
+             growing stack. -->
+        <div class="photo__physical-copy">
+          <p class="photo__reveal-kicker">It feels wireless.</p>
+          <p class="photo__reveal-text">
+            Most of the journey isn't. After the first wireless hop, your data travels
+            mostly through physical networks — often fibre.
+          </p>
+
+          <!-- Scene 5 is not built yet; real and focusable, intentionally
+               inert at this checkpoint. -->
+          <button type="button" class="photo__turn" data-ocean>
+            And if it crosses an ocean? <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- Scene 5's caption. Nested one level deeper again, on the same
+               hand-over the two blocks above already use: at
+               [data-ocean='1'] the kicker, text and turn directly above this
+               leave the flow, and this takes their place. -->
+          <div class="photo__ocean-copy">
+            <p class="photo__reveal-kicker">And sometimes, it goes under the ocean.</p>
+            <p class="photo__reveal-text">
+              If the route crosses continents, your data can travel through fibre-optic
+              cables laid across the ocean floor.
+            </p>
+
+            <!-- Scene 6 is not built yet; real and focusable, intentionally
+                 inert at this checkpoint. -->
+            <button type="button" class="photo__turn" data-far>
+              How far can that journey go? <span aria-hidden="true">→</span>
+            </button>
+
+            <!-- Scene 6's caption. Same hand-over as every block before it:
+                 nested one level deeper, so at [data-global='1'] this
+                 block's own kicker/text/turn leave the flow and this one
+                 takes their place. -->
+            <div class="photo__global-copy">
+              <!-- The reveal itself, and its own final turn. Grid-stacked
+                   with .photo__familiar-copy below rather than swapped by
+                   display like every hand-over before it: PhotoSend6, the
+                   title and the supporting line all stay exactly where they
+                   are for this step, so only these two text blocks may move,
+                   and a stacked crossfade is the one way to replace text in
+                   place without the container's height jumping between two
+                   different line counts. -->
+              <div class="photo__global-steady">
+                <p class="photo__reveal-kicker">There isn't just one road.</p>
+                <p class="photo__reveal-text">
+                  Your data can move through many connected routes to reach where it
+                  needs to go.
+                </p>
+                <p class="photo__reveal-text photo__reveal-text--close">
+                  You tap send. The network finds the way.
+                </p>
+
+                <!-- The story's own close reached through one more familiar
+                     comparison, the same move the 5G story makes with its
+                     Metro analogy — here, in place, rather than in a new
+                     scene. Real and focusable; a click only crossfades the
+                     text beneath it. -->
+                <button type="button" class="photo__turn" data-familiar>
+                  Sound familiar? <span aria-hidden="true">→</span>
+                </button>
+              </div>
+
+              <!-- The everyday comparison and the story's last line. No
+                   turn after this one — the story ends here. -->
+              <div class="photo__familiar-copy" aria-hidden="true">
+                <p class="photo__reveal-kicker">Think of any journey.</p>
+                <p class="photo__reveal-text">
+                  You choose where you're going.<br />You don't choose every road.
+                </p>
+                <p class="photo__reveal-text photo__reveal-text--close photo__reveal-text--realize">
+                  Your photo doesn't either.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .photo {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .photo__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vh, 48px);
+  }
+
+  /* The same threshold and the same proportions the 5G story splits at. */
+  @media (min-width: 980px) {
+    .photo__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(36px, 4.5vw, 68px);
+    }
+  }
+
+  .photo__copy {
+    text-align: left;
+  }
+
+  /* One heading, two lines, one thought: same serif, same size, same weight —
+     only the colour marks the turn from statement to question. */
+  .photo__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .photo__opening-q {
+    display: block;
+    margin-top: 0.16em;
+    color: var(--saffron-deep);
+  }
+
+  .photo__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .photo__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      color 320ms ease, background 320ms ease;
+  }
+
+  .photo__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .photo__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .photo__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), color 320ms ease;
+  }
+
+  .photo__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Spent. Once Scene 2 is running the only live continuation is the
+     caption's "So where does it go?", so this fades out and stops being
+     reachable — by pointer, by tab and by screen reader. It keeps its box
+     rather than being removed from flow: the copy column is vertically
+     centred, so collapsing the button here would shift the title and
+     supporting line, and nothing else about Scene 2 is meant to move. */
+  [data-stage='2'] .photo__show {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 420ms ease, visibility 0s linear 420ms;
+  }
+
+  /* ====================================================
+     THE SCENE
+     ==================================================== */
+  .photo__scene {
+    position: relative;
+    /* The assets' own ratio, which is also the 5G story's stage ratio, so
+       both openings occupy the same shape in the same column at every
+       width. */
+    aspect-ratio: 1672 / 941;
+    /* Scene 5 changes this to its own wider ratio; matches the 5G story's
+       own aspect-ratio transition so the stage resizes at the same pace. */
+    transition: aspect-ratio 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* The panorama ratio PhotoSend5 and the 5G story's Metro state share. */
+  [data-ocean='1'] .photo__scene {
+    aspect-ratio: 2172 / 724;
+  }
+
+  /* Scene 6 returns to the frames' shared ratio; after the rule above, so it
+     wins the cascade once both attributes are set. */
+  [data-global='1'] .photo__scene {
+    aspect-ratio: 1672 / 941;
+  }
+
+  /* Both frames occupy the identical box. Nothing about the geometry changes
+     across the transition — only which one is opaque. */
+  .photo__art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  .photo__art--data {
+    opacity: 0;
+  }
+
+  /* The cross-fade. They overlap through the middle of it, so the send frame
+     doesn't blink out before the data frame has arrived — the scene reads as
+     the same picture coming alive rather than as one image replacing
+     another. */
+  [data-stage='2'] .photo__art--send {
+    opacity: 0;
+  }
+
+  [data-stage='2'] .photo__art--data {
+    opacity: 1;
+  }
+
+  /* Scene 3 has no second phone: the recipient is not part of this reveal.
+     PhotoSend2 is a single flat render with the sender, the fragments and
+     the recipient baked into one image, so the recipient can't be deleted
+     from it — instead the frame is masked off toward its right edge,
+     fading the fragment trail and the recipient phone out together before
+     either reaches the data centre. The fragments that remain visible are
+     the ones the eye reads as heading toward the building, not past it. */
+  [data-service='1'] .photo__art--data {
+    /* Tightened to end before the data centre's own left edge (37%) rather
+       than fading across it — the stream reads as arriving and stopping at
+       the entrance, not as continuing into or under the building. */
+    mask-image: linear-gradient(to right, #000 0%, #000 28%, transparent 48%);
+    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 28%, transparent 48%);
+  }
+
+  /* ====================================================
+     SCENE 3 — THE DATA CENTRE
+     ====================================================
+     The destination, not a waypoint next to one: substantially larger than
+     the mid-journey building this replaced, and layered above the masked
+     fragment trail so the readable façade is never crossed by a large
+     fragment — the stream has already faded out by the time it would reach
+     it. Kept off the stage's right edge, and off its own top and bottom, so
+     the composition still has the 5G story's breathing room rather than
+     filling the visual. Positioned and sized as a share of the stage, so it
+     holds its place against the sender phone at every width. */
+  .photo__service {
+    position: absolute;
+    left: 37%;
+    top: 30.4%;
+    width: 55%;
+    height: 37.6%;
+    opacity: 0;
+    /* Slightly slower than the Scene 2 cross-fade: this is the world getting
+       bigger, not one frame swapping for another. */
+    transition: opacity 1100ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  [data-service='1'] .photo__service {
+    opacity: 1;
+  }
+
+  .photo__service-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ====================================================
+     SCENE 4 — THE PHYSICAL NETWORK
+     ====================================================
+     One frame at the stage's own ratio, so it fills the box the same way
+     Scenes 1 and 2's frames do — no stretching, no separate positioning
+     rules to keep in sync with the stage width. Everything built so far
+     (the sender/data frame and the service building) fades out together as
+     this fades in, so Scene 4 reads as a cross-fade to a wider view of the
+     same journey rather than a cut to a new illustration. */
+  .photo__art--physical {
+    opacity: 0;
+    /* Matches the service building's own fade: this is the world getting
+       bigger, not a same-speed frame swap. */
+    transition-duration: 1100ms;
+  }
+
+  [data-physical='1'] .photo__art--send,
+  [data-physical='1'] .photo__art--data,
+  [data-physical='1'] .photo__service {
+    opacity: 0;
+  }
+
+  [data-physical='1'] .photo__art--physical {
+    opacity: 1;
+  }
+
+  /* ====================================================
+     SCENE 5 — THE OCEAN CROSSING
+     ====================================================
+     Same cross-fade relationship Scene 4 has with what came before it: the
+     physical-network frame (and everything underneath it, already at
+     opacity 0) fades out as this fades in. */
+  .photo__art--ocean {
+    opacity: 0;
+    transition: opacity 1100ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      transform 1200ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  [data-ocean='1'] .photo__art--physical {
+    opacity: 0;
+  }
+
+  [data-ocean='1'] .photo__art--ocean {
+    opacity: 1;
+  }
+
+  /* ====================================================
+     SCENE 6 — THE WHOLE NETWORK
+     ====================================================
+     The cinematic pull-back: the ocean frame settles outward slightly as it
+     fades rather than simply vanishing, and the globe frame arrives from a
+     touch closer-in than its resting scale, so the motion reads as one
+     continuous outward pull rather than two independent fades. Restrained on
+     purpose — a few percent of scale, not a zoom effect. */
+  .photo__art--global {
+    opacity: 0;
+    transform: scale(1.045);
+    transition: opacity 1200ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      transform 1200ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  [data-global='1'] .photo__art--ocean {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+
+  [data-global='1'] .photo__art--global {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ====================================================
+     THE CAPTION
+     ====================================================
+     A caption belonging to the scene. On narrow, single-column layouts it
+     spans the only track there is, sitting centred under the visual stacked
+     above it; the negative margin pulls it in against the stage's own row gap
+     so it reads as the scene's caption rather than a new section below it. */
+  .photo__reveal {
+    display: none;
+    grid-column: 1 / -1;
+    margin: clamp(-38px, -4.4vh, -52px) auto 0;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  /* From 980px the stage is two columns — confining this to the scene's own
+     column keeps the caption under the visual it describes instead of
+     centring it under the full stage width. */
+  @media (min-width: 980px) {
+    .photo__reveal {
+      grid-column: 2;
+    }
+  }
+
+  [data-stage='2'] .photo__reveal {
+    display: block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  .photo__reveal-kicker {
+    margin: 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .photo__reveal-text {
+    margin: 6px auto 0;
+    max-width: 36ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  /* The way onward: serif, ink, a small saffron circle carrying the arrow.
+     Quiet enough that "Show me" stays the loudest control on the page. */
+  .photo__turn {
+    display: inline-block;
+    margin: clamp(16px, 2.4vh, 22px) 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    /* Keeps the circle on the sentence's own line rather than wrapping alone
+       onto the next one. */
+    white-space: nowrap;
+  }
+
+  .photo__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  /* A page-turn, not a button press. */
+  .photo__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .photo__turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .photo__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* A second beat: the explanation lands first, then the way onward appears
+     under it. Rides on top of the caption's own entrance rather than
+     replacing it. */
+  [data-stage='2'] .photo__reveal > .photo__turn {
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1040ms;
+  }
+
+  @keyframes photo-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
+  /* Scene 3's caption takes the place of Scene 2's in the same block: the
+     spent copy and its used turn leave the flow entirely, so the caption
+     never grows a second section under itself. The child combinator is what
+     lets the replacement reuse the identical classes. */
+  .photo__service-copy {
+    display: none;
+  }
+
+  [data-service='1'] .photo__reveal > .photo__reveal-kicker,
+  [data-service='1'] .photo__reveal > .photo__reveal-text,
+  [data-service='1'] .photo__reveal > .photo__turn {
+    display: none;
+  }
+
+  [data-service='1'] .photo__service-copy {
+    display: block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-service='1'] .photo__service-copy > .photo__turn {
+    display: inline-block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* Scene 4's caption takes the place of Scene 3's, on the same hand-over:
+     the child combinator reaches only .photo__service-copy's own direct
+     children, so nesting one level deeper again is what lets this reuse the
+     identical kicker/text/turn classes without being caught by the rule
+     that hides them. */
+  .photo__physical-copy {
+    display: none;
+  }
+
+  [data-physical='1'] .photo__service-copy > .photo__reveal-kicker,
+  [data-physical='1'] .photo__service-copy > .photo__reveal-text,
+  [data-physical='1'] .photo__service-copy > .photo__turn {
+    display: none;
+  }
+
+  [data-physical='1'] .photo__physical-copy {
+    display: block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-physical='1'] .photo__physical-copy > .photo__turn {
+    display: inline-block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* Scene 5's caption takes the place of Scene 4's, on the same hand-over:
+     nested one level deeper again, reusing the identical classes without
+     being caught by the rule that hides its parent's own direct children. */
+  .photo__ocean-copy {
+    display: none;
+  }
+
+  [data-ocean='1'] .photo__physical-copy > .photo__reveal-kicker,
+  [data-ocean='1'] .photo__physical-copy > .photo__reveal-text,
+  [data-ocean='1'] .photo__physical-copy > .photo__turn {
+    display: none;
+  }
+
+  [data-ocean='1'] .photo__ocean-copy {
+    display: block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-ocean='1'] .photo__ocean-copy > .photo__turn {
+    display: inline-block;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* Scene 6's caption takes the place of Scene 5's, on the same hand-over.
+     This is the story's closing beat rather than another step, so there is
+     no further turn to bring in at a second delay. */
+  .photo__global-copy {
+    display: none;
+  }
+
+  [data-global='1'] .photo__ocean-copy > .photo__reveal-kicker,
+  [data-global='1'] .photo__ocean-copy > .photo__reveal-text,
+  [data-global='1'] .photo__ocean-copy > .photo__turn {
+    display: none;
+  }
+
+  [data-global='1'] .photo__global-copy {
+    display: grid;
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The closing line lands a beat after the line above it, the same way the
+     5G story's own final state paces its two closing lines. */
+  [data-global='1'] .photo__global-steady > .photo__reveal-text--close {
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 620ms;
+  }
+
+  /* "Sound familiar?" arrives after the closing line, same idiom as every
+     other turn in this story. */
+  [data-global='1'] .photo__global-steady > .photo__turn {
+    animation: photo-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 980ms;
+  }
+
+  /* ====================================================
+     THE FAMILIAR-LIFE CLOSE
+     ====================================================
+     Both blocks occupy the same grid cell, so the container's height is set
+     by whichever is taller and never jumps between the two — the one thing
+     this step is allowed to move is which of these two is opaque.
+     PhotoSend6, the title and the supporting line are outside this grid
+     entirely and are untouched by it. Deliberately a plain opacity
+     transition rather than the photo-in animation every other hand-over
+     uses: no rise, no scale, nothing that reads as a new scene arriving —
+     only the text itself changing. */
+  .photo__global-steady,
+  .photo__familiar-copy {
+    grid-area: 1 / 1;
+    transition: opacity 260ms ease;
+  }
+
+  .photo__familiar-copy {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  [data-familiar='1'] .photo__global-steady {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  [data-familiar='1'] .photo__familiar-copy {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Extra breathing room before the closing line, the same amount the 5G
+     story gives its own second closing line. */
+  .photo__reveal-text--close {
+    margin-top: 15px;
+  }
+
+  /* The story's last line, given the same serif/weight realization
+     treatment the homepage uses for its own "Your AI agent works the same
+     way" and "They can enter your house" lines — set apart from body copy
+     by weight and typeface rather than by size or colour. */
+  .photo__reveal-text--realize {
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 600;
+    letter-spacing: -0.006em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo__art {
+      transition-duration: 1ms;
+    }
+
+    [data-stage='2'] .photo__reveal,
+    [data-stage='2'] .photo__reveal > .photo__turn,
+    [data-service='1'] .photo__service-copy,
+    [data-service='1'] .photo__service-copy > .photo__turn,
+    [data-physical='1'] .photo__physical-copy,
+    [data-physical='1'] .photo__physical-copy > .photo__turn,
+    [data-ocean='1'] .photo__ocean-copy,
+    [data-ocean='1'] .photo__ocean-copy > .photo__turn,
+    [data-global='1'] .photo__global-copy,
+    [data-global='1'] .photo__global-steady > .photo__reveal-text--close,
+    [data-global='1'] .photo__global-steady > .photo__turn {
+      animation: none;
+    }
+
+    .photo__service,
+    .photo__art--physical,
+    .photo__art--ocean,
+    .photo__art--global,
+    .photo__scene,
+    .photo__global-steady,
+    .photo__familiar-copy {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-photo]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      // One way, one time: Scene 1 → Scene 2. There is nothing past it yet,
+      // so a second click is simply a no-op.
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader, and the one that has faded out should not be.
+      const send = root.querySelector('.photo__art--send');
+      const data = root.querySelector('.photo__art--data');
+      send?.setAttribute('aria-hidden', 'true');
+      data?.removeAttribute('aria-hidden');
+    });
+
+    // Scene 3. A flag of its own rather than stage 3, so everything Scene 2
+    // turned on stays on underneath it. One way, one time.
+    root.querySelector('[data-onward]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.service === '1') return;
+      root.dataset.service = '1';
+    });
+
+    // Scene 4. A flag of its own rather than stage 4, so everything Scene 3
+    // turned on stays on underneath it. One way, one time.
+    root.querySelector('[data-further]')?.addEventListener('click', () => {
+      if (root.dataset.service !== '1' || root.dataset.physical === '1') return;
+      root.dataset.physical = '1';
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader; the frames it replaced should not be.
+      root.querySelector('.photo__art--send')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__art--data')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__service-art')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__art--physical')?.removeAttribute('aria-hidden');
+    });
+
+    // Scene 5. A flag of its own rather than stage 5, so everything Scene 4
+    // turned on stays on underneath it. One way, one time.
+    root.querySelector('[data-ocean]')?.addEventListener('click', () => {
+      if (root.dataset.physical !== '1' || root.dataset.ocean === '1') return;
+      root.dataset.ocean = '1';
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader; the frame it replaced should not be.
+      root.querySelector('.photo__art--physical')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__art--ocean')?.removeAttribute('aria-hidden');
+    });
+
+    // Scene 6. A flag of its own rather than stage 6, so everything Scene 5
+    // turned on stays on underneath it. One way, one time.
+    root.querySelector('[data-far]')?.addEventListener('click', () => {
+      if (root.dataset.ocean !== '1' || root.dataset.global === '1') return;
+      root.dataset.global = '1';
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader; the frame it replaced should not be.
+      root.querySelector('.photo__art--ocean')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__art--global')?.removeAttribute('aria-hidden');
+    });
+
+    // The story's last step. PhotoSend6, the title and the supporting line
+    // are untouched by this — only the caption crossfades in place. One way,
+    // one time; there is nothing after it.
+    root.querySelector('[data-familiar]')?.addEventListener('click', () => {
+      if (root.dataset.global !== '1' || root.dataset.familiar === '1') return;
+      root.dataset.familiar = '1';
+
+      root.querySelector('.photo__global-steady')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.photo__familiar-copy')?.removeAttribute('aria-hidden');
+    });
+  });
+</script>

@@ -1,16 +1,22 @@
 ---
 // The undersea-cable journey.
-//   mode="still"  → the finished picture, no controls. Used by the homepage
-//                   featured slot and safe to crop for social.
-//   mode="story"  → the stepped reveal with copy and controls. Used on the
-//                   topic page, where there is room to actually read it.
-// One SVG serves both; "still" simply starts at the final step.
+//   mode="still"    → the finished picture, no controls. Used by the homepage
+//                     featured slot and safe to crop for social.
+//   mode="story"    → the stepped reveal with copy and controls. Used on the
+//                     topic page, where there is room to actually read it.
+//   mode="opening"  → just the familiar first beat (phone, person, send),
+//                     cropped tight and with the sea/cable/route/light/far
+//                     side hidden. No copy, no controls. Used for compact
+//                     reuse (e.g. the Explore library) where only the
+//                     opening moment — not the mechanism — should show.
+// One SVG serves all three; "still" and "opening" simply pin a step.
 interface Props {
-  mode?: 'still' | 'story';
+  mode?: 'still' | 'story' | 'opening';
 }
 
 const { mode = 'story' } = Astro.props;
 const isStory = mode === 'story';
+const isOpening = mode === 'opening';
 
 const steps = [
   {
@@ -39,15 +45,19 @@ const steps = [
 <div
   class:list={['pj', `pj--${mode}`]}
   data-journey={isStory ? '' : undefined}
-  data-step={isStory ? '0' : '3'}
+  data-step={mode === 'still' ? '3' : '0'}
   style={`--pj-glass:url(#pjGlass-${mode});--pj-pulse:url(#pjPulse-${mode})`}
 >
   <figure class="pj__frame">
     <svg
       class="pj__svg"
-      viewBox="0 0 960 660"
+      viewBox={isOpening ? '0 160 260 200' : '0 0 960 660'}
       role="img"
-      aria-label="A cross-section: a phone on land sends a photo, which travels down into the ocean and along a cable on the seabed to a phone on the far shore."
+      aria-label={
+        isOpening
+          ? 'A phone sending a photo, a person standing beside it — the send is underway.'
+          : 'A cross-section: a phone on land sends a photo, which travels down into the ocean and along a cable on the seabed to a phone on the far shore.'
+      }
     >
       <defs>
         <linearGradient id={`pjSea-${mode}`} x1="0" y1="0" x2="0" y2="1">
@@ -722,6 +732,28 @@ const steps = [
   .pj--still .pj-guess__no,
   .pj--still .pj-tag--sat,
   .pj--still .pj-stat {
+    display: none;
+  }
+
+  /* =========================================================
+     OPENING MODE — the familiar first beat only.
+     Cropped to the near phone/person/waves and the ground beneath
+     them; the satellite guess, the cable, the travelling light, the
+     far shore and every overlay tag/stat are hidden so nothing here
+     answers the question, just poses it.
+     ========================================================= */
+  .pj--opening .pj-sat,
+  .pj--opening .pj-guess,
+  .pj--opening .pj-guess__no,
+  .pj--opening .pj-cable,
+  .pj--opening .pj-route,
+  .pj--opening .pj-light,
+  .pj--opening .pj-waterline,
+  .pj--opening .pj-actor--far,
+  .pj--opening .pj-tag--you,
+  .pj--opening .pj-tag--far,
+  .pj--opening .pj-tag--sat,
+  .pj--opening .pj-stat {
     display: none;
   }
 

@@ -1,0 +1,1658 @@
+---
+// New Explore-only story. Scene 1 is locked (see the CSS note on
+// `.fiveg__scene` for exactly what "locked" means structurally); this file
+// now also carries the first reveal — what happens on "Show me" — gated
+// entirely behind `data-stage` so Scene 1's own markup and default styles
+// are untouched. There is still no topic-collection entry for this one on
+// purpose — it doesn't have the layers/decision/sources a full topic
+// carries. Scene 2 (anything past this first reveal) does not exist yet.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Your phone says 5G. Where is the 5G? — DekhoYahan"
+  description="You see it every day. But where exactly is it coming from?"
+>
+  <div class="fiveg" data-fiveg data-stage="1">
+    <!-- No ConceptHero here on purpose: its eyebrow + large-title/small-hook
+         split reads as headline-and-detached-subtitle, which is exactly what
+         this opening shouldn't feel like. The statement and the question are
+         one thought with a turn in it, so they're set at the same weight and
+         scale, just a colour apart. ConceptHero itself is untouched — every
+         other story still uses it as-is.
+
+         The copy block and the visual are now one grid, not a header
+         followed by a separate stage: on wide screens they sit side by
+         side (copy left, phone right) so the question and "Show me" are
+         both readable before the visitor scrolls past the image at all;
+         below the stacking point they fall back to the same top-to-bottom
+         order, copy first. -->
+    <div class="fiveg__stage shell">
+      <div class="fiveg__copy">
+        <h1 class="fiveg__opening">
+          Your phone says 5G.
+          <span class="fiveg__opening-q">Where is the 5G?</span>
+        </h1>
+
+        <p class="fiveg__noticed">You see it every day.</p>
+
+        <!-- A real control, not baked into the image. Still the only thing
+             that moves the scene on — it just softens once used, the same
+             way a used affordance elsewhere on the site steps back rather
+             than disappearing. -->
+        <button type="button" class="fiveg__show" data-show>
+          Show me <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- ====================================================
+           THE SCENE — phone, tower and the connection between them.
+
+           Locked Scene 1: `.fiveg__scene` is sized by the same aspect
+           ratio the phone image always rendered at (1672:941), and
+           `.fiveg__phone` fills it exactly as the old flow-positioned
+           <img> used to. At `data-stage="1"` nothing below has moved,
+           the tower and the connection are both invisible and inert —
+           so the initial paint is pixel-identical to before this
+           reveal existed.
+           ==================================================== -->
+      <div class="fiveg__scene">
+        <!-- Everything Scenes 1-3 built, held as one unit. Nothing inside
+             moves relative to anything else, ever. Scene 4 moves the camera
+             instead: this wrapper is repositioned and resized inside the
+             scene box so the view follows the connection to the right. At
+             stages 1-3 it is inert (0/0/100%/100%, i.e. inset:0), so the
+             composition it holds is untouched. -->
+        <div class="fiveg__world">
+        <div class="fiveg__phone">
+          <img
+            class="fiveg__art"
+            src="/images/5G.png"
+            alt="Close-up of a phone's status bar showing a 5G indicator, full signal bars and the battery icon."
+            loading="eager"
+            decoding="async"
+          />
+          <span class="fiveg__mark" aria-hidden="true"></span>
+        </div>
+
+        <!-- Scene 3, first state: where the journey stops being radio.
+
+             A ground plane, and the route running under it. The band is
+             a slice of earth taken straight across the scene: a lit top
+             surface, the cut face below it fading out before the scene
+             ends, a few grass hints, and the site standing on it. The
+             phone keeps hovering above it exactly where Scene 2 left it —
+             it is a held object, not a thing planted in the ground.
+
+             Everything above the surface stays radio; everything below it
+             is physical. That division is the whole point of this state,
+             so no label is needed to make it.
+
+             Still placed BEFORE the tower in the DOM: the ground passes
+             behind the site, and the route leaves the equipment behind
+             the platform, only becoming visible as it crosses down
+             through the surface. -->
+        <svg
+          class="fiveg__route"
+          viewBox="0 0 6380 941"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <!-- The cut face: full strength where it meets the surface,
+                 gone before it reaches the bottom of the scene, so the
+                 band never closes into a slab with an edge to notice. -->
+            <linearGradient id="fiveg-soil" x1="0" y1="770" x2="0" y2="941" gradientUnits="userSpaceOnUse">
+              <stop offset="0" class="fiveg__soil-stop" stop-opacity="0.5" />
+              <stop offset="0.42" class="fiveg__soil-stop" stop-opacity="0.34" />
+              <stop offset="0.68" class="fiveg__soil-stop" stop-opacity="0.16" />
+              <stop offset="1" class="fiveg__soil-stop" stop-opacity="0" />
+            </linearGradient>
+
+            <!-- The band's own ends. The scene box stops well inside the
+                 page on wide screens, so a squared-off left and right edge
+                 would read as a slab dropped onto the paper. Dissolving
+                 both ends lets the ground arrive and leave the way
+                 everything else in this scene does. The right end keeps
+                 most of its weight — the route is still going that way. -->
+            <linearGradient id="fiveg-earth-fade" x1="0" y1="0" x2="6380" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff" stop-opacity="0" />
+              <stop offset="0.0445" stop-color="#fff" stop-opacity="1" />
+              <stop offset="0.2227" stop-color="#fff" stop-opacity="1" />
+              <!-- x=1672, the near frame edge. Scene 3 ends the ground there
+                   at half strength, exactly as it did when this canvas was
+                   1672 wide; Scene 4 needs the ground to carry straight on
+                   past it, so the stop is driven from CSS. Everything after
+                   it is dark at Scene 3 — and outside the scene box in any
+                   case — so it costs Scene 3 nothing. -->
+              <stop offset="0.2621" class="fiveg__earth-edge" stop-color="#fff" />
+              <stop offset="0.5329" class="fiveg__earth-far" stop-color="#fff" />
+              <!-- x=3620, where Scene 4's own window ends. Scene 4 lets the
+                   ground go quiet there; Scene 5 needs it to carry on. -->
+              <stop offset="0.5674" class="fiveg__earth-tail" stop-color="#fff" />
+              <stop offset="0.9655" class="fiveg__earth-far2" stop-color="#fff" />
+              <stop offset="1" class="fiveg__earth-tail2" stop-color="#fff" />
+            </linearGradient>
+            <mask id="fiveg-earth-mask">
+              <rect x="0" y="740" width="6380" height="201" fill="url(#fiveg-earth-fade)" />
+            </mask>
+
+            <!-- The buried run fades toward the frame edge so the cut
+                 reads as distance rather than as the route stopping. -->
+            <linearGradient id="fiveg-cable" x1="1360" y1="0" x2="1672" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" class="fiveg__cable-stop" stop-opacity="0.72" />
+              <stop offset="0.62" class="fiveg__cable-stop" stop-opacity="0.62" />
+              <!-- Also driven from CSS: at Scene 3 this is the route going
+                   quiet as it leaves the frame; at Scene 4 that frame is no
+                   longer there and the run simply continues. -->
+              <stop offset="1" class="fiveg__cable-stop fiveg__cable-edge" />
+            </linearGradient>
+            <!-- Keys the baked-in checkerboard out of CellTower2.png at
+                 render time — see the note on .fiveg__hub2. Alpha is derived
+                 from brightness: anything above ~95% grey goes fully
+                 transparent, anything below ~90% stays fully opaque, with a
+                 short ramp between. sRGB interpolation is required or the
+                 thresholds land somewhere else entirely. -->
+            <!-- The region is pinned to the element exactly. On the default
+                 -10%/120% region the matrix's alpha offset is applied to the
+                 transparent black outside the image too, which turns it into
+                 opaque black — a frame around the building. The 0.6% inset
+                 keeps the outermost pixel column out of it too, which is
+                 otherwise left as a dark hairline down the edge. -->
+            <filter
+              id="fiveg-keyout"
+              color-interpolation-filters="sRGB"
+              filterUnits="objectBoundingBox"
+              x="0.006"
+              y="0.006"
+              width="0.988"
+              height="0.988"
+            >
+              <feColorMatrix
+                type="matrix"
+                values="1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        -6.333 -6.333 -6.333 0 18.05"
+              />
+            </filter>
+          </defs>
+
+          <g class="fiveg__earth">
+            <g mask="url(#fiveg-earth-mask)">
+              <!-- One edge and a wash, nothing more. Surface at y=758, which
+                   is where the platform’s own base already sits. The lit top
+                   strip is 12 units deep instead of 26, and the cut face below
+                   it never gets past half strength — enough tone at the depth
+                   the route runs (y≈858) to read as being inside something,
+                   not enough to be a slab. -->
+              <rect x="0" y="770" width="6380" height="171" fill="url(#fiveg-soil)" />
+              <rect class="fiveg__topsoil" x="0" y="758" width="6380" height="12" />
+              <line class="fiveg__surface" x1="0" y1="758" x2="6380" y2="758" />
+
+              <!-- One hint, nothing more: enough to tell you the top of the
+                   band is a surface and not a rule. Deliberately the far-left
+                   one — a second cluster used to sit at x≈980, directly under
+                   the radio arcs, where it read as a stray tick on the
+                   drawing rather than as grass. -->
+              <path
+                class="fiveg__grass"
+                d="M424 758C422 750 421 746 420 741M430 758C430 750 430 745 431 740M436 758C437 751 439 747 441 743"
+              />
+            </g>
+
+            <!-- Leaves the equipment at (1360, 744), still behind the
+                 platform, on a vertical tangent; crosses the surface
+                 directly under the site, loses the angle gradually and
+                 levels out in the soil, off the frame at (1672, 858).
+                 Two cubics sharing a tangent at (1408, 846), so there is
+                 no join to see. pathLength="1" so the draw-on is plain
+                 1 → 0 arithmetic. -->
+            <path
+              class="fiveg__cable"
+              pathLength="1"
+              stroke="url(#fiveg-cable)"
+              d="M1360 744 C1360 798 1372 828 1408 846 C1444 864 1548 868 1672 858"
+            />
+
+            <!-- Scene 4's leg. A separate element rather than a longer `d`
+                 on the path above, so Scene 3's route keeps its own geometry
+                 and its own draw-on timing exactly. It starts at (1672, 858)
+                 on the tangent that one ends with, (124, -10), so the join
+                 is invisible; runs on under the ground; then rises into the
+                 place it has been heading for and stops at (2520, 768), just
+                 under the surface where the building's own footprint covers
+                 it. -->
+            <path
+              class="fiveg__cable-far"
+              pathLength="1"
+              d="M1672 858 C1820 850 2010 848 2160 842 C2310 836 2440 814 2520 768"
+            />
+
+            <!-- Scene 5's leg, and the same reasoning again: its own element,
+                 so Scene 4's route keeps its geometry and timing untouched.
+                 It leaves the far side of the first destination at
+                 (3300, 768) — still under that building's own footprint —
+                 drops back under the ground, runs on, and rises into the
+                 next one at (4500, 778). Tangents match across both joins,
+                 so the whole thing is one line from the cell site onward. -->
+            <path
+              class="fiveg__cable-far2"
+              pathLength="1"
+              d="M3300 768 C3370 812 3430 842 3520 850 C3700 866 3980 868 4180 858 C4320 851 4430 826 4500 778"
+            />
+          </g>
+        </svg>
+
+        <!-- Scene 4's destination, used as-is: no card, frame or background
+             of its own, exactly as the first tower is. Sits at x 2050-3550
+             on the same ground line (y=758) the cell site stands on, so the
+             route arrives somewhere real rather than at a symbol. At 1500
+             units across and 594 tall it carries about two and a half times
+             the footprint of the cell site's 568 x 602 — a bigger place, not
+             a bigger drawing. Invisible and inert until the reveal. -->
+        <div class="fiveg__hub" aria-hidden="true">
+          <img class="fiveg__hub-art" src="/images/CellTower1.png" alt="" loading="lazy" decoding="async" />
+        </div>
+
+        <!-- Scene 5's destination, used as-is like every other asset here.
+             Sits at x 3950-6225 on the same ground line (y=758), 400 units
+             of open ground past the first destination. At 2275 x 1045 it is
+             half again as wide as that one and taller than the canvas, and
+             its own
+             darker material separates it from the pale mobile-network site
+             without anything being drawn on top of it. Invisible and inert
+             until the reveal. -->
+        <div class="fiveg__hub2" aria-hidden="true">
+          <img class="fiveg__hub-art" src="/images/CellTower2.png" alt="" loading="lazy" decoding="async" />
+        </div>
+
+        <!-- The supplied asset, used as-is: no card, background, border or
+             frame of its own — its own alpha edge is what meets the page.
+             Cropped via CSS alone (object-fit/position) to the equipment
+             itself, since roughly the left half of the source canvas is
+             empty space. -->
+        <div class="fiveg__tower" aria-hidden="true">
+          <img class="fiveg__tower-art" src="/images/CellTower.png" alt="" loading="lazy" decoding="async" />
+        </div>
+
+        <!-- The connection: one family of radio arcs, all struck from the
+             same origin at the phone. The three tight ones are the signal
+             leaving it; the four wide ones are those same wavefronts
+             further out, the largest reaching the tower. No line is ever
+             drawn between the two objects on purpose — a line reads as a
+             cable or a network-diagram connector, whereas an expanding
+             arc reads as radio spreading through the air. -->
+        <svg
+          class="fiveg__link"
+          viewBox="0 0 1672 941"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path class="fiveg__wave" d="M378 385a35 35 0 0 1 0 70" />
+          <path class="fiveg__wave" d="M378 360a60 60 0 0 1 0 120" />
+          <path class="fiveg__wave" d="M378 330a90 90 0 0 1 0 180" />
+
+          <!-- Same centre (378, 420) as the three arcs above, at four
+               growing radii — 140, 300, 480, 690 — each sweeping a
+               narrower angle than the last, so the family opens outward
+               and thins as it travels. The outermost apex lands at x=1068,
+               just short of the tower’s own left edge at x=1104: the
+               wavefront reaches the equipment without touching it. -->
+          <path class="fiveg__arc" d="M468 313A140 140 0 0 1 468 527" />
+          <path class="fiveg__arc" d="M601 219A300 300 0 0 1 601 621" />
+          <path class="fiveg__arc" d="M776 152A480 480 0 0 1 776 688" />
+          <path class="fiveg__arc" d="M998 118A690 690 0 0 1 998 722" />
+        </svg>
+        </div>
+
+        <!-- The same stage, looked at differently. This sits outside
+             .fiveg__world on purpose: the world is the network — phone,
+             arcs, both sites, the ground and the route — and this is not
+             part of it, so the camera that has been tracking the journey
+             does not touch it. The two simply cross-fade in the one scene
+             box, which is why the change reads as turning to look at
+             something else rather than as moving to another section.
+
+             Metro.png is 2172x724, exactly 3:1, and the box takes that
+             ratio below — so the whole width of it is used and the station,
+             the line out of it and the destination all stay in frame with
+             nothing cropped. -->
+        <img
+          class="fiveg__metro"
+          src="/images/Metro.png"
+          alt="A commuter at a metro station entrance, phone in hand, with the line running out across a viaduct toward the city beyond."
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <!-- The reveal's own copy: re-homed here, below the visual it
+           describes, instead of continuing the hero copy column — it's a
+           caption for the phone → radio → tower scene, not a continuation
+           of the opening statement. Still held out of flow until Scene 2. -->
+      <div class="fiveg__reveal" data-reveal aria-live="polite">
+        <p class="fiveg__reveal-kicker">This is the first connection.</p>
+        <p class="fiveg__reveal-text">
+          Your phone uses radio to reach nearby equipment in your mobile network.
+        </p>
+
+        <!-- The way onward. Deliberately the homepage page-turn idiom
+             (.dy-hero__realize-turn) rather than a second copy of the
+             "Show me" pill: serif text with a small saffron circle on the
+             arrow, quiet underline on hover. That keeps "Show me" as this
+             page’s one loud affordance and makes this read as the story
+             continuing, not a second primary CTA competing with it.
+             Real and focusable now; Scene 3 is not built yet, so a click
+             is intentionally inert at this checkpoint. -->
+        <button type="button" class="fiveg__turn" data-onward>
+          Where does it go from here? <span aria-hidden="true">→</span>
+        </button>
+
+        <!-- Scene 3's caption. It takes over this same block rather than
+             being added under it: at [data-route='1'] the three elements
+             above are removed from flow and this one takes their place, so
+             the scene keeps one caption throughout instead of growing a
+             second text section. Nested one level down on purpose — the
+             rule that hides Scene 2's copy uses a child combinator, so
+             these two reuse the identical kicker and body classes without
+             being caught by it. -->
+        <div class="fiveg__onward-copy">
+          <p class="fiveg__reveal-kicker">From here, it travels through physical networks.</p>
+          <p class="fiveg__reveal-text">
+            Often through fibre, carrying your connection deeper into the mobile network.
+          </p>
+
+          <!-- The same page-turn treatment "Where does it go from here?"
+               established, reused verbatim — same class, so the serif, the
+               saffron circle and the quiet hover are literally the same
+               rules rather than a second copy of them. Real and focusable
+               now; Scene 4 does not exist yet, so a click is intentionally
+               inert at this checkpoint. -->
+          <button type="button" class="fiveg__turn" data-deeper>
+            So where is it going? <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- Scene 4's caption. Same hand-over as the one before it: at
+             [data-scope='4'] the whole Scene 3 block above — copy and its
+             spent turn together — leaves flow, and this takes the space it
+             was occupying. A sibling of that block rather than a child, so
+             the child-combinator rule that hides Scene 2's own paragraphs
+             still cannot reach these. -->
+        <div class="fiveg__deeper-copy">
+          <p class="fiveg__reveal-kicker">Into a much larger mobile network.</p>
+          <p class="fiveg__reveal-text">
+            Your cell site is one entrance. The network carries your connection onward
+            and decides where it needs to go next.
+          </p>
+
+          <!-- Third time on the same treatment, still the same class — the
+               serif, the saffron circle and the quiet hover are one set of
+               rules that every turn in this story shares. Real and focusable
+               now; the state past this one does not exist yet, so a click is
+               intentionally inert at this checkpoint. -->
+          <button type="button" class="fiveg__turn" data-further>
+            And where is that? <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- Scene 5's caption, on the pattern the two before it set: at
+             [data-far='1'] the whole Scene 4 block above — copy and its
+             spent turn together — leaves flow, and this takes the space.
+             A sibling again, so the child-combinator rule that hides
+             Scene 2's own paragraphs still cannot reach these. -->
+        <div class="fiveg__far-copy">
+          <p class="fiveg__reveal-kicker">To the service you were trying to reach.</p>
+          <p class="fiveg__reveal-text">
+            A video, a message, a website — your mobile network carries your connection
+            onward to it.
+          </p>
+
+          <!-- Fourth turn, same class as the first three: one set of rules
+               for the serif, the saffron circle and the quiet hover, shared
+               by every transition in this story. Real and focusable now;
+               what follows it does not exist yet, so a click is
+               intentionally inert at this checkpoint. -->
+          <button type="button" class="fiveg__turn" data-familiar>
+            Sound familiar? <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- The analogy's caption, on the pattern every hand-over here has
+             used: at [data-familiar='1'] the whole block above — copy and
+             its spent turn together — leaves flow and this takes the space.
+             A sibling again, so the child-combinator rule that hides
+             Scene 2's own paragraphs still cannot reach these. -->
+        <div class="fiveg__metro-copy">
+          <p class="fiveg__reveal-kicker">Think of a metro journey.</p>
+          <p class="fiveg__reveal-text">
+            You enter at the station nearby. But that station isn’t the whole journey —
+            it’s just where you enter the network.
+          </p>
+
+          <!-- Fifth turn, same class as the four before it: one set of rules
+               for the serif, the saffron circle and the quiet hover, shared
+               by every transition in this story. Real and focusable now; the
+               state after it does not exist yet, so a click is intentionally
+               inert at this checkpoint. -->
+          <button type="button" class="fiveg__turn" data-likefiveg>
+            Just like 5G. <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- The answer, in the same block every caption in this story has
+             passed through. At [data-final='1'] the analogy's copy and its
+             spent turn leave flow together and this takes the space. The
+             closing pair is one paragraph with a hard break rather than two,
+             so the two lines stay a single thought set on two lines. -->
+        <div class="fiveg__final-copy">
+          <p class="fiveg__reveal-kicker">There it is.</p>
+          <p class="fiveg__reveal-text">
+            5G is the wireless connection between your phone and the nearby mobile network.
+          </p>
+          <p class="fiveg__reveal-text fiveg__reveal-text--close">
+            It gets you into the network.<br />It isn’t the whole journey.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-fiveg]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      // One way, one time: Scene 1 → this first reveal. There is nothing
+      // past it yet, so a second click is simply a no-op rather than
+      // needing its own guarded state.
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+    });
+
+    // Scene 3, first state. A flag of its own rather than stage 3, so
+    // everything Scene 2 turned on stays on underneath it. One way, one
+    // time; a second click is a no-op.
+    root.querySelector('[data-onward]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.route) return;
+      root.dataset.route = '1';
+    });
+
+    // Scene 4. Again a flag of its own rather than a bumped 'route', so
+    // everything Scene 3 turned on stays on underneath it.
+    root.querySelector('[data-deeper]')?.addEventListener('click', () => {
+      if (root.dataset.route !== '1' || root.dataset.scope) return;
+      root.dataset.scope = '4';
+    });
+
+    // Scene 5. Same reason for a separate flag: bumping 'scope' to 5 would
+    // switch every Scene 4 rule off and take the camera, the ground and the
+    // first destination with it.
+    root.querySelector('[data-further]')?.addEventListener('click', () => {
+      if (root.dataset.scope !== '4' || root.dataset.far) return;
+      root.dataset.far = '1';
+    });
+
+    // The familiar one. A flag of its own for the same reason as all the
+    // others: everything before it stays exactly as it was underneath.
+    root.querySelector('[data-familiar]')?.addEventListener('click', () => {
+      if (root.dataset.far !== '1' || root.dataset.familiar) return;
+      root.dataset.familiar = '1';
+    });
+
+    // Back to the real thing, whole. Last flag; everything before it is
+    // still set underneath, which is exactly what lets the world come back
+    // holding every position it was left in.
+    root.querySelector('[data-likefiveg]')?.addEventListener('click', () => {
+      if (root.dataset.familiar !== '1' || root.dataset.final) return;
+      root.dataset.final = '1';
+    });
+  });
+</script>
+
+<style>
+  .fiveg {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .fiveg__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vh, 48px);
+  }
+
+  /* Side by side once the copy column has enough width to hold the
+     opening at a real editorial size without cramping — the same
+     threshold already used for two-column splits elsewhere on the site
+     (the homepage's Join panel and the AI Agent stage both fall back to
+     one column at 980px). Below it, this falls back to the stage's own
+     single-column source order: copy, then visual. */
+  @media (min-width: 980px) {
+    .fiveg__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(36px, 4.5vw, 68px);
+    }
+  }
+
+  .fiveg__copy {
+    text-align: left;
+  }
+
+  /* One heading, two lines, one thought: same serif, same size, same
+     weight — only the colour marks the turn from statement to question,
+     so the second line reads as where the first one was going, not as a
+     smaller caption underneath it. */
+  .fiveg__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .fiveg__opening-q {
+    display: block;
+    margin-top: 0.16em;
+    color: var(--saffron-deep);
+  }
+
+  /* Restrained on purpose: the visual already carries the attention, this
+     just names what was noticed before handing off to the button. */
+  .fiveg__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .fiveg__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      opacity 320ms ease, background-color 320ms ease, color 320ms ease;
+  }
+
+  .fiveg__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .fiveg__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .fiveg__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .fiveg__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Used, not gone: it softens the same way the AI Agent stage's own pill
+     steps back once its interruption has landed, rather than vanishing and
+     leaving a gap or taking focus with it. */
+  [data-stage='2'] .fiveg__show {
+    color: var(--muted);
+    background: rgba(255, 253, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(40, 44, 60, 0.06);
+  }
+
+  [data-stage='2'] .fiveg__show:hover {
+    transform: none;
+  }
+
+  [data-stage='2'] .fiveg__show span {
+    color: var(--muted-light);
+  }
+
+  /* Held out of flow until the reveal — entering via one keyframe rather
+     than a transition, since a transition out of `display:none` never
+     runs. A caption belonging to the scene: on narrow, single-column
+     layouts it spans the only track there is, so it sits centered under
+     the phone/tower column stacked above it; the negative margin pulls
+     it in against the stage's own row gap (32–68px depending on
+     breakpoint) so it reads as the scene's own caption rather than a new
+     section below it. */
+  .fiveg__reveal {
+    display: none;
+    grid-column: 1 / -1;
+    margin: clamp(-38px, -4.4vh, -52px) auto 0;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  /* From 980px the stage is two columns (copy, then scene) — confining
+     this to the scene's own column keeps the caption under the
+     phone/tower group it describes, instead of centering under the full
+     stage width, which pulled it toward the copy column's side and away
+     from the visual entirely. Placed after the base rule above (not in
+     the earlier `.fiveg__stage` media block) so it wins the cascade at
+     equal specificity. */
+  @media (min-width: 980px) {
+    .fiveg__reveal {
+      grid-column: 2;
+    }
+  }
+
+  [data-stage='2'] .fiveg__reveal {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  .fiveg__reveal-kicker {
+    margin: 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .fiveg__reveal-text {
+    margin: 6px auto 0;
+    max-width: 36ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  /* The way onward: the homepage page-turn treatment, unchanged in
+     spirit — serif, ink, a small saffron circle carrying the arrow — at
+     this scene’s centred alignment instead of the homepage’s left one.
+     Quiet enough that "Show me" stays the loudest control on the page. */
+  .fiveg__turn {
+    display: inline-block;
+    margin: clamp(16px, 2.4vh, 22px) 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    /* Keeps the circle on the sentence’s own line rather than wrapping
+       alone onto the next one. */
+    white-space: nowrap;
+  }
+
+  .fiveg__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  /* A page-turn, not a button press: light underline on the text, a
+     light lift on the circle, nothing louder. */
+  .fiveg__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .fiveg__turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .fiveg__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* A second beat: the explanation lands first, then the way onward
+     appears under it. Rides on top of .fiveg__reveal’s own entrance
+     (560ms) rather than replacing it, so the block still arrives as one
+     caption and this is simply the last thing in it to settle. */
+  [data-stage='2'] .fiveg__reveal > .fiveg__turn {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1040ms;
+  }
+
+  @keyframes fiveg-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
+  /* ====================================================
+     THE SCENE
+     ==================================================== */
+  .fiveg__scene {
+    position: relative;
+    transition: aspect-ratio 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    /* The route canvas is wider than this box from Scene 4 onward. Nothing
+       in Scenes 1-3 ever reached these edges, so clipping here changes
+       nothing they do. */
+    overflow: hidden;
+    /* Same ratio the phone image always rendered at — this is what keeps
+       Scene 1's box, and therefore the whole page's initial layout,
+       pixel-identical to before this reveal existed. */
+    aspect-ratio: 1672 / 941;
+  }
+
+  .fiveg__phone {
+    position: absolute;
+    inset: 0;
+    /* Explicit: `scale` defaults to the element's own centre, which would
+       shrink the phone toward the middle of the scene rather than toward
+       its left edge — the opposite of "moves left" and, at this box's
+       proportions, close enough to the tower's own left edge to overlap
+       it. Anchoring left keeps the shrink and the leftward motion the
+       same gesture. */
+    transform-origin: left center;
+    transition: scale 720ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* Smaller, anchored at its own left edge: the shrink itself is both the
+     "moved left" effect (the phone recedes toward the box's left edge
+     rather than staying full width) and what opens the generous gap the
+     tower reveals into on the right. Sized to land at roughly 70–75% of
+     the tower's own displayed height — familiar object still clearly
+     legible, newly-revealed one still secondary. Deliberately scale-only,
+     no separate translate — a percentage translate here would be sized
+     against the phone's own box, which is far wider once the layout has
+     stacked to a single column than it is beside the copy on wide
+     screens, and a shift safe on desktop would push the phone off the
+     left edge of the viewport on narrower ones. Scale alone stays safe
+     at any width. */
+  [data-stage='2'] .fiveg__phone {
+    scale: 0.46 0.46;
+  }
+
+  .fiveg__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* The one discovery mark: a soft saffron glow with a dashed ring inside
+     it, centred on the "5G" glyph in the asset. Percentage-positioned and
+     percentage-sized against the phone's own box, so it moves and scales
+     together with `.fiveg__phone` under the transform above and stays
+     pinned to the glyph in both states. Nothing else in the image is
+     annotated. */
+  .fiveg__mark {
+    position: absolute;
+    left: 45.7%;
+    top: 38.3%;
+    width: 11%;
+    height: 19%;
+    translate: -50% -50%;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(232, 117, 36, 0.26) 0%, rgba(232, 117, 36, 0) 72%);
+  }
+
+  .fiveg__mark::after {
+    content: '';
+    position: absolute;
+    inset: 22%;
+    border-radius: 50%;
+    border: 1.6px dashed var(--saffron);
+    opacity: 0.85;
+    animation: fiveg-pulse 2.6s ease-in-out infinite;
+  }
+
+  @keyframes fiveg-pulse {
+    50% {
+      opacity: 0.4;
+      transform: scale(1.06);
+    }
+  }
+
+  /* The tower: positioned in the room the phone's shrink opens up on the
+     right, at its own size — no card, background, border or shadow of its
+     own. Cropped to the equipment via object-fit/position alone (the
+     source canvas is roughly half empty space on its left); the source
+     file itself is untouched. Invisible and inert until the reveal. */
+  .fiveg__tower {
+    position: absolute;
+    right: 0;
+    top: 18%;
+    width: 34%;
+    height: 64%;
+    opacity: 0;
+    translate: 14px 0;
+    scale: 0.94 0.94;
+    pointer-events: none;
+    transition: opacity 620ms ease, translate 620ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      scale 620ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    transition-delay: 280ms;
+  }
+
+  [data-stage='2'] .fiveg__tower {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+  }
+
+  .fiveg__tower-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The equipment sits in the right ~60% of the source canvas; anchoring
+       the crop to the right edge keeps it in frame while trimming the
+       empty left portion. */
+    object-position: 100% 42%;
+  }
+
+  /* The connection: one family of cobalt arcs struck from a single
+     origin at the phone — the three tight ones already there, plus four
+     wider ones carrying the same wavefront out across the open space to
+     the tower. They brighten in sequence from the innermost outward, so
+     what animates is the wave moving through the air rather than
+     anything travelling along a line. Saffron stays reserved for the
+     "look closer" mark on the phone itself. */
+  .fiveg__link {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .fiveg__wave {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-width: 6;
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 420ms ease;
+    transition-delay: 620ms;
+  }
+
+  [data-stage='2'] .fiveg__wave {
+    opacity: 0.5;
+    animation: fiveg-wave-pulse 2.4s ease-in-out infinite;
+    animation-delay: 900ms;
+  }
+
+  [data-stage='2'] .fiveg__wave:nth-child(2) {
+    opacity: 0.34;
+    animation-delay: 1020ms;
+  }
+
+  [data-stage='2'] .fiveg__wave:nth-child(3) {
+    opacity: 0.22;
+    animation-delay: 1140ms;
+  }
+
+  @keyframes fiveg-wave-pulse {
+    50% {
+      opacity: 0.1;
+    }
+  }
+
+  /* The four travelling wavefronts. Thinner and fainter the further out
+     they are — a wave losing strength with distance — and each one held
+     well under half opacity so the pair of objects, not the signal,
+     stays the loudest thing in the frame. */
+  .fiveg__arc {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-linecap: round;
+    opacity: 0;
+    transition: opacity 480ms ease;
+    transition-delay: 700ms;
+  }
+
+  .fiveg__arc:nth-of-type(4) {
+    stroke-width: 5;
+  }
+
+  .fiveg__arc:nth-of-type(5) {
+    stroke-width: 4.2;
+  }
+
+  .fiveg__arc:nth-of-type(6) {
+    stroke-width: 3.6;
+  }
+
+  .fiveg__arc:nth-of-type(7) {
+    stroke-width: 3;
+  }
+
+  /* Staggered by radius: ~260ms between neighbours, against a 3.2s
+     cycle, so a single swell reads as one front passing outward and the
+     scene is mostly at rest between passes rather than pulsing
+     constantly. */
+  [data-stage='2'] .fiveg__arc {
+    animation: fiveg-arc-out 3.2s ease-in-out infinite;
+  }
+
+  [data-stage='2'] .fiveg__arc:nth-of-type(4) {
+    animation-delay: 1000ms;
+  }
+
+  [data-stage='2'] .fiveg__arc:nth-of-type(5) {
+    animation-delay: 1260ms;
+  }
+
+  [data-stage='2'] .fiveg__arc:nth-of-type(6) {
+    animation-delay: 1520ms;
+  }
+
+  [data-stage='2'] .fiveg__arc:nth-of-type(7) {
+    animation-delay: 1780ms;
+  }
+
+  @keyframes fiveg-arc-out {
+    0%,
+    100% {
+      opacity: 0.07;
+    }
+    22% {
+      opacity: 0.4;
+    }
+    55% {
+      opacity: 0.12;
+    }
+  }
+
+  /* ====================================================
+     SCENE 3, FIRST STATE — the run out of the cell site.
+
+     Gated on its own 'data-route' flag rather than on 'data-stage'.
+     Every Scene 2 rule above is keyed to [data-stage='2']; advancing
+     the stage to 3 would switch all of them off and take the arcs, the
+     tower and the caption with it. A separate flag leaves Scene 2
+     running exactly as it is and simply adds this layer on top of it.
+     ==================================================== */
+  /* 6380 viewBox units across 381.579% of the world's width means one unit
+     is still exactly world-width/1672 — the same size it was when the canvas
+     stopped at 1672. Every coordinate already in here lands where it always
+     did; the extra 4708 units are simply room to the right that Scenes 4
+     and 5 pull into view in turn. */
+  .fiveg__route {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 381.579%;
+    /* global.css caps every svg at max-width:100%, which would squeeze the
+       2800-unit canvas back into the world's own width and shrink every
+       coordinate in it. This canvas is meant to be wider than its box. */
+    max-width: none;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .fiveg__cable-stop {
+    stop-color: var(--cobalt);
+  }
+
+  /* Earth, in the page's own warm neutral family rather than a new
+     colour: the cut face a step deeper than the paper, the lit top
+     surface a step lighter than the cut face. Nothing here is a hue the
+     rest of the site doesn't already sit in. */
+  .fiveg__soil-stop {
+    stop-color: #d8cbaf;
+  }
+
+  .fiveg__topsoil {
+    fill: #f3ede2;
+  }
+
+  /* The one line that gives the band its top: where the ground meets the
+     air. Ink, not cobalt — this is ground, not signal. The second line
+     under it is gone; one edge is all the surface needs. */
+  .fiveg__surface {
+    stroke: var(--ink);
+    stroke-opacity: 0.1;
+    stroke-width: 2.2;
+  }
+
+  .fiveg__grass {
+    fill: none;
+    stroke: #97a07e;
+    stroke-opacity: 0.34;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  /* The whole band arrives as one thing. */
+  .fiveg__earth {
+    opacity: 0;
+    transition: opacity 620ms ease;
+  }
+
+  [data-route='1'] .fiveg__earth {
+    opacity: 1;
+  }
+
+  /* Solid and continuous on purpose — the arcs above are discrete
+     wavefronts crossing open air, this is one unbroken physical thing.
+     Same cobalt, so it still reads as the same journey, just carried a
+     different way; thinner and much fainter than the arcs, because it is
+     being seen through ground rather than across open air. */
+  .fiveg__cable {
+    fill: none;
+    stroke-width: 5.2;
+    stroke-linecap: round;
+    /* pathLength="1" on the element, so the whole run is one dash and
+       one offset hides it completely. */
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  /* Drawn from the site outward, in the direction of travel, and only
+     once the ground it runs through has arrived — the line travelling is
+     the whole of this beat, so it takes its time (1.1s) and eases out
+     rather than snapping into place. */
+  [data-route='1'] .fiveg__cable {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1100ms cubic-bezier(0.32, 0.72, 0.26, 1);
+    transition-delay: 300ms;
+  }
+
+  /* The caption changes hands. Scene 2's kicker, body and its turn all
+     leave flow together — the turn has done its job and there is nothing
+     further to click yet — and Scene 3's copy takes the space they were
+     occupying. Child combinator, so only Scene 2's own direct children
+     are caught and the identically-classed paragraphs nested inside
+     .fiveg__onward-copy are not. */
+  [data-route='1'] .fiveg__reveal > .fiveg__reveal-kicker,
+  [data-route='1'] .fiveg__reveal > .fiveg__reveal-text,
+  [data-route='1'] .fiveg__reveal > .fiveg__turn {
+    display: none;
+  }
+
+  .fiveg__onward-copy {
+    display: none;
+  }
+
+  /* Arrives on the same fade-up every other beat in this scene uses, just
+     after the click rather than at the end of the route's draw — the words
+     and the picture change together. */
+  [data-route='1'] .fiveg__onward-copy {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Last thing in the caption to settle, at 760ms — exactly when the copy
+     above it has finished arriving (240ms delay + 520ms). The same second
+     beat Scene 2's own turn takes after its explanation. */
+  [data-route='1'] .fiveg__onward-copy .fiveg__turn {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* ====================================================
+     SCENE 4 — the place the route was going.
+
+     Its own flag again, for the same reason 'data-route' has one: every
+     Scene 3 rule is keyed to [data-route='1'], so bumping that value
+     would switch Scene 3 off. This adds on top instead.
+     ==================================================== */
+
+  /* The camera. Stated as four explicit values rather than `inset: 0` so
+     Scene 4 can move it without changing what it means: at stages 1-3 these
+     are exactly inset:0 and the composition is untouched. */
+  .fiveg__world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: left 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      top 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      width 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      height 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* Scene 4's view: the window onto the 3620-unit canvas runs x 300-3620,
+     y 80-941. That is 3320 x 861 units, which is the aspect the scene box
+     takes below — so one canvas unit is scene-width/3320 in BOTH axes and
+     nothing in here is stretched.
+
+     What the window does with the composition: the phone (canvas 0-769) is
+     cut at x=300 and keeps only its right end at the far left edge; the
+     cell site (1104-1672) lands at about a third across; the route then has
+     roughly 36% of the stage width to travel; and the destination
+     (2050-3550) takes the right half of the frame. The camera has followed
+     the connection rather than backing away from it. */
+  [data-scope='4'] .fiveg__world {
+    left: -9.036%;
+    top: -9.291%;
+    width: 50.361%;
+    height: 109.29%;
+  }
+
+  /* The frame itself widens with the view. A 1.78:1 box showing a 3.7:1
+     panorama is mostly empty sky; this keeps the ratio of the box and the
+     ratio of what it is looking at the same, so the composition fills it.
+     Scenes 1-3 keep the original box exactly. */
+  [data-scope='4'] .fiveg__scene {
+    aspect-ratio: 3320 / 861;
+  }
+
+  /* Ground and route stop being cut off at the near frame edge: at Scene 4
+     there is no frame there any more. */
+  .fiveg__earth-edge {
+    stop-opacity: 0.5;
+  }
+
+  .fiveg__earth-far,
+  .fiveg__earth-tail,
+  .fiveg__earth-far2,
+  .fiveg__earth-tail2 {
+    stop-opacity: 0;
+  }
+
+  .fiveg__cable-edge {
+    stop-opacity: 0.2;
+  }
+
+  .fiveg__earth-edge,
+  .fiveg__earth-far,
+  .fiveg__earth-tail,
+  .fiveg__earth-far2,
+  .fiveg__earth-tail2,
+  .fiveg__cable-edge {
+    transition: stop-opacity 620ms ease;
+  }
+
+  [data-scope='4'] .fiveg__earth-edge,
+  [data-scope='4'] .fiveg__earth-far {
+    stop-opacity: 1;
+  }
+
+  [data-scope='4'] .fiveg__earth-tail {
+    stop-opacity: 0.5;
+  }
+
+  [data-scope='4'] .fiveg__cable-edge {
+    stop-opacity: 0.62;
+  }
+
+  /* The far leg. Flat cobalt at the strength the near run holds mid-span,
+     so the two read as one continuous thing rather than two drawn lines. */
+  .fiveg__cable-far {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-opacity: 0.62;
+    stroke-width: 5.2;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  /* Draws once the camera has most of the way settled, and in the same
+     direction of travel as the near run. */
+  [data-scope='4'] .fiveg__cable-far {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1100ms cubic-bezier(0.32, 0.72, 0.26, 1);
+    transition-delay: 620ms;
+  }
+
+  /* x 2050-3550, y 206-800 in the route canvas's own units, expressed
+     against the world box (1672 x 941) that shares them. The asset's own
+     ground line sits at 93% of its height, which puts it on y=758 — the
+     same surface the cell site stands on. Width and height hold the asset's
+     own 2.526 ratio, so nothing about it is stretched. */
+  .fiveg__hub {
+    position: absolute;
+    left: 122.61%;
+    top: 21.85%;
+    width: 89.71%;
+    height: 63.12%;
+    opacity: 0;
+    translate: 20px 0;
+    scale: 0.97 0.97;
+    pointer-events: none;
+    transition: opacity 700ms ease, translate 700ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      scale 700ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    transition-delay: 520ms;
+  }
+
+  [data-scope='4'] .fiveg__hub {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+  }
+
+  .fiveg__hub-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* The caption changes hands again, on exactly the pattern Scene 3 set:
+     the block before it leaves flow entire — its copy and its spent turn
+     with it — and this one takes the space. One caption throughout. */
+  [data-scope='4'] .fiveg__onward-copy {
+    display: none;
+  }
+
+  .fiveg__deeper-copy {
+    display: none;
+  }
+
+  /* Same fade-up, same 240ms, so the words and the view change together on
+     the click rather than the copy waiting out the camera move. */
+  [data-scope='4'] .fiveg__deeper-copy {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Last thing in the caption to settle, at 760ms — the moment the copy
+     above it has finished arriving (240ms delay + 520ms). The same second
+     beat every turn in this story takes after its explanation. */
+  [data-scope='4'] .fiveg__deeper-copy .fiveg__turn {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* ====================================================
+     SCENE 5 — the next destination.
+
+     Its own flag once more. Everything Scene 4 turned on is keyed to
+     [data-scope='4'], so this layers on top of it rather than replacing
+     it: the camera, the ground and the route all continue from where
+     Scene 4 left them.
+     ==================================================== */
+
+  /* Scene 5's view: the window runs x 2760-6310, y -240 to 941. That is
+     3550 x 1201 units, the aspect the scene box takes below, so one canvas
+     unit is scene-width/3550 in BOTH axes and nothing is stretched.
+
+     The window is exactly as wide as it was — 3550 units, so nothing on
+     stage has been zoomed out. It has slid 510 units further right and
+     opened upward to make room overhead. What that does to the hierarchy:
+     the mobile-network site is cut harder at the left and drops to under a
+     quarter of the frame, receding into the position it has already played;
+     the open ground between them holds; and the service destination, now
+     2275 units across, takes nearly two thirds of the frame as the place
+     the journey has arrived at. */
+  [data-far='1'] .fiveg__world {
+    left: -77.746%;
+    top: 19.983%;
+    width: 47.099%;
+    height: 78.351%;
+  }
+
+  [data-far='1'] .fiveg__scene {
+    aspect-ratio: 3550 / 1201;
+  }
+
+  /* The ground runs the whole way now — no quiet edge anywhere the camera
+     can see. */
+  [data-far='1'] .fiveg__earth-tail,
+  [data-far='1'] .fiveg__earth-far2 {
+    stop-opacity: 1;
+  }
+
+  [data-far='1'] .fiveg__earth-tail2 {
+    stop-opacity: 0.5;
+  }
+
+  /* Same stroke as the leg before it, so the route stays one thing. */
+  .fiveg__cable-far2 {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-opacity: 0.62;
+    stroke-width: 5.2;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  [data-far='1'] .fiveg__cable-far2 {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1100ms cubic-bezier(0.32, 0.72, 0.26, 1);
+    transition-delay: 620ms;
+  }
+
+  /* x 3950-6225, y -193 to 852 in the route canvas's own units, against the
+     world box (1672 x 941) that shares them. This asset's ground line sits
+     at 91% of its height, which puts it on y=758 — the same surface both
+     other sites stand on. It reaches above the canvas, which is fine: the
+     canvas is a coordinate system, not a frame, and Scene 5's window opens
+     high enough to hold it. Width and height keep its own 2.178 ratio. */
+  .fiveg__hub2 {
+    position: absolute;
+    left: 236.244%;
+    top: -20.478%;
+    width: 136.064%;
+    height: 111.020%;
+    opacity: 0;
+    translate: 24px 0;
+    scale: 0.97 0.97;
+    pointer-events: none;
+    transition: opacity 700ms ease, translate 700ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      scale 700ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    transition-delay: 520ms;
+  }
+
+  /* STOPGAP, and it should not survive: CellTower2.png was exported without
+     an alpha channel (PNG colour type 2), so its "transparent" background is
+     baked in as literal checkerboard squares alternating #fdfefe and #f5f5f5.
+     The filter above cuts those out by brightness at render time, which works
+     but also thins any genuinely near-white pixel in the building itself.
+     The real fix is a transparent re-export of the asset,
+     which is why it is one declaration to delete and the asset itself is
+     untouched. */
+  .fiveg__hub2 .fiveg__hub-art {
+    filter: url(#fiveg-keyout);
+  }
+  [data-far='1'] .fiveg__hub2 {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+  }
+
+  /* The caption changes hands one more time, on the same pattern: the block
+     before it leaves flow entire — its copy and its spent turn with it — and
+     this one takes the space. One caption throughout. */
+  [data-far='1'] .fiveg__deeper-copy {
+    display: none;
+  }
+
+  .fiveg__far-copy {
+    display: none;
+  }
+
+  /* Same fade-up, same 240ms, so the words and the view change together on
+     the click rather than the copy waiting out the camera move. */
+  [data-far='1'] .fiveg__far-copy {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Last thing in the caption to settle, at 760ms — the moment the copy
+     above it has finished arriving (240ms delay + 520ms). The same second
+     beat every turn in this story takes after its explanation. */
+  [data-far='1'] .fiveg__far-copy .fiveg__turn {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* ====================================================
+     THE FAMILIAR ONE — same stage, different subject.
+
+     Its own flag again, layered on everything before it. The network
+     visual is not dismantled: the world keeps every position it had and
+     simply stops being looked at.
+     ==================================================== */
+  .fiveg__metro {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    scale: 1.03 1.03;
+    pointer-events: none;
+    transition: opacity 700ms ease, scale 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    transition-delay: 260ms;
+  }
+
+  [data-familiar='1'] .fiveg__metro {
+    opacity: 1;
+    scale: 1 1;
+  }
+
+  /* The network recedes rather than being torn down — the same gesture as
+     looking up from one thing to another. */
+  [data-familiar='1'] .fiveg__world {
+    opacity: 0;
+    transition: opacity 520ms ease;
+  }
+
+  /* The box takes the photograph's own 3:1, which is barely a change from
+     Scene 5's 3550/1201 — so the frame stays where it was on the page and
+     only its contents change. After the [data-far='1'] rule, so it wins at
+     equal specificity. */
+  [data-familiar='1'] .fiveg__scene {
+    aspect-ratio: 2172 / 724;
+  }
+
+  /* The caption changes hands with the picture: the block before it leaves
+     flow entire — its copy and its spent turn with it — and this one takes
+     the space. One caption throughout, as it has been the whole way. */
+  [data-familiar='1'] .fiveg__far-copy {
+    display: none;
+  }
+
+  .fiveg__metro-copy {
+    display: none;
+  }
+
+  /* Same fade-up, same 240ms, so the words and the change of subject land
+     together rather than the copy waiting out the cross-fade. */
+  [data-familiar='1'] .fiveg__metro-copy {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Last thing in the caption to settle, at 760ms — the moment the copy
+     above it has finished arriving (240ms delay + 520ms). The same second
+     beat every turn in this story takes after its explanation. */
+  [data-familiar='1'] .fiveg__metro-copy .fiveg__turn {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* ====================================================
+     THE WHOLE THING — every stage of the journey in one frame.
+
+     The last flag, layered like all the others. The window is x 0-3450,
+     y 60-941 — framed on the first connection, not on the whole line. The
+     phone, the arcs and the cell site take the left half of it at a size
+     that can carry the frame; the mobile-network site fills the right and
+     is cut by the frame edge, and the service destination is past it. The
+     journey does not stop there and the fade says so; it is context now,
+     and context is allowed to run off the edge.
+
+     One unit is scene-width/3450 here, about half what it was at Scene 3.
+     Every stroke in the scene is specified in those units, so each is
+     restated below at a width that holds at this zoom — the arcs a little
+     heavier than their natural weight because they are the subject, the
+     route and the surface line at roughly the weight they always had.
+     ==================================================== */
+  [data-final='1'] .fiveg__world {
+    left: 0;
+    top: -6.811%;
+    width: 48.464%;
+    height: 106.811%;
+    /* Back from the analogy. Later in the sheet than the rule that took it
+       away, so it wins at equal specificity. */
+    opacity: 1;
+    transition: opacity 700ms ease, left 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      top 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      width 950ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      height 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    transition-delay: 240ms, 0ms, 0ms, 0ms, 0ms;
+  }
+
+  [data-final='1'] .fiveg__metro {
+    opacity: 0;
+    scale: 1.02 1.02;
+    transition-delay: 0ms;
+  }
+
+  [data-final='1'] .fiveg__scene {
+    aspect-ratio: 3450 / 881;
+  }
+
+  /* THE FIRST CONNECTION — the one thing this state is about. Same cobalt
+     arcs the story has used from the beginning, at the weight they need to
+     hold the frame from here: thicker strokes, and a stronger swell than
+     the one they run at up close. Nothing new is drawn. */
+  [data-final='1'] .fiveg__wave {
+    stroke-width: 14;
+  }
+
+  [data-stage='2'][data-final='1'] .fiveg__wave {
+    opacity: 0.9;
+  }
+
+  [data-stage='2'][data-final='1'] .fiveg__wave:nth-child(2) {
+    opacity: 0.72;
+  }
+
+  [data-stage='2'][data-final='1'] .fiveg__wave:nth-child(3) {
+    opacity: 0.55;
+  }
+
+  [data-final='1'] .fiveg__arc:nth-of-type(4) {
+    stroke-width: 13;
+  }
+
+  [data-final='1'] .fiveg__arc:nth-of-type(5) {
+    stroke-width: 11;
+  }
+
+  [data-final='1'] .fiveg__arc:nth-of-type(6) {
+    stroke-width: 9.5;
+  }
+
+  [data-final='1'] .fiveg__arc:nth-of-type(7) {
+    stroke-width: 8;
+  }
+
+  [data-stage='2'][data-final='1'] .fiveg__arc {
+    animation-name: fiveg-arc-final;
+  }
+
+  @keyframes fiveg-arc-final {
+    0%,
+    100% {
+      opacity: 0.16;
+    }
+    22% {
+      opacity: 0.92;
+    }
+    55% {
+      opacity: 0.3;
+    }
+  }
+
+  /* EVERYTHING PAST THE CELL SITE — present, in place, and quiet. It is
+     still the same journey; it is just no longer the part being pointed
+     at. Strokes are widened only enough to stay drawn at this scale, then
+     held well under the arcs. */
+  [data-final='1'] .fiveg__hub,
+  [data-final='1'] .fiveg__hub2 {
+    opacity: 0.32;
+  }
+
+  [data-final='1'] .fiveg__cable,
+  [data-final='1'] .fiveg__cable-far,
+  [data-final='1'] .fiveg__cable-far2 {
+    stroke-width: 10;
+    opacity: 0.3;
+  }
+
+  /* The ground is the thread that runs under all of it, so it stays — but
+     its hairline is 2.2 units, which is a fifth of a pixel here. */
+  [data-final='1'] .fiveg__surface {
+    stroke-width: 5;
+  }
+
+  [data-final='1'] .fiveg__grass {
+    stroke-width: 4;
+  }
+
+  /* The caption changes hands for the last time, on the pattern every
+     hand-over here has used: the block before it leaves flow entire — its
+     copy and its spent turn with it — and this one takes the space. */
+  [data-final='1'] .fiveg__metro-copy {
+    display: none;
+  }
+
+  .fiveg__final-copy {
+    display: none;
+  }
+
+  /* Same fade-up, same 240ms, so the words and the view land together. */
+  [data-final='1'] .fiveg__final-copy {
+    display: block;
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The closing pair is a turn in the thought, not the next sentence of
+     the one above it, so it gets a beat of space rather than the 6px the
+     body copy stacks at. */
+  .fiveg__reveal-text--close {
+    margin-top: 15px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fiveg__mark::after {
+      animation: none;
+    }
+
+    [data-route='1'] .fiveg__earth,
+    [data-route='1'] .fiveg__cable {
+      transition: none;
+    }
+
+    [data-scope='4'] .fiveg__scene,
+    [data-scope='4'] .fiveg__world,
+    [data-scope='4'] .fiveg__cable-far,
+    [data-scope='4'] .fiveg__hub,
+    [data-far='1'] .fiveg__cable-far2,
+    [data-far='1'] .fiveg__hub2,
+    [data-familiar='1'] .fiveg__metro,
+    [data-familiar='1'] .fiveg__world,
+    [data-final='1'] .fiveg__metro,
+    [data-final='1'] .fiveg__world {
+      transition: none;
+    }
+
+    [data-stage='2'] .fiveg__wave,
+    [data-stage='2'] .fiveg__arc {
+      animation: none;
+    }
+
+    /* Still present, just still: the arcs hold at the strength they
+       would reach mid-swell instead of never appearing at all. */
+    [data-stage='2'] .fiveg__arc {
+      opacity: 0.3;
+    }
+  }
+</style>

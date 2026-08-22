@@ -8,6 +8,7 @@ import DeepDive from '../../components/explain/DeepDive.astro';
 import Sources from '../../components/explain/Sources.astro';
 import PhotoJourney from '../../components/explain/PhotoJourney.astro';
 import AgentStage from '../../components/explain/AgentStage.astro';
+import PhotoStory from '../../components/explain/PhotoStory.astro';
 
 // A topic opts into a signature scene by naming it in frontmatter. Topics
 // without one fall through to the standard template.
@@ -28,6 +29,16 @@ const { topic } = Astro.props;
 const { Content } = await render(topic);
 const Scene = topic.data.scene ? scenes[topic.data.scene] : undefined;
 
+// Topics that have been rebuilt as scene-by-scene stories open on their own
+// Scene 1 composition instead of the generic ConceptHero + scene + layers
+// stack. Everything below is still imported and still wired — it is gated off
+// while the story sits at Scene 1, not removed.
+const storyOpenings: Record<string, any> = {
+  'how-your-photo-travels': PhotoStory,
+};
+
+const StoryOpening = storyOpenings[topic.id];
+
 const categoryLabel: Record<string, string> = {
   'identity-security': 'Identity & security',
   networks: 'Networks',
@@ -39,29 +50,35 @@ const categoryLabel: Record<string, string> = {
 
 <BaseLayout title={`${topic.data.title} — DekhoYahan`} description={topic.data.summary}>
   <main class="topic-page">
-    <ConceptHero
-      eyebrow={categoryLabel[topic.data.category] ?? topic.data.category}
-      title={topic.data.title}
-      hook={topic.data.hook}
-    />
+    {StoryOpening ? (
+      <StoryOpening />
+    ) : (
+      <Fragment>
+        <ConceptHero
+          eyebrow={categoryLabel[topic.data.category] ?? topic.data.category}
+          title={topic.data.title}
+          hook={topic.data.hook}
+        />
 
-    {Scene && (
-      <div class="topic-scene">
-        <Scene mode="story" />
-      </div>
+        {Scene && (
+          <div class="topic-scene">
+            <Scene mode="story" />
+          </div>
+        )}
+
+        <LayerReveal layers={topic.data.layers} />
+
+        {topic.data.decision && (
+          <DecisionMoment prompt={topic.data.decision.prompt} options={topic.data.decision.options} />
+        )}
+
+        <DeepDive>
+          <Content />
+        </DeepDive>
+
+        <Sources sources={topic.data.sources} />
+      </Fragment>
     )}
-
-    <LayerReveal layers={topic.data.layers} />
-
-    {topic.data.decision && (
-      <DecisionMoment prompt={topic.data.decision.prompt} options={topic.data.decision.options} />
-    )}
-
-    <DeepDive>
-      <Content />
-    </DeepDive>
-
-    <Sources sources={topic.data.sources} />
   </main>
 </BaseLayout>
 
