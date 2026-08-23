@@ -67,9 +67,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <div class="fiveg__phone">
           <img
             class="fiveg__art"
-            src="/images/5G.png"
+            src="/images/5G.webp"
             alt="Close-up of a phone's status bar showing a 5G indicator, full signal bars and the battery icon."
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           />
           <span class="fiveg__mark" aria-hidden="true"></span>
@@ -253,7 +254,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
              the footprint of the cell site's 568 x 602 — a bigger place, not
              a bigger drawing. Invisible and inert until the reveal. -->
         <div class="fiveg__hub" aria-hidden="true">
-          <img class="fiveg__hub-art" src="/images/CellTower1.png" alt="" loading="lazy" decoding="async" />
+          <img class="fiveg__hub-art" data-src="/images/CellTower1.webp" alt="" loading="eager" decoding="async" />
         </div>
 
         <!-- Scene 5's destination, used as-is like every other asset here.
@@ -265,7 +266,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
              without anything being drawn on top of it. Invisible and inert
              until the reveal. -->
         <div class="fiveg__hub2" aria-hidden="true">
-          <img class="fiveg__hub-art" src="/images/CellTower2.png" alt="" loading="lazy" decoding="async" />
+          <img class="fiveg__hub-art" data-src="/images/CellTower2.webp" alt="" loading="eager" decoding="async" />
         </div>
 
         <!-- The supplied asset, used as-is: no card, background, border or
@@ -274,7 +275,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
              itself, since roughly the left half of the source canvas is
              empty space. -->
         <div class="fiveg__tower" aria-hidden="true">
-          <img class="fiveg__tower-art" src="/images/CellTower.png" alt="" loading="lazy" decoding="async" />
+          <img class="fiveg__tower-art" data-src="/images/CellTower.webp" alt="" loading="eager" decoding="async" />
         </div>
 
         <!-- The connection: one family of radio arcs, all struck from the
@@ -322,9 +323,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
              nothing cropped. -->
         <img
           class="fiveg__metro"
-          src="/images/Metro.png"
+          data-src="/images/Metro.webp"
           alt="A commuter at a metro station entrance, phone in hand, with the line running out across a viaduct toward the city beyond."
-          loading="lazy"
+          loading="eager"
           decoding="async"
         />
       </div>
@@ -466,12 +467,49 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   document.querySelectorAll('[data-fiveg]').forEach((root) => {
     if (!(root instanceof HTMLElement)) return;
 
+    // Runs `fn` once the browser is idle (or after a short fallback delay
+    // on browsers without requestIdleCallback), so a preload never competes
+    // with the current scene's own paint or transition.
+    const idle = (fn) =>
+      'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 300);
+
+    // Sets `src` from `data-src` on an <img> that was parsed without one —
+    // a no-op if it's already been set. Used both as the deliberate early
+    // preload (called from `idle`, well before the scene that needs it)
+    // and as a same-element fallback inside that scene's own click
+    // handler, so the image is always correct even if the idle preload
+    // hasn't run yet. Because it's the exact element the scene displays,
+    // there is no separate probe object and no second decode — one fetch,
+    // one decode, reused for every later reveal (including after this
+    // page's own reset, if it ever gets one).
+    const ensureLoaded = (el) => {
+      if (!el || el.src) return;
+      const url = el.dataset.src;
+      if (url) el.src = url;
+    };
+
+    const towerArt = root.querySelector('.fiveg__tower-art');
+    const hubArt = root.querySelector('.fiveg__hub .fiveg__hub-art');
+    const hub2Art = root.querySelector('.fiveg__hub2 .fiveg__hub-art');
+    const metroArt = root.querySelector('.fiveg__metro');
+
+    // CellTower.png is needed the moment "Show me" is clicked — the very
+    // next scene past the opening. Nothing else on this page is waiting on
+    // the idle queue, so it's safe to start as soon as Scene 1 has had its
+    // own paint.
+    idle(() => ensureLoaded(towerArt));
+
     root.querySelector('[data-show]')?.addEventListener('click', () => {
       // One way, one time: Scene 1 → this first reveal. There is nothing
       // past it yet, so a second click is simply a no-op rather than
       // needing its own guarded state.
       if (root.dataset.stage !== '1') return;
       root.dataset.stage = '2';
+      ensureLoaded(towerArt); // fallback if the idle preload above hasn't run yet
+
+      // CellTower1 is two clicks away (onward, then deeper) — starting it
+      // now gives it a full click's worth of extra lead time.
+      ensureLoaded(hubArt);
     });
 
     // Scene 3, first state. A flag of its own rather than stage 3, so
@@ -487,6 +525,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     root.querySelector('[data-deeper]')?.addEventListener('click', () => {
       if (root.dataset.route !== '1' || root.dataset.scope) return;
       root.dataset.scope = '4';
+      ensureLoaded(hubArt); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(hub2Art);
     });
 
     // Scene 5. Same reason for a separate flag: bumping 'scope' to 5 would
@@ -495,6 +535,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     root.querySelector('[data-further]')?.addEventListener('click', () => {
       if (root.dataset.scope !== '4' || root.dataset.far) return;
       root.dataset.far = '1';
+      ensureLoaded(hub2Art); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(metroArt);
     });
 
     // The familiar one. A flag of its own for the same reason as all the
@@ -502,6 +544,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     root.querySelector('[data-familiar]')?.addEventListener('click', () => {
       if (root.dataset.far !== '1' || root.dataset.familiar) return;
       root.dataset.familiar = '1';
+      ensureLoaded(metroArt); // fallback if the idle preload above hasn't run yet
     });
 
     // Back to the real thing, whole. Last flag; everything before it is

@@ -58,11 +58,16 @@
          than swapped: the footprint, the position and the scale never change,
          and the phones do not move when the state does. Nothing is drawn over
          either of them, and neither is redrawn, cropped or reinterpreted.
-         ==================================================== -->
+
+         Only PhotoSend1 (Scene 1) carries a real `src` at parse time; every
+         later frame below carries its path in `data-src` instead, so this
+         six-image story doesn't put all six on the wire before the visitor
+         has clicked once. The story's script (bottom of this file) fetches
+         each one into its own element ahead of the click that needs it. -->
     <div class="photo__scene">
       <img
         class="photo__art photo__art--send"
-        src="/images/PhotoSend1.png"
+        src="/images/PhotoSend1.webp"
         alt="Two phones far apart. The photo is open on the sender's phone at the left, ready to send. The recipient's phone toward the right is smaller and its screen still shows an empty placeholder. Nothing is shown between them."
         width="1672"
         height="941"
@@ -75,7 +80,7 @@
            zero opacity and out of the accessibility tree until then. -->
       <img
         class="photo__art photo__art--data"
-        src="/images/PhotoSend2.png"
+        data-src="/images/PhotoSend2.webp"
         alt="The same two phones. The photo is breaking away from the sender's screen into a drift of small blue fragments that thins as it travels toward the distant phone."
         width="1672"
         height="941"
@@ -98,11 +103,11 @@
       <div class="photo__service">
         <img
           class="photo__service-art"
-          src="/images/PhotoSend3.png"
+          data-src="/images/PhotoSend3.webp"
           alt="A large data-centre building — the real destination the photo's data is travelling toward, well before it would ever reach a second phone."
           width="2032"
           height="774"
-          loading="lazy"
+          loading="eager"
           decoding="async"
         />
       </div>
@@ -118,11 +123,11 @@
            wireless hop connects to, not as a cut to a new illustration. -->
       <img
         class="photo__art photo__art--physical"
-        src="/images/PhotoSend4.png"
+        data-src="/images/PhotoSend4.webp"
         alt="The full path from the sender's phone: a short wireless hop to a cell tower, then a buried run of fibre cables in cross-section, arriving at the service building."
         width="1672"
         height="941"
-        loading="lazy"
+        loading="eager"
         decoding="async"
         aria-hidden="true"
       />
@@ -137,11 +142,11 @@
            out under it exactly as Scene 4 faded out what came before it. -->
       <img
         class="photo__art photo__art--ocean"
-        src="/images/PhotoSend5.png"
+        data-src="/images/PhotoSend5.webp"
         alt="The path continues past the service building, along a coastline, and down onto the sea floor as a submarine cable crossing open water to a city on the far shore."
         width="2172"
         height="724"
-        loading="lazy"
+        loading="eager"
         decoding="async"
         aria-hidden="true"
       />
@@ -155,11 +160,11 @@
            lines are drawn or animated independently of it. -->
       <img
         class="photo__art photo__art--global"
-        src="/images/PhotoSend6.png"
+        data-src="/images/PhotoSend6.webp"
         alt="The same phone, now shown against the whole Earth from orbit, with a network of glowing connected routes linking cities across continents."
         width="1672"
         height="941"
-        loading="lazy"
+        loading="eager"
         decoding="async"
         aria-hidden="true"
       />
@@ -869,11 +874,45 @@
   document.querySelectorAll('[data-photo]').forEach((root) => {
     if (!(root instanceof HTMLElement)) return;
 
+    // Runs `fn` once the browser is idle (or after a short fallback delay
+    // on browsers without requestIdleCallback), so a preload never competes
+    // with the current scene's own paint or transition.
+    const idle = (fn) =>
+      'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 300);
+
+    // Sets `src` from `data-src` on an <img> that was parsed without one —
+    // a no-op if it's already been set. Used both as the deliberate early
+    // preload (called from `idle`, well before the scene that needs it)
+    // and as a same-element fallback inside that scene's own click
+    // handler, so the image is always correct even if the idle preload
+    // hasn't run yet. Because it's the exact element the scene displays,
+    // there is no separate probe object and no second decode — one fetch,
+    // one decode, reused for every later reveal.
+    const ensureLoaded = (el) => {
+      if (!el || el.src) return;
+      const url = el.dataset.src;
+      if (url) el.src = url;
+    };
+
+    const dataArt = root.querySelector('.photo__art--data');
+    const serviceArt = root.querySelector('.photo__service-art');
+    const physicalArt = root.querySelector('.photo__art--physical');
+    const oceanArt = root.querySelector('.photo__art--ocean');
+    const globalArt = root.querySelector('.photo__art--global');
+
+    // PhotoSend2 is needed the moment "Show me" is clicked — the very next
+    // scene past the opening. Nothing else on this page is waiting on the
+    // idle queue, so it's safe to start as soon as Scene 1 has had its own
+    // paint.
+    idle(() => ensureLoaded(dataArt));
+
     root.querySelector('[data-show]')?.addEventListener('click', () => {
       // One way, one time: Scene 1 → Scene 2. There is nothing past it yet,
       // so a second click is simply a no-op.
       if (root.dataset.stage !== '1') return;
       root.dataset.stage = '2';
+      ensureLoaded(dataArt); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(serviceArt);
 
       // The frame that is now the scene should be the one described to a
       // screen reader, and the one that has faded out should not be.
@@ -888,6 +927,8 @@
     root.querySelector('[data-onward]')?.addEventListener('click', () => {
       if (root.dataset.stage !== '2' || root.dataset.service === '1') return;
       root.dataset.service = '1';
+      ensureLoaded(serviceArt); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(physicalArt);
     });
 
     // Scene 4. A flag of its own rather than stage 4, so everything Scene 3
@@ -895,6 +936,8 @@
     root.querySelector('[data-further]')?.addEventListener('click', () => {
       if (root.dataset.service !== '1' || root.dataset.physical === '1') return;
       root.dataset.physical = '1';
+      ensureLoaded(physicalArt); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(oceanArt);
 
       // The frame that is now the scene should be the one described to a
       // screen reader; the frames it replaced should not be.
@@ -909,6 +952,8 @@
     root.querySelector('[data-ocean]')?.addEventListener('click', () => {
       if (root.dataset.physical !== '1' || root.dataset.ocean === '1') return;
       root.dataset.ocean = '1';
+      ensureLoaded(oceanArt); // fallback if the idle preload above hasn't run yet
+      ensureLoaded(globalArt);
 
       // The frame that is now the scene should be the one described to a
       // screen reader; the frame it replaced should not be.
@@ -921,6 +966,7 @@
     root.querySelector('[data-far]')?.addEventListener('click', () => {
       if (root.dataset.ocean !== '1' || root.dataset.global === '1') return;
       root.dataset.global = '1';
+      ensureLoaded(globalArt); // fallback if the idle preload above hasn't run yet
 
       // The frame that is now the scene should be the one described to a
       // screen reader; the frame it replaced should not be.

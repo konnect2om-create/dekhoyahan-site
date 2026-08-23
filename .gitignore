@@ -5,3 +5,7 @@ dist/
 .env
 .env.*
 .DS_Store
+
+# Image masters. Sources for the WebP files in public/images/ — kept out of
+# the repo (and out of the build) because nothing serves them.
+/assets-src/

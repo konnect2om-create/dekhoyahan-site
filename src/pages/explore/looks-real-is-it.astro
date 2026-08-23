@@ -1,0 +1,1186 @@
+---
+// New Explore-only story: "Looks real. Is it?" — the first of the four
+// homepage preview cards to get its own page. Scene 1 only, on exactly the
+// construction /explore/where-is-the-5g and the photo story both use: one
+// grid, copy and the interaction on the left, the visual stage on the
+// right; the reveal that follows the first click is a caption block under
+// the visual (in the right-hand column), not a rewrite of the left
+// narrative — the left title stays the anchor for the whole story, the
+// same way "Where does your photo actually go?" and "Your phone says 5G."
+// never change once the story has started. Scene 2 (whatever "So what can
+// you know?" actually reveals) does not exist yet.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Looks real. Is it? — DekhoYahan"
+  description="Anything seem unusual?"
+>
+  <div class="look" data-look data-stage="1">
+    <!-- Same reasoning as the 5G and photo openings: copy and the visual
+         share one grid rather than a header sitting above a separate
+         stage, so on wide screens they sit side by side and both the
+         question and the CTA are readable before the visitor scrolls past
+         the image; below the stacking point they fall back to the same
+         top-to-bottom order, copy first.
+
+         This opening also carries a small eyebrow above the heading —
+         "LOOK AGAIN" — which the 5G and photo stories deliberately don't
+         use (their statement-and-question headings don't need a label
+         above them to make sense). Here the heading is a single short
+         line rather than a two-part thought, so the eyebrow is what
+         frames it as an invitation to look again rather than a flat
+         statement. Reuses ConceptHero's own eyebrow treatment (small
+         saffron dot, cobalt uppercase) rather than inventing a new one. -->
+    <div class="look__stage shell">
+      <div class="look__copy">
+        <p class="look__eyebrow"><span></span>Look again</p>
+
+        <h1 class="look__opening">Looks real.</h1>
+
+        <p class="look__noticed">Anything seem unusual?</p>
+
+        <!-- The one thing that starts the story. Softens once used
+             (below) rather than disappearing — same treatment the photo
+             story gives its own "Show me" pill. -->
+        <button type="button" class="look__show" data-show>
+          Looks real <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- ====================================================
+           THE SCENE — the supplied café photo, used as-is and locked,
+           plus the supplied OldPhone render for the next beat.
+
+           The café photo is a plain photograph rather than a composed
+           render, so its box was simply sized to its own ratio (1536 x
+           1024, 3:2) with no overlay, effect, label or AI indicator drawn
+           over it — and stays exactly that way. OldPhone cross-fades in
+           on top of it, on the identical technique the photo story uses
+           for every one of its own scene changes: both images occupy the
+           same absolutely-positioned box, only opacity differs between
+           them, and the box's own aspect-ratio transitions to match
+           whichever is active (OldPhone is 1881 x 836 — much wider and
+           shorter than the café photo — the same way the photo story's
+           own aspect-ratio changes for its wider panorama scenes). -->
+      <!-- Both of this story's visuals live in one block: the café photo,
+           and — at the digital-seal beat only — the supplied DigitalSeal
+           render beside it. Keeping them siblings here is what lets that
+           one beat read as a horizontal relationship (photo → its seal)
+           rather than a tall stack of photo, caption, second image; on
+           narrow layouts the block stays a plain column and the two
+           visuals simply sit one above the other. -->
+      <div class="look__visuals">
+        <div class="look__scene">
+          <img
+            class="look__art look__art--cafe"
+            src="/images/Street1.webp"
+            alt="Three people at an outdoor café table, mid-conversation."
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+          />
+
+          <!-- Present in the DOM from the start so the cross-fade has
+               something decoded to fade to; held at zero opacity and out of
+               the accessibility tree until the evidence beat is reached.
+               Used exactly as supplied — nothing added, redrawn or
+               recreated. No `src` at parse time — only Scene 1's own photo
+               should be part of the initial page weight; the story's script
+               fetches this one into the same element once idle, well ahead
+               of the click that needs it (see data-src below). -->
+          <img
+            class="look__art look__art--old"
+            data-src="/images/OldPhone_v2.webp"
+            alt="A used smartphone beside its purchase receipt, an IMEI serial tag and a service-history checklist — the paperwork that establishes where it came from."
+            width="1881"
+            height="836"
+            loading="eager"
+            decoding="async"
+            aria-hidden="true"
+          />
+
+          <!-- The one unfamiliar object this beat introduces: a small,
+               restrained "cr" mark in the photo's corner, the way the real
+               Content Credentials indicator sits on an image — built in
+               plain HTML/CSS rather than reproducing the trademarked
+               artwork itself. Held invisible and out of the accessibility
+               tree until this beat is reached; the café photo underneath it
+               never changes. -->
+          <span class="look__cr" aria-hidden="true">cr</span>
+        </div>
+
+        <!-- The supplied DigitalSeal render, used exactly as provided —
+             nothing added, redrawn or recreated. Out of the flow entirely
+             until the seal beat, and out again at the closing beat, the
+             same way it was when it lived inside the caption. No `src` at
+             parse time, for the same reason OldPhone_v2 above has none —
+             the story's script fetches it into this element once the
+             provenance beat is reached, well ahead of the click that
+             actually needs it. -->
+        <img
+          class="look__seal-art"
+          data-src="/images/DigitalSeal.webp"
+          alt="A sealed package with a wax seal bearing a shield-and-checkmark mark, next to a phone showing a signed digital certificate with the same mark."
+          width="1536"
+          height="1024"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <!-- The reveal's own copy: below the visual it describes, in the
+           scene's own column — the exact relationship the 5G and photo
+           stories use for every caption past their opening. Held out of
+           flow until the first click. -->
+      <div class="look__reveal" data-reveal aria-live="polite">
+        <p class="look__reveal-kicker">
+          It might be.<br />
+          It might not be.
+        </p>
+        <p class="look__reveal-text">Looking real doesn't tell you where it came from.</p>
+
+        <!-- The way onward. Real and focusable. -->
+        <button type="button" class="look__turn" data-onward>
+          So what can you know? <span aria-hidden="true">→</span>
+        </button>
+
+        <!-- This beat's caption. Takes over the same block rather than
+             being added under it — the exact hand-over the photo story
+             uses for every one of its own captions past the first: at
+             [data-evidence='1'] the kicker, text and turn directly above
+             this leave the flow, and this takes their place. Nested one
+             level down on purpose, so the child-combinator rule that
+             hides them can't also catch this one. -->
+        <div class="look__evidence">
+          <p class="look__evidence-headline">You wouldn't judge a used phone only by looking at it.</p>
+          <p class="look__reveal-text">You look at its history.</p>
+
+          <!-- The way onward. Real and focusable. -->
+          <button type="button" class="look__turn" data-history>
+            A picture can have a history too <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- This beat's caption, on the same hand-over again: at
+               [data-provenance='1'] the headline, text and turn directly
+               above this leave the flow, and this takes their place. The
+               scene returns to the locked café photo (see .look__scene's
+               own rule below) — this beat is about naming what that first
+               photo carries, not about a new image. -->
+          <div class="look__provenance">
+            <p class="look__reveal-text">A picture can carry clues about its journey.</p>
+
+            <!-- The progression itself: plain text and CSS, no new asset —
+                 three states a photo passes through, joined by the same
+                 saffron arrow every turn in this story already uses. -->
+            <ol class="look__steps" aria-label="A photo's journey">
+              <li>Created</li>
+              <li>Edited</li>
+              <li>Published</li>
+            </ol>
+
+            <p class="look__reveal-kicker">That history is called provenance.</p>
+            <p class="look__reveal-text">Where it came from. What happened to it.</p>
+
+            <!-- The way onward. Real and focusable. -->
+            <button type="button" class="look__turn" data-verify>
+              But where do you see it? <span aria-hidden="true">→</span>
+            </button>
+
+            <!-- This beat's caption, on the same hand-over again: at
+                 [data-label='1'] the text, steps, kicker and turn directly
+                 above this leave the flow, and this takes their place. The
+                 café photo itself doesn't change — only the small "cr"
+                 mark on it (see .look__cr, above) and this panel appear. -->
+            <div class="look__label">
+              <p class="look__reveal-text">Sometimes, right on the picture.</p>
+
+              <!-- The credential panel: plain text and CSS, no new asset —
+                   a compact card in the same border/radius/shadow language
+                   the site's other cards already use (the Explore library
+                   cards, the homepage's info chips), not a new visual
+                   idiom of its own.
+
+                   Field names only, no values — this is illustrating what
+                   a label like this can contain, not a reading taken from
+                   the café photo above it. Filling these in with specific
+                   answers ("Camera / application", etc.) would have
+                   implied this particular image had actually been
+                   inspected, which it hasn't. -->
+              <div class="look__cred">
+                <p class="look__cred-title">Content Credentials</p>
+
+                <ul class="look__cred-fields">
+                  <li>Creator / device</li>
+                  <li>Tools used</li>
+                  <li>Edits recorded</li>
+                  <li>AI use, when declared</li>
+                </ul>
+              </div>
+
+              <!-- The one caveat this beat needs, and no more of one: kept
+                   smaller and quieter than the surrounding copy rather than
+                   given its own kicker weight, so it reads as a footnote to
+                   the panel, not a new claim competing with the takeaway
+                   below it. -->
+              <p class="look__cred-note">What you see depends on what was recorded.</p>
+
+              <p class="look__reveal-kicker">It can show parts of the picture's recorded history.</p>
+              <p class="look__reveal-text">Think of it like a nutrition label for the picture.</p>
+
+              <!-- The way onward. Real and focusable. -->
+              <button type="button" class="look__turn" data-trust>
+                Can you trust the label? <span aria-hidden="true">→</span>
+              </button>
+
+              <!-- This beat's caption, on the same hand-over again: at
+                   [data-seal='1'] everything above this leaves the flow,
+                   and this takes its place. The café photo and its "cr"
+                   mark are untouched — this beat's own visual (the
+                   DigitalSeal render) sits beside the photo up in
+                   .look__visuals rather than below this copy, so the beat
+                   reads across rather than down. -->
+              <div class="look__seal">
+                <p class="look__reveal-kicker">
+                  It isn't just a label.<br />
+                  It has a digital seal.
+                </p>
+                <p class="look__reveal-text">Think of a sealed package.</p>
+
+                <p class="look__reveal-kicker">
+                  If the seal verifies, changes to the signed record can be detected.
+                </p>
+                <p class="look__reveal-text">That seal uses a digital signature.</p>
+
+                <!-- The way onward. Real and focusable. -->
+                <button type="button" class="look__turn" data-prove>
+                  But what does the seal prove? <span aria-hidden="true">→</span>
+                </button>
+
+                <!-- The story's last step, on the same hand-over again: at
+                     [data-final='1'] everything above this leaves the
+                     flow, and this takes its place. The DigitalSeal render
+                     leaves the visual block with it — this beat names
+                     the seal's limit rather than showing it, so the café
+                     photo (back to its full width) and its "cr" mark are
+                     what the visitor is left looking at. There is
+                     nothing past this: the only control is a return to the
+                     very beginning, not another reveal. -->
+                <div class="look__final">
+                  <p class="look__reveal-kicker">
+                    It can help prove the history.<br />
+                    Not the truth.
+                  </p>
+                  <p class="look__reveal-text">
+                    A verified seal can show that the signed record hasn't changed.
+                  </p>
+                  <p class="look__reveal-text">
+                    But provenance can't tell you whether the story around the picture is true.
+                  </p>
+
+                  <p class="look__reveal-text look__reveal-text--close">
+                    So don't ask only:<br />
+                    “Does this look real?”
+                  </p>
+                  <p class="look__reveal-text look__reveal-text--close look__reveal-text--realize">
+                    Ask:<br />
+                    “Where did it come from?”
+                  </p>
+
+                  <!-- Not a continuation — the whole story resets to its
+                       very first state on click, the same way the
+                       homepage hero's own CTA becomes "Replay" once its
+                       journey is finished. -->
+                  <button type="button" class="look__turn" data-replay>
+                    Now look again <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .look {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .look__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    /* Named as a custom property (rather than just a gap value) so
+       .look__reveal's own negative margin, below, can pull the same
+       amount back off it at every breakpoint — that's what keeps the
+       image-to-reveal gap a small constant instead of just however much
+       of the row gap happens to be left over. */
+    --look-gap: clamp(32px, 5vh, 48px);
+    gap: var(--look-gap);
+    /* Matches the scene box's own aspect-ratio transition pace, so the
+       column widening for the evidence beat and the image's ratio change
+       settle together as one movement. */
+    transition: grid-template-columns 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* Same threshold the 5G and photo stories split at. */
+  @media (min-width: 980px) {
+    .look__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      --look-gap: clamp(36px, 4.5vw, 68px);
+      gap: var(--look-gap);
+    }
+
+    /* The evidence beat's photo carries small print — an IMEI number, a
+       barcode, a service-history list — that genuinely needs more screen
+       width to read clearly, not just less empty margin around it (the
+       crop above already removed that). Object-fit's scale is set by box
+       width alone, so this is the one lever that actually makes the small
+       print sharper rather than just less surrounded. The left column's
+       own text, position and width are untouched at every other state;
+       only its column's share of the stage narrows for this one deeper
+       state, in exchange for the right column actually being able to
+       show its fine detail legibly. */
+    [data-evidence='1'] .look__stage {
+      grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+    }
+
+    /* Back to the standard split once the provenance beat returns to the
+       plain café photo — the extra width existed only because OldPhone's
+       small print needed it; after the rule above, so it wins once both
+       attributes are set. */
+    [data-provenance='1'] .look__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+    }
+  }
+
+  .look__copy {
+    text-align: left;
+  }
+
+  /* ConceptHero's own eyebrow, unchanged: small saffron dot, cobalt
+     uppercase sans. */
+  .look__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 12px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+
+  .look__eyebrow span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+  }
+
+  /* Same serif, same size, same weight as the 5G/photo openings — this one
+     is a single short line rather than a two-part statement-and-question,
+     so there's no second colour to mark a turn. Stays put for the whole
+     story; only the caption under the visual changes past this point. */
+  .look__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .look__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .look__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      opacity 320ms ease, background-color 320ms ease, color 320ms ease;
+  }
+
+  .look__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .look__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .look__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .look__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Used, not gone: it softens the same way the 5G story's own opening
+     pill steps back once the first reveal has landed, rather than
+     vanishing and leaving a gap. */
+  [data-stage='2'] .look__show {
+    color: var(--muted);
+    background: rgba(255, 253, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(40, 44, 60, 0.06);
+  }
+
+  [data-stage='2'] .look__show:hover {
+    transform: none;
+  }
+
+  [data-stage='2'] .look__show span {
+    color: var(--muted-light);
+  }
+
+  /* ====================================================
+     THE SCENE
+     ==================================================== */
+  /* The visual block: a plain container at every beat but one, so the
+     café photo behaves exactly as it always has — full column width, its
+     own ratio, its own transitions. Only the digital-seal beat turns it
+     into a row (below). */
+  .look__visuals {
+    display: block;
+  }
+
+  .look__scene {
+    position: relative;
+    /* The café photo's own ratio — no letterboxing, no cropping decision
+       to make since the box matches it exactly. */
+    aspect-ratio: 1536 / 1024;
+    /* Matches the photo story's own scene transition, for when OldPhone's
+       very different ratio takes over below. */
+    transition: aspect-ratio 950ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* OldPhone's own file is 1881 x 836, but roughly a fifth of that height
+     is transparent margin above and below the objects (measured directly:
+     content runs from y 84 to y 744). Sizing the box to the content's own
+     ratio — full width, cropped height — rather than the file's, is what
+     lets .look__art--old's object-fit: cover (below) crop that empty
+     margin out instead of shrinking the whole render to fit around it. */
+  [data-evidence='1'] .look__scene {
+    aspect-ratio: 1881 / 660;
+  }
+
+  /* The provenance beat returns to the locked café photo, so the box
+     returns to that photo's own ratio too — after the rule above, so it
+     wins the cascade once both attributes are set. */
+  [data-provenance='1'] .look__scene {
+    aspect-ratio: 1536 / 1024;
+  }
+
+  .look__art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  .look__art--cafe {
+    /* Unchanged from the locked opening: a plain photo filling its box. */
+    object-fit: cover;
+  }
+
+  .look__art--old {
+    /* Cover, paired with the content-sized box above, crops the file's own
+       top/bottom margin away rather than shrinking the whole image to fit
+       around it — the four objects fill the box instead of sitting in a
+       smaller frame surrounded by empty space. object-position keeps the
+       crop centred on where the objects actually are (84-744 of 836px
+       tall, not dead centre) so nothing at the top or bottom is trimmed. */
+    object-fit: cover;
+    object-position: 50% 48%;
+    opacity: 0;
+  }
+
+  [data-evidence='1'] .look__art--cafe {
+    opacity: 0;
+  }
+
+  [data-evidence='1'] .look__art--old {
+    opacity: 1;
+  }
+
+  /* The provenance beat fades back to the café photo — after the rules
+     above, so these win the cascade once both attributes are set. */
+  [data-provenance='1'] .look__art--cafe {
+    opacity: 1;
+  }
+
+  [data-provenance='1'] .look__art--old {
+    opacity: 0;
+  }
+
+  /* The "cr" mark: a small dark pill in the photo's own bottom-right
+     corner, where this kind of indicator sits in practice. Plain HTML/CSS
+     — a circle and two letters — rather than a reproduction of the actual
+     trademarked artwork, which this project has no asset for and isn't
+     attempting to recreate pixel-for-pixel. */
+  .look__cr {
+    position: absolute;
+    right: clamp(10px, 2.4%, 18px);
+    bottom: clamp(10px, 2.4%, 18px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(26px, 5.5%, 34px);
+    height: clamp(26px, 5.5%, 34px);
+    border-radius: 50%;
+    background: rgba(17, 21, 28, 0.82);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: clamp(11px, 2.2%, 13px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    opacity: 0;
+    transition: opacity 700ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  [data-label='1'] .look__cr {
+    opacity: 1;
+  }
+
+  /* ====================================================
+     THE CAPTION
+     ====================================================
+     A caption belonging to the scene, the exact relationship (and the
+     exact rules) the 5G and photo stories use: on narrow, single-column
+     layouts it spans the only track there is, sitting centred under the
+     photo stacked above it; the negative margin pulls it in against the
+     stage's own row gap so it reads as the scene's own caption rather
+     than a new section below it. */
+  .look__reveal {
+    display: none;
+    grid-column: 1 / -1;
+    /* Pulls back almost the whole row gap, leaving a fixed 12px between
+       the photo and the reveal at every width instead of however much of
+       the (viewport-scaled) row gap happened to be left over — the
+       reveal reads as directly connected to the image it's about,
+       without ever touching or overlapping it. */
+    margin: calc(12px - var(--look-gap)) auto 0;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  /* From 980px the stage is two columns — confining this to the scene's
+     own column keeps the caption under the photo it describes instead of
+     centring under the full stage width. */
+  @media (min-width: 980px) {
+    .look__reveal {
+      grid-column: 2;
+    }
+  }
+
+  [data-stage='2'] .look__reveal {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  .look__reveal-kicker {
+    margin: 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .look__reveal-text {
+    margin: 6px auto 0;
+    max-width: 36ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  /* The evidence beat's own line carries the story forward rather than
+     annotating the image above it, so it gets the same serif narrative
+     treatment as the opening headline (.look__opening) — same family,
+     weight, size and letter-spacing — instead of the small cobalt kicker
+     every other reveal in this story uses. Centred rather than left-set,
+     matching the rest of this caption column. */
+  .look__evidence-headline {
+    margin: 0 auto;
+    /* Lets the sentence wrap where it naturally falls rather than forcing
+       a break that stops fitting once the font settles at its clamped
+       size — capped in characters, not pixels, so the wrap stays balanced
+       at every width instead of just at the one it was eyeballed for. */
+    max-width: 15ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .look__evidence-headline + .look__reveal-text {
+    margin-top: clamp(14px, 2vh, 20px);
+  }
+
+  /* The way onward: the same quiet page-turn idiom the 5G and photo
+     stories use for every transition, so "Looks real" stays this page's
+     one loud control. */
+  .look__turn {
+    display: inline-block;
+    margin: clamp(16px, 2.4vh, 22px) 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .look__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .look__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .look__turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .look__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* A second beat: the explanation lands first, then the way onward
+     appears under it — same two-step pacing the 5G and photo stories use
+     for every reveal-then-turn caption. */
+  [data-stage='2'] .look__reveal > .look__turn {
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1040ms;
+  }
+
+  /* This beat's caption takes the place of the first reveal's, on the
+     same hand-over the photo story uses for every one of its own
+     captions: the child combinator reaches only .look__reveal's own
+     direct children, so nesting .look__evidence one level deeper is what
+     lets it reuse the identical kicker/text/turn classes without being
+     caught by the rule that hides them. */
+  .look__evidence {
+    display: none;
+  }
+
+  [data-evidence='1'] .look__reveal > .look__reveal-kicker,
+  [data-evidence='1'] .look__reveal > .look__reveal-text,
+  [data-evidence='1'] .look__reveal > .look__turn {
+    display: none;
+  }
+
+  [data-evidence='1'] .look__evidence {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-evidence='1'] .look__evidence > .look__turn {
+    display: inline-block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* This beat's caption takes the place of the evidence beat's, on the
+     same hand-over again: the child combinator reaches only
+     .look__evidence's own direct children, so nesting .look__provenance
+     one level deeper is what lets it reuse the identical classes without
+     being caught by the rule that hides them. */
+  .look__provenance {
+    display: none;
+  }
+
+  [data-provenance='1'] .look__evidence > .look__evidence-headline,
+  [data-provenance='1'] .look__evidence > .look__reveal-text,
+  [data-provenance='1'] .look__evidence > .look__turn {
+    display: none;
+  }
+
+  [data-provenance='1'] .look__provenance {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-provenance='1'] .look__provenance > .look__turn {
+    display: inline-block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* The progression: plain text and CSS, no new asset. Sits between this
+     beat's opening line and its kicker, "under/with" the photograph in
+     the sense that it belongs to the same caption column directly beneath
+     it rather than being drawn on the image itself. */
+  .look__steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: clamp(14px, 2vh, 20px) auto 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .look__steps li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  /* The same saffron arrow every turn in this story already carries,
+     joining the three states rather than a generic separator. */
+  .look__steps li:not(:last-child)::after {
+    content: '→';
+    color: var(--saffron);
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .look__steps + .look__reveal-kicker,
+  .look__cred-note + .look__reveal-kicker {
+    margin-top: clamp(14px, 2vh, 20px);
+  }
+
+  /* This beat's caption takes the place of the provenance beat's, on the
+     same hand-over again: the child combinator reaches only
+     .look__provenance's own direct children, so nesting .look__label one
+     level deeper is what lets it reuse the identical classes without
+     being caught by the rule that hides them. */
+  .look__label {
+    display: none;
+  }
+
+  [data-label='1'] .look__provenance > .look__reveal-text,
+  [data-label='1'] .look__provenance > .look__steps,
+  [data-label='1'] .look__provenance > .look__reveal-kicker,
+  [data-label='1'] .look__provenance > .look__turn {
+    display: none;
+  }
+
+  [data-label='1'] .look__label {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-label='1'] .look__label > .look__turn {
+    display: inline-block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* This beat's caption takes the place of the label beat's, on the same
+     hand-over again: the child combinator reaches only .look__label's own
+     direct children — including both of its .look__reveal-text
+     paragraphs — so nesting .look__seal one level deeper is what lets it
+     reuse the identical classes without being caught by the rule that
+     hides them. */
+  .look__seal {
+    display: none;
+  }
+
+  [data-seal='1'] .look__label > .look__reveal-text,
+  [data-seal='1'] .look__label > .look__cred,
+  [data-seal='1'] .look__label > .look__cred-note,
+  [data-seal='1'] .look__label > .look__reveal-kicker,
+  [data-seal='1'] .look__label > .look__turn {
+    display: none;
+  }
+
+  [data-seal='1'] .look__seal {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-seal='1'] .look__seal > .look__turn {
+    display: inline-block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* The story's last caption takes the place of the seal beat's, on the
+     same hand-over again: the child combinator reaches only .look__seal's
+     own direct children — both of its kicker/text pairs and its turn —
+     so nesting .look__final one level deeper is what
+     lets it reuse the identical classes without being caught by the rule
+     that hides them. */
+  .look__final {
+    display: none;
+  }
+
+  [data-final='1'] .look__seal > .look__reveal-kicker,
+  [data-final='1'] .look__seal > .look__reveal-text,
+  [data-final='1'] .look__seal > .look__turn {
+    display: none;
+  }
+
+  [data-final='1'] .look__final {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-final='1'] .look__final > .look__turn {
+    display: inline-block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1180ms;
+  }
+
+  /* Extra breathing room before this second pair — the same beat the
+     photo and 5G stories give their own closing lines a step apart from
+     the explanation above them. */
+  .look__reveal-text--close {
+    margin-top: 15px;
+  }
+
+  /* The very last line, given the same serif/weight realization treatment
+     used at the close of both other Explore stories — set apart from
+     body copy by weight and typeface rather than by size or colour. */
+  .look__reveal-text--realize {
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 600;
+  }
+
+
+  /* The DigitalSeal render, unchanged as an asset. Out of the flow until
+     the seal beat and out again at the closing one — the same come-and-go
+     it had when it lived inside the caption, just from a block that sits
+     beside the photo instead of below it. Its own 1536 x 1024 (3:2) ratio
+     reserves the correct height, so nothing here can crop or distort it.
+     The stacked (narrow) case keeps the previous 480px cap; the row case
+     sizes it from its share of the row instead (below). */
+  .look__seal-art {
+    display: none;
+    margin: clamp(14px, 2vh, 20px) auto 0;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    aspect-ratio: 1536 / 1024;
+  }
+
+  [data-seal='1'] .look__seal-art {
+    display: block;
+    animation: look-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The closing beat names the seal's limit rather than showing it, so the
+     render leaves and the photo has the block to itself again. After the
+     rule above, so it wins once both attributes are set. */
+  [data-final='1'] .look__seal-art {
+    display: none;
+  }
+
+  /* From the same 980px threshold the stage splits at: the seal beat's two
+     visuals read across rather than down — the café photo, then its seal.
+     The photo stays visually primary (roughly two-thirds of the row, and
+     the only one of the pair that ever fills the column at any other
+     beat); the seal is the smaller answer to its right. No border,
+     background or box is introduced around the pair — the relationship is
+     carried by the row itself. Below this width nothing here applies and
+     the two simply stack, seal under photo. */
+  @media (min-width: 980px) {
+    [data-seal='1']:not([data-final='1']) .look__visuals {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2vw, 28px);
+    }
+
+    /* 56% + 36% + the gap is what fits the column without either of them
+       being squeezed by the other's intrinsic width — min-width: 0 on both
+       is what stops the render's own 1536px from doing exactly that (a
+       flex item's automatic minimum is its content, and the scene box's
+       children are absolutely positioned, so without this the photo
+       collapses to nothing and the render keeps its full size). */
+    [data-seal='1']:not([data-final='1']) .look__scene {
+      flex: 0 1 56%;
+      min-width: 0;
+    }
+
+    [data-seal='1']:not([data-final='1']) .look__seal-art {
+      flex: 0 1 36%;
+      min-width: 0;
+      margin: 0;
+      max-width: none;
+    }
+  }
+
+  /* The second kicker in the seal caption used to take its step down from
+     the render that sat above it; with the render up in the visual block,
+     the pair above it gives it the same amount instead. Scoped to this
+     caption — no other beat sets a kicker directly after body copy. */
+  .look__seal > .look__reveal-text + .look__reveal-kicker {
+    margin-top: clamp(14px, 2vh, 20px);
+  }
+
+  /* The credential panel: the same card language the Explore library
+     cards already use (1px var(--line) border, 16px radius, var(--paper)
+     background) rather than a new visual idiom for this one panel. */
+  .look__cred {
+    margin: clamp(14px, 2vh, 20px) auto 0;
+    max-width: 320px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--paper);
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.08);
+    text-align: left;
+  }
+
+  .look__cred-title {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Field names, not a filled-in reading — each row is just what a slot
+     like this is called, so nothing here looks like a value pulled from
+     the café photo above it. */
+  .look__cred-fields {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .look__cred-fields li {
+    padding: 8px 0;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  /* Deliberately smaller and quieter than every other line in this
+     caption — a footnote to the panel above it, not a new claim of its
+     own weight. */
+  .look__cred-note {
+    margin: 10px auto 0;
+    max-width: 320px;
+    color: var(--muted-light);
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  @keyframes look-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-stage='2'] .look__reveal,
+    [data-stage='2'] .look__reveal > .look__turn,
+    [data-evidence='1'] .look__evidence,
+    [data-evidence='1'] .look__evidence > .look__turn,
+    [data-provenance='1'] .look__provenance,
+    [data-provenance='1'] .look__provenance > .look__turn,
+    [data-label='1'] .look__label,
+    [data-label='1'] .look__label > .look__turn,
+    [data-seal='1'] .look__seal,
+    [data-seal='1'] .look__seal > .look__turn,
+    [data-seal='1'] .look__seal-art,
+    [data-final='1'] .look__final,
+    [data-final='1'] .look__final > .look__turn {
+      animation: none;
+    }
+
+    .look__scene,
+    .look__art,
+    .look__stage,
+    .look__cr {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-look]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    // Runs `fn` once the browser is idle (or after a short fallback delay
+    // on browsers without requestIdleCallback), so a preload never competes
+    // with the current scene's own paint or transition.
+    const idle = (fn) =>
+      'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 300);
+
+    // Sets `src` from `data-src` on an <img> that was parsed without one —
+    // a no-op if it's already been set. Used both as the deliberate early
+    // preload (called from `idle`, well before the beat that needs it) and
+    // as a same-element fallback inside that beat's own click handler, so
+    // the image is always correct even if the idle preload hasn't run yet.
+    // Because it's the exact element the beat displays, there is no
+    // separate probe object and no second decode — one fetch, one decode,
+    // reused for every later reveal (including after Replay). -->
+    const ensureLoaded = (el) => {
+      if (!el || el.src) return;
+      const url = el.dataset.src;
+      if (url) el.src = url;
+    };
+
+    const oldPhoneArt = root.querySelector('.look__art--old');
+    const sealArt = root.querySelector('.look__seal-art');
+
+    // OldPhone_v2 is needed the moment the evidence beat is reached (the
+    // very next click past the opening). Nothing else on this page is
+    // waiting on the idle queue, so it's safe to start as soon as Scene 1
+    // has had its own paint.
+    idle(() => ensureLoaded(oldPhoneArt));
+
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      // One way, one time: nothing past this first reveal exists yet, so
+      // a second click is simply a no-op.
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+    });
+
+    // The evidence beat. A flag of its own rather than a new stage value,
+    // so everything the first click turned on stays on underneath it. One
+    // way, one time.
+    root.querySelector('[data-onward]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.evidence === '1') return;
+      root.dataset.evidence = '1';
+      ensureLoaded(oldPhoneArt); // fallback if the idle preload above hasn't run yet
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader; the frame it replaced should not be.
+      root.querySelector('.look__art--cafe')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.look__art--old')?.removeAttribute('aria-hidden');
+    });
+
+    // The provenance beat. A flag of its own rather than a new stage
+    // value, so everything the earlier clicks turned on stays on
+    // underneath it. One way, one time.
+    root.querySelector('[data-history]')?.addEventListener('click', () => {
+      if (root.dataset.evidence !== '1' || root.dataset.provenance === '1') return;
+      root.dataset.provenance = '1';
+
+      // The frame that is now the scene should be the one described to a
+      // screen reader; the frame it replaced should not be.
+      root.querySelector('.look__art--old')?.setAttribute('aria-hidden', 'true');
+      root.querySelector('.look__art--cafe')?.removeAttribute('aria-hidden');
+
+      // DigitalSeal is two beats away (label, then seal) — starting it here
+      // rather than at the label beat gives a large asset a full extra
+      // click's worth of lead time to be ready before it's shown.
+      ensureLoaded(sealArt);
+    });
+
+    // The label beat. A flag of its own rather than a new stage value, so
+    // everything the earlier clicks turned on stays on underneath it. The
+    // café photo itself is already showing (the provenance beat put it
+    // back) — this only reveals the "cr" mark on it and the credential
+    // panel beside it. One way, one time.
+    root.querySelector('[data-verify]')?.addEventListener('click', () => {
+      if (root.dataset.provenance !== '1' || root.dataset.label === '1') return;
+      root.dataset.label = '1';
+    });
+
+    // The seal beat. A flag of its own rather than a new stage value, so
+    // everything the earlier clicks turned on stays on underneath it.
+    root.querySelector('[data-trust]')?.addEventListener('click', () => {
+      if (root.dataset.label !== '1' || root.dataset.seal === '1') return;
+      root.dataset.seal = '1';
+      ensureLoaded(sealArt); // fallback if the idle preload above hasn't run yet
+    });
+
+    // The story's last step. A flag of its own rather than a new stage
+    // value, so the earlier clicks stay on underneath it. One way, one
+    // time — there is no further beat past this one to gate.
+    root.querySelector('[data-prove]')?.addEventListener('click', () => {
+      if (root.dataset.seal !== '1' || root.dataset.final === '1') return;
+      root.dataset.final = '1';
+    });
+
+    // "Now look again": not another reveal, the whole story restarting —
+    // every flag this page ever set goes back to its unset state and
+    // `stage` returns to '1', exactly as if the page had just loaded. The
+    // existing CSS transitions (the scene's aspect-ratio, the cross-fades)
+    // carry it back to the opening rather than snapping.
+    root.querySelector('[data-replay]')?.addEventListener('click', () => {
+      root.dataset.stage = '1';
+      delete root.dataset.evidence;
+      delete root.dataset.provenance;
+      delete root.dataset.label;
+      delete root.dataset.seal;
+      delete root.dataset.final;
+
+      root.querySelector('.look__art--cafe')?.removeAttribute('aria-hidden');
+      root.querySelector('.look__art--old')?.setAttribute('aria-hidden', 'true');
+    });
+  });
+</script>
