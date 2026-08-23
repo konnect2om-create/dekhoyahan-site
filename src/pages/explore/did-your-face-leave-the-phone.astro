@@ -1,0 +1,2199 @@
+---
+// New Explore-only story: "Your face unlocked it. Did your face leave the
+// phone?" — Card 3 of the four homepage preview cards. Scene 1 only, on
+// exactly the construction /explore/looks-real-is-it,
+// /explore/ai-answered-you, /explore/where-is-the-5g and the photo story
+// all use: one grid, copy and the interaction on the left, the visual
+// stage on the right; the left title stays the anchor for the whole story
+// once later scenes exist, the same way none of the other stories'
+// opening headings change once their own story has started.
+//
+// The supplied Card3 render is the ordinary moment itself — a phone lifted,
+// a face recognised, "Unlocked" already on screen — with nothing drawn over
+// it: no face mesh, no scanning grid, no biometric overlay, no cloud icon,
+// no security padlock added by us, no caption. That ordinariness is the
+// whole point of this opening. The story's real question —
+// "Did your face leave the phone?" — is deliberately NOT raised here, and
+// nothing in this scene hints at an answer either way; it is what the
+// beats past "How?" exist to work through.
+//
+// Scene 2 (whatever "How?" actually reveals) does not exist yet.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Your face unlocked it. Did your face leave the phone? — DekhoYahan"
+  description="In a glance."
+>
+  <div class="face" data-face data-stage="1">
+    <!-- Same reasoning as the other openings: copy and the visual share one
+         grid rather than a header sitting above a separate stage, so on
+         wide screens they sit side by side and both the heading and the CTA
+         are readable before the visitor scrolls past the image; below the
+         stacking point they fall back to the same top-to-bottom order,
+         copy first.
+
+         Carries the same small eyebrow the other Explore openings use —
+         reused as-is (small saffron dot, cobalt uppercase) rather than
+         inventing a new treatment — since this heading is also a single
+         short line, so the eyebrow is what frames it as this story's own
+         prompt ("your face") rather than a flat statement. -->
+    <div class="face__stage shell">
+      <div class="face__copy">
+        <p class="face__eyebrow"><span></span>Your face</p>
+
+        <h1 class="face__opening">Your face unlocked it.</h1>
+
+        <p class="face__noticed">In a glance.</p>
+
+        <!-- The one thing that starts the story. Real and focusable now,
+             the same way every other story's opening control is, even
+             though nothing past it exists yet. -->
+        <button type="button" class="face__show" data-show>
+          How? <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- ====================================================
+           THE VISUALS — Scene 1's photo. Later beats will take the column
+           over entirely rather than sitting beside or behind it, the same
+           on/off handoff every other Explore story uses; the rule that
+           hides this scene is declared below so that beat doesn't need to
+           touch it when it exists. -->
+      <div class="face__visuals">
+        <!-- THE SCENE — the supplied Card3 render, used as-is and locked.
+
+             A plain photograph of an ordinary moment rather than a composed
+             technical illustration, so its box is simply sized to its own
+             ratio (1536 x 1024, 3:2) with no overlay, effect, label or
+             biometric indicator drawn over it — and stays exactly that way
+             for as long as it's on screen. -->
+        <div class="face__scene">
+          <img
+            class="face__art"
+            src="/images/Card3.webp"
+            alt="A person holding up a phone that has just recognised them — their face framed on screen above the word 'Unlocked'."
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+
+        <!-- ====================================================
+             SCENE 2 — what the phone actually took.
+
+             Deliberately abstract, and deliberately NOT anatomical. An
+             earlier version named specific measurements (eye spacing, jaw
+             line); that was wrong — it implied face unlock works from a
+             short list of hand-picked facial distances, which is not how
+             modern face authentication works. So nothing here is labelled,
+             counted or identified as any particular feature of a face.
+
+             The field is just "more detail than you'd want to name":
+             many small marks of differing size, no face shape, no landmark
+             positions, no mesh, no scan line, no code. It resolves into one
+             compact pattern, and a second pattern of identical shape then
+             appears beside it — the one made at set-up — so "can be
+             compared with" is carried by two things simply sitting side by
+             side rather than by any arrow, tick, lock or match graphic.
+
+             The field stays on screen under the patterns, so a reader
+             arriving after the animation still sees detail-became-pattern
+             rather than two anonymous blocks. All of it is aria-hidden with
+             an sr-only line standing in, since the copy below already says
+             in words everything it shows. -->
+        <div class="face__measured">
+          <p class="face__enough">The phone didn't need your whole face.</p>
+
+          <div class="face__details" aria-hidden="true">
+            <span class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span><span
+              class="face__detail"></span><span class="face__detail"></span>
+          </div>
+
+          <div class="face__patterns" aria-hidden="true">
+            <span class="face__pattern face__pattern--made">
+              <span class="face__pattern-line" data-p="1"></span>
+              <span class="face__pattern-line" data-p="2"></span>
+              <span class="face__pattern-line" data-p="3"></span>
+              <span class="face__pattern-line" data-p="4"></span>
+              <span class="face__pattern-line" data-p="5"></span>
+            </span>
+            <span class="face__pattern face__pattern--stored">
+              <span class="face__pattern-line" data-p="1"></span>
+              <span class="face__pattern-line" data-p="2"></span>
+              <span class="face__pattern-line" data-p="3"></span>
+              <span class="face__pattern-line" data-p="4"></span>
+              <span class="face__pattern-line" data-p="5"></span>
+            </span>
+          </div>
+          <p class="face__sr-only">
+            A field of many small measurements resolving into one compact pattern,
+            shown beside a second pattern of the same shape.
+          </p>
+
+          <p class="face__reveal-kicker">
+            It turned details it could measure into a pattern.
+          </p>
+          <p class="face__reveal-text">
+            That pattern can be compared with the one created when you set up face
+            unlock.
+          </p>
+
+          <!-- The way onward. -->
+          <button type="button" class="face__turn" data-kept>
+            So what did it keep? <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- ====================================================
+               SCENE 3 — not a picture.
+
+               One new idea only: the thing kept is not a photograph. So the
+               contrast is drawn literally — the familiar idea of a portrait
+               on the left, what's actually kept on the right — and nothing
+               else is claimed. Where it lives, whether it leaves, who made
+               the phone, and every privacy conclusion are all deliberately
+               absent; they belong to the beat after this one.
+
+               The right-hand side reuses Scene 2's own pattern, at exactly
+               the same five widths, with numbers set beneath it: this is
+               the same thing the reader just watched being made, now shown
+               to be numeric. That continuity is what makes "mathematical
+               representation" land as a description of something already
+               seen rather than as a new object appearing.
+
+               The portrait is a plain rounded rectangle with a circle in
+               it — the universal shorthand for "a photo of a person",
+               drawn flat and quiet. No mesh, no scan, no shutter, no
+               device frame. The numbers are ordinary decimals set in the
+               page's own sans with generous spacing: not monospaced, not
+               bracketed, not comma-separated as an array, no 0s and 1s, no
+               grid of cells — so they read as quantities, never as code, a
+               binary dump or a QR block.
+
+               Both blocks are aria-hidden with an sr-only line standing in,
+               since the copy below says in words everything they show. -->
+          <div class="face__kept">
+            <p class="face__not">Not a little photograph of you.</p>
+
+            <div class="face__contrast" aria-hidden="true">
+              <span class="face__portrait">
+                <span class="face__portrait-head"></span>
+              </span>
+
+              <span class="face__becomes">→</span>
+
+              <span class="face__repr">
+                <span class="face__repr-pattern">
+                  <span class="face__pattern-line" data-p="1"></span>
+                  <span class="face__pattern-line" data-p="2"></span>
+                  <span class="face__pattern-line" data-p="3"></span>
+                  <span class="face__pattern-line" data-p="4"></span>
+                  <span class="face__pattern-line" data-p="5"></span>
+                </span>
+
+                <span class="face__repr-values">
+                  <span class="face__value">0.42</span>
+                  <span class="face__value">−1.08</span>
+                  <span class="face__value">0.77</span>
+                  <span class="face__value">−0.31</span>
+                  <span class="face__value">1.15</span>
+                  <span class="face__value">−0.64</span>
+                  <span class="face__value">0.29</span>
+                  <span class="face__value">0.93</span>
+                </span>
+              </span>
+            </div>
+            <p class="face__sr-only">
+              The familiar idea of a portrait on one side, and on the other the
+              same pattern from before, written out as numbers.
+            </p>
+
+            <p class="face__reveal-kicker">
+              It keeps a mathematical representation for matching.
+            </p>
+            <p class="face__reveal-text">
+              When you unlock again, a new representation can be compared with the
+              enrolled one.
+            </p>
+
+            <!-- The way onward. -->
+            <button type="button" class="face__turn" data-where>
+              But where is that kept? <span aria-hidden="true">→</span>
+            </button>
+
+            <!-- ====================================================
+                 SCENE 4 — it can stay on the device.
+
+                 The whole idea is carried by containment and nothing else:
+                 a phone outline, a recessed area inside it, and inside that
+                 the same pattern from Scene 3. Nesting alone says
+                 phone -> protected area -> representation, which is why
+                 there is no padlock, shield, keyhole, circuit trace, server
+                 or cloud anywhere in it. The recess is suggested by an
+                 inset shadow and a slightly firmer border — a compartment
+                 cut into the device — rather than by any security iconography.
+
+                 Everything stays inside the phone's own boundary on
+                 purpose: nothing in this beat may appear to travel, since
+                 whether anything leaves is exactly the question the next
+                 beat exists to answer.
+
+                 The copy is careful in a way the visual can't be: every
+                 line says "can", never "does" or "never". This scene
+                 describes how on-device face unlock is designed, not how
+                 every phone behaves and not how every system that can
+                 recognise a face works. No vendor, chip or OS is named. -->
+            <div class="face__device">
+              <p class="face__stays">For face unlock, it can stay on the device.</p>
+
+              <!-- Scene 5's headline. A sibling of the art rather than a
+                   child of Scene 5's own block, so it can be ordered above
+                   the phone while the rest of Scene 5's copy sits below it
+                   — which is what lets the phone itself persist across the
+                   two beats instead of being torn down and redrawn. -->
+              <p class="face__doesnt">For on-device face unlock, it doesn't have to.</p>
+
+              <div class="face__device-art" aria-hidden="true">
+                <span class="face__phone">
+                  <span class="face__phone-speaker"></span>
+
+                  <span class="face__vault">
+                    <span class="face__vault-pattern">
+                      <span class="face__pattern-line" data-p="1"></span>
+                      <span class="face__pattern-line" data-p="2"></span>
+                      <span class="face__pattern-line" data-p="3"></span>
+                      <span class="face__pattern-line" data-p="4"></span>
+                      <span class="face__pattern-line" data-p="5"></span>
+                    </span>
+                  </span>
+                </span>
+
+                <!-- Scene 5 only. The one thing that crosses the phone's
+                     boundary in this whole story: a result. The arrow
+                     carries nothing with it, and the app is a plain card
+                     holding the word MATCH and a tick — no face, no
+                     photograph, no pattern, nothing biometric. The
+                     representation stays where it is, inside the vault,
+                     visibly unmoved. -->
+                <span class="face__result">
+                  <span class="face__result-arrow">→</span>
+                  <span class="face__app">MATCH <span class="face__app-tick">✓</span></span>
+                </span>
+              </div>
+              <p class="face__sr-only">
+                A phone, with a protected area inside it, and the representation
+                from before held within that area.
+              </p>
+
+              <p class="face__reveal-kicker">
+                The stored representation can be kept in protected hardware on the
+                phone.
+              </p>
+              <p class="face__reveal-text">
+                The comparison can happen there too — an app can receive the result
+                without receiving the stored representation.
+              </p>
+
+              <!-- The way onward. -->
+              <button type="button" class="face__turn" data-left>
+                So did your face leave the phone? <span aria-hidden="true">→</span>
+              </button>
+
+              <!-- ====================================================
+                   SCENE 5 — the answer.
+
+                   The homepage asked this, so it gets answered plainly
+                   rather than turned into another question. The phone from
+                   Scene 4 is literally the same element, still on screen,
+                   still holding the pattern in its compartment; only the
+                   result leaves.
+
+                   The answer is scoped, not absolute: "for on-device face
+                   unlock, it doesn't have to" — a statement about how this
+                   design works, never "your face never leaves your phone"
+                   and never a claim about facial recognition in general.
+                   The last line exists to hold that boundary open rather
+                   than let the reader generalise from it. -->
+              <div class="face__answer">
+                <p class="face__sr-only">
+                  The representation stays inside the protected area on the phone.
+                  Only a result — a match — reaches the app outside it.
+                </p>
+
+                <p class="face__reveal-kicker">
+                  The phone can do the comparison and return the result.
+                </p>
+                <p class="face__reveal-text">
+                  The stored facial representation can remain protected on the
+                  device.
+                </p>
+
+                <p class="face__boundary">
+                  But face unlock isn't every kind of face recognition.
+                </p>
+
+                <!-- The way onward. -->
+                <button type="button" class="face__turn" data-difference>
+                  What's the difference? <span aria-hidden="true">→</span>
+                </button>
+
+                <!-- ====================================================
+                     SCENE 6 — same face, different job.
+
+                     A comparison of two TASKS, not of two technologies and
+                     not of a good one against a bad one. Both columns are
+                     drawn in the same neutral vocabulary the story has used
+                     throughout — the same portrait card, the same phone,
+                     the same pattern blocks — so neither side is styled as
+                     the sinister one. No camera, no CCTV, no police, no
+                     server rack, no cloud, no mesh, nothing dystopian.
+
+                     The right column deliberately shows no result: the
+                     question there is open ("who is this?"), so nothing is
+                     marked as found. And the copy says face recognition
+                     CAN search for an identity — the point is the
+                     distinction between checking a claim and searching for
+                     one, not a claim that every face-recognition system
+                     performs one-to-many identification. -->
+                <div class="face__compare">
+                  <p class="face__same">Same face. Different job.</p>
+
+                  <div class="face__vs">
+                    <div class="face__col" data-col="unlock">
+                      <p class="face__col-label">Unlock</p>
+
+                      <div class="face__col-art" aria-hidden="true">
+                        <span class="face__portrait face__portrait--mini">
+                          <span class="face__portrait-head"></span>
+                        </span>
+
+                        <span class="face__down">↓</span>
+
+                        <span class="face__phone face__phone--mini">
+                          <span class="face__phone-speaker"></span>
+                          <span class="face__vault">
+                            <span class="face__vault-pattern">
+                              <span class="face__pattern-line" data-p="1"></span>
+                              <span class="face__pattern-line" data-p="2"></span>
+                              <span class="face__pattern-line" data-p="3"></span>
+                              <span class="face__pattern-line" data-p="4"></span>
+                              <span class="face__pattern-line" data-p="5"></span>
+                            </span>
+                          </span>
+                        </span>
+
+                        <span class="face__down">↓</span>
+
+                        <span class="face__app face__app--mini">
+                          MATCH <span class="face__app-tick">✓</span>
+                        </span>
+                      </div>
+
+                      <p class="face__col-q">Is this the enrolled person?</p>
+                      <p class="face__col-kind">One-to-one comparison</p>
+                    </div>
+
+                    <div class="face__col" data-col="recognise">
+                      <p class="face__col-label">Recognise</p>
+
+                      <div class="face__col-art" aria-hidden="true">
+                        <span class="face__portrait face__portrait--mini">
+                          <span class="face__portrait-head"></span>
+                        </span>
+
+                        <span class="face__down">↓</span>
+
+                        <!-- Several references, none of them marked as the
+                             answer — the question is still open. -->
+                        <span class="face__refs">
+                          <span class="face__ref"></span>
+                          <span class="face__ref"></span>
+                          <span class="face__ref"></span>
+                          <span class="face__ref"></span>
+                          <span class="face__ref"></span>
+                          <span class="face__ref"></span>
+                        </span>
+                      </div>
+
+                      <p class="face__col-q">Who is this?</p>
+                      <p class="face__col-kind">One-to-many search</p>
+                    </div>
+                  </div>
+                  <p class="face__sr-only">
+                    On one side, a face checked against a single stored reference on
+                    the phone, returning a match. On the other, a face checked
+                    against many references, with no answer shown.
+                  </p>
+
+                  <p class="face__reveal-kicker">
+                    Face unlock checks a claim. Face recognition can search for an
+                    identity.
+                  </p>
+                  <p class="face__reveal-text">
+                    Those are different tasks — and they can involve different
+                    systems and data flows.
+                  </p>
+
+                  <!-- The way onward. -->
+                  <button type="button" class="face__turn" data-flow>
+                    And where can the data go? <span aria-hidden="true">→</span>
+                  </button>
+
+                  <!-- ====================================================
+                       SCENE 7 — different systems, different paths.
+
+                       Three possibilities set out as plain line diagrams in
+                       the vocabulary the card already uses: the portrait
+                       card for a face, a phone outline for a device, small
+                       neutral blocks for everything else. Cobalt is spent
+                       only on the arrows, because the path is the thing
+                       this scene is actually about.
+
+                       Nothing here is a cloud, a database cylinder, a
+                       server rack, a map, a shield, a lock or a mesh, and
+                       the three rows are deliberately not connected to each
+                       other — they are alternatives, not one architecture.
+                       No system is drawn as the safe one or the sinister
+                       one; the rows differ only in shape, never in tone. -->
+                  <div class="face__paths">
+                    <p class="face__depends">Where the data goes depends on the system.</p>
+
+                    <ul class="face__path-list">
+                      <li class="face__path" data-path="1">
+                        <p class="face__path-label">Device</p>
+                        <div class="face__flow" aria-hidden="true">
+                          <span class="face__node face__node--face"
+                            ><span class="face__node-head"></span
+                          ></span>
+                          <span class="face__arrow">→</span>
+                          <span class="face__node face__node--phone"
+                            ><span class="face__node-speaker"></span
+                          ></span>
+                        </div>
+                        <p class="face__path-note">Stays on the device</p>
+                      </li>
+
+                      <li class="face__path" data-path="2">
+                        <p class="face__path-label">Service</p>
+                        <div class="face__flow" aria-hidden="true">
+                          <span class="face__node face__node--face"
+                            ><span class="face__node-head"></span
+                          ></span>
+                          <span class="face__arrow">→</span>
+                          <span class="face__node face__node--phone"
+                            ><span class="face__node-speaker"></span
+                          ></span>
+                          <span class="face__arrow">→</span>
+                          <span class="face__node face__node--box"></span>
+                        </div>
+                        <p class="face__path-note">Sent to a service for processing</p>
+                      </li>
+
+                      <li class="face__path" data-path="3">
+                        <p class="face__path-label">Search</p>
+                        <div class="face__flow" aria-hidden="true">
+                          <span class="face__node face__node--face"
+                            ><span class="face__node-head"></span
+                          ></span>
+                          <span class="face__arrow">→</span>
+                          <span class="face__node face__node--box"></span>
+                          <span class="face__arrow">→</span>
+                          <span class="face__many">
+                            <span class="face__many-block"></span>
+                            <span class="face__many-block"></span>
+                            <span class="face__many-block"></span>
+                            <span class="face__many-block"></span>
+                            <span class="face__many-block"></span>
+                            <span class="face__many-block"></span>
+                          </span>
+                        </div>
+                        <p class="face__path-note">Compared across a collection</p>
+                      </li>
+                    </ul>
+                    <p class="face__sr-only">
+                      Three separate possibilities: a face and a phone; a face, a
+                      phone and a service; and a face, a system and a collection of
+                      stored identities.
+                    </p>
+
+                    <p class="face__reveal-kicker">
+                      The same kind of data can take very different paths.
+                    </p>
+                    <p class="face__reveal-text">
+                      What matters is where it is processed, what is stored, and who
+                      can use it.
+                    </p>
+
+                    <!-- The way onward. -->
+                    <button type="button" class="face__turn" data-ask>
+                      So what should you ask? <span aria-hidden="true">→</span>
+                    </button>
+
+                    <!-- ====================================================
+                         SCENE 8 — the end of Card 3.
+
+                         The curiosity that opened the card gets answered, and
+                         the answer is deliberately narrow: a phone CAN do
+                         this without your face becoming a photograph sent
+                         somewhere — followed immediately by the line that
+                         stops the reader generalising from it. Nothing here
+                         says every system is safe, and nothing here says
+                         any system is sinister; the closing move is to hand
+                         over a better question rather than a verdict.
+
+                         Three thoughts, not three cards: no borders, no
+                         backgrounds, no bullets, no numbering. They are held
+                         apart by space alone. -->
+                    <div class="face__close">
+                      <p class="face__whole">Your face isn't the whole question.</p>
+
+                      <div class="face__asks">
+                        <div class="face__ask-item">
+                          <p class="face__ask-q">What was made from it?</p>
+                          <p class="face__ask-a">A representation that can be compared.</p>
+                        </div>
+
+                        <div class="face__ask-item">
+                          <p class="face__ask-q">Where does it go?</p>
+                          <p class="face__ask-a">That depends on the system.</p>
+                        </div>
+
+                        <div class="face__ask-item">
+                          <p class="face__ask-q">What can it be used for?</p>
+                          <p class="face__ask-a">Unlocking and identifying are different jobs.</p>
+                        </div>
+                      </div>
+
+                      <p class="face__payoff">
+                        A phone can use your face to unlock without sending your
+                        photograph somewhere else.
+                      </p>
+                      <p class="face__caveat">
+                        But other facial systems can work differently.
+                      </p>
+
+                      <p class="face__better">
+                        <span class="face__better-a"
+                          >So don't just ask: “Does it use my face?”</span
+                        >
+                        <span class="face__better-b"
+                          >Ask what happens to the data made from it.</span
+                        >
+                      </p>
+
+                      <p class="face__know">Now you know what to look for.</p>
+
+                      <!-- The end of the card: the way on is another story,
+                           so this is a real link rather than another beat. -->
+                      <a class="face__turn face__turn--link" href="/explore/">
+                        Explore another <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .face {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .face__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vh, 48px);
+  }
+
+  /* Same threshold every other Explore story splits at. */
+  @media (min-width: 980px) {
+    .face__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(36px, 4.5vw, 68px);
+    }
+  }
+
+  .face__copy {
+    text-align: left;
+  }
+
+  /* ConceptHero's own eyebrow, unchanged: small saffron dot, cobalt
+     uppercase sans — the same treatment the other Explore openings
+     already reuse. */
+  .face__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 12px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+
+  .face__eyebrow span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+  }
+
+  /* Same serif, same size, same weight as every other Explore opening. */
+  .face__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .face__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .face__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      opacity 320ms ease, background-color 320ms ease, color 320ms ease;
+  }
+
+  .face__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .face__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .face__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .face__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Used, not gone, once Scene 2 exists — the same softening the other
+     stories give their own opening pill applies here. Pre-declared now so
+     the button doesn't need touching when that scene is built. */
+  [data-stage='2'] .face__show {
+    color: var(--muted);
+    background: rgba(255, 253, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(40, 44, 60, 0.06);
+  }
+
+  [data-stage='2'] .face__show:hover {
+    transform: none;
+  }
+
+  .face__visuals {
+    display: block;
+  }
+
+  .face__scene {
+    position: relative;
+    aspect-ratio: 1536 / 1024;
+  }
+
+  /* Scene 2 will take the column over entirely — the photo isn't behind it
+     or faded under it, it simply stops being shown, the same way every
+     other Explore beat's spent frame leaves the flow for the one that
+     replaces it. */
+  [data-stage='2'] .face__scene {
+    display: none;
+  }
+
+  .face__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ====================================================
+     SCENE 2 — what the phone actually took
+     ==================================================== */
+
+  .face__measured {
+    display: none;
+  }
+
+  [data-stage='2'] .face__measured {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  /* Set at the same serif/size/weight the opening heading uses, so the
+     beat reads as the story continuing in the same voice rather than a
+     caption arriving under a picture. */
+  .face__enough {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-stage='2'] .face__measured > .face__enough {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  /* More detail than anyone would want to enumerate — which is the point,
+     since naming any of it would be the overclaim this scene exists to
+     avoid. Loosely set rather than ruled into a grid, so it reads as a
+     texture of small quantities and never as positions on a face. */
+  .face__details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px 10px;
+    max-width: 34em;
+    margin: clamp(26px, 4vh, 38px) 0 0;
+  }
+
+  .face__detail {
+    height: 2px;
+    background: var(--muted-light);
+    opacity: 0;
+  }
+
+  /* Cycled widths on uneven periods, so no row repeats the one above it
+     and the eye finds no pattern to lock onto. */
+  .face__detail:nth-child(5n + 1) {
+    width: 34px;
+  }
+
+  .face__detail:nth-child(5n + 2) {
+    width: 19px;
+  }
+
+  .face__detail:nth-child(5n + 3) {
+    width: 47px;
+  }
+
+  .face__detail:nth-child(5n + 4) {
+    width: 26px;
+  }
+
+  .face__detail:nth-child(5n) {
+    width: 40px;
+  }
+
+  .face__detail:nth-child(7n) {
+    width: 15px;
+  }
+
+  .face__detail:nth-child(11n) {
+    width: 54px;
+  }
+
+  /* Arriving in four quick waves rather than one at a time — this is a
+     texture, not a list, so no single mark should be worth watching. */
+  [data-stage='2'] .face__detail {
+    animation: face-in 420ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='2'] .face__detail:nth-child(4n + 1) {
+    animation-delay: 980ms;
+  }
+
+  [data-stage='2'] .face__detail:nth-child(4n + 2) {
+    animation-delay: 1130ms;
+  }
+
+  [data-stage='2'] .face__detail:nth-child(4n + 3) {
+    animation-delay: 1280ms;
+  }
+
+  [data-stage='2'] .face__detail:nth-child(4n) {
+    animation-delay: 1430ms;
+  }
+
+  /* The two patterns sit as equals, side by side and identical in shape —
+     that adjacency is the whole of "can be compared with". No arrow
+     between them, no tick, no lock, no verdict of any kind: this beat
+     doesn't say whether they matched, only that comparing is what the
+     pattern is for. */
+  .face__patterns {
+    display: none;
+    align-items: flex-start;
+    gap: clamp(26px, 4vw, 44px);
+    margin: clamp(30px, 4.4vh, 42px) 0 0;
+  }
+
+  [data-stage='2'] .face__measured > .face__patterns {
+    display: flex;
+  }
+
+  .face__pattern {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* The one just made, in the ink the story gives its live moments... */
+  [data-stage='2'] .face__pattern--made {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2050ms;
+  }
+
+  /* ...and the one already on the phone from set-up, quieter because it
+     is not what just happened. */
+  [data-stage='2'] .face__pattern--stored {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2450ms;
+  }
+
+  .face__pattern-line {
+    height: 3px;
+    background: var(--cobalt);
+  }
+
+  .face__pattern--stored .face__pattern-line {
+    background: var(--muted-light);
+  }
+
+  /* Identical shape in both blocks — same five widths, same order — since
+     two patterns that didn't share a shape couldn't be compared at all. */
+  .face__pattern-line[data-p='1'] {
+    width: clamp(38px, 5vw, 52px);
+  }
+
+  .face__pattern-line[data-p='2'] {
+    width: clamp(52px, 7vw, 74px);
+  }
+
+  .face__pattern-line[data-p='3'] {
+    width: clamp(28px, 3.6vw, 38px);
+  }
+
+  .face__pattern-line[data-p='4'] {
+    width: clamp(46px, 6.2vw, 64px);
+  }
+
+  .face__pattern-line[data-p='5'] {
+    width: clamp(34px, 4.4vw, 46px);
+  }
+
+  .face__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* The same blue kicker / plain supporting-line pair every other Explore
+     beat uses for its own explanation. */
+  .face__reveal-kicker {
+    display: none;
+    margin: clamp(26px, 3.6vh, 34px) 0 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  [data-stage='2'] .face__measured > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2900ms;
+  }
+
+  .face__reveal-text {
+    display: none;
+    margin: 6px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-stage='2'] .face__measured > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3140ms;
+  }
+
+  /* The same quiet page-turn idiom every other Explore story uses for its
+     own next control. */
+  .face__turn {
+    display: none;
+    margin: clamp(24px, 3.4vh, 32px) 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    cursor: pointer;
+  }
+
+  [data-stage='2'] .face__measured > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3620ms;
+  }
+
+  .face__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .face__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .face__turn:hover span {
+    transform: translateX(2px);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .face__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* ====================================================
+     SCENE 3 — not a picture
+     ==================================================== */
+
+  /* Scene 2's own children go; .face__kept sits one level deeper, so this
+     child combinator doesn't reach it. */
+  [data-keeps='1'] .face__measured > .face__enough,
+  [data-keeps='1'] .face__measured > .face__details,
+  [data-keeps='1'] .face__measured > .face__patterns,
+  [data-keeps='1'] .face__measured > .face__sr-only,
+  [data-keeps='1'] .face__measured > .face__reveal-kicker,
+  [data-keeps='1'] .face__measured > .face__reveal-text,
+  [data-keeps='1'] .face__measured > .face__turn {
+    display: none;
+  }
+
+  .face__kept {
+    display: none;
+  }
+
+  [data-keeps='1'] .face__measured > .face__kept {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Same serif and size Scene 2's own statement used, so the story keeps
+     its voice rather than starting a new one. */
+  .face__not {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-keeps='1'] .face__kept > .face__not {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__contrast {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(18px, 3vw, 30px);
+    margin: clamp(28px, 4.2vh, 40px) 0 0;
+  }
+
+  /* The familiar shorthand for "a photo of a person", drawn flat and
+     quiet: a portrait-shaped card with a circle in it. Nothing here is a
+     scan, a frame, a shutter or a device. */
+  .face__portrait {
+    position: relative;
+    display: block;
+    flex: none;
+    width: clamp(62px, 8vw, 78px);
+    height: clamp(80px, 10.4vw, 100px);
+    border-radius: 6px;
+    background: rgba(40, 44, 60, 0.07);
+  }
+
+  .face__portrait-head {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 38%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--muted-light);
+    opacity: 0.5;
+    transform: translate(-50%, -50%);
+  }
+
+  .face__becomes {
+    flex: none;
+    color: var(--muted-light);
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .face__repr {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Scene 2's pattern, at Scene 2's own widths — the same object, not a
+     new one. */
+  .face__repr-pattern {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Ordinary decimals, generously spaced and set in the page's own sans —
+     never monospaced, bracketed or comma-separated, so they read as
+     quantities rather than as code or a data dump. */
+  .face__repr-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    max-width: 22em;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .face__value {
+    color: var(--ink-soft);
+  }
+
+  .face__value:nth-child(3n + 1) {
+    color: var(--cobalt);
+  }
+
+  [data-keeps='1'] .face__portrait {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-keeps='1'] .face__becomes {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1180ms;
+  }
+
+  [data-keeps='1'] .face__repr-pattern {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1500ms;
+  }
+
+  [data-keeps='1'] .face__repr-values {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1880ms;
+  }
+
+  [data-keeps='1'] .face__kept > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2520ms;
+  }
+
+  [data-keeps='1'] .face__kept > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2760ms;
+  }
+
+  [data-keeps='1'] .face__kept > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3240ms;
+  }
+
+  /* ====================================================
+     SCENE 4 — it can stay on the device
+     ==================================================== */
+
+  /* Scene 3's own children go; .face__device sits one level deeper, so
+     this child combinator doesn't reach it. */
+  [data-device='1'] .face__kept > .face__not,
+  [data-device='1'] .face__kept > .face__contrast,
+  [data-device='1'] .face__kept > .face__sr-only,
+  [data-device='1'] .face__kept > .face__reveal-kicker,
+  [data-device='1'] .face__kept > .face__reveal-text,
+  [data-device='1'] .face__kept > .face__turn {
+    display: none;
+  }
+
+  .face__device {
+    display: none;
+  }
+
+  /* A column so Scene 5's headline can be ordered above the phone while
+     its copy stays below — the phone itself never moves between the two
+     beats. */
+  [data-device='1'] .face__kept > .face__device {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__device-art {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(14px, 2.4vw, 26px);
+    margin: clamp(26px, 4vh, 36px) 0 0;
+  }
+
+  .face__stays {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-device='1'] .face__device > .face__stays {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* A phone by outline only — rounded shell, one speaker slot, nothing
+     else. No screen content, no bezel detail, no brand, no device chrome
+     that would tie it to any particular handset. */
+  .face__phone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(148px, 19vw, 178px);
+    aspect-ratio: 9 / 18;
+    border: 1.5px solid rgba(40, 44, 60, 0.2);
+    border-radius: 22px;
+    opacity: 0;
+  }
+
+  .face__phone-speaker {
+    position: absolute;
+    top: 13px;
+    left: 50%;
+    width: 32px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(40, 44, 60, 0.14);
+    transform: translateX(-50%);
+  }
+
+  /* The protected area: a compartment recessed into the device, said with
+     an inset shadow and a firmer edge rather than with a padlock, shield
+     or keyhole. It is simply a place inside the phone that the pattern
+     sits in — and the pattern never appears anywhere else on screen. */
+  .face__vault {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 68%;
+    padding: 16px 0;
+    border: 1px solid rgba(40, 44, 60, 0.16);
+    border-radius: 10px;
+    background: rgba(40, 44, 60, 0.05);
+    box-shadow: inset 0 1px 3px rgba(40, 44, 60, 0.09);
+    opacity: 0;
+  }
+
+  .face__vault-pattern {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+  }
+
+  /* Scene 3's pattern at the same proportions, scaled to sit inside the
+     compartment — the same object, kept recognisable. */
+  .face__vault .face__pattern-line[data-p='1'] {
+    width: 36px;
+  }
+
+  .face__vault .face__pattern-line[data-p='2'] {
+    width: 52px;
+  }
+
+  .face__vault .face__pattern-line[data-p='3'] {
+    width: 27px;
+  }
+
+  .face__vault .face__pattern-line[data-p='4'] {
+    width: 45px;
+  }
+
+  .face__vault .face__pattern-line[data-p='5'] {
+    width: 32px;
+  }
+
+  /* Outside in: the phone, then the compartment inside it, then what the
+     compartment holds — so the nesting is what the reader watches happen,
+     which is the whole of the idea before any copy is read. */
+  [data-device='1'] .face__phone {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-device='1'] .face__vault {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1280ms;
+  }
+
+  [data-device='1'] .face__vault-pattern {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1700ms;
+  }
+
+  [data-device='1'] .face__device > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2340ms;
+  }
+
+  [data-device='1'] .face__device > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2580ms;
+  }
+
+  [data-device='1'] .face__device > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3060ms;
+  }
+
+  /* ====================================================
+     SCENE 5 — the answer
+     ==================================================== */
+
+  /* Scene 4's copy goes; the art does not. .face__device-art is
+     deliberately absent from this list — the phone, its compartment and
+     the pattern inside stay exactly where they were, which is the whole
+     point of the beat: nothing about the stored representation changes,
+     only a result leaves. */
+  [data-answer='1'] .face__device > .face__stays,
+  [data-answer='1'] .face__device > .face__sr-only,
+  [data-answer='1'] .face__device > .face__reveal-kicker,
+  [data-answer='1'] .face__device > .face__reveal-text,
+  [data-answer='1'] .face__device > .face__turn {
+    display: none;
+  }
+
+  .face__doesnt {
+    display: none;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  /* Ordered above the art so the headline reads first, while Scene 5's
+     copy still sits below the phone. */
+  [data-answer='1'] .face__device > .face__doesnt {
+    display: block;
+    order: -1;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__result {
+    display: none;
+    align-items: center;
+    gap: clamp(10px, 1.6vw, 16px);
+  }
+
+  [data-answer='1'] .face__device-art > .face__result {
+    display: flex;
+  }
+
+  /* Carries nothing. The arrow is the only thing in this story that
+     crosses the phone's edge, and all it delivers is the card beside it. */
+  .face__result-arrow {
+    color: var(--muted-light);
+    font-size: 20px;
+    line-height: 1;
+    opacity: 0;
+  }
+
+  /* A plain neutral card — not a window chrome, not an icon, not a brand.
+     It holds a result and nothing else. */
+  .face__app {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 13px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  .face__app-tick {
+    color: var(--cobalt);
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+
+  [data-answer='1'] .face__result-arrow {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-answer='1'] .face__app {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1120ms;
+  }
+
+  .face__answer {
+    display: none;
+  }
+
+  [data-answer='1'] .face__device > .face__answer {
+    display: block;
+  }
+
+  [data-answer='1'] .face__answer > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1760ms;
+  }
+
+  [data-answer='1'] .face__answer > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2000ms;
+  }
+
+  /* The line that keeps the answer from being over-read. Set in the
+     story's serif so it lands as a turn rather than as another caption. */
+  .face__boundary {
+    display: none;
+    margin: clamp(26px, 3.6vh, 34px) 0 0;
+    max-width: 34ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.1vw, 24px);
+    font-weight: 500;
+    line-height: 1.28;
+    letter-spacing: -0.02em;
+  }
+
+  [data-answer='1'] .face__answer > .face__boundary {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2560ms;
+  }
+
+  [data-answer='1'] .face__answer > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3060ms;
+  }
+
+  /* ====================================================
+     SCENE 6 — same face, different job
+     ==================================================== */
+
+  /* Scene 5's own content goes, the art with it. .face__answer itself
+     stays displayed because Scene 6 is nested inside it; only its direct
+     children are hidden. */
+  [data-compare='1'] .face__device > .face__doesnt,
+  [data-compare='1'] .face__device > .face__device-art,
+  [data-compare='1'] .face__answer > .face__sr-only,
+  [data-compare='1'] .face__answer > .face__reveal-kicker,
+  [data-compare='1'] .face__answer > .face__reveal-text,
+  [data-compare='1'] .face__answer > .face__boundary,
+  [data-compare='1'] .face__answer > .face__turn {
+    display: none;
+  }
+
+  .face__compare {
+    display: none;
+  }
+
+  [data-compare='1'] .face__answer > .face__compare {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__same {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-compare='1'] .face__compare > .face__same {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Two columns of equal weight — neither is framed as the safe one or
+     the alarming one. They stack on narrow screens. */
+  .face__vs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(30px, 5vh, 44px);
+    margin: clamp(28px, 4.2vh, 38px) 0 0;
+  }
+
+  @media (min-width: 560px) {
+    .face__vs {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 4vw, 46px);
+    }
+  }
+
+  .face__col-label {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  /* A column so the art can absorb the leftover height: the two sides
+     hold different amounts of drawing, and without this the shorter one's
+     question would float up and the two columns would stop reading as a
+     like-for-like comparison. */
+  .face__col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The flow runs downward in both columns, so the two read as the same
+     kind of diagram doing two different jobs. Growing to fill the column
+     is what lands both questions on the same line. */
+  .face__col-art {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 4px 0 2px;
+  }
+
+  .face__down {
+    color: var(--muted-light);
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .face__portrait--mini {
+    width: 42px;
+    height: 54px;
+    border-radius: 5px;
+  }
+
+  .face__phone--mini {
+    width: 76px;
+    border-radius: 12px;
+    border-width: 1.25px;
+  }
+
+  .face__phone--mini .face__phone-speaker {
+    top: 7px;
+    width: 16px;
+    height: 3px;
+  }
+
+  .face__phone--mini .face__vault {
+    gap: 2px;
+    padding: 8px 0;
+    border-radius: 6px;
+  }
+
+  .face__phone--mini .face__vault-pattern {
+    gap: 2px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line {
+    height: 2px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line[data-p='1'] {
+    width: 17px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line[data-p='2'] {
+    width: 25px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line[data-p='3'] {
+    width: 13px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line[data-p='4'] {
+    width: 21px;
+  }
+
+  .face__phone--mini .face__vault .face__pattern-line[data-p='5'] {
+    width: 15px;
+  }
+
+  .face__app--mini {
+    padding: 6px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .face__app--mini .face__app-tick {
+    font-size: 11px;
+  }
+
+  /* Many references, all alike and none singled out — the question stays
+     open, so nothing here is marked as the answer. */
+  .face__refs {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 10px 12px;
+  }
+
+  .face__ref {
+    width: 30px;
+    height: 22px;
+    border: 1px solid rgba(40, 44, 60, 0.14);
+    border-radius: 4px;
+    background: rgba(40, 44, 60, 0.045);
+  }
+
+  .face__col-q {
+    margin: 18px 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(16px, 1.7vw, 18px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+
+  .face__col-kind {
+    margin: 6px 0 0;
+    color: var(--muted-light);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  [data-compare='1'] .face__col[data-col='unlock'] {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-compare='1'] .face__col[data-col='recognise'] {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1180ms;
+  }
+
+  [data-compare='1'] .face__compare > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1880ms;
+  }
+
+  [data-compare='1'] .face__compare > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2120ms;
+  }
+
+  [data-compare='1'] .face__compare > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2600ms;
+  }
+
+  /* ====================================================
+     SCENE 7 — different systems, different paths
+     ==================================================== */
+
+  [data-paths='1'] .face__compare > .face__same,
+  [data-paths='1'] .face__compare > .face__vs,
+  [data-paths='1'] .face__compare > .face__sr-only,
+  [data-paths='1'] .face__compare > .face__reveal-kicker,
+  [data-paths='1'] .face__compare > .face__reveal-text,
+  [data-paths='1'] .face__compare > .face__turn {
+    display: none;
+  }
+
+  .face__paths {
+    display: none;
+  }
+
+  [data-paths='1'] .face__compare > .face__paths {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__depends {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-paths='1'] .face__paths > .face__depends {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Three alternatives, not one system: the rows never connect to each
+     other, and none is given a different tone from the others. */
+  .face__path-list {
+    margin: clamp(26px, 4vh, 36px) 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(22px, 3.4vh, 30px);
+  }
+
+  .face__path-label {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .face__flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Cobalt is spent here and nowhere else in the scene: the path is what
+     the reader is being asked to compare. */
+  .face__arrow {
+    color: var(--cobalt);
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .face__node {
+    flex: none;
+    border: 1px solid rgba(40, 44, 60, 0.22);
+    background: transparent;
+  }
+
+  .face__node--face {
+    position: relative;
+    width: 32px;
+    height: 42px;
+    border-radius: 4px;
+    background: rgba(40, 44, 60, 0.05);
+  }
+
+  .face__node-head {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--muted-light);
+    opacity: 0.55;
+    transform: translate(-50%, -50%);
+  }
+
+  .face__node--phone {
+    position: relative;
+    width: 28px;
+    height: 48px;
+    border-radius: 6px;
+  }
+
+  .face__node-speaker {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    width: 9px;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(40, 44, 60, 0.2);
+    transform: translateX(-50%);
+  }
+
+  .face__node--box {
+    width: 46px;
+    height: 34px;
+    border-radius: 5px;
+    background: rgba(40, 44, 60, 0.04);
+  }
+
+  .face__many {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 5px;
+  }
+
+  .face__many-block {
+    width: 22px;
+    height: 16px;
+    border: 1px solid rgba(40, 44, 60, 0.18);
+    border-radius: 3px;
+    background: rgba(40, 44, 60, 0.04);
+  }
+
+  .face__path-note {
+    margin: 11px 0 0;
+    color: var(--muted-light);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  [data-paths='1'] .face__path[data-path='1'] {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-paths='1'] .face__path[data-path='2'] {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1120ms;
+  }
+
+  [data-paths='1'] .face__path[data-path='3'] {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1420ms;
+  }
+
+  [data-paths='1'] .face__paths > .face__reveal-kicker {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2120ms;
+  }
+
+  [data-paths='1'] .face__paths > .face__reveal-text {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2360ms;
+  }
+
+  [data-paths='1'] .face__paths > .face__turn {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2840ms;
+  }
+
+  /* ====================================================
+     SCENE 8 — the end of Card 3
+     ==================================================== */
+
+  [data-final='1'] .face__paths > .face__depends,
+  [data-final='1'] .face__paths > .face__path-list,
+  [data-final='1'] .face__paths > .face__sr-only,
+  [data-final='1'] .face__paths > .face__reveal-kicker,
+  [data-final='1'] .face__paths > .face__reveal-text,
+  [data-final='1'] .face__paths > .face__turn {
+    display: none;
+  }
+
+  .face__close {
+    display: none;
+  }
+
+  [data-final='1'] .face__paths > .face__close {
+    display: block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .face__whole {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-final='1'] .face__close > .face__whole {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Three thoughts held apart by space alone — no border, background,
+     bullet or number anywhere, so nothing reads as a card. */
+  .face__asks {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(26px, 4.2vh, 38px);
+    margin: clamp(30px, 4.6vh, 42px) 0 0;
+  }
+
+  .face__ask-q {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.1vw, 23px);
+    font-weight: 500;
+    line-height: 1.28;
+    letter-spacing: -0.018em;
+  }
+
+  .face__ask-a {
+    margin: 7px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-final='1'] .face__ask-item:nth-child(1) {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-final='1'] .face__ask-item:nth-child(2) {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1120ms;
+  }
+
+  [data-final='1'] .face__ask-item:nth-child(3) {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1420ms;
+  }
+
+  /* The answer the card opened on. */
+  .face__payoff {
+    margin: clamp(34px, 5vh, 48px) 0 0;
+    max-width: 32ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.4vw, 27px);
+    font-weight: 500;
+    line-height: 1.26;
+    letter-spacing: -0.022em;
+  }
+
+  [data-final='1'] .face__close > .face__payoff {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2140ms;
+  }
+
+  /* Immediately after it, on purpose: the line that keeps the answer from
+     being read as a claim about every system. */
+  .face__caveat {
+    margin: 12px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-final='1'] .face__close > .face__caveat {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2440ms;
+  }
+
+  /* The better question, in the same cobalt serif the other cards give
+     their closing turn. */
+  .face__better {
+    margin: clamp(30px, 4.4vh, 40px) 0 0;
+    color: var(--cobalt);
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.1vw, 24px);
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.018em;
+  }
+
+  .face__better-a,
+  .face__better-b {
+    display: block;
+  }
+
+  [data-final='1'] .face__close > .face__better {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2940ms;
+  }
+
+  .face__know {
+    margin: clamp(28px, 4vh, 36px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.1vw, 24px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-final='1'] .face__close > .face__know {
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3420ms;
+  }
+
+  /* The turn control as a link rather than a button — same type, same
+     saffron disc, same hover. */
+  .face__turn--link {
+    text-decoration: none;
+  }
+
+  [data-final='1'] .face__close > .face__turn--link {
+    display: inline-block;
+    animation: face-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3900ms;
+  }
+
+  @keyframes face-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .face__show,
+    .face__show span {
+      transition-duration: 1ms;
+    }
+
+    [data-stage='2'] .face__measured,
+    [data-stage='2'] .face__measured > .face__enough,
+    [data-stage='2'] .face__pattern--made,
+    [data-stage='2'] .face__pattern--stored,
+    [data-stage='2'] .face__measured > .face__reveal-kicker,
+    [data-stage='2'] .face__measured > .face__reveal-text,
+    [data-stage='2'] .face__measured > .face__turn,
+    [data-keeps='1'] .face__measured > .face__kept,
+    [data-keeps='1'] .face__kept > .face__not,
+    [data-keeps='1'] .face__portrait,
+    [data-keeps='1'] .face__becomes,
+    [data-keeps='1'] .face__repr-pattern,
+    [data-keeps='1'] .face__repr-values,
+    [data-keeps='1'] .face__kept > .face__reveal-kicker,
+    [data-keeps='1'] .face__kept > .face__reveal-text,
+    [data-keeps='1'] .face__kept > .face__turn,
+    [data-device='1'] .face__kept > .face__device,
+    [data-device='1'] .face__device > .face__stays,
+    [data-device='1'] .face__device > .face__reveal-kicker,
+    [data-device='1'] .face__device > .face__reveal-text,
+    [data-device='1'] .face__device > .face__turn,
+    [data-answer='1'] .face__device > .face__doesnt,
+    [data-answer='1'] .face__answer > .face__reveal-kicker,
+    [data-answer='1'] .face__answer > .face__reveal-text,
+    [data-answer='1'] .face__answer > .face__boundary,
+    [data-answer='1'] .face__answer > .face__turn,
+    [data-compare='1'] .face__answer > .face__compare,
+    [data-compare='1'] .face__compare > .face__same,
+    [data-compare='1'] .face__col[data-col='unlock'],
+    [data-compare='1'] .face__col[data-col='recognise'],
+    [data-compare='1'] .face__compare > .face__reveal-kicker,
+    [data-compare='1'] .face__compare > .face__reveal-text,
+    [data-compare='1'] .face__compare > .face__turn,
+    [data-paths='1'] .face__compare > .face__paths,
+    [data-paths='1'] .face__paths > .face__depends,
+    [data-paths='1'] .face__path[data-path='1'],
+    [data-paths='1'] .face__path[data-path='2'],
+    [data-paths='1'] .face__path[data-path='3'],
+    [data-paths='1'] .face__paths > .face__reveal-kicker,
+    [data-paths='1'] .face__paths > .face__reveal-text,
+    [data-paths='1'] .face__paths > .face__turn,
+    [data-final='1'] .face__paths > .face__close,
+    [data-final='1'] .face__close > .face__whole,
+    [data-final='1'] .face__ask-item:nth-child(1),
+    [data-final='1'] .face__ask-item:nth-child(2),
+    [data-final='1'] .face__ask-item:nth-child(3),
+    [data-final='1'] .face__close > .face__payoff,
+    [data-final='1'] .face__close > .face__caveat,
+    [data-final='1'] .face__close > .face__better,
+    [data-final='1'] .face__close > .face__know,
+    [data-final='1'] .face__close > .face__turn--link {
+      animation: none;
+    }
+
+    /* Both carry their own base opacity:0, so cancelling the animation
+       alone would leave them invisible. */
+    [data-answer='1'] .face__result-arrow,
+    [data-answer='1'] .face__app {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* The phone, its compartment and the pattern inside all carry their
+       own base opacity:0, so switching the animation off is not enough —
+       each is shown outright, matched to its forward rule's specificity. */
+    [data-device='1'] .face__phone,
+    [data-device='1'] .face__vault,
+    [data-device='1'] .face__vault-pattern {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* Matched to the nth-child selectors that carry each wave's delay, so
+       this outweighs them — a bare .face__detail rule would lose that
+       contest and leave the whole field stuck at opacity 0. */
+    [data-stage='2'] .face__detail:nth-child(4n + 1),
+    [data-stage='2'] .face__detail:nth-child(4n + 2),
+    [data-stage='2'] .face__detail:nth-child(4n + 3),
+    [data-stage='2'] .face__detail:nth-child(4n) {
+      animation: none;
+      opacity: 1;
+    }
+
+    .face__turn span {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-face]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    // One way, one time: Scene 1 -> Scene 2. There is nothing before it to
+    // return to, so a second click is simply a no-op.
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+    });
+
+    // Scene 3. A flag of its own rather than a bumped stage, so everything
+    // Scene 2 turned on stays on underneath it.
+    root.querySelector('[data-kept]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.keeps === '1') return;
+      root.dataset.keeps = '1';
+    });
+
+    // Scene 4. A flag of its own rather than a bumped stage, so everything
+    // Scene 3 turned on stays on underneath it.
+    root.querySelector('[data-where]')?.addEventListener('click', () => {
+      if (root.dataset.keeps !== '1' || root.dataset.device === '1') return;
+      root.dataset.device = '1';
+    });
+
+    // Scene 5. A flag of its own rather than a bumped stage, so everything
+    // Scene 4 turned on stays on underneath it.
+    root.querySelector('[data-left]')?.addEventListener('click', () => {
+      if (root.dataset.device !== '1' || root.dataset.answer === '1') return;
+      root.dataset.answer = '1';
+    });
+
+    // Scene 6. A flag of its own rather than a bumped stage, so everything
+    // Scene 5 turned on stays on underneath it.
+    root.querySelector('[data-difference]')?.addEventListener('click', () => {
+      if (root.dataset.answer !== '1' || root.dataset.compare === '1') return;
+      root.dataset.compare = '1';
+    });
+
+    // Scene 7. A flag of its own rather than a bumped stage, so everything
+    // Scene 6 turned on stays on underneath it.
+    root.querySelector('[data-flow]')?.addEventListener('click', () => {
+      if (root.dataset.compare !== '1' || root.dataset.paths === '1') return;
+      root.dataset.paths = '1';
+    });
+
+    // Scene 8 — the last beat of the card. The way on from here is a real
+    // link to another story, not another flag.
+    root.querySelector('[data-ask]')?.addEventListener('click', () => {
+      if (root.dataset.paths !== '1' || root.dataset.final === '1') return;
+      root.dataset.final = '1';
+    });
+  });
+</script>
