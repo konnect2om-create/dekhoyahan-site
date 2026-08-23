@@ -1,0 +1,2409 @@
+---
+// New Explore-only story: "AI answered you. How did it know what to say?" —
+// Card 2 of the four homepage preview cards. Scene 1 only, on exactly the
+// construction /explore/looks-real-is-it, /explore/where-is-the-5g and the
+// photo story all use: one grid, copy and the interaction on the left, the
+// visual stage on the right; the left title stays the anchor for the whole
+// story once later scenes exist, the same way none of the other three
+// stories' opening headings change once their own story has started.
+//
+// The supplied Card2 render is an ordinary chat exchange — a question asked,
+// an answer given — with nothing else drawn over it: no glow, no
+// neural-network graphic, no floating tokens, no model diagram, no
+// technical label. That ordinariness is the whole point of this opening:
+// you asked, AI answered, in seconds — the "how" is what the story past
+// this point exists to answer, not something this scene explains in
+// advance.
+//
+// Scene 2 (whatever "How?" actually reveals) does not exist yet.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="AI answered you. How did it know what to say? — DekhoYahan"
+  description="In seconds."
+>
+  <div class="answer" data-answer data-stage="1">
+    <!-- Same reasoning as the other three openings: copy and the visual
+         share one grid rather than a header sitting above a separate
+         stage, so on wide screens they sit side by side and both the
+         question and the CTA are readable before the visitor scrolls past
+         the image; below the stacking point they fall back to the same
+         top-to-bottom order, copy first.
+
+         Carries the same small eyebrow the "Looks real. Is it?" opening
+         uses — reused as-is (small saffron dot, cobalt uppercase) rather
+         than inventing a new treatment — since this heading is also a
+         single short line rather than a two-part statement-and-question,
+         so the eyebrow is what frames it as this story's own prompt
+         ("you asked") rather than a flat statement. -->
+    <div class="answer__stage shell">
+      <div class="answer__copy">
+        <p class="answer__eyebrow"><span></span>You asked</p>
+
+        <h1 class="answer__opening">AI answered you.</h1>
+
+        <p class="answer__noticed">In seconds.</p>
+
+        <!-- The one thing that starts the story. Real and focusable now,
+             the same way every other story's opening control is, even
+             though nothing past it exists yet. -->
+        <button type="button" class="answer__show" data-show>
+          How? <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- ====================================================
+           THE VISUALS — Scene 1's photo, then Scene 2's sentence taking
+           its place entirely rather than sitting beside or behind it. The
+           two states don't share a visual language (a locked photo, then
+           plain typography) so there's no crossfade to stage between
+           them — one simply stops occupying the column as the other
+           starts, the same on/off handoff every other Explore story uses
+           between a beat's own kicker/text pair and the one that replaces
+           it. -->
+      <div class="answer__visuals">
+        <!-- THE SCENE — the supplied Card2 render, used as-is and locked.
+
+             A plain photograph of an ordinary moment rather than a
+             composed technical illustration, so its box is simply sized
+             to its own ratio (1536 x 1024, 3:2) with no overlay, effect,
+             label or AI indicator drawn over it — and stays exactly that
+             way for as long as it's on screen. -->
+        <div class="answer__scene">
+          <img
+            class="answer__art"
+            src="/images/Card2.webp"
+            alt="A person holding a phone, reading an AI assistant's reply to the question 'Why do we dream?' — the answer already on screen."
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+
+        <!-- ====================================================
+             SCENE 2 — the plainest possible next-word moment: a sentence
+             with a gap, and the three candidates for it, set as running
+             type rather than as buttons or cards so nothing here reads as
+             an interface to operate. "mat" is simply marked as the word
+             this beat leans on (.answer__word--mat) — the CSS below is
+             what makes that lean visible, on a delay, with no click or
+             script involved. Nothing past that lean is explained yet:
+             just the one line naming what just happened, and the way
+             onward. -->
+        <div class="answer__sentence">
+          <p class="answer__sentence-text">
+            The cat sat on the <span class="answer__blank">___</span>
+          </p>
+
+          <p class="answer__words">
+            <span class="answer__word answer__word--mat">mat</span>
+            <span class="answer__word">moon</span>
+            <span class="answer__word">democracy</span>
+          </p>
+
+          <p class="answer__reveal-kicker">Some words feel more likely to come next.</p>
+
+          <!-- The way onward. -->
+          <button type="button" class="answer__turn" data-change>
+            Change the sentence <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- ====================================================
+               SCENE 3 — the same plain mechanism run again, on purpose:
+               same sentence shape, same three running words, same lean
+               after a beat, same one-line caption and turn. Nothing new
+               is drawn or explained — the point of repeating the exact
+               idiom is to let the visitor feel, without being told, that
+               it's the same simple thing happening twice. Only the words
+               changed, and which one the lean falls on changed with them
+               ("moon" leads the list this time and is what leans, not
+               "mat") — that's the whole demonstration: change the words
+               before the gap, and the word that feels right for it
+               changes too.
+
+               Nested one level inside .answer__sentence so the child
+               combinator below — which reaches only .answer__sentence's
+               own direct children — can hide Scene 2's sentence, words,
+               kicker and turn without also catching this one, the same
+               hand-over technique every other beat in this beat's sibling
+               stories already uses. -->
+          <div class="answer__sentence2">
+            <p class="answer__sentence-text">
+              The astronaut sat on the <span class="answer__blank">___</span>
+            </p>
+
+            <p class="answer__words">
+              <span class="answer__word answer__word--moon">moon</span>
+              <span class="answer__word">mat</span>
+              <span class="answer__word">democracy</span>
+            </p>
+
+            <p class="answer__reveal-kicker">
+              Change the words before it, and what comes next can change.
+            </p>
+
+            <!-- The way onward. -->
+            <button type="button" class="answer__turn" data-choose>
+              So how does AI choose? <span aria-hidden="true">→</span>
+            </button>
+
+            <!-- ====================================================
+                 SCENE 4 — the same three words, now shown unevenly rather
+                 than evenly: a simple typographic ranking, not a chart. No
+                 axis, no legend, no percentage — just bars set as running
+                 characters, in the same row the words themselves sit in,
+                 so this still reads as part of the sentence rather than a
+                 widget dropped beside it.
+
+                 ".answer__sentence-text" (the astronaut sentence itself)
+                 is deliberately left out of what this hand-over hides —
+                 unlike every earlier beat, the sentence doesn't change or
+                 refade here, only the row under it does, which is what
+                 keeps this feeling like the same moment continuing rather
+                 than a new one starting. Nested one level inside
+                 .answer__sentence2, same technique as every hand-over
+                 before it. -->
+            <div class="answer__sentence3">
+              <ul class="answer__ranking">
+                <li class="answer__rank">
+                  <span class="answer__rank-word answer__rank-word--lead">moon</span>
+                  <span class="answer__rank-bar" aria-hidden="true">█████████</span>
+                  <span class="answer__sr-only">most likely</span>
+                </li>
+                <li class="answer__rank">
+                  <span class="answer__rank-word">mat</span>
+                  <span class="answer__rank-bar" aria-hidden="true">██</span>
+                  <span class="answer__sr-only">less likely</span>
+                </li>
+                <li class="answer__rank">
+                  <span class="answer__rank-word">democracy</span>
+                  <span class="answer__rank-bar answer__rank-bar--faint" aria-hidden="true">▏</span>
+                  <span class="answer__sr-only">barely likely</span>
+                </li>
+              </ul>
+
+              <p class="answer__reveal-kicker">AI gives possible next words different chances.</p>
+              <p class="answer__reveal-text">One word is chosen. Then the next.</p>
+
+              <!-- The way onward. -->
+              <button type="button" class="answer__turn" data-again>
+                Watch it continue <span aria-hidden="true">→</span>
+              </button>
+
+              <!-- ====================================================
+                   SCENE 5 — the bars are gone; the sentence itself is the
+                   only visual left. "The astronaut sat on the moon" is
+                   the piece already settled (Scene 4's own choice), set
+                   down all at once with the rest of this block; everything
+                   after it — "and", "looked", "back", "at", "Earth." —
+                   is exactly the piece-by-piece mechanism Scenes 2-4 spent
+                   three beats making felt, just no longer interrupted by a
+                   caption or a click between one word and the next. Each
+                   span carries its own entrance delay below, spaced far
+                   enough apart to read as a deliberate pause rather than a
+                   typing effect — plain opacity/position, the same
+                   `answer-in` keyframe every reveal on this page already
+                   uses, never a cursor, a clip-width reveal or anything
+                   else that would read as a terminal typing itself out.
+
+                   This hand-over hides .answer__sentence2's own
+                   `.answer__sentence-text` too, not just .answer__sentence3's
+                   ranking/kicker/text/turn — the astronaut sentence is
+                   changing for the first time since Scene 3 set it, so
+                   this is the one beat since then where the old sentence
+                   actually needs to leave rather than persist. -->
+              <div class="answer__sentence4">
+                <p class="answer__sentence-text answer__built">
+                  <span class="answer__piece answer__piece--base">The astronaut sat on the moon</span>
+                  <span class="answer__piece" data-piece="1">and</span>
+                  <span class="answer__piece" data-piece="2">looked</span>
+                  <span class="answer__piece" data-piece="3">back</span>
+                  <span class="answer__piece" data-piece="4">at</span>
+                  <span class="answer__piece" data-piece="5">Earth.</span>
+                </p>
+
+                <p class="answer__reveal-kicker">One choice becomes context for the next.</p>
+                <p class="answer__reveal-text">Again. And again.</p>
+
+                <!-- The way onward. -->
+                <button type="button" class="answer__turn" data-answer-final>
+                  Until you get an answer <span aria-hidden="true">→</span>
+                </button>
+
+                <!-- ====================================================
+                     SCENE 6 — the built sentence stays exactly as Scene 5
+                     left it (".answer__built" is left out of what this
+                     hand-over hides, the same way ".answer__sentence-text"
+                     stayed through Scene 4); everything new sits beneath
+                     it rather than replacing it.
+
+                     Three examples, not one, so the range itself is what
+                     explains the idea rather than a single word standing
+                     in for every case. All three are real GPT-4
+                     (cl100k_base) output, checked directly with tiktoken
+                     rather than guessed at — this is one real tokenizer's
+                     own boundaries, not a universal rule every model
+                     shares, which is exactly why three different shapes
+                     are shown instead of a single definition: "cat" is
+                     its own one piece, "unbelievable" is three, "Hello!"
+                     is two, with the "!" a piece entirely on its own.
+
+                     Each multi-piece example carries the same
+                     zero-width/zero-opacity "·" marks Scene 6 used
+                     before: not just invisible before they widen in, but
+                     genuinely taking up no space, so each word still
+                     reads as one solid unit first and then visibly opens
+                     — the same dictionary-syllabification mark, never a
+                     chip, pill or code token. "cat" has no mark at all,
+                     since it has nothing to open — that contrast (two
+                     words visibly splitting, one that simply doesn't) is
+                     what actually carries "a token can be a whole word
+                     too" without a line of copy saying so. The whole
+                     three-line demo is aria-hidden with each example's
+                     clean text given back via aria-label, since the
+                     surrounding sentences already say in words everything
+                     it demonstrates. -->
+                <div class="answer__sentence5">
+                  <p class="answer__reveal-kicker answer__reveal-kicker--1">
+                    AI doesn't always see whole words.
+                  </p>
+
+                  <div class="answer__tokens">
+                    <p class="answer__token answer__token--whole" aria-label="cat">
+                      <span class="answer__token-piece">cat</span>
+                    </p>
+
+                    <p class="answer__token answer__token--word" aria-label="unbelievable">
+                      <span class="answer__token-piece">un</span><span
+                        class="answer__token-sep"
+                        aria-hidden="true">·</span><span class="answer__token-piece"
+                        >belie</span><span class="answer__token-sep" aria-hidden="true"
+                        >·</span><span class="answer__token-piece">vable</span>
+                    </p>
+
+                    <p class="answer__token answer__token--punct" aria-label="Hello!">
+                      <span class="answer__token-piece">Hello</span><span
+                        class="answer__token-sep"
+                        aria-hidden="true">·</span><span class="answer__token-piece">!</span>
+                    </p>
+                  </div>
+
+                  <p class="answer__reveal-kicker answer__reveal-kicker--2">
+                    It works with pieces called tokens.
+                  </p>
+                  <p class="answer__reveal-text">
+                    A token might be a word, part of one, or even punctuation.
+                  </p>
+
+                  <!-- The way onward. -->
+                  <button type="button" class="answer__turn" data-why>
+                    Why pieces? <span aria-hidden="true">→</span>
+                  </button>
+
+                  <!-- Scene 7: where the guess came from. Nested one level
+                       inside .answer__sentence5, same hand-over technique
+                       as every earlier beat. The field is eighteen ordinary
+                       fragments — the kind of sentence you'd meet in a
+                       book, an email, a forum thread, a caption — never a
+                       logo, a screenshot or a database icon. Six of those
+                       fragments carry the three paired words this beat
+                       cares about (astronaut/space, moon/Earth, cat/mat),
+                       written in place exactly like their neighbours. The
+                       field itself never changes; only which words wear
+                       emphasis does, arriving together in the three pairs
+                       — astronaut with space, moon with Earth, cat with
+                       mat — so the pattern seems to surface from inside
+                       the ordinary language already on screen rather than
+                       being pointed at from outside it. The field is
+                       aria-hidden with a single sr-only line standing in
+                       for it, since what it demonstrates is already said
+                       in words by the copy around it. -->
+                  <div class="answer__sentence6">
+                    <p class="answer__sentence-text">
+                      How did AI know "moon" was more likely?
+                    </p>
+
+                    <!-- Scene 8 stacks .answer__values directly on top of
+                         .answer__field (same grid cell, see the CSS below),
+                         so the numbers arrive in the exact footprint the
+                         example text occupied rather than somewhere new.
+                         The text never leaves the flow — it fades by colour
+                         alone — so the area keeps its height and the values
+                         land across the space the sentences were holding.
+                         Wrapping the two in one stage element is the only
+                         markup change Scene 8 makes to Scene 7's own
+                         field. -->
+                    <div class="answer__field-stage">
+                      <div class="answer__field" aria-hidden="true">
+                        <span class="answer__frag">an old photograph from the archive</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="1">astronaut</span> drifted toward the horizon</span>
+                        <span class="answer__frag">documentation for the new API</span>
+                        <span class="answer__frag">she left a comment on the thread</span>
+                        <span class="answer__frag">a museum plaque explaining the exhibit</span>
+                        <span class="answer__frag">notes from a lecture on optics</span>
+                        <span class="answer__frag">a recipe passed down for generations</span>
+                        <span class="answer__frag">the mission control room fell quiet</span>
+                        <span class="answer__frag">further reading on the topic</span>
+                        <span class="answer__frag"><span class="answer__pair" data-beat="1">space</span> debris drifted past the window</span>
+                        <span class="answer__frag">a letter never sent</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="2">astronaut</span> checked the equipment twice</span>
+                        <span class="answer__frag">reviews from readers around the world</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="2">moon</span> rose over the horizon that night</span>
+                        <span class="answer__frag">a forum thread about gardening</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="3">moon</span>'s surface caught the light</span>
+                        <span class="answer__frag">an email from a colleague</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="3">Earth</span> turned slowly beneath them</span>
+                        <span class="answer__frag">footnotes in an old textbook</span>
+                        <span class="answer__frag">a shopping list stuck to the fridge</span>
+                        <span class="answer__frag">the <span class="answer__pair" data-beat="4">moon</span> completed another slow pass</span>
+                        <span class="answer__frag">a satellite settled into a steady <span class="answer__pair" data-beat="4">orbit</span></span>
+                      </div>
+
+                      <!-- What the training left behind. Loosely set rather
+                           than ruled into rows and columns — each value is
+                           nudged off the line its neighbours sit on, so the
+                           field reads as scattered quantities rather than a
+                           spreadsheet, a matrix or a block of code. Set in
+                           the page's own sans at reading size, never a
+                           monospace/terminal face, and never boxed, ruled
+                           or glowing. -->
+                      <div class="answer__values" aria-hidden="true">
+                        <span class="answer__value">0.18</span>
+                        <span class="answer__value">−0.42</span>
+                        <span class="answer__value">1.07</span>
+                        <span class="answer__value">0.63</span>
+                        <span class="answer__value">−0.21</span>
+                        <span class="answer__value">0.96</span>
+                        <span class="answer__value">−0.73</span>
+                        <span class="answer__value">0.34</span>
+                        <span class="answer__value">1.28</span>
+                        <span class="answer__value">−1.31</span>
+                        <span class="answer__value">0.25</span>
+                        <span class="answer__value">0.82</span>
+                        <span class="answer__value">−0.56</span>
+                        <span class="answer__value">1.14</span>
+                        <span class="answer__value">−0.37</span>
+                        <span class="answer__value">0.41</span>
+                        <span class="answer__value">−0.92</span>
+                        <span class="answer__value">0.68</span>
+                        <span class="answer__value">1.33</span>
+                        <span class="answer__value">−0.15</span>
+                        <span class="answer__value">0.22</span>
+                        <span class="answer__value">0.71</span>
+                        <span class="answer__value">−1.05</span>
+                        <span class="answer__value">0.47</span>
+                        <span class="answer__value">1.19</span>
+                        <span class="answer__value">−0.64</span>
+                        <span class="answer__value">0.93</span>
+                        <span class="answer__value">−0.28</span>
+                        <span class="answer__value">0.55</span>
+                        <span class="answer__value">1.01</span>
+                        <span class="answer__value">−0.39</span>
+                        <span class="answer__value">0.29</span>
+                        <span class="answer__value">0.83</span>
+                        <span class="answer__value">−1.22</span>
+                        <span class="answer__value">0.61</span>
+                        <span class="answer__value">0.37</span>
+                        <span class="answer__value">−0.81</span>
+                        <span class="answer__value">1.24</span>
+                        <span class="answer__value">−0.17</span>
+                        <span class="answer__value">0.88</span>
+                        <span class="answer__value">−0.33</span>
+                        <span class="answer__value">0.77</span>
+                        <span class="answer__value">−1.16</span>
+                        <span class="answer__value">0.49</span>
+                        <span class="answer__value">0.26</span>
+                        <span class="answer__value">−0.58</span>
+                        <span class="answer__value">1.09</span>
+                        <span class="answer__value">−0.24</span>
+                      </div>
+                    </div>
+                    <p class="answer__sr-only">
+                      A field of ordinary text fragments — from books, articles, conversations
+                      and documentation — in which certain words keep recurring near each
+                      other: astronaut near space, astronaut near moon, moon near Earth, and
+                      moon near orbit.
+                    </p>
+
+                    <p class="answer__reveal-kicker">It learned patterns from enormous amounts of text.</p>
+                    <p class="answer__reveal-text">
+                      Which words and ideas tend to appear together — and in what contexts.
+                    </p>
+
+                    <!-- The way onward. -->
+                    <button type="button" class="answer__turn" data-learn>
+                      But learning isn't remembering <span aria-hidden="true">→</span>
+                    </button>
+
+                    <!-- Scene 8: the examples are gone, something changed.
+                         Nested one level inside .answer__sentence6, the
+                         same hand-over every earlier beat uses — except
+                         .answer__field is deliberately left out of what
+                         this hand-over hides (alongside
+                         .answer__sentence-text, which has carried over
+                         since Scene 6), because the fading text and the
+                         points it leaves behind ARE this scene's opening
+                         beat, not something to clear before it starts. Only
+                         Scene 7's own kicker/text/turn — the "it learned
+                         patterns" line and its CTA, now said and done —
+                         are hidden. -->
+                    <div class="answer__sentence7">
+                      <p class="answer__sr-only">
+                        The example text fades away. What remains in its place is a
+                        loose field of small numerical values — not the sentences
+                        themselves, but what training left behind.
+                      </p>
+
+                      <!-- The turn of the whole beat, and the only place this
+                           scene raises its voice: the two halves are set in the
+                           story's own serif, the second in cobalt, so "gone" and
+                           "remain" land as one statement rather than a label and
+                           a caption. -->
+                      <p class="answer__verdict">
+                        <span class="answer__verdict-gone">The sentences are gone.</span>
+                        <span class="answer__verdict-remain">The changes remain.</span>
+                      </p>
+
+                      <p class="answer__reveal-text answer__reveal-text--support">
+                        Those changes are carried in billions of numerical values.
+                      </p>
+                      <p class="answer__reveal-text answer__reveal-text--term">
+                        These are called <strong>parameters</strong>.
+                      </p>
+
+                      <!-- The way onward. -->
+                      <button type="button" class="answer__turn" data-become>
+                        So how does that become an answer? <span aria-hidden="true">→</span>
+                      </button>
+
+                      <!-- ====================================================
+                           SCENE 9 — the question comes back.
+                           ====================================================
+                           The beat the whole story has been walking toward: the
+                           mechanism watched in the abstract earlier (Scenes 2–5,
+                           where a sentence chose its own next word) is now shown
+                           running on the reader's own question. Nothing new is
+                           explained — the ranking is deliberately the SAME
+                           .answer__ranking / .answer__rank markup Scene 4 used,
+                           down to the block-character bars, so the recognition
+                           lands as "oh — that was this" rather than as a second
+                           mechanism being introduced.
+
+                           The chosen token is appended to the question itself
+                           rather than restated on a line of its own: the prompt
+                           visibly becomes the thing being continued, which is
+                           the point of the beat, and it echoes Scene 5's own
+                           word-by-word construction without repeating it.
+
+                           Nested one level inside .answer__sentence7, same
+                           hand-over technique as every beat before it. -->
+                      <div class="answer__sentence8">
+                        <p class="answer__prompt">
+                          <span class="answer__prompt-q">Why do we dream?</span><span
+                            class="answer__prompt-next"
+                          >&nbsp;Scientists</span><span class="answer__prompt-more" aria-hidden="true">&nbsp;…</span><span
+                            class="answer__grow"
+                            data-grow-piece="1"
+                          >&nbsp;still</span><span class="answer__grow" data-grow-piece="2"
+                          >&nbsp;don't</span><span class="answer__grow" data-grow-piece="3"
+                          >&nbsp;fully understand</span><span class="answer__grow" data-grow-piece="4"
+                          >&nbsp;why we dream.</span>
+                        </p>
+
+                        <ul class="answer__ranking answer__ranking--prompt">
+                          <li class="answer__rank">
+                            <span class="answer__rank-word answer__rank-word--pick">Scientists</span>
+                            <span class="answer__rank-bar" aria-hidden="true">█████████</span>
+                            <span class="answer__sr-only">most likely</span>
+                          </li>
+                          <li class="answer__rank">
+                            <span class="answer__rank-word">Dreams</span>
+                            <span class="answer__rank-bar" aria-hidden="true">█████</span>
+                            <span class="answer__sr-only">less likely</span>
+                          </li>
+                          <li class="answer__rank">
+                            <span class="answer__rank-word">There</span>
+                            <span class="answer__rank-bar" aria-hidden="true">██</span>
+                            <span class="answer__sr-only">less likely still</span>
+                          </li>
+                          <li class="answer__rank">
+                            <span class="answer__rank-word">We</span>
+                            <span class="answer__rank-bar answer__rank-bar--faint" aria-hidden="true">▏</span>
+                            <span class="answer__sr-only">barely likely</span>
+                          </li>
+                        </ul>
+
+                        <p class="answer__reveal-kicker">Your question becomes the context.</p>
+                        <p class="answer__reveal-text">
+                          Using what it learned, the model gives possible next tokens
+                          different chances.
+                        </p>
+
+                        <!-- The way onward. -->
+                        <button type="button" class="answer__turn" data-next>
+                          And then? <span aria-hidden="true">→</span>
+                        </button>
+
+                        <!-- ====================================================
+                             SCENE 10 — the answer takes shape.
+                             ====================================================
+                             The payoff, not another explanation. The candidate
+                             list and its bars go; the sentence is left alone with
+                             the column and simply continues, one piece at a time,
+                             each arriving in cobalt and settling to ink a moment
+                             later so the reader can watch the answer being built
+                             rather than being told about it. "Scientists" — the
+                             piece chosen in the previous beat, still standing in
+                             cobalt — settles the same way as the next piece
+                             arrives, which is what makes the loop legible: what
+                             was just generated becomes ordinary context, and the
+                             next piece is generated against it.
+
+                             The pieces themselves live inside .answer__prompt
+                             (declared there, display:none until this beat) so the
+                             sentence grows in place rather than being restated.
+                             Whole pieces, never characters — the conceptual unit
+                             is the token, and a typewriter effect would quietly
+                             teach the wrong one.
+
+                             Nested one level inside .answer__sentence8, same
+                             hand-over technique as every beat before it. -->
+                        <div class="answer__sentence9">
+                          <p class="answer__reveal-kicker">
+                            Each new piece becomes context for the next.
+                          </p>
+                          <p class="answer__reveal-text">Again. And again.</p>
+
+                          <p class="answer__realise">That's how an answer takes shape.</p>
+
+                          <!-- The way onward. -->
+                          <button type="button" class="answer__turn" data-understand>
+                            So what just happened? <span aria-hidden="true">→</span>
+                          </button>
+
+                          <!-- ====================================================
+                               SCENE 11 — the end of Card 2.
+                               ====================================================
+                               No new mechanism, no new concept: the card closes by
+                               handing the reader back the moment it opened on.
+                               "AI answered you. In seconds." is Scene 1's headline
+                               verbatim, set quietly in the right column this time —
+                               the same words, now meaning something they didn't at
+                               the start, which is the whole point of the card.
+
+                               Nested one level inside .answer__sentence9, same
+                               hand-over technique as every beat before it. -->
+                          <div class="answer__sentence10">
+                            <p class="answer__echo">
+                              <span class="answer__echo-line">AI answered you.</span>
+                              <span class="answer__echo-sub">In seconds.</span>
+                            </p>
+
+                            <p class="answer__closing">
+                              <span class="answer__closing-a">
+                                It didn't pull that answer from a page.
+                              </span>
+                              <span class="answer__closing-b">It built it, piece by piece.</span>
+                            </p>
+
+                            <p class="answer__reveal-text">
+                              What it learned, your question, and what came before shaped
+                              each next piece.
+                            </p>
+
+                            <p class="answer__last">
+                              <span class="answer__last-a">You saw an answer.</span>
+                              <span class="answer__last-b">Now you can see how it took shape.</span>
+                            </p>
+
+                            <!-- The end of the card: the only way on is round
+                                 again, so this control returns the story to its
+                                 opening rather than pointing anywhere new. -->
+                            <button type="button" class="answer__turn" data-restart>
+                              Replay <span aria-hidden="true">↻</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .answer {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .answer__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vh, 48px);
+  }
+
+  /* Same threshold every other Explore story splits at. */
+  @media (min-width: 980px) {
+    .answer__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(36px, 4.5vw, 68px);
+    }
+  }
+
+  .answer__copy {
+    text-align: left;
+  }
+
+  /* ConceptHero's own eyebrow, unchanged: small saffron dot, cobalt
+     uppercase sans — the same treatment the "Looks real. Is it?" opening
+     already reuses. */
+  .answer__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 12px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+
+  .answer__eyebrow span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+  }
+
+  /* Same serif, same size, same weight as every other Explore opening. */
+  .answer__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .answer__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .answer__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      opacity 320ms ease, background-color 320ms ease, color 320ms ease;
+  }
+
+  .answer__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .answer__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .answer__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .answer__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Used, not gone, once Scene 2 exists and the same softening the other
+     stories give their own opening pill applies here — pre-declared now so
+     the button doesn't need touching when that scene is built. */
+  [data-stage='2'] .answer__show {
+    color: var(--muted);
+    background: rgba(255, 253, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(40, 44, 60, 0.06);
+  }
+
+  [data-stage='2'] .answer__show:hover {
+    transform: none;
+  }
+
+  [data-stage='2'] .answer__show span {
+    color: var(--muted-light);
+  }
+
+  /* ====================================================
+     THE SCENE
+     ==================================================== */
+  .answer__visuals {
+    display: block;
+  }
+
+  .answer__scene {
+    position: relative;
+    aspect-ratio: 1536 / 1024;
+  }
+
+  /* Scene 2 takes the column over entirely — the photo isn't behind it or
+     faded under it, it simply stops being shown, the same way every other
+     Explore beat's spent frame leaves the flow for the one that replaces
+     it. */
+  [data-stage='2'] .answer__scene {
+    display: none;
+  }
+
+  .answer__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ====================================================
+     SCENE 2 — the sentence
+     ==================================================== */
+  .answer__sentence {
+    display: none;
+  }
+
+  [data-stage='2'] .answer__sentence {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  /* Set at the same serif/size/weight the opening headline uses, so the
+     sentence reads as a continuation of this story's own voice rather
+     than a new, smaller idiom introduced just for this beat. */
+  .answer__sentence-text {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .answer__blank {
+    color: var(--muted-light);
+  }
+
+  /* Plain running type, not a row of controls: no border, background,
+     radius or shadow — just generous space between the three words so
+     they read as candidates sitting side by side rather than one flowing
+     clause. Muted by default, exactly the weight the sentence's own blank
+     carries, so none of the three looks favoured until the beat below
+     says otherwise. */
+  .answer__words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin: clamp(20px, 3vh, 28px) 0 0;
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.7vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .answer__word {
+    color: var(--muted-light);
+    transition: color 480ms ease, font-weight 480ms ease;
+  }
+
+  /* The lean: after the words have had a moment to be read as equals,
+     "mat" quietly gains the weight and colour the sentence's own headline
+     carries — nothing else moves, nothing is boxed or badged, and no
+     script is involved. A CSS delay is what makes this feel noticed
+     rather than announced. */
+  [data-stage='2'] .answer__word--mat {
+    animation: answer-lean 1ms linear both;
+    animation-delay: 1150ms;
+  }
+
+  @keyframes answer-lean {
+    to {
+      color: var(--ink);
+      font-weight: 700;
+    }
+  }
+
+  .answer__reveal-kicker {
+    display: none;
+    margin: clamp(22px, 3.2vh, 32px) 0 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  [data-stage='2'] .answer__sentence > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1900ms;
+  }
+
+  /* The way onward: the same quiet page-turn idiom every other Explore
+     story uses for its own next control. */
+  .answer__turn {
+    display: none;
+    margin: clamp(16px, 2.4vh, 22px) 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  [data-stage='2'] .answer__sentence > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2380ms;
+  }
+
+  /* ====================================================
+     SCENE 3 — the sentence changes
+     ====================================================
+     Nested inside .answer__sentence (see the markup comment above), so
+     this reuses .answer__sentence-text, .answer__words, .answer__word,
+     .answer__reveal-kicker and .answer__turn exactly as Scene 2 defined
+     them — same size, same colour, same spacing, same page-turn idiom —
+     rather than a second, only-slightly-different set of rules. Only the
+     lean's own target class differs, since it's "moon" and not "mat"
+     that this beat marks. */
+  .answer__sentence2 {
+    display: none;
+  }
+
+  /* This beat's sentence takes the place of Scene 2's, on the same
+     hand-over the sibling stories use throughout: the child combinator
+     reaches only .answer__sentence's own direct children, so nesting
+     .answer__sentence2 one level deeper is what lets it reuse the
+     identical classes without being caught by this rule. */
+  [data-changed='1'] .answer__sentence > .answer__sentence-text,
+  [data-changed='1'] .answer__sentence > .answer__words,
+  [data-changed='1'] .answer__sentence > .answer__reveal-kicker,
+  [data-changed='1'] .answer__sentence > .answer__turn {
+    display: none;
+  }
+
+  [data-changed='1'] .answer__sentence2 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The lean, on the same delay-after-the-words pacing Scene 2's own
+     "mat" used, just measured from this hand-over's own start (240ms)
+     instead of the opening reveal's (560ms). */
+  [data-changed='1'] .answer__word--moon {
+    animation: answer-lean 1ms linear both;
+    animation-delay: 830ms;
+  }
+
+  [data-changed='1'] .answer__sentence2 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1580ms;
+  }
+
+  [data-changed='1'] .answer__sentence2 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2060ms;
+  }
+
+  /* ====================================================
+     SCENE 4 — the ranking
+     ====================================================
+     .answer__sentence-text is intentionally absent from this list — it's
+     the one thing this hand-over does NOT hide, so the astronaut sentence
+     stays exactly where it was instead of refading with everything else. */
+  [data-chosen='1'] .answer__sentence2 > .answer__words,
+  [data-chosen='1'] .answer__sentence2 > .answer__reveal-kicker,
+  [data-chosen='1'] .answer__sentence2 > .answer__turn {
+    display: none;
+  }
+
+  .answer__sentence3 {
+    display: none;
+  }
+
+  [data-chosen='1'] .answer__sentence3 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Plain rows, not a chart: no axis, no gridlines, no legend, no percent
+     sign anywhere. Each row is just the word (still set in the sentence's
+     own serif) followed by a run of block characters — the same idiom the
+     brief itself sketched the ranking in, kept as literal typographic
+     marks rather than redrawn as CSS/SVG bars, so the row still reads as
+     something set in type rather than a rendered graph. */
+  .answer__ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: clamp(20px, 3vh, 28px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .answer__rank {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+  }
+
+  .answer__rank-word {
+    min-width: 8ch;
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--muted-light);
+  }
+
+  /* The lead word carries the exact weight/colour every earlier beat's own
+     lean ended on — the same visual fact ("this one is favoured"), just
+     arrived at immediately here instead of after a delay, since the
+     ranking itself is what's doing the revealing this time. */
+  .answer__rank-word--lead {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* Block characters, not a progress bar: no border, radius, fill
+     percentage or track behind them — the length is carried by how many
+     characters are set, the same way a hand-typed diagram would carry it.
+     A touch of letter-spacing keeps the blocks from crowding into one
+     solid mass at small sizes. */
+  .answer__rank-bar {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: -0.1em;
+    color: var(--ink);
+  }
+
+  .answer__rank:not(:first-child) .answer__rank-bar {
+    color: var(--muted-light);
+  }
+
+  .answer__rank-bar--faint {
+    color: var(--line);
+  }
+
+  /* Present for assistive tech only — the bar characters are marked
+     aria-hidden since their length alone isn't announced meaningfully, so
+     this is the actual information they're standing in for. */
+  .answer__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Paired with .answer__reveal-kicker the same way every other Explore
+     story pairs its own kicker with a quieter follow-on line underneath. */
+  .answer__reveal-text {
+    display: none;
+    margin: 6px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-chosen='1'] .answer__sentence3 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 900ms;
+  }
+
+  [data-chosen='1'] .answer__sentence3 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1140ms;
+  }
+
+  [data-chosen='1'] .answer__sentence3 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1620ms;
+  }
+
+  /* ====================================================
+     SCENE 5 — the sentence builds itself
+     ==================================================== */
+  [data-final='1'] .answer__sentence2 > .answer__sentence-text,
+  [data-final='1'] .answer__sentence3 > .answer__ranking,
+  [data-final='1'] .answer__sentence3 > .answer__reveal-kicker,
+  [data-final='1'] .answer__sentence3 > .answer__reveal-text,
+  [data-final='1'] .answer__sentence3 > .answer__turn {
+    display: none;
+  }
+
+  .answer__sentence4 {
+    display: none;
+  }
+
+  [data-final='1'] .answer__sentence4 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The built sentence reuses .answer__sentence-text's own type exactly —
+     same serif, size and weight as every earlier state of this sentence —
+     so growing it word by word never looks like a different idiom taking
+     over, only more of the same one arriving. */
+  .answer__built {
+    display: block;
+  }
+
+  /* Each later piece is its own inline-block so the opacity/position
+     entrance can apply per-word without disturbing how the line wraps;
+     the base clause carries no delay of its own; it simply appears with
+     the rest of the block. */
+  .answer__piece {
+    display: inline-block;
+  }
+
+  /* Astro compacts the whitespace between these spans out of the built
+     HTML, so the word-gap is set here instead of relied on from the
+     markup — each later piece carries its own leading space this way,
+     rather than "moon" and "and" running together as "moonand". */
+  .answer__piece:not(.answer__piece--base) {
+    opacity: 0;
+    margin-left: 0.28em;
+    /* The trace left behind once the build finishes: a hairline rule
+       under each generated word only — never under "The astronaut sat
+       on the moon", which is what marks that clause as the one already
+       settled before this beat began. Because every piece is its own
+       inline-block, the rule breaks into five short, separate marks
+       rather than one continuous line under the whole tail, which is
+       what actually carries "assembled piece by piece" rather than
+       "underlined phrase" — the same distinction a hand margin-mark or a
+       proofreader's tick would carry, not a chart, pill or token. Same
+       hairline colour every quiet rule/border on this site already uses,
+       so it reads as restrained punctuation, not a new visual idiom. */
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Five words, five delays, each roughly 450ms after the last — slow
+     enough to read as the sentence being built one deliberate piece at a
+     time, never fast enough to read as a cursor typing itself out. */
+  [data-final='1'] .answer__piece[data-piece='1'] {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 700ms;
+  }
+
+  [data-final='1'] .answer__piece[data-piece='2'] {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1150ms;
+  }
+
+  [data-final='1'] .answer__piece[data-piece='3'] {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1600ms;
+  }
+
+  [data-final='1'] .answer__piece[data-piece='4'] {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2050ms;
+  }
+
+  [data-final='1'] .answer__piece[data-piece='5'] {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2500ms;
+  }
+
+  /* The two-line reveal and the way onward, held until the sentence has
+     finished building rather than arriving alongside it. */
+  [data-final='1'] .answer__sentence4 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2900ms;
+  }
+
+  [data-final='1'] .answer__sentence4 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3140ms;
+  }
+
+  [data-final='1'] .answer__sentence4 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3620ms;
+  }
+
+  /* ====================================================
+     SCENE 6 — the word opens into pieces
+     ====================================================
+     .answer__built is intentionally absent from this list, same reason
+     it was absent from Scene 5's own list one hand-over back — the
+     constructed sentence has nothing left to say, so it simply stays. */
+  [data-tokens='1'] .answer__sentence4 > .answer__reveal-kicker,
+  [data-tokens='1'] .answer__sentence4 > .answer__reveal-text,
+  [data-tokens='1'] .answer__sentence4 > .answer__turn {
+    display: none;
+  }
+
+  .answer__sentence5 {
+    display: none;
+  }
+
+  [data-tokens='1'] .answer__sentence5 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-tokens='1'] .answer__sentence5 > .answer__reveal-kicker--1 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The three examples as one quiet stack, not a row of cards — same
+     left edge as everything else in this column, generous space between
+     lines so each reads as its own complete example rather than three
+     crowded together. */
+  .answer__tokens {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin: clamp(20px, 3vh, 28px) 0 0;
+  }
+
+  [data-tokens='1'] .answer__sentence5 > .answer__tokens {
+    display: flex;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 700ms;
+  }
+
+  /* Sized and set like Scene 2/3's own candidate words — a secondary
+     serif line under the (silent, unchanging) sentence above, not a
+     second headline competing with it. All three arrive together as one
+     group (the container's own fade above); nothing about "cat" ever
+     animates further — it has nothing to open, and that stillness next
+     to the other two visibly splitting is what actually shows a token
+     can be a whole word, without a line of copy saying so. */
+  .answer__token {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.7vw, 30px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .answer__token-piece {
+    display: inline;
+  }
+
+  /* The one thing that actually moves: each mark starts at zero width
+     and zero opacity — not merely invisible, genuinely occupying no
+     space — so "un"/"belie"/"vable" and "Hello"/"!" sit flush together
+     and read as one solid word or word-plus-mark until this widens in.
+     The same middle dot a dictionary uses to mark a syllable break, not
+     a chip, pill or code token. */
+  .answer__token-sep {
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    color: var(--muted-light);
+    font-size: 0.6em;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  /* "unbelievable" opens first, "Hello!" a beat after — a small stagger
+     so the two splits read as their own separate moments rather than one
+     action happening twice at once; "cat" never gets this rule at all,
+     since .answer__token--whole carries no .answer__token-sep to animate. */
+  [data-tokens='1'] .answer__token--word .answer__token-sep {
+    animation: answer-split 420ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1150ms;
+  }
+
+  [data-tokens='1'] .answer__token--punct .answer__token-sep {
+    animation: answer-split 420ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1350ms;
+  }
+
+  @keyframes answer-split {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 0.9em;
+      opacity: 1;
+    }
+  }
+
+  [data-tokens='1'] .answer__sentence5 > .answer__reveal-kicker--2 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1850ms;
+  }
+
+  [data-tokens='1'] .answer__sentence5 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2090ms;
+  }
+
+  [data-tokens='1'] .answer__sentence5 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2570ms;
+  }
+
+  /* ====================================================
+     Scene 7 — where the guess came from.
+     ==================================================== */
+
+  .answer__sentence6 {
+    display: none;
+  }
+
+  /* Same hand-over as every earlier beat: hide Scene 6's own direct
+     children (both its kickers, the token stack, its reveal text and its
+     turn) without touching .answer__sentence6, which sits one level
+     deeper and so is untouched by this child combinator. */
+  [data-patterns='1'] .answer__sentence5 > .answer__reveal-kicker--1,
+  [data-patterns='1'] .answer__sentence5 > .answer__tokens,
+  [data-patterns='1'] .answer__sentence5 > .answer__reveal-kicker--2,
+  [data-patterns='1'] .answer__sentence5 > .answer__reveal-text,
+  [data-patterns='1'] .answer__sentence5 > .answer__turn {
+    display: none;
+  }
+
+  [data-patterns='1'] .answer__sentence6 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* A loose run of ordinary fragments, never a grid of cards — reads as
+     language met in passing, not data laid out for inspection. */
+  .answer__field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 16px;
+    margin: clamp(20px, 3vh, 28px) 0 0;
+    max-width: 46em;
+  }
+
+  .answer__frag {
+    color: var(--muted-light);
+    font-size: 13.5px;
+    line-height: 1.6;
+    opacity: 0.7;
+    transition: opacity 700ms ease;
+  }
+
+  /* Once the field has had a moment to be read as undifferentiated
+     language, the rest of it quietly recedes... */
+  [data-patterns='1'] .answer__field .answer__frag {
+    animation: answer-recede 1ms linear both;
+    animation-delay: 900ms;
+  }
+
+  @keyframes answer-recede {
+    to {
+      opacity: 0.38;
+    }
+  }
+
+  /* Four relationships, revealed one at a time rather than all at once —
+     astronaut/space, then astronaut/moon, then moon/Earth, then
+     moon/orbit — each pair gaining the sentence's own ink colour and
+     weight together on its own beat, half a second apart, so the build
+     reads as a sequence of separate noticings rather than one moment.
+     "Astronaut" and "moon" are each written into more than one fragment
+     on purpose: seeing the same word light up again, beside a different
+     neighbour each time, is what makes a relationship read as recurring
+     rather than a single coincidence. Nothing moves, nothing is boxed or
+     connected by a line — the shared timing and the repetition across
+     fragments are the only things doing the work. The four pairs also
+     hold their emphasis in the final static state, so the same "lots of
+     language, a few words keep recurring together" reading is available
+     to a reader who lands after the build finishes, or with motion
+     reduced. */
+  .answer__pair {
+    color: inherit;
+    font-weight: inherit;
+    transition: color 700ms ease, font-weight 700ms ease, opacity 700ms ease;
+  }
+
+  [data-patterns='1'] .answer__field .answer__pair {
+    animation: answer-emphasise 1ms linear both;
+  }
+
+  [data-patterns='1'] .answer__field [data-beat='1'] {
+    animation-delay: 900ms;
+  }
+
+  [data-patterns='1'] .answer__field [data-beat='2'] {
+    animation-delay: 1500ms;
+  }
+
+  [data-patterns='1'] .answer__field [data-beat='3'] {
+    animation-delay: 2100ms;
+  }
+
+  [data-patterns='1'] .answer__field [data-beat='4'] {
+    animation-delay: 2700ms;
+  }
+
+  @keyframes answer-emphasise {
+    to {
+      color: var(--ink);
+      font-weight: 700;
+      opacity: 1;
+    }
+  }
+
+  [data-patterns='1'] .answer__sentence6 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3500ms;
+  }
+
+  [data-patterns='1'] .answer__sentence6 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3740ms;
+  }
+
+  [data-patterns='1'] .answer__sentence6 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 4220ms;
+  }
+
+  /* ====================================================
+     Scene 8 — the examples are gone; something changed.
+     ==================================================== */
+
+  /* Scene 7's own kicker/text/turn — "it learned patterns," now said and
+     done — are what this hand-over hides. .answer__field and
+     .answer__sentence-text are deliberately left out of this list: the
+     fading field is Scene 8's opening beat, not something to clear before
+     it starts, and the headline has carried over since Scene 6. */
+  [data-trained='1'] .answer__sentence6 > .answer__reveal-kicker,
+  [data-trained='1'] .answer__sentence6 > .answer__reveal-text,
+  [data-trained='1'] .answer__sentence6 > .answer__turn {
+    display: none;
+  }
+
+  /* Text and values share one grid cell, so the numbers arrive in the
+     exact footprint the sentences occupied rather than somewhere new. */
+  .answer__field-stage {
+    display: grid;
+    grid-template-areas: 'stage';
+    align-items: start;
+  }
+
+  .answer__field-stage > .answer__field,
+  .answer__field-stage > .answer__values {
+    grid-area: stage;
+  }
+
+  /* The cap is far above anything the field ever renders at, so it does
+     nothing until the collapse below asks for it. */
+  .answer__field-stage > .answer__field {
+    max-height: 1400px;
+    overflow: hidden;
+    transition: max-height 600ms ease;
+  }
+
+  /* Once the words have finished fading, the space they were holding
+     closes behind them and the values become the whole of the area —
+     otherwise the sentences would go on occupying their full height
+     invisibly, leaving the copy below stranded far down the column
+     (badly so on a phone, where the field is many lines tall). */
+  [data-trained='1'] .answer__field-stage > .answer__field {
+    max-height: 0;
+    transition-delay: 1150ms;
+  }
+
+  /* Every word in the field fades to nothing in place — colour, not
+     opacity, so the text keeps its space in the flow and the area holds
+     the height the sentences were holding while the values settle into
+     it. Nothing reflows at any point in the transition. */
+  [data-trained='1'] .answer__field .answer__frag {
+    color: transparent;
+    transition: color 900ms ease;
+    transition-delay: 200ms;
+  }
+
+  /* The recurring words don't inherit that fade: Scene 7's own emphasis
+     animation is still holding their colour at fill:both, and an
+     animation's value beats any plain declaration. So the animation is
+     cancelled outright here and the same fade applied directly, matched
+     to that forward rule's specificity — otherwise "astronaut", "moon",
+     "Earth", "space" and "orbit" would be the only text still standing
+     once everything around them had gone. */
+  [data-trained='1'] .answer__field .answer__pair {
+    animation: none;
+    color: transparent;
+    transition: color 900ms ease;
+    transition-delay: 200ms;
+  }
+
+  /* Loosely set, never ruled: no fixed columns, no baseline shared across
+     neighbours, no monospace/terminal face, no boxes or rules — a scatter
+     of quantities across the space, not a spreadsheet, matrix or block of
+     code. Hidden outright until the beat starts, so it never adds height
+     of its own to Scene 7. */
+  .answer__values {
+    display: none;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: clamp(13px, 1.9vh, 19px) clamp(20px, 2.6vw, 34px);
+    /* Room for the nudges above and below the block, and clear air under
+       the field once it has closed to the values' own height. */
+    padding: 12px 0 clamp(26px, 4vh, 40px);
+  }
+
+  [data-trained='1'] .answer__field-stage > .answer__values {
+    display: flex;
+  }
+
+  .answer__value {
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    opacity: 0;
+  }
+
+  /* The nudges that keep the field from settling into rows. Deliberately
+     uneven periods (3/4/5/7) so no two lines drift the same way and the
+     eye never finds a grid to lock onto. */
+  .answer__value:nth-child(3n) {
+    transform: translateY(7px);
+  }
+
+  .answer__value:nth-child(4n) {
+    transform: translateY(-6px);
+  }
+
+  .answer__value:nth-child(5n) {
+    transform: translateY(11px);
+  }
+
+  .answer__value:nth-child(7n) {
+    transform: translateY(-10px);
+  }
+
+  /* A little colour variety for texture, in the page's own two inks —
+     never a heat map, never a legend, nothing here encodes a meaning. */
+  .answer__value:nth-child(5n + 1) {
+    color: var(--cobalt);
+  }
+
+  .answer__value:nth-child(8n + 3) {
+    color: var(--ink);
+  }
+
+  /* The values surface in four loose waves rather than all at once, so
+     they read as emerging where the words were rather than being switched
+     on over them. */
+  [data-trained='1'] .answer__value {
+    animation: answer-surface 700ms ease both;
+  }
+
+  [data-trained='1'] .answer__value:nth-child(4n + 1) {
+    animation-delay: 520ms;
+  }
+
+  [data-trained='1'] .answer__value:nth-child(4n + 2) {
+    animation-delay: 700ms;
+  }
+
+  [data-trained='1'] .answer__value:nth-child(4n + 3) {
+    animation-delay: 880ms;
+  }
+
+  [data-trained='1'] .answer__value:nth-child(4n) {
+    animation-delay: 1060ms;
+  }
+
+  @keyframes answer-surface {
+    to {
+      opacity: 0.78;
+    }
+  }
+
+  .answer__sentence7 {
+    display: none;
+  }
+
+  [data-trained='1'] .answer__sentence6 > .answer__sentence7 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1700ms;
+  }
+
+  /* Set in the story's own serif — the same face the sentence itself has
+     worn since Scene 2 — a step down from the headline, so it reads as
+     this beat's statement rather than a second title. The two halves sit
+     on their own lines but in one paragraph: "gone" in ink, "remain" in
+     cobalt, the turn carried entirely by the colour change. */
+  .answer__verdict {
+    display: none;
+    margin: 0 0 clamp(20px, 3vh, 28px);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.4vw, 28px);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.022em;
+  }
+
+  .answer__verdict-gone,
+  .answer__verdict-remain {
+    display: block;
+  }
+
+  .answer__verdict-gone {
+    color: var(--ink);
+  }
+
+  .answer__verdict-remain {
+    color: var(--cobalt);
+  }
+
+  [data-trained='1'] .answer__sentence7 > .answer__verdict {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1700ms;
+  }
+
+  /* A short editorial rule setting the statement above apart from the
+     explanation below — a hairline in the page's own border ink, kept
+     well short of the column so it reads as a pause, not a divider. It
+     rides on whichever line now opens that explanation, so the separator
+     stays exactly where it sat. */
+  .answer__sentence7 > .answer__reveal-text--support::before {
+    content: '';
+    display: block;
+    width: 190px;
+    max-width: 55%;
+    height: 1px;
+    margin-bottom: clamp(18px, 2.6vh, 26px);
+    background: var(--line);
+  }
+
+  /* Takes the slot the removed line was holding, so the beat below the
+     verdict keeps the cadence it already had rather than closing up. */
+  [data-trained='1'] .answer__sentence7 > .answer__reveal-text--support {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2120ms;
+  }
+
+  [data-trained='1'] .answer__sentence7 > .answer__reveal-text--term {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2410ms;
+  }
+
+  /* The word itself, the first time the story uses it. */
+  .answer__reveal-text--term strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  [data-trained='1'] .answer__sentence7 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2890ms;
+  }
+
+  /* ====================================================
+     Scene 9 — the question comes back.
+     ==================================================== */
+
+  /* This hand-over clears more than the others: Scene 6's headline and
+     the values field go too, since the story is leaving the model's
+     insides and returning to the reader's own question — the first time
+     since Scene 6 that the whole right column starts fresh. */
+  [data-context='1'] .answer__sentence4 > .answer__built,
+  [data-context='1'] .answer__sentence6 > .answer__sentence-text,
+  [data-context='1'] .answer__sentence6 > .answer__field-stage,
+  [data-context='1'] .answer__sentence7 > .answer__verdict,
+  [data-context='1'] .answer__sentence7 > .answer__reveal-text--support,
+  [data-context='1'] .answer__sentence7 > .answer__reveal-text--term,
+  [data-context='1'] .answer__sentence7 > .answer__turn {
+    display: none;
+  }
+
+  .answer__sentence8 {
+    display: none;
+  }
+
+  [data-context='1'] .answer__sentence7 > .answer__sentence8 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The question set at the story's own opening size — the largest type
+     the right column has carried since Scene 1, because this is the
+     reader's own question coming back, not another explanatory line. */
+  .answer__prompt {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  [data-context='1'] .answer__sentence8 > .answer__prompt {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The chosen token, appended to the question rather than restated
+     below it. Zero-width until it is picked — genuinely taking up no
+     space, so the question reads as finished first and is then visibly
+     continued. The left margin is carried in CSS rather than a space in
+     the source, since Astro compacts whitespace between tags at build
+     and the words would otherwise run together. */
+  .answer__prompt-next,
+  .answer__prompt-more {
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    vertical-align: bottom;
+  }
+
+  .answer__prompt-next {
+    color: var(--cobalt);
+  }
+
+  .answer__prompt-more {
+    color: var(--muted-light);
+  }
+
+  [data-context='1'] .answer__sentence8 .answer__prompt-next {
+    animation: answer-append 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2900ms;
+  }
+
+  [data-context='1'] .answer__sentence8 .answer__prompt-more {
+    animation: answer-append-more 420ms ease both;
+    animation-delay: 3300ms;
+  }
+
+  @keyframes answer-append {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 4.163em;
+      opacity: 1;
+    }
+  }
+
+  @keyframes answer-append-more {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 0.993em;
+      opacity: 1;
+    }
+  }
+
+  /* Scene 4's ranking exactly as it was — same rows, same block
+     characters, same spacing — so this reads as the mechanism already
+     watched, now running on the reader's own question, not a second
+     diagram. Only the top margin differs, to sit under the larger
+     question above it. */
+  .answer__ranking--prompt {
+    display: none;
+    margin-top: clamp(26px, 4vh, 38px);
+  }
+
+  [data-context='1'] .answer__sentence8 > .answer__ranking--prompt {
+    display: flex;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  /* The selection, arriving late and on its own: the same delayed lean
+     every earlier candidate word in this story has used — nothing moves,
+     nothing is boxed or ticked, the favoured word simply takes on the
+     weight and colour the others don't have. */
+  [data-context='1'] .answer__rank-word--pick {
+    animation: answer-lean 1ms linear both;
+    animation-delay: 2700ms;
+  }
+
+  [data-context='1'] .answer__sentence8 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1800ms;
+  }
+
+  [data-context='1'] .answer__sentence8 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2040ms;
+  }
+
+  [data-context='1'] .answer__sentence8 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3700ms;
+  }
+
+  /* ====================================================
+     Scene 10 — the answer takes shape.
+     ==================================================== */
+
+  /* The ranking and its bars have said what they had to say; the sentence
+     is deliberately the only thing left in the column, which is what gives
+     the growth below something to be watched against. .answer__prompt is
+     kept, since it is the thing that continues. */
+  [data-grow='1'] .answer__sentence8 > .answer__ranking--prompt,
+  [data-grow='1'] .answer__sentence8 > .answer__reveal-kicker,
+  [data-grow='1'] .answer__sentence8 > .answer__reveal-text,
+  [data-grow='1'] .answer__sentence8 > .answer__turn {
+    display: none;
+  }
+
+  /* The trailing ellipsis goes: real words are arriving after it now. */
+  [data-grow='1'] .answer__prompt-more {
+    display: none;
+  }
+
+  /* The previously chosen piece settles from cobalt to ink as the next one
+     arrives — the visible form of "what was just generated becomes
+     ordinary context." Colour only: the append animation holding this
+     span's width never touches colour, so the two don't contend. */
+  [data-grow='1'] .answer__sentence8 .answer__prompt-next {
+    color: var(--ink);
+    transition: color 700ms ease 400ms;
+  }
+
+  /* Whole pieces, not characters, and no space held before one arrives —
+     each simply joins the sentence at its own moment. */
+  .answer__grow {
+    display: none;
+  }
+
+  [data-grow='1'] .answer__prompt [data-grow-piece] {
+    display: inline;
+    animation: answer-grow 1000ms ease both;
+  }
+
+  [data-grow='1'] .answer__prompt [data-grow-piece='1'] {
+    animation-delay: 500ms;
+  }
+
+  [data-grow='1'] .answer__prompt [data-grow-piece='2'] {
+    animation-delay: 1150ms;
+  }
+
+  [data-grow='1'] .answer__prompt [data-grow-piece='3'] {
+    animation-delay: 1800ms;
+  }
+
+  [data-grow='1'] .answer__prompt [data-grow-piece='4'] {
+    animation-delay: 2450ms;
+  }
+
+  /* Arrives in cobalt, holds there long enough to be seen as new, then
+     settles to ink like the rest of the sentence. */
+  @keyframes answer-grow {
+    0% {
+      opacity: 0;
+      color: var(--cobalt);
+    }
+
+    22% {
+      opacity: 1;
+      color: var(--cobalt);
+    }
+
+    55% {
+      color: var(--cobalt);
+    }
+
+    100% {
+      opacity: 1;
+      color: var(--ink);
+    }
+  }
+
+  .answer__sentence9 {
+    display: none;
+  }
+
+  [data-grow='1'] .answer__sentence8 > .answer__sentence9 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3800ms;
+  }
+
+  [data-grow='1'] .answer__sentence9 > .answer__reveal-kicker {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3800ms;
+  }
+
+  [data-grow='1'] .answer__sentence9 > .answer__reveal-text {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 4040ms;
+  }
+
+  /* The realisation, set in the story's own serif — the line the whole
+     card has been walking toward, so it carries more weight than the two
+     explanatory lines above it without raising its voice further. */
+  .answer__realise {
+    display: none;
+    margin: clamp(24px, 3.4vh, 34px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.4vw, 28px);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.022em;
+  }
+
+  [data-grow='1'] .answer__sentence9 > .answer__realise {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 4520ms;
+  }
+
+  [data-grow='1'] .answer__sentence9 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 5060ms;
+  }
+
+  /* ====================================================
+     Scene 11 — the end of Card 2.
+     ==================================================== */
+
+  /* Everything the card built goes, the constructed sentence included:
+     this beat is the reader's own opening moment handed back, and it
+     needs the column to itself to land as that rather than as one more
+     thing stacked under the demonstration. */
+  [data-close='1'] .answer__sentence8 > .answer__prompt,
+  [data-close='1'] .answer__sentence9 > .answer__reveal-kicker,
+  [data-close='1'] .answer__sentence9 > .answer__reveal-text,
+  [data-close='1'] .answer__sentence9 > .answer__realise,
+  [data-close='1'] .answer__sentence9 > .answer__turn {
+    display: none;
+  }
+
+  .answer__sentence10 {
+    display: none;
+  }
+
+  [data-close='1'] .answer__sentence9 > .answer__sentence10 {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Scene 1's headline, verbatim and deliberately quiet — a memory of
+     where the reader came in, not a second title competing with the line
+     that closes the card. */
+  .answer__echo {
+    display: none;
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.022em;
+  }
+
+  .answer__echo-line,
+  .answer__echo-sub {
+    display: block;
+    font-size: clamp(19px, 2.1vw, 24px);
+  }
+
+  .answer__echo-line {
+    color: var(--muted);
+  }
+
+  .answer__echo-sub {
+    color: var(--muted-light);
+  }
+
+  [data-close='1'] .answer__sentence10 > .answer__echo {
+    display: block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The turn: what the reader now knows that they didn't when those same
+     words first appeared. The second line takes the cobalt, since "it
+     built it" is the fact the whole card exists to deliver. */
+  .answer__closing {
+    display: none;
+    margin: clamp(26px, 3.6vh, 36px) 0 0;
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.4vw, 28px);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.022em;
+  }
+
+  .answer__closing-a,
+  .answer__closing-b {
+    display: block;
+  }
+
+  .answer__closing-a {
+    color: var(--ink);
+  }
+
+  .answer__closing-b {
+    color: var(--cobalt);
+  }
+
+  [data-close='1'] .answer__sentence10 > .answer__closing {
+    display: block;
+  }
+
+  [data-close='1'] .answer__closing-a {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 900ms;
+  }
+
+  [data-close='1'] .answer__closing-b {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1350ms;
+  }
+
+  [data-close='1'] .answer__sentence10 > .answer__reveal-text {
+    display: block;
+    margin-top: clamp(16px, 2.4vh, 22px);
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1950ms;
+  }
+
+  /* The last thing the card says, and the largest — the only line here
+     allowed to be bigger than the echo it answers. */
+  .answer__last {
+    display: none;
+    margin: clamp(30px, 4.2vh, 44px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.9vw, 34px);
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.025em;
+  }
+
+  .answer__last-a,
+  .answer__last-b {
+    display: block;
+  }
+
+  [data-close='1'] .answer__sentence10 > .answer__last {
+    display: block;
+  }
+
+  [data-close='1'] .answer__last-a {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2560ms;
+  }
+
+  [data-close='1'] .answer__last-b {
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2940ms;
+  }
+
+  [data-close='1'] .answer__sentence10 > .answer__turn {
+    display: inline-block;
+    animation: answer-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3620ms;
+  }
+
+  .answer__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .answer__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .answer__turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .answer__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  @keyframes answer-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .answer__show,
+    .answer__show span {
+      transition-duration: 1ms;
+    }
+
+    [data-stage='2'] .answer__sentence,
+    [data-stage='2'] .answer__sentence > .answer__reveal-kicker,
+    [data-stage='2'] .answer__sentence > .answer__turn,
+    [data-changed='1'] .answer__sentence2,
+    [data-changed='1'] .answer__sentence2 > .answer__reveal-kicker,
+    [data-changed='1'] .answer__sentence2 > .answer__turn,
+    [data-chosen='1'] .answer__sentence3,
+    [data-chosen='1'] .answer__sentence3 > .answer__reveal-kicker,
+    [data-chosen='1'] .answer__sentence3 > .answer__reveal-text,
+    [data-chosen='1'] .answer__sentence3 > .answer__turn,
+    [data-final='1'] .answer__sentence4,
+    [data-final='1'] .answer__sentence4 > .answer__reveal-kicker,
+    [data-final='1'] .answer__sentence4 > .answer__reveal-text,
+    [data-final='1'] .answer__sentence4 > .answer__turn,
+    [data-tokens='1'] .answer__sentence5,
+    [data-tokens='1'] .answer__sentence5 > .answer__reveal-kicker--1,
+    [data-tokens='1'] .answer__sentence5 > .answer__tokens,
+    [data-tokens='1'] .answer__sentence5 > .answer__reveal-kicker--2,
+    [data-tokens='1'] .answer__sentence5 > .answer__reveal-text,
+    [data-tokens='1'] .answer__sentence5 > .answer__turn,
+    [data-patterns='1'] .answer__sentence6,
+    [data-patterns='1'] .answer__sentence6 > .answer__reveal-kicker,
+    [data-patterns='1'] .answer__sentence6 > .answer__reveal-text,
+    [data-patterns='1'] .answer__sentence6 > .answer__turn,
+    [data-trained='1'] .answer__sentence6 > .answer__sentence7,
+    [data-trained='1'] .answer__sentence7 > .answer__verdict,
+    [data-trained='1'] .answer__sentence7 > .answer__reveal-text--support,
+    [data-trained='1'] .answer__sentence7 > .answer__reveal-text--term,
+    [data-trained='1'] .answer__sentence7 > .answer__turn,
+    [data-context='1'] .answer__sentence7 > .answer__sentence8,
+    [data-context='1'] .answer__sentence8 > .answer__prompt,
+    [data-context='1'] .answer__sentence8 > .answer__ranking--prompt,
+    [data-context='1'] .answer__sentence8 > .answer__reveal-kicker,
+    [data-context='1'] .answer__sentence8 > .answer__reveal-text,
+    [data-context='1'] .answer__sentence8 > .answer__turn,
+    [data-grow='1'] .answer__sentence8 > .answer__sentence9,
+    [data-grow='1'] .answer__sentence9 > .answer__reveal-kicker,
+    [data-grow='1'] .answer__sentence9 > .answer__reveal-text,
+    [data-grow='1'] .answer__sentence9 > .answer__realise,
+    [data-grow='1'] .answer__sentence9 > .answer__turn,
+    [data-close='1'] .answer__sentence9 > .answer__sentence10,
+    [data-close='1'] .answer__sentence10 > .answer__echo,
+    [data-close='1'] .answer__closing-a,
+    [data-close='1'] .answer__closing-b,
+    [data-close='1'] .answer__sentence10 > .answer__reveal-text,
+    [data-close='1'] .answer__last-a,
+    [data-close='1'] .answer__last-b,
+    [data-close='1'] .answer__sentence10 > .answer__turn {
+      animation: none;
+    }
+
+    /* The completed answer, immediately: every piece already in the
+       sentence and already settled to ink, with none of the staged build
+       to sit through. Matched to the forward rule's own [data-grow-piece]
+       selector so it actually outweighs it — the same specificity lesson
+       as the fallbacks above. */
+    [data-grow='1'] .answer__prompt [data-grow-piece] {
+      animation: none;
+      opacity: 1;
+    }
+
+    [data-grow='1'] .answer__sentence8 .answer__prompt-next {
+      transition: none;
+    }
+
+    /* The appended token and its ellipsis are shown at their finished
+       width outright — the same lesson as the split marks above, since
+       switching the animation off alone would leave them stuck at zero
+       width. Matched to each forward rule's own specificity. */
+    [data-context='1'] .answer__sentence8 .answer__prompt-next {
+      animation: none;
+      width: 4.163em;
+      opacity: 1;
+    }
+
+    [data-context='1'] .answer__sentence8 .answer__prompt-more {
+      animation: none;
+      width: 0.993em;
+      opacity: 1;
+    }
+
+    /* No animation to carry the delayed lean, so the pick is simply
+       marked outright — the same fallback "mat" and "moon" already use. */
+    [data-context='1'] .answer__rank-word--pick {
+      animation: none;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* The words' fade is a real transition, so collapsing its duration and
+       delay is enough to clear them outright. The values' own surfacing is
+       a fill:both keyframe, though — the same lesson as the piece and
+       split-mark fallbacks above — so each staggered wave is matched at
+       its own specificity and shown at its finished opacity instead of
+       being left stuck at zero. */
+    [data-trained='1'] .answer__field .answer__frag,
+    [data-trained='1'] .answer__field .answer__pair,
+    [data-trained='1'] .answer__field-stage > .answer__field {
+      transition-duration: 1ms;
+      transition-delay: 0ms;
+    }
+
+    [data-trained='1'] .answer__value:nth-child(4n + 1),
+    [data-trained='1'] .answer__value:nth-child(4n + 2),
+    [data-trained='1'] .answer__value:nth-child(4n + 3),
+    [data-trained='1'] .answer__value:nth-child(4n) {
+      animation: none;
+      opacity: 0.78;
+    }
+
+    /* Matched to [data-piece]'s own attribute selector (not just the bare
+       class) so this actually outweighs each numbered piece's individual
+       animation rule — a same-specificity contest that a plain
+       `.answer__piece` selector was losing, leaving every piece stuck at
+       its pre-delay opacity:0 instead of the completed sentence this rule
+       means to show. No staged build to skip past: every piece is simply
+       shown at full opacity outright. */
+    [data-final='1'] .answer__piece[data-piece] {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* Same reasoning for the split marks: shown at their finished
+       width/opacity outright rather than left at zero, which is what
+       they'd be stuck at if just the animation were switched off. Matched
+       to .answer__token--word/--punct's own specificity, the same
+       lesson as the piece-fallback above — a bare .answer__token-sep
+       selector here would lose to the more specific forward rules and
+       leave both marks stuck invisible. */
+    [data-tokens='1'] .answer__token--word .answer__token-sep,
+    [data-tokens='1'] .answer__token--punct .answer__token-sep {
+      animation: none;
+      width: 0.9em;
+      opacity: 1;
+    }
+
+    /* Same fallback logic as the two rules above: the field's own recede
+       and the three pairs' emphasis are both shown at their finished
+       state outright, matched to each rule's own specificity so neither
+       gets stuck at its pre-delay value. */
+    [data-patterns='1'] .answer__field .answer__frag {
+      animation: none;
+      opacity: 0.38;
+    }
+
+    [data-patterns='1'] .answer__field .answer__pair {
+      animation: none;
+      color: var(--ink);
+      font-weight: 700;
+      opacity: 1;
+    }
+
+    .answer__word {
+      transition-duration: 1ms;
+    }
+
+    /* No animation to carry the delayed lean, so the emphasis is simply
+       applied outright — "mat" (Scene 2) and "moon" (Scene 3) still end
+       up marked, just without the beat of noticing it happen. */
+    [data-stage='2'] .answer__word--mat,
+    [data-changed='1'] .answer__word--moon {
+      animation: none;
+      color: var(--ink);
+      font-weight: 700;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-answer]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    // One way, one time: Scene 1 → Scene 2. There is nothing before it to
+    // return to, so a second click is simply a no-op.
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+    });
+
+    // Scene 3. A flag of its own rather than a bumped stage, so everything
+    // Scene 2 turned on stays on underneath it — the same reason every
+    // other Explore story's later beats each get their own flag instead of
+    // a rising stage number.
+    root.querySelector('[data-change]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.changed === '1') return;
+      root.dataset.changed = '1';
+    });
+
+    // Scene 4. A flag of its own rather than a bumped stage, so everything
+    // Scene 3 turned on stays on underneath it.
+    root.querySelector('[data-choose]')?.addEventListener('click', () => {
+      if (root.dataset.changed !== '1' || root.dataset.chosen === '1') return;
+      root.dataset.chosen = '1';
+    });
+
+    // Scene 5. A flag of its own rather than a bumped stage, so everything
+    // Scene 4 turned on stays on underneath it.
+    root.querySelector('[data-again]')?.addEventListener('click', () => {
+      if (root.dataset.chosen !== '1' || root.dataset.final === '1') return;
+      root.dataset.final = '1';
+    });
+
+    // Scene 6. A flag of its own rather than a bumped stage, so everything
+    // Scene 5 turned on stays on underneath it.
+    root.querySelector('[data-answer-final]')?.addEventListener('click', () => {
+      if (root.dataset.final !== '1' || root.dataset.tokens === '1') return;
+      root.dataset.tokens = '1';
+    });
+
+    root.querySelector('[data-why]')?.addEventListener('click', () => {
+      if (root.dataset.tokens !== '1' || root.dataset.patterns === '1') return;
+      root.dataset.patterns = '1';
+    });
+
+    // Scene 8. A flag of its own rather than a bumped stage, so everything
+    // Scene 7 turned on stays on underneath it.
+    root.querySelector('[data-learn]')?.addEventListener('click', () => {
+      if (root.dataset.patterns !== '1' || root.dataset.trained === '1') return;
+      root.dataset.trained = '1';
+    });
+
+    // Scene 9. A flag of its own rather than a bumped stage, so everything
+    // Scene 8 turned on stays on underneath it.
+    root.querySelector('[data-become]')?.addEventListener('click', () => {
+      if (root.dataset.trained !== '1' || root.dataset.context === '1') return;
+      root.dataset.context = '1';
+    });
+
+    // Scene 10. A flag of its own rather than a bumped stage, so everything
+    // Scene 9 turned on stays on underneath it.
+    root.querySelector('[data-next]')?.addEventListener('click', () => {
+      if (root.dataset.context !== '1' || root.dataset.grow === '1') return;
+      root.dataset.grow = '1';
+    });
+
+    // Scene 11 — the last beat of the card.
+    root.querySelector('[data-understand]')?.addEventListener('click', () => {
+      if (root.dataset.grow !== '1' || root.dataset.close === '1') return;
+      root.dataset.close = '1';
+    });
+
+    // The end of Card 2. Every flag is cleared rather than a "replay" flag
+    // added, so the story genuinely returns to Scene 1 — each beat's
+    // display:none comes back, which is also what lets its animations run
+    // again from the start rather than staying at their finished state.
+    root.querySelector('[data-restart]')?.addEventListener('click', () => {
+      if (root.dataset.close !== '1') return;
+
+      for (const flag of [
+        'changed',
+        'chosen',
+        'final',
+        'tokens',
+        'patterns',
+        'trained',
+        'context',
+        'grow',
+        'close',
+      ]) {
+        delete root.dataset[flag];
+      }
+
+      root.dataset.stage = '1';
+
+      // The reader is far down the page by now; without this the story
+      // would restart out of sight above them.
+      root.scrollIntoView({ block: 'start' });
+      root.querySelector('[data-show]')?.focus();
+    });
+  });
+</script>
