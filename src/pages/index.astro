@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import heroCompanion from '../assets/hero-companion.png';
 import realizeKey from '../assets/realize-key.png';
+import { featuredStories } from '../data/stories';
 ---
 
 <BaseLayout>
@@ -486,46 +487,25 @@ import realizeKey from '../assets/realize-key.png';
         <p class="dy-explore__sub">Pick one and see what's really happening.</p>
       </header>
 
+      <!-- The four featured stories come from src/data/stories.ts, which is
+           the same list /explore/ reads. The markup below is exactly what
+           was here before, emitted once per entry — no card gains or loses
+           anything by being driven from the manifest. -->
       <ul class="dy-explore__grid">
-        <li class="dy-explore__card">
-          <a class="dy-explore__link" href="/explore/looks-real-is-it/">
-            <span class="dy-explore__art">
-              <img src="/images/thumbs/street1-card.webp" alt="" width="720" height="480" loading="lazy" decoding="async" />
-            </span>
-            <span class="dy-explore__label">Looks real.<br class="dy-explore__label-break" /> Is it?</span>
-            <span class="dy-explore__see">See what's really happening <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li class="dy-explore__card">
-          <a class="dy-explore__link" href="/explore/ai-answered-you/">
-            <span class="dy-explore__art">
-              <img src="/images/thumbs/card2-card.webp" alt="" width="720" height="480" loading="lazy" decoding="async" />
-            </span>
-            <span class="dy-explore__label">AI answered you.<br class="dy-explore__label-break" /> How did it know what to say?</span>
-            <span class="dy-explore__see">See what's really happening <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li class="dy-explore__card">
-          <a class="dy-explore__link" href="/explore/did-your-face-leave-the-phone/">
-            <span class="dy-explore__art">
-              <img src="/images/thumbs/card3-card.webp" alt="" width="720" height="480" loading="lazy" decoding="async" />
-            </span>
-            <span class="dy-explore__label">Your face unlocked it.<br class="dy-explore__label-break" /> Did your face leave the phone?</span>
-            <span class="dy-explore__see">See what's really happening <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
-        <li class="dy-explore__card">
-          <a class="dy-explore__link" href="/explore/who-said-yes/">
-            <span class="dy-explore__art">
-              <img src="/images/thumbs/card4-card.webp" alt="" width="720" height="480" loading="lazy" decoding="async" />
-            </span>
-            <span class="dy-explore__label">You tapped. Approved.<br class="dy-explore__label-break" /> Who said yes?</span>
-            <span class="dy-explore__see">See what's really happening <span aria-hidden="true">→</span></span>
-          </a>
-        </li>
+        {featuredStories.map((story) => (
+          <li class="dy-explore__card">
+            <a class="dy-explore__link" href={`/explore/${story.slug}/`}>
+              <span class="dy-explore__art">
+                <img src={story.thumb} alt="" width="720" height="480" loading="lazy" decoding="async" />
+              </span>
+              <span class="dy-explore__label">{story.title}<br class="dy-explore__label-break" /> {story.line}</span>
+              <span class="dy-explore__see">See what's really happening <span aria-hidden="true">→</span></span>
+            </a>
+          </li>
+        ))}
       </ul>
 
-      <a class="dy-explore__cta" href="/explore">
+      <a class="dy-explore__cta" href="/explore/">
         Explore everything
         <span aria-hidden="true">→</span>
       </a>

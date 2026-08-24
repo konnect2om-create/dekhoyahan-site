@@ -1,23 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PhotoJourney from '../../components/explain/PhotoJourney.astro';
+import { stories } from '../../data/stories';
 
-// The AI Agent story keeps its own detail route and content untouched
-// (see AgentStage.astro / [slug].astro) — it is only removed from this
-// library listing because it currently overlaps with the homepage Feature.
-// It stays published so its route keeps resolving.
-const topics = (await getCollection('topics', ({ data }) => data.status === 'published'))
-  .filter((topic) => topic.id !== 'ai-agent-permissions')
-  .sort((a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf());
-
-// The library's supporting line is a tighter, library-specific edit of the
-// story's own hook — not the hook itself, which stays untouched on the
-// detail page (ConceptHero reads `topic.data.hook` directly there). Only
-// items that need a different line from their hook go here.
-const librarySupportingCopy: Record<string, string> = {
-  'how-your-photo-travels': "You press send. Seconds later, it's somewhere else.",
-};
+// The library is every published story, in manifest order: the four the
+// homepage features first (same order as the homepage), then the
+// Explore-only ones. Each story is listed once — being featured on the
+// homepage does not earn a second entry here.
+//
+// This used to read the `topics` content collection and hard-code the one
+// story that wasn't in it. Both surfaces now read src/data/stories.ts, so
+// there is a single place a story is described. The `topics` collection is
+// still what /explore/[slug].astro renders its two pages from; only this
+// listing stopped depending on it.
 ---
 
 <BaseLayout
@@ -40,38 +34,17 @@ const librarySupportingCopy: Record<string, string> = {
 
     <section class="explore-index__library shell">
       <ul class="explore-index__grid">
-        {topics.map((topic) => (
+        {stories.map((story) => (
           <li class="explore-index__item">
-            <a href={`/explore/${topic.id}/`}>
-              {topic.id === 'how-your-photo-travels' && (
-                /* Reuses the PhotoJourney component's opening state (the
-                   same phone/person/send beat used on the topic page and
-                   the homepage feature) instead of a bespoke asset — just
-                   cropped tight via mode="opening" so only the familiar
-                   moment shows, not the mechanism. */
-                <span class="explore-index__glyph" aria-hidden="true">
-                  <PhotoJourney mode="opening" />
-                </span>
-              )}
-              <h3>{topic.data.title}</h3>
-              {topic.data.hook && <p>{librarySupportingCopy[topic.id] ?? topic.data.hook}</p>}
+            <a href={`/explore/${story.slug}/`}>
+              <span class="explore-index__glyph" aria-hidden="true">
+                <img src={story.thumb} alt="" width="720" height="480" loading="lazy" decoding="async" />
+              </span>
+              <h3>{story.title}</h3>
+              <p>{story.line}</p>
             </a>
           </li>
         ))}
-
-        <!-- New Explore-only story (Scene 1 only for now — see
-             /explore/where-is-the-5g/). Not part of the topics collection,
-             so it's placed here directly rather than through the map above;
-             it takes the second grid position the AI Agent item vacated. -->
-        <li class="explore-index__item">
-          <a href="/explore/where-is-the-5g/">
-            <span class="explore-index__glyph explore-index__glyph--5g" aria-hidden="true">
-              <img src="/images/5G.webp" alt="" loading="lazy" decoding="async" />
-            </span>
-            <h3>Your phone says 5G. Where is the 5G?</h3>
-            <p>You see it every day. But where is it?</p>
-          </a>
-        </li>
       </ul>
     </section>
   </article>
@@ -157,49 +130,29 @@ const librarySupportingCopy: Record<string, string> = {
     text-decoration: none;
   }
 
-  /* Prototype glyph for the one story using it — no box, no background,
-     just whitespace above the title, same as the rest of this list. */
+  /* One treatment for every item now that each story supplies the same
+     720x480 thumbnail: the rounded, softly-shadowed window the 5G item
+     established, at the thumbnails' own 3:2 ratio. The per-story rules
+     this replaces — a vector-scaling rule for the Photo item and a
+     hand-tuned zoom for the 5G one — existed only because those two
+     entries carried different kinds of art. No card chrome beyond the
+     image itself; whitespace and typography still carry the separation. */
   .explore-index__glyph {
     display: block;
     width: 100%;
     max-width: 220px;
     margin: 0 0 16px;
-  }
-
-  .explore-index__glyph svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  /* The 5G asset — a photo rather than the PhotoJourney SVG, so it gets its
-     own crop instead of the shared `svg` rule above. Same visual weight as
-     the Photo item's glyph (rounded, softly shadowed), just a fixed-ratio
-     window onto the source image rather than a scaled vector. */
-  .explore-index__glyph--5g {
-    aspect-ratio: 6 / 5;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     border-radius: 20px;
     box-shadow: 0 20px 50px rgba(28, 34, 52, 0.14);
   }
 
-  .explore-index__glyph--5g img {
+  .explore-index__glyph img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* `object-fit: cover` alone only crops this image horizontally (it's
-       proportionally wider than this 6:5 box, so cover is height-bound and
-       always shows the asset's full height). The extra `scale()` pushes
-       past that baseline to crop vertically too, so the "5G" glyph reads
-       at library-preview size instead of sharing the frame with the
-       wallpaper below it. Both this anchor and `transform-origin` target
-       the same point — the centre of the 5G/signal/battery cluster,
-       measured directly off the source asset — so the zoom lands exactly
-       there rather than drifting off it. */
-    object-position: 44.6% 32%;
-    transform: scale(1.736);
-    transform-origin: 44.6% 32%;
   }
 
   /* Title/support treatment is informed by the homepage "There's more to
