@@ -1,0 +1,2086 @@
+---
+// New Explore-only story: "You tapped. Approved. Who said yes?" — Card 4 of
+// the four homepage preview cards. Scene 1 only, on exactly the construction
+// /explore/looks-real-is-it, /explore/ai-answered-you,
+// /explore/did-your-face-leave-the-phone and /explore/where-is-the-5g all
+// use: one grid, copy and the interaction on the left, the visual stage on
+// the right; the left title stays the anchor for the whole story once later
+// scenes exist, the same way none of the other stories' opening headings
+// change once their own story has started.
+//
+// The supplied Card4 render is the ordinary moment itself — a phone held to
+// a terminal in a café, APPROVED already on screen — with nothing drawn over
+// it: no payment diagram, no arrows, no bank or network branding, no
+// transaction animation, no caption, no explanatory overlay. That
+// ordinariness is the whole point of this opening: it happened, it took a
+// second, and the question of who actually decided is what the beats past
+// the CTA exist to work through.
+//
+// The CTA is "Who said yes?" rather than a generic "How?" on purpose. The
+// homepage card has already planted that exact curiosity, and this story is
+// about discovering that APPROVED is the outcome of a decision made
+// somewhere in a payment system — not simply an explanation of how tapping
+// works.
+//
+// SCENE 2 DOES NOT EXIST YET. When it is built, note that the answer to
+// "who said yes?" is NOT simply "your bank". A contactless payment can
+// involve the merchant, an acquirer/processor, a payment network, wallet and
+// device mechanisms, and the card issuer — and authorisation can take
+// different paths, including ones where the terminal or the card applies
+// issuer-set rules without a live round trip. That needs the same factual
+// discipline Card 3 used: reveal it carefully, scope every claim, and do not
+// turn the story into a payments-architecture lesson.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="You tapped. Approved. Who said yes? — DekhoYahan"
+  description="In seconds."
+>
+  <div class="tap" data-tap data-stage="1">
+    <!-- Same reasoning as the other openings: copy and the visual share one
+         grid rather than a header sitting above a separate stage, so on wide
+         screens they sit side by side and both the heading and the CTA are
+         readable before the visitor scrolls past the image; below the
+         stacking point they fall back to the same top-to-bottom order, copy
+         first.
+
+         Carries the same small eyebrow the other Explore openings use —
+         reused as-is (small saffron dot, cobalt uppercase) rather than
+         inventing a new treatment. -->
+    <div class="tap__stage shell">
+      <div class="tap__copy">
+        <p class="tap__eyebrow"><span></span>You tapped</p>
+
+        <h1 class="tap__opening">You tapped. Approved.</h1>
+
+        <p class="tap__noticed">In seconds.</p>
+
+        <!-- The one thing that starts the story. Real and focusable now, the
+             same way every other story's opening control is, even though
+             nothing past it exists yet. -->
+        <button type="button" class="tap__show" data-show>
+          Who said yes? <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- ====================================================
+           THE VISUALS — Scene 1's photo. Later beats will take the column
+           over entirely rather than sitting beside or behind it, the same
+           on/off handoff every other Explore story uses; the rule that hides
+           this scene is declared below so that beat doesn't need to touch it
+           when it exists. -->
+      <div class="tap__visuals">
+        <!-- THE SCENE — the supplied Card4 render, used as-is and locked.
+
+             A plain photograph of an ordinary purchase rather than a composed
+             technical illustration, so its box is simply sized to its own
+             ratio (1536 x 1024, 3:2) with no overlay, effect, label, arrow or
+             transaction graphic drawn over it — and stays exactly that way
+             for as long as it's on screen. -->
+        <div class="tap__scene">
+          <img
+            class="tap__art"
+            src="/images/Card4.webp"
+            alt="A hand holding a phone to a card terminal on a café counter, the terminal already showing APPROVED."
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+
+        <!-- ====================================================
+             SCENE 2 — the tap happened here; the decision didn't.
+
+             Exactly one new idea, and the visual carries it before any copy
+             is read: everything the reader actually saw is grouped together
+             under "You" on the left, then there is real empty space, then a
+             question mark. The gap IS the point — it is the part of the
+             moment that was never visible.
+
+             Nothing beyond the terminal is named, drawn or hinted at. No
+             bank, issuer, acquirer, network, wallet, processor or merchant
+             bank; no server, cloud, map, shield, lock, logo or money. The
+             only thing that crosses the gap is a small unlabelled mark
+             standing for the request, and it never arrives anywhere — it
+             fades before the question mark, because what it reaches is
+             precisely what this beat refuses to answer. -->
+        <div class="tap__moment">
+          <p class="tap__travelled">
+            That “Approved” travelled farther than your hand did.
+          </p>
+
+          <div class="tap__diagram" aria-hidden="true">
+            <span class="tap__here">
+              <span class="tap__here-label">You</span>
+              <span class="tap__here-art">
+                <span class="tap__phone"><span class="tap__phone-speaker"></span></span>
+                <span class="tap__to">→</span>
+                <span class="tap__terminal">
+                  <span class="tap__terminal-screen"></span>
+                  <span class="tap__terminal-keys"></span>
+                </span>
+              </span>
+            </span>
+
+            <!-- The deliberate gap. -->
+            <span class="tap__gap">
+              <span class="tap__request"></span>
+            </span>
+
+            <span class="tap__unknown">?</span>
+          </div>
+          <p class="tap__sr-only">
+            The phone and the terminal on one side, then a gap, then a question
+            mark — with a small request leaving the terminal and heading into the
+            gap.
+          </p>
+
+          <p class="tap__reveal-kicker">The terminal wasn't the whole decision.</p>
+          <p class="tap__reveal-text">
+            It sent a payment request into a system you couldn't see.
+          </p>
+
+          <!-- The way onward. -->
+          <button type="button" class="tap__turn" data-went>
+            Where did it go? <span aria-hidden="true">→</span>
+          </button>
+
+          <!-- ====================================================
+               SCENE 3 — the request finds its way.
+
+               Evolves Scene 2 rather than replacing it: the same "You"
+               group, the same phone and terminal outlines, and the gap
+               Scene 2 left empty now has something in it. The question
+               mark survives and simply moves further right, because who
+               decides is still not answered here.
+
+               The payment path is drawn as one neutral region holding a
+               few unnamed marks — the marks are there because the copy
+               says several systems can be involved, and showing one box
+               would quietly claim it is a single hop. No logo, no brand,
+               no named party, no map, no server, no cloud. Nothing inside
+               it is labelled or distinguishable, because naming any of it
+               is exactly what this beat is not ready to do. -->
+          <div class="tap__path">
+            <p class="tap__found">
+              First, the request had to find its way through the payment system.
+            </p>
+
+            <div class="tap__chain" aria-hidden="true">
+              <span class="tap__step" data-step="1">
+                <span class="tap__step-label">You</span>
+                <span class="tap__step-art">
+                  <span class="tap__phone"><span class="tap__phone-speaker"></span></span>
+                  <span class="tap__to">→</span>
+                  <span class="tap__terminal">
+                    <span class="tap__terminal-screen"></span>
+                    <span class="tap__terminal-keys"></span>
+                  </span>
+                </span>
+              </span>
+
+              <span class="tap__link" data-step="2">→</span>
+
+              <!-- Deliberately unlabelled. The dotted container stands for the
+                   systems the request may travel through, and naming them here
+                   would pre-empt the next beat — which is the one that reveals
+                   who actually decides. The ambiguity is the point. -->
+              <span class="tap__step" data-step="3">
+                <span class="tap__step-art">
+                  <span class="tap__route">
+                    <span class="tap__route-mark"></span>
+                    <span class="tap__route-mark"></span>
+                    <span class="tap__route-mark"></span>
+                  </span>
+                </span>
+              </span>
+
+              <span class="tap__link" data-step="4">→</span>
+
+              <span class="tap__step tap__step--end" data-step="5">
+                <span class="tap__step-art">
+                  <span class="tap__unknown tap__unknown--chain">?</span>
+                </span>
+              </span>
+            </div>
+            <p class="tap__sr-only">
+              The phone and terminal, then a neutral stretch of the payment system
+              holding a few unnamed parts, then a question mark.
+            </p>
+
+            <p class="tap__reveal-kicker">
+              Some parts carry the request. Another party may decide whether to
+              approve it.
+            </p>
+            <p class="tap__reveal-text">
+              The message can pass through several systems before an answer comes
+              back.
+            </p>
+
+            <!-- The way onward. -->
+            <button type="button" class="tap__turn" data-decides>
+              So who decides? <span aria-hidden="true">→</span>
+            </button>
+
+            <!-- ====================================================
+                 SCENE 4 — the question mark resolves.
+
+                 This beat answers rather than deferring: the "?" Scene 3
+                 left standing becomes a named party in the same position
+                 on the same chain, so the reveal is a substitution the
+                 reader can follow, not a new diagram.
+
+                 Scene 3 grouped the phone and terminal together under
+                 "You". Here they separate, because that is the actual
+                 distinction this beat turns on: the thing you tapped
+                 belongs to the shop, and the decision belongs somewhere
+                 else entirely. The dotted stretch between them stays
+                 unlabelled, exactly as Scene 3 locked it.
+
+                 "Usually" is doing real work in the headline and must not
+                 be edited out: the deciding party is the card issuer,
+                 which is often but not always a bank, and not every
+                 payment arrangement authorises the same way — some
+                 approvals can be made against issuer-set rules without a
+                 live round trip. The supporting line carries that caveat
+                 so the accessible word "bank" can stay in the headline
+                 without becoming a false claim. -->
+            <div class="tap__issuer">
+              <p class="tap__usually">Usually, your bank decides.</p>
+
+              <div class="tap__chain" aria-hidden="true">
+                <span class="tap__step" data-i="1">
+                  <span class="tap__step-label">You</span>
+                  <span class="tap__step-art">
+                    <span class="tap__phone"><span class="tap__phone-speaker"></span></span>
+                  </span>
+                </span>
+
+                <span class="tap__link" data-i="2">→</span>
+
+                <span class="tap__step" data-i="3">
+                  <span class="tap__step-label">Merchant</span>
+                  <span class="tap__step-art">
+                    <span class="tap__terminal">
+                      <span class="tap__terminal-screen"></span>
+                      <span class="tap__terminal-keys"></span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="tap__link" data-i="4">→</span>
+
+                <!-- Still unlabelled, as locked in Scene 3. -->
+                <span class="tap__step" data-i="5">
+                  <span class="tap__step-art">
+                    <span class="tap__route">
+                      <span class="tap__route-mark"></span>
+                      <span class="tap__route-mark"></span>
+                      <span class="tap__route-mark"></span>
+                    </span>
+                  </span>
+                </span>
+
+                <span class="tap__link" data-i="6">→</span>
+
+                <!-- Where the "?" stood. -->
+                <span class="tap__step" data-i="7">
+                  <span class="tap__step-label tap__step-label--answer">Your bank</span>
+                  <span class="tap__step-art">
+                    <span class="tap__bank"><span class="tap__bank-mark"></span></span>
+                  </span>
+                </span>
+              </div>
+              <p class="tap__sr-only">
+                The same chain as before, with the question mark at the end now
+                replaced by your bank.
+              </p>
+
+              <!-- Familiar idea first, technical name second. The term
+                   "issuer" is deliberately not used until the sentence
+                   above has already described the thing it names; naming
+                   first and explaining after would make the reader work
+                   backwards. The "though not always" is load-bearing —
+                   the issuer is often but not always a bank. -->
+              <p class="tap__reveal-kicker">
+                The bank behind your card checks the request and decides whether to
+                approve it.
+              </p>
+              <p class="tap__reveal-text">
+                <span class="tap__line">In payment systems, this is called the issuer.</span>
+                <span class="tap__line">It is usually a bank, though not always.</span>
+              </p>
+
+              <!-- The way onward. -->
+              <button type="button" class="tap__turn" data-checks>
+                What does it check? <span aria-hidden="true">→</span>
+              </button>
+
+              <!-- ====================================================
+                   SCENE 5 — more than one thing.
+
+                   The story stops drawing the payment path here. Nothing in
+                   this beat revisits who the issuer is, how the request got
+                   there, or what the terminal did — it is only about what
+                   goes into the decision.
+
+                   Set as a 2x2 grid on purpose. A row with arrows would say
+                   "first this, then that", which would be wrong: these are
+                   considerations weighed together, not stages. So there are
+                   no connectors, no numbers, no ordering cues, and all four
+                   carry identical treatment so none reads as the first or
+                   the decisive one. They arrive on a very tight stagger so
+                   the group settles at once rather than counting itself out.
+
+                   Deliberately absent: any pass/fail mark, tick, cross,
+                   meter, score, percentage or panel. Showing a result per
+                   signal would turn four examples into a verdict, and would
+                   also imply all four always run and always run this way.
+                   The supporting line carries that caveat instead.
+
+                   These are illustrative examples, not an authorisation
+                   algorithm. Nothing here names CVV/CVC, PIN, 3-D Secure,
+                   tokenisation, cryptograms, fraud-model internals, merchant
+                   category codes, network rules, authorisation codes, any
+                   card network or any bank — all of which would trade the
+                   concept for machinery. -->
+              <div class="tap__signals">
+                <p class="tap__notone">It doesn't check just one thing.</p>
+
+                <ul class="tap__grid">
+                  <li class="tap__signal" data-s="1">
+                    <span class="tap__signal-mark" aria-hidden="true"></span>
+                    <p class="tap__signal-label">Your account</p>
+                    <p class="tap__signal-q">Enough funds or credit?</p>
+                  </li>
+
+                  <li class="tap__signal" data-s="2">
+                    <span class="tap__signal-mark" aria-hidden="true"></span>
+                    <p class="tap__signal-label">Your card</p>
+                    <p class="tap__signal-q">Is it active and usable?</p>
+                  </li>
+
+                  <li class="tap__signal" data-s="3">
+                    <span class="tap__signal-mark" aria-hidden="true"></span>
+                    <p class="tap__signal-label">This payment</p>
+                    <p class="tap__signal-q">Does the amount and transaction make sense?</p>
+                  </li>
+
+                  <li class="tap__signal" data-s="4">
+                    <span class="tap__signal-mark" aria-hidden="true"></span>
+                    <p class="tap__signal-label">Risk signals</p>
+                    <p class="tap__signal-q">Does anything look unusual?</p>
+                  </li>
+                </ul>
+
+                <p class="tap__reveal-kicker">
+                  These signals help the issuer decide whether to approve the payment.
+                </p>
+                <p class="tap__reveal-text">
+                  The exact checks vary by bank, card and transaction.
+                </p>
+
+                <!-- The way onward: the decision is made, but it is still
+                     sitting where it was made. -->
+                <button type="button" class="tap__turn" data-back>
+                  Then how did “Approved” get back? <span aria-hidden="true">→</span>
+                </button>
+
+                <!-- ====================================================
+                     SCENE 6 — the answer comes home.
+
+                     The same four parts as Scene 4, in the opposite order:
+                     the bank now sits where "you" stood and you sit where
+                     the bank stood. Arrows still point right, so the chain
+                     is read the same way it has been all story — what is
+                     reversed is the journey, not the reading direction.
+
+                     What crosses is no longer the unlabelled mark Scene 2
+                     sent out. It is a labelled result, and it stays where
+                     it lands rather than fading, so a reader arriving after
+                     the animation still sees "APPROVED came back and the
+                     terminal has it" rather than an empty stretch.
+
+                     The terminal's screen only lights once the result has
+                     reached it — that ordering is the whole causal point of
+                     the beat, and it is why the screen is not lit from the
+                     start. -->
+                <div class="tap__return">
+                  <p class="tap__answered">The answer travelled back.</p>
+
+                  <div class="tap__chain" aria-hidden="true">
+                    <span class="tap__step" data-r="1">
+                      <span class="tap__step-label tap__step-label--answer">Your bank</span>
+                      <span class="tap__step-art">
+                        <span class="tap__bank"><span class="tap__bank-mark"></span></span>
+                      </span>
+                    </span>
+
+                    <span class="tap__link" data-r="2">→</span>
+
+                    <!-- Still unlabelled, as locked in Scene 3. -->
+                    <span class="tap__step" data-r="3">
+                      <span class="tap__step-art">
+                        <span class="tap__route tap__route--return">
+                          <span class="tap__route-mark"></span>
+                          <span class="tap__route-mark"></span>
+                          <span class="tap__route-mark"></span>
+                          <span class="tap__approved">Approved</span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span class="tap__link" data-r="4">→</span>
+
+                    <span class="tap__step" data-r="5">
+                      <span class="tap__step-label">Merchant</span>
+                      <span class="tap__step-art">
+                        <span class="tap__terminal">
+                          <span class="tap__terminal-screen tap__terminal-screen--got"></span>
+                          <span class="tap__terminal-keys"></span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span class="tap__link" data-r="6">→</span>
+
+                    <span class="tap__step" data-r="7">
+                      <span class="tap__step-label">You</span>
+                      <span class="tap__step-art">
+                        <span class="tap__phone"><span class="tap__phone-speaker"></span></span>
+                      </span>
+                    </span>
+                  </div>
+                  <p class="tap__sr-only">
+                    The same chain in the opposite order, with the result travelling
+                    from your bank back to the terminal.
+                  </p>
+
+                  <p class="tap__reveal-kicker">
+                    The issuer sent its decision back through the payment system.
+                  </p>
+                  <p class="tap__reveal-text">
+                    The terminal received the result and showed you Approved.
+                  </p>
+
+                  <!-- The way onward. -->
+                  <button type="button" class="tap__turn" data-all>
+                    All that from one tap? <span aria-hidden="true">→</span>
+                  </button>
+
+                  <!-- ====================================================
+                       SCENE 7 — the whole thing at once.
+
+                       The story stops drawing boxes here. Every earlier beat
+                       used nodes; this one compresses the same journey into
+                       type alone, because synthesis should feel lighter than
+                       the thing it summarises, not like a sixth diagram.
+
+                       Both legs are cells of ONE grid rather than two
+                       separate rows, so the columns line up exactly — "You"
+                       sits above "You", the unnamed stretch above the
+                       unnamed stretch. That alignment is what lets the
+                       reader see it is the same journey twice, once each
+                       way, rather than two unrelated lines.
+
+                       The arrows flip direction on the way back while the
+                       stops stay in place, so the reversal is legible
+                       without the reader having to re-read right-to-left.
+
+                       Scene 8 (the plain-language answer to "who said yes")
+                       is not built yet. -->
+                  <div class="tap__whole">
+                    <p class="tap__conversation">One tap. A whole conversation.</p>
+
+                    <div class="tap__journey" aria-hidden="true">
+                      <span class="tap__leg-label" data-j="1">Out</span>
+                      <span class="tap__stop" data-j="1">You</span>
+                      <span class="tap__dir" data-j="1">→</span>
+                      <span class="tap__stop" data-j="1">Merchant</span>
+                      <span class="tap__dir" data-j="1">→</span>
+                      <span class="tap__stop tap__stop--dots" data-j="1">···</span>
+                      <span class="tap__dir" data-j="1">→</span>
+                      <span class="tap__stop tap__stop--key" data-j="1">Your bank</span>
+
+                      <span class="tap__leg-label" data-j="2">Back</span>
+                      <span class="tap__stop" data-j="2">You</span>
+                      <span class="tap__dir" data-j="2">←</span>
+                      <span class="tap__stop" data-j="2">Merchant</span>
+                      <span class="tap__dir" data-j="2">←</span>
+                      <span class="tap__stop tap__stop--dots" data-j="2">···</span>
+                      <span class="tap__dir" data-j="2">←</span>
+                      <span class="tap__stop tap__stop--key" data-j="2">Approved</span>
+                    </div>
+                    <p class="tap__sr-only">
+                      The journey out — you, the merchant, the unnamed systems
+                      between, your bank — and the same journey back, carrying the
+                      approval.
+                    </p>
+
+                    <p class="tap__reveal-kicker">
+                      You only saw the beginning and the end.
+                    </p>
+                    <p class="tap__reveal-text">
+                      In between, a request travelled out, a decision was made, and
+                      the answer travelled back.
+                    </p>
+
+                    <p class="tap__seconds">All in seconds.</p>
+
+                    <!-- The way onward: back to the question the card opened
+                         with, to be answered plainly rather than explained
+                         again. -->
+                    <button type="button" class="tap__turn" data-said>
+                      So who said yes? <span aria-hidden="true">→</span>
+                    </button>
+
+                    <!-- ====================================================
+                         SCENE 8 — the end of Card 4.
+
+                         Closure, not another lesson. Nothing here explains
+                         how the request travelled, what was checked, what an
+                         issuer is, or how the path is arranged — all of that
+                         is behind the reader now, and repeating it would
+                         turn the ending into a recap.
+
+                         The three short statements are just that: three
+                         statements. No arrows, no nodes, no numbering, no
+                         chain — the story has finished drawing things.
+
+                         The whole beat exists so that "You tapped.
+                         Approved." — the same four words the card opened on,
+                         still sitting unchanged in the left anchor — reads
+                         differently the second time. That is why it is set
+                         as the largest line here and why nothing follows it
+                         except the quiet line acknowledging the change.
+
+                         "Usually" and "the bank behind your card" are both
+                         load-bearing and must not be simplified to "your
+                         bank decided": the deciding party is the issuer,
+                         which is usually but not always a bank. -->
+                    <div class="tap__close">
+                      <p class="tap__verdict">
+                        <span class="tap__verdict-a">Not the terminal.</span>
+                        <span class="tap__verdict-b">Usually, the bank behind your card.</span>
+                      </p>
+
+                      <div class="tap__resolve">
+                        <p class="tap__resolve-line" data-c="1">The terminal asked.</p>
+                        <p class="tap__resolve-line" data-c="2">The issuer decided.</p>
+                        <p class="tap__resolve-line" data-c="3">The answer came back.</p>
+                      </div>
+
+                      <p class="tap__echo">You tapped. Approved.</p>
+                      <p class="tap__now">Now you know what happened in between.</p>
+
+                      <!-- The end of the card: the way on is another story,
+                           so this is a real link rather than another beat. -->
+                      <a class="tap__turn tap__turn--link" href="/explore/">
+                        Explore another <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .tap {
+    padding-bottom: clamp(60px, 9vh, 110px);
+  }
+
+  .tap__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vh, 48px);
+  }
+
+  /* Same threshold every other Explore story splits at. */
+  @media (min-width: 980px) {
+    .tap__stage {
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: clamp(36px, 4.5vw, 68px);
+    }
+  }
+
+  .tap__copy {
+    text-align: left;
+  }
+
+  /* ConceptHero's own eyebrow, unchanged: small saffron dot, cobalt
+     uppercase sans — the same treatment the other Explore openings already
+     reuse. */
+  .tap__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 12px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+  }
+
+  .tap__eyebrow span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+  }
+
+  /* Same serif, same size, same weight as every other Explore opening. */
+  .tap__opening {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .tap__noticed {
+    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .tap__show {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vh, 30px);
+    padding: 12px 22px 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 640;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(40, 44, 60, 0.1);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 220ms ease,
+      opacity 320ms ease, background-color 320ms ease, color 320ms ease;
+  }
+
+  .tap__show:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(40, 44, 60, 0.15);
+  }
+
+  .tap__show:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .tap__show span {
+    color: var(--saffron);
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  .tap__show:hover span {
+    transform: translateX(3px);
+  }
+
+  /* Used, not gone, once Scene 2 exists — the same softening the other
+     stories give their own opening pill applies here. Pre-declared now so
+     the button doesn't need touching when that scene is built. */
+  [data-stage='2'] .tap__show {
+    color: var(--muted);
+    background: rgba(255, 253, 250, 0.6);
+    box-shadow: 0 4px 12px rgba(40, 44, 60, 0.06);
+  }
+
+  [data-stage='2'] .tap__show:hover {
+    transform: none;
+  }
+
+  .tap__visuals {
+    display: block;
+  }
+
+  .tap__scene {
+    position: relative;
+    aspect-ratio: 1536 / 1024;
+  }
+
+  /* Scene 2 will take the column over entirely — the photo isn't behind it
+     or faded under it, it simply stops being shown, the same way every other
+     Explore beat's spent frame leaves the flow for the one that replaces
+     it. */
+  [data-stage='2'] .tap__scene {
+    display: none;
+  }
+
+  .tap__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ====================================================
+     SCENE 2 — the tap happened here; the decision didn't
+     ==================================================== */
+
+  .tap__moment {
+    display: none;
+  }
+
+  [data-stage='2'] .tap__moment {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  .tap__travelled {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-stage='2'] .tap__moment > .tap__travelled {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 560ms;
+  }
+
+  .tap__diagram {
+    display: flex;
+    align-items: center;
+    margin: clamp(30px, 4.6vh, 44px) 0 0;
+  }
+
+  /* Everything the reader actually saw, kept together as one thing. */
+  .tap__here {
+    display: block;
+    flex: none;
+    opacity: 0;
+  }
+
+  .tap__here-label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .tap__here-art {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tap__phone {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 26px;
+    height: 44px;
+    border: 1px solid rgba(40, 44, 60, 0.24);
+    border-radius: 5px;
+  }
+
+  .tap__phone-speaker {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    width: 8px;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(40, 44, 60, 0.22);
+    transform: translateX(-50%);
+  }
+
+  .tap__to {
+    color: var(--muted-light);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* A terminal by outline only: a screen and a key area, nothing branded,
+     nothing on the screen. */
+  .tap__terminal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: none;
+    width: 42px;
+    height: 52px;
+    padding: 5px;
+    border: 1px solid rgba(40, 44, 60, 0.24);
+    border-radius: 5px;
+  }
+
+  .tap__terminal-screen {
+    width: 100%;
+    height: 20px;
+    border-radius: 2px;
+    background: rgba(40, 44, 60, 0.1);
+  }
+
+  .tap__terminal-keys {
+    width: 100%;
+    height: 14px;
+    border-radius: 2px;
+    background: rgba(40, 44, 60, 0.05);
+  }
+
+  /* The gap is the idea: real empty space where the invisible part of the
+     moment happened. */
+  .tap__gap {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: clamp(64px, 11vw, 132px);
+    max-width: 190px;
+    height: 44px;
+    margin: 22px clamp(14px, 2.4vw, 24px) 0;
+  }
+
+  /* The request. Unlabelled on purpose, and it never arrives — it fades
+     before the question mark, because what it reaches is what this beat
+     won't answer yet. */
+  .tap__request {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    margin-top: -3.5px;
+    border-radius: 50%;
+    background: var(--cobalt);
+    opacity: 0;
+  }
+
+  [data-stage='2'] .tap__request {
+    animation: tap-travel 2900ms cubic-bezier(0.32, 0, 0.5, 1) 1900ms infinite;
+  }
+
+  @keyframes tap-travel {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 1;
+    }
+
+    62% {
+      left: calc(100% - 7px);
+      opacity: 1;
+    }
+
+    76% {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+
+    100% {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+
+  .tap__unknown {
+    flex: none;
+    margin-top: 20px;
+    color: var(--muted-light);
+    font-family: var(--serif);
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 500;
+    line-height: 1;
+    opacity: 0;
+  }
+
+  [data-stage='2'] .tap__here {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1080ms;
+  }
+
+  [data-stage='2'] .tap__unknown {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1560ms;
+  }
+
+  .tap__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* The same blue kicker / plain supporting-line pair every other Explore
+     beat uses for its own explanation. */
+  .tap__reveal-kicker {
+    display: none;
+    margin: clamp(30px, 4.2vh, 40px) 0 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  [data-stage='2'] .tap__moment > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2500ms;
+  }
+
+  .tap__reveal-text {
+    display: none;
+    margin: 6px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-stage='2'] .tap__moment > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2740ms;
+  }
+
+  /* The same quiet page-turn idiom every other Explore story uses. */
+  .tap__turn {
+    display: none;
+    margin: clamp(24px, 3.4vh, 32px) 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    cursor: pointer;
+  }
+
+  [data-stage='2'] .tap__moment > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3220ms;
+  }
+
+  .tap__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .tap__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .tap__turn:hover span {
+    transform: translateX(2px);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .tap__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* ====================================================
+     SCENE 3 — the request finds its way
+     ==================================================== */
+
+  [data-path='1'] .tap__moment > .tap__travelled,
+  [data-path='1'] .tap__moment > .tap__diagram,
+  [data-path='1'] .tap__moment > .tap__sr-only,
+  [data-path='1'] .tap__moment > .tap__reveal-kicker,
+  [data-path='1'] .tap__moment > .tap__reveal-text,
+  [data-path='1'] .tap__moment > .tap__turn {
+    display: none;
+  }
+
+  .tap__path {
+    display: none;
+  }
+
+  [data-path='1'] .tap__moment > .tap__path {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .tap__found {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-path='1'] .tap__path > .tap__found {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* One horizontal run, wrapping on narrow screens rather than scrolling. */
+  .tap__chain {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: clamp(10px, 1.8vw, 18px);
+    margin: clamp(30px, 4.6vh, 44px) 0 0;
+  }
+
+  .tap__step {
+    display: block;
+    flex: none;
+    opacity: 0;
+  }
+
+  .tap__step-label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .tap__step-art {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tap__link {
+    flex: none;
+    margin-bottom: 16px;
+    color: var(--muted-light);
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0;
+  }
+
+  /* The payment path: one neutral stretch holding a few unnamed marks.
+     Nothing inside is labelled or distinguishable — naming any of it is
+     precisely what this beat is not ready to do. */
+  .tap__route {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: none;
+    width: clamp(84px, 12vw, 116px);
+    height: 52px;
+    padding: 0 10px;
+    border: 1px dashed rgba(40, 44, 60, 0.26);
+    border-radius: 6px;
+  }
+
+  .tap__route-mark {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(40, 44, 60, 0.2);
+  }
+
+  /* The same question mark Scene 2 ended on, simply further along. */
+  .tap__unknown--chain {
+    margin-top: 0;
+    opacity: 1;
+  }
+
+  .tap__step--end .tap__step-art {
+    height: 52px;
+    align-items: center;
+  }
+
+  [data-path='1'] .tap__step[data-step='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-path='1'] .tap__link[data-step='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1120ms;
+  }
+
+  [data-path='1'] .tap__step[data-step='3'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1420ms;
+  }
+
+  [data-path='1'] .tap__link[data-step='4'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1760ms;
+  }
+
+  [data-path='1'] .tap__step[data-step='5'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2020ms;
+  }
+
+  [data-path='1'] .tap__path > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2680ms;
+  }
+
+  [data-path='1'] .tap__path > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2920ms;
+  }
+
+  [data-path='1'] .tap__path > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3400ms;
+  }
+
+  /* ====================================================
+     SCENE 4 — the question mark resolves
+     ==================================================== */
+
+  [data-issuer='1'] .tap__path > .tap__found,
+  [data-issuer='1'] .tap__path > .tap__chain,
+  [data-issuer='1'] .tap__path > .tap__sr-only,
+  [data-issuer='1'] .tap__path > .tap__reveal-kicker,
+  [data-issuer='1'] .tap__path > .tap__reveal-text,
+  [data-issuer='1'] .tap__path > .tap__turn {
+    display: none;
+  }
+
+  .tap__issuer {
+    display: none;
+  }
+
+  [data-issuer='1'] .tap__path > .tap__issuer {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .tap__usually {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-issuer='1'] .tap__issuer > .tap__usually {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The answer, standing exactly where the question mark stood. Solid and
+     cobalt against the dashed grey of the stretch before it, so the eye
+     lands on it as the one named thing at the end of the chain. */
+  .tap__bank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border: 1.5px solid rgba(36, 92, 255, 0.55);
+    border-radius: 6px;
+    background: rgba(36, 92, 255, 0.06);
+  }
+
+  .tap__bank-mark {
+    width: 16px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--cobalt);
+  }
+
+  .tap__step-label--answer {
+    color: var(--cobalt);
+  }
+
+  /* Holds the two sentences on their own lines, so the break falls where
+     the sense does rather than wherever the measure happens to run out.
+     Type, colour and spacing are inherited unchanged. */
+  .tap__line {
+    display: block;
+  }
+
+  [data-issuer='1'] .tap__step[data-i='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-issuer='1'] .tap__link[data-i='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1040ms;
+  }
+
+  [data-issuer='1'] .tap__step[data-i='3'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1260ms;
+  }
+
+  [data-issuer='1'] .tap__link[data-i='4'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1480ms;
+  }
+
+  [data-issuer='1'] .tap__step[data-i='5'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1700ms;
+  }
+
+  [data-issuer='1'] .tap__link[data-i='6'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1960ms;
+  }
+
+  /* The reveal itself, given a beat of its own before it lands. */
+  [data-issuer='1'] .tap__step[data-i='7'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2280ms;
+  }
+
+  [data-issuer='1'] .tap__issuer > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2960ms;
+  }
+
+  [data-issuer='1'] .tap__issuer > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3200ms;
+  }
+
+  [data-issuer='1'] .tap__issuer > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3680ms;
+  }
+
+  /* ====================================================
+     SCENE 5 — more than one thing
+     ==================================================== */
+
+  [data-signals='1'] .tap__issuer > .tap__usually,
+  [data-signals='1'] .tap__issuer > .tap__chain,
+  [data-signals='1'] .tap__issuer > .tap__sr-only,
+  [data-signals='1'] .tap__issuer > .tap__reveal-kicker,
+  [data-signals='1'] .tap__issuer > .tap__reveal-text,
+  [data-signals='1'] .tap__issuer > .tap__turn {
+    display: none;
+  }
+
+  .tap__signals {
+    display: none;
+  }
+
+  [data-signals='1'] .tap__issuer > .tap__signals {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .tap__notone {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-signals='1'] .tap__signals > .tap__notone {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* A grid, not a row: two by two reads as a set considered together,
+     where a single line with arrows would read as stages. */
+  .tap__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(22px, 3.4vh, 30px) clamp(24px, 4vw, 44px);
+    margin: clamp(28px, 4.4vh, 40px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 620px) {
+    .tap__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .tap__signal {
+    position: relative;
+    padding-left: 18px;
+    opacity: 0;
+  }
+
+  /* One small mark per signal, identical on all four — a quiet anchor for
+     the eye, never a bullet that implies a list order or a status light
+     that implies a result. */
+  .tap__signal-mark {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cobalt);
+  }
+
+  .tap__signal-label {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .tap__signal-q {
+    margin: 7px 0 0;
+    max-width: 30ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(16px, 1.8vw, 19px);
+    font-weight: 500;
+    line-height: 1.32;
+    letter-spacing: -0.014em;
+  }
+
+  /* Tight enough that the four settle as one group rather than counting
+     themselves out in sequence. */
+  [data-signals='1'] .tap__signal[data-s='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-signals='1'] .tap__signal[data-s='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 940ms;
+  }
+
+  [data-signals='1'] .tap__signal[data-s='3'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1060ms;
+  }
+
+  [data-signals='1'] .tap__signal[data-s='4'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1180ms;
+  }
+
+  [data-signals='1'] .tap__signals > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1900ms;
+  }
+
+  [data-signals='1'] .tap__signals > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2140ms;
+  }
+
+  [data-signals='1'] .tap__signals > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2620ms;
+  }
+
+  /* ====================================================
+     SCENE 6 — the answer comes home
+     ==================================================== */
+
+  [data-return='1'] .tap__signals > .tap__notone,
+  [data-return='1'] .tap__signals > .tap__grid,
+  [data-return='1'] .tap__signals > .tap__reveal-kicker,
+  [data-return='1'] .tap__signals > .tap__reveal-text,
+  [data-return='1'] .tap__signals > .tap__turn {
+    display: none;
+  }
+
+  .tap__return {
+    display: none;
+  }
+
+  [data-return='1'] .tap__signals > .tap__return {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .tap__answered {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-return='1'] .tap__return > .tap__answered {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* Wider than the outbound stretch, purely so the labelled result has
+     room to visibly cross it. --chip is the payload's own width, used by
+     the keyframe so the travel always stops flush at the far edge. */
+  .tap__route--return {
+    position: relative;
+    --chip: 78px;
+    width: clamp(124px, 19vw, 210px);
+  }
+
+  @media (max-width: 619px) {
+    .tap__route--return {
+      --chip: 70px;
+    }
+  }
+
+  .tap__route--return .tap__route-mark {
+    opacity: 0.5;
+  }
+
+  /* The payload, labelled this time. It stays where it lands rather than
+     fading, so the finished state still reads. */
+  .tap__approved {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--chip);
+    padding: 5px 0;
+    border: 1px solid rgba(36, 92, 255, 0.5);
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--cobalt);
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: -11px;
+    opacity: 0;
+  }
+
+  [data-return='1'] .tap__approved {
+    animation: tap-return 1300ms cubic-bezier(0.32, 0, 0.4, 1) both;
+    animation-delay: 2150ms;
+  }
+
+  @keyframes tap-return {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+
+    14% {
+      opacity: 1;
+    }
+
+    100% {
+      left: calc(100% - var(--chip));
+      opacity: 1;
+    }
+  }
+
+  /* Lit only after the result has arrived — the ordering is the point. */
+  .tap__terminal-screen--got {
+    background: rgba(40, 44, 60, 0.1);
+  }
+
+  [data-return='1'] .tap__terminal-screen--got {
+    animation: tap-lit 420ms ease both;
+    animation-delay: 3380ms;
+  }
+
+  @keyframes tap-lit {
+    to {
+      background: rgba(36, 92, 255, 0.24);
+    }
+  }
+
+  [data-return='1'] .tap__step[data-r='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 760ms;
+  }
+
+  [data-return='1'] .tap__link[data-r='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 940ms;
+  }
+
+  [data-return='1'] .tap__step[data-r='3'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1120ms;
+  }
+
+  [data-return='1'] .tap__link[data-r='4'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1300ms;
+  }
+
+  [data-return='1'] .tap__step[data-r='5'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1480ms;
+  }
+
+  [data-return='1'] .tap__link[data-r='6'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1660ms;
+  }
+
+  [data-return='1'] .tap__step[data-r='7'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1840ms;
+  }
+
+  [data-return='1'] .tap__return > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3900ms;
+  }
+
+  [data-return='1'] .tap__return > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 4140ms;
+  }
+
+  [data-return='1'] .tap__return > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 4620ms;
+  }
+
+  /* ====================================================
+     SCENE 7 — the whole thing at once
+     ==================================================== */
+
+  [data-whole='1'] .tap__return > .tap__answered,
+  [data-whole='1'] .tap__return > .tap__chain,
+  [data-whole='1'] .tap__return > .tap__sr-only,
+  [data-whole='1'] .tap__return > .tap__reveal-kicker,
+  [data-whole='1'] .tap__return > .tap__reveal-text,
+  [data-whole='1'] .tap__return > .tap__turn {
+    display: none;
+  }
+
+  .tap__whole {
+    display: none;
+  }
+
+  [data-whole='1'] .tap__return > .tap__whole {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  .tap__conversation {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  [data-whole='1'] .tap__whole > .tap__conversation {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* One grid holding both legs, so the two rows share columns exactly and
+     the second reads as the same journey returning. */
+  .tap__journey {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    align-items: center;
+    justify-content: start;
+    gap: clamp(9px, 1.4vh, 13px) clamp(6px, 1.1vw, 12px);
+    margin: clamp(28px, 4.4vh, 40px) 0 0;
+  }
+
+  .tap__leg-label {
+    padding-right: clamp(6px, 1vw, 12px);
+    color: var(--muted-light);
+    font-family: var(--sans);
+    font-size: clamp(9px, 1vw, 10.5px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  .tap__stop {
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(10px, 1.15vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  /* The unnamed stretch, still unnamed. */
+  .tap__stop--dots {
+    color: var(--muted-light);
+    letter-spacing: 0.14em;
+  }
+
+  /* The two ends that matter: who decided, and what came back. */
+  .tap__stop--key {
+    color: var(--cobalt);
+  }
+
+  .tap__dir {
+    color: var(--muted-light);
+    font-size: clamp(11px, 1.2vw, 13px);
+    line-height: 1;
+    opacity: 0;
+  }
+
+  [data-whole='1'] .tap__journey [data-j='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 820ms;
+  }
+
+  [data-whole='1'] .tap__journey [data-j='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1220ms;
+  }
+
+  [data-whole='1'] .tap__whole > .tap__reveal-kicker {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1920ms;
+  }
+
+  [data-whole='1'] .tap__whole > .tap__reveal-text {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2160ms;
+  }
+
+  /* The payoff, given its own weight and its own beat. */
+  .tap__seconds {
+    display: none;
+    margin: clamp(26px, 3.8vh, 34px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.4vw, 27px);
+    font-weight: 500;
+    line-height: 1.28;
+    letter-spacing: -0.022em;
+  }
+
+  [data-whole='1'] .tap__whole > .tap__seconds {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2660ms;
+  }
+
+  [data-whole='1'] .tap__whole > .tap__turn {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3160ms;
+  }
+
+  /* ====================================================
+     SCENE 8 — the end of Card 4
+     ==================================================== */
+
+  [data-close='1'] .tap__whole > .tap__conversation,
+  [data-close='1'] .tap__whole > .tap__journey,
+  [data-close='1'] .tap__whole > .tap__sr-only,
+  [data-close='1'] .tap__whole > .tap__reveal-kicker,
+  [data-close='1'] .tap__whole > .tap__reveal-text,
+  [data-close='1'] .tap__whole > .tap__seconds,
+  [data-close='1'] .tap__whole > .tap__turn {
+    display: none;
+  }
+
+  .tap__close {
+    display: none;
+  }
+
+  [data-close='1'] .tap__whole > .tap__close {
+    display: block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  /* The answer to the question the card opened with. The correction comes
+     first, the answer second and in cobalt — the same emphasis every other
+     beat has given its key line. */
+  .tap__verdict {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.26;
+    letter-spacing: -0.025em;
+  }
+
+  .tap__verdict-a,
+  .tap__verdict-b {
+    display: block;
+  }
+
+  .tap__verdict-a {
+    color: var(--ink);
+  }
+
+  .tap__verdict-b {
+    color: var(--cobalt);
+  }
+
+  [data-close='1'] .tap__verdict-a {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 240ms;
+  }
+
+  [data-close='1'] .tap__verdict-b {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 640ms;
+  }
+
+  /* Three statements, not a diagram: no arrows, no nodes, no numbering.
+     Held apart by space alone. */
+  .tap__resolve {
+    margin: clamp(30px, 4.6vh, 42px) 0 0;
+  }
+
+  .tap__resolve-line {
+    margin: 0 0 7px;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+    opacity: 0;
+  }
+
+  [data-close='1'] .tap__resolve-line[data-c='1'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1240ms;
+  }
+
+  [data-close='1'] .tap__resolve-line[data-c='2'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1460ms;
+  }
+
+  [data-close='1'] .tap__resolve-line[data-c='3'] {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1680ms;
+  }
+
+  /* The four words the card opened on, given back. Largest thing in the
+     scene, because the point of the ending is that they now mean
+     something they didn't at the start. */
+  .tap__echo {
+    margin: clamp(34px, 5.2vh, 50px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(26px, 3.2vw, 38px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.028em;
+  }
+
+  [data-close='1'] .tap__close > .tap__echo {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2360ms;
+  }
+
+  .tap__now {
+    margin: 14px 0 0;
+    max-width: 40ch;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+
+  [data-close='1'] .tap__close > .tap__now {
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 2720ms;
+  }
+
+  /* The turn control as a link rather than a button — same type, same
+     saffron disc, same hover. */
+  .tap__turn--link {
+    text-decoration: none;
+  }
+
+  [data-close='1'] .tap__close > .tap__turn--link {
+    display: inline-block;
+    animation: tap-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3280ms;
+  }
+
+  @keyframes tap-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tap__show,
+    .tap__show span {
+      transition-duration: 1ms;
+    }
+
+    [data-stage='2'] .tap__moment,
+    [data-stage='2'] .tap__moment > .tap__travelled,
+    [data-stage='2'] .tap__moment > .tap__reveal-kicker,
+    [data-stage='2'] .tap__moment > .tap__reveal-text,
+    [data-stage='2'] .tap__moment > .tap__turn {
+      animation: none;
+    }
+
+    /* Both carry their own base opacity:0, so cancelling the animation
+       alone would leave them invisible. */
+    [data-stage='2'] .tap__here,
+    [data-stage='2'] .tap__unknown {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* No travel: the request is simply shown part-way across the gap, so
+       the same "something left the terminal" reading survives without
+       anything moving. */
+    [data-stage='2'] .tap__request {
+      animation: none;
+      left: 52%;
+      opacity: 1;
+    }
+
+    [data-path='1'] .tap__moment > .tap__path,
+    [data-path='1'] .tap__path > .tap__found,
+    [data-path='1'] .tap__path > .tap__reveal-kicker,
+    [data-path='1'] .tap__path > .tap__reveal-text,
+    [data-path='1'] .tap__path > .tap__turn {
+      animation: none;
+    }
+
+    /* Each step and link carries its own base opacity:0, so cancelling the
+       animation alone would leave the whole chain invisible. Matched to the
+       [data-step] selectors that carry the forward delays. */
+    [data-path='1'] .tap__step[data-step],
+    [data-path='1'] .tap__link[data-step] {
+      animation: none;
+      opacity: 1;
+    }
+
+    [data-issuer='1'] .tap__path > .tap__issuer,
+    [data-issuer='1'] .tap__issuer > .tap__usually,
+    [data-issuer='1'] .tap__issuer > .tap__reveal-kicker,
+    [data-issuer='1'] .tap__issuer > .tap__reveal-text,
+    [data-issuer='1'] .tap__issuer > .tap__turn {
+      animation: none;
+    }
+
+    /* Same reasoning as Scene 3's chain: every step and link carries its
+       own base opacity:0, matched here to the [data-i] selectors that
+       carry the forward delays. */
+    [data-issuer='1'] .tap__step[data-i],
+    [data-issuer='1'] .tap__link[data-i] {
+      animation: none;
+      opacity: 1;
+    }
+
+    [data-signals='1'] .tap__issuer > .tap__signals,
+    [data-signals='1'] .tap__signals > .tap__notone,
+    [data-signals='1'] .tap__signals > .tap__reveal-kicker,
+    [data-signals='1'] .tap__signals > .tap__reveal-text,
+    [data-signals='1'] .tap__signals > .tap__turn {
+      animation: none;
+    }
+
+    /* Each signal carries its own base opacity:0, matched here to the
+       [data-s] selectors that carry the forward delays. */
+    [data-signals='1'] .tap__signal[data-s] {
+      animation: none;
+      opacity: 1;
+    }
+
+    [data-return='1'] .tap__signals > .tap__return,
+    [data-return='1'] .tap__return > .tap__answered,
+    [data-return='1'] .tap__return > .tap__reveal-kicker,
+    [data-return='1'] .tap__return > .tap__reveal-text,
+    [data-return='1'] .tap__return > .tap__turn {
+      animation: none;
+    }
+
+    [data-return='1'] .tap__step[data-r],
+    [data-return='1'] .tap__link[data-r] {
+      animation: none;
+      opacity: 1;
+    }
+
+    /* No travel: the result is simply shown already arrived at the far end
+       of the stretch, with the terminal already lit — the same finished
+       state the animation ends on. */
+    [data-return='1'] .tap__approved {
+      animation: none;
+      left: calc(100% - var(--chip));
+      opacity: 1;
+    }
+
+    [data-return='1'] .tap__terminal-screen--got {
+      animation: none;
+      background: rgba(36, 92, 255, 0.24);
+    }
+
+    [data-whole='1'] .tap__return > .tap__whole,
+    [data-whole='1'] .tap__whole > .tap__conversation,
+    [data-whole='1'] .tap__whole > .tap__reveal-kicker,
+    [data-whole='1'] .tap__whole > .tap__reveal-text,
+    [data-whole='1'] .tap__whole > .tap__seconds,
+    [data-whole='1'] .tap__whole > .tap__turn {
+      animation: none;
+    }
+
+    /* Every cell of the journey grid carries its own base opacity:0,
+       matched here to the [data-j] selectors carrying the forward delays. */
+    [data-whole='1'] .tap__journey [data-j] {
+      animation: none;
+      opacity: 1;
+    }
+
+    [data-close='1'] .tap__whole > .tap__close,
+    [data-close='1'] .tap__verdict-a,
+    [data-close='1'] .tap__verdict-b,
+    [data-close='1'] .tap__close > .tap__echo,
+    [data-close='1'] .tap__close > .tap__now,
+    [data-close='1'] .tap__close > .tap__turn--link {
+      animation: none;
+    }
+
+    /* The three statements carry their own base opacity:0, matched here to
+       the [data-c] selectors carrying the forward delays. */
+    [data-close='1'] .tap__resolve-line[data-c] {
+      animation: none;
+      opacity: 1;
+    }
+
+    .tap__turn span {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-tap]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    // One way, one time: Scene 1 -> Scene 2. There is nothing before it to
+    // return to, so a second click is simply a no-op.
+    root.querySelector('[data-show]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+    });
+
+    // Scene 3. A flag of its own rather than a bumped stage, so everything
+    // Scene 2 turned on stays on underneath it.
+    root.querySelector('[data-went]')?.addEventListener('click', () => {
+      if (root.dataset.stage !== '2' || root.dataset.path === '1') return;
+      root.dataset.path = '1';
+    });
+
+    // Scene 4. A flag of its own rather than a bumped stage, so everything
+    // Scene 3 turned on stays on underneath it.
+    root.querySelector('[data-decides]')?.addEventListener('click', () => {
+      if (root.dataset.path !== '1' || root.dataset.issuer === '1') return;
+      root.dataset.issuer = '1';
+    });
+
+    // Scene 5. A flag of its own rather than a bumped stage, so everything
+    // Scene 4 turned on stays on underneath it.
+    root.querySelector('[data-checks]')?.addEventListener('click', () => {
+      if (root.dataset.issuer !== '1' || root.dataset.signals === '1') return;
+      root.dataset.signals = '1';
+    });
+
+    // Scene 6. A flag of its own rather than a bumped stage, so everything
+    // Scene 5 turned on stays on underneath it.
+    root.querySelector('[data-back]')?.addEventListener('click', () => {
+      if (root.dataset.signals !== '1' || root.dataset.return === '1') return;
+      root.dataset.return = '1';
+    });
+
+    // Scene 7. A flag of its own rather than a bumped stage, so everything
+    // Scene 6 turned on stays on underneath it.
+    root.querySelector('[data-all]')?.addEventListener('click', () => {
+      if (root.dataset.return !== '1' || root.dataset.whole === '1') return;
+      root.dataset.whole = '1';
+    });
+
+    // Scene 8 — the last beat of the card. The way on from here is a real
+    // link to another story, not another flag.
+    root.querySelector('[data-said]')?.addEventListener('click', () => {
+      if (root.dataset.whole !== '1' || root.dataset.close === '1') return;
+      root.dataset.close = '1';
+    });
+  });
+</script>
