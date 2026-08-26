@@ -1,0 +1,1743 @@
+---
+// Preserved snapshot of the homepage hero's original right-side
+// implementation: the interactive AI-agent composition (seated
+// visitor, agent counterpart, three progressive discovery layers,
+// the house-key analogy, and the closing beat), exactly as it shipped
+// on the homepage before that hero was replaced by a static laptop
+// visual there. Not currently rendered anywhere — kept intact so this
+// piece can be reused and evolved into its own Explore story later,
+// rather than lost. Self-contained: markup, script, and styles all
+// live here exactly as they did on the page, unchanged in substance.
+import { Image } from 'astro:assets';
+import heroCompanion from '../../assets/hero-companion.png';
+import realizeKey from '../../assets/realize-key.png';
+---
+
+      <div class="dy-hero__stage" data-hero-stage data-reveal="0" data-reveal2="0" data-reveal3="0" data-realized="0" data-analogy2="0" data-advance="0" data-entry="0">
+        <!-- The whole composition is authored once, at a fixed 640px width,
+             with every child positioned against that box by percentage or
+             pixel. Rather than re-tune any of that per breakpoint, this
+             inner layer keeps the fixed 640px box exactly as designed and
+             is scaled down as one rigid unit — text, dots, cards and all —
+             to fit whatever width the stage actually has. See the
+             `--hero-scale` custom property set by script, and
+             `.dy-hero__stage`'s own aspect-ratio below, which reserves the
+             correctly-scaled height in the grid without measuring anything
+             in JS on the layout side. -->
+        <div class="dy-hero__stage-inner" data-hero-stage-inner>
+        <Image
+          src={heroCompanion}
+          alt=""
+          widths={[640, 900, 1200, 1536]}
+          sizes="640px"
+          format="webp"
+          quality={86}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+
+        <!-- Realization scrim: a quiet veil that only ever appears once
+             the visitor has activated the continuation CTA. It covers
+             just the AI-counterpart-and-layers portion of the artwork
+             (left ~40% stays clear, over the seated human), easing those
+             elements toward the page's own background tone rather than
+             hiding them outright — the point is recession, not removal. -->
+        <div class="dy-hero__realize-scrim" aria-hidden="true"></div>
+
+        <p class="dy-hero__bubble">
+          <span class="dy-hero__bubble-who">YOU</span>
+          Book me the <em>best</em> flight to Tokyo.
+        </p>
+
+        <p class="dy-hero__bubble dy-hero__bubble--ai">
+          <span class="dy-hero__bubble-who">AI AGENT</span>
+          <span class="dy-hero__bubble-result">Flight booked! <span class="dy-hero__bubble-check">✓</span></span>
+        </p>
+
+        <div class="dy-hero__card dy-hero__card--pay">
+          <svg class="dy-hero__card-icon dy-hero__card-icon--spark" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <rect x="2.5" y="5.5" width="19" height="13" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+            <path d="M2.5 9.5h19" stroke="currentColor" stroke-width="1.5" />
+            <path d="M6 14.3h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span class="dy-hero__card-text">
+            <span class="dy-hero__card-amount">$1,240</span>
+            <span class="dy-hero__card-label">paid</span>
+          </span>
+        </div>
+
+        <span class="dy-hero__discovery" aria-hidden="true"></span>
+        <button
+          type="button"
+          class="dy-hero__discovery-hotspot"
+          data-reveal-trigger="reveal"
+          aria-expanded="false"
+          aria-controls="dy-hero-reveal-1"
+          aria-label="Reveal what the AI agent knew"
+        ></button>
+
+        <span class="dy-hero__reveal-glow" aria-hidden="true"></span>
+
+        <div class="dy-hero__reveal" id="dy-hero-reveal-1">
+          <p class="dy-hero__reveal-title">IT KNEW YOU</p>
+          <p class="dy-hero__reveal-text">Your preferences,<br />context and history.</p>
+        </div>
+
+        <!-- Layer 2's own discovery point. Present in the DOM from the
+             start, but invisible and inert until Layer 1 has been opened
+             — gated purely in CSS off the stage's own `data-reveal`, so
+             the layers are found in order without any extra script. -->
+        <button
+          type="button"
+          class="dy-hero__discovery-hotspot dy-hero__discovery-hotspot--layer2"
+          data-reveal-trigger="reveal2"
+          aria-expanded="false"
+          aria-controls="dy-hero-reveal-2"
+          aria-label="Reveal what the middle layer could connect to"
+        ></button>
+
+        <span class="dy-hero__reveal-glow dy-hero__reveal-glow--layer2" aria-hidden="true"></span>
+
+        <div class="dy-hero__reveal dy-hero__reveal--layer2" id="dy-hero-reveal-2">
+          <p class="dy-hero__reveal-title">IT COULD CONNECT</p>
+          <p class="dy-hero__reveal-text">To your apps, accounts and services.</p>
+        </div>
+
+        <!-- Layer 3's own discovery point. Present in the DOM from the
+             start, but invisible and inert until Layer 2 has been opened
+             — gated off the stage's own `data-reveal2`, same pattern as
+             Layer 2's gating off `data-reveal`. -->
+        <button
+          type="button"
+          class="dy-hero__discovery-hotspot dy-hero__discovery-hotspot--layer3"
+          data-reveal-trigger="reveal3"
+          aria-expanded="false"
+          aria-controls="dy-hero-reveal-3"
+          aria-label="Reveal what the bottom layer lets the AI agent do"
+        ></button>
+
+        <span class="dy-hero__reveal-glow dy-hero__reveal-glow--layer3" aria-hidden="true"></span>
+
+        <div class="dy-hero__reveal dy-hero__reveal--layer3" id="dy-hero-reveal-3">
+          <p class="dy-hero__reveal-title">IT COULD ACT FOR YOU</p>
+          <p class="dy-hero__reveal-text">Because you gave it permission.</p>
+        </div>
+
+        <!-- Continuation trigger: only ever meaningful once the third and
+             final layer has been reached, so it's visually gated off
+             data-reveal3 (see CSS) and also genuinely disabled until then
+             — disabled is only lifted once the Layer 3 hotspot fires, via
+             the script below. Its own click just records that the
+             journey reached this point (data-realized) for a future
+             realization scene; it deliberately triggers no visual change
+             yet. -->
+        <button type="button" class="dy-hero__continue" data-reveal-trigger="realized" data-gate="reveal3" disabled>
+          See what this really means <span aria-hidden="true">→</span>
+        </button>
+
+        <!-- The opening line of the realization itself — not another
+             technical annotation, so it deliberately skips the reveal
+             card/hotspot vocabulary used above it. Sits in the quiet
+             space the faded layers just opened up, clear of the seated
+             human. Same data-realized gate as the rest of this state;
+             no new interaction. -->
+        <p class="dy-hero__realize-thought">Imagine giving someone<br />your house key.</p>
+
+        <!-- The visual for that same thought — not a separate
+             illustration slot, so it's positioned to read as one
+             composed idea with the sentence above it rather than as its
+             own card. The source photo already fades to transparent on
+             its hand side, which is what lets it sit directly over the
+             faded layers/AI without a hard edge or a masking box of our
+             own. Purely supportive of the sentence, so it's decorative. -->
+        <Image
+          src={realizeKey}
+          alt=""
+          widths={[320, 480, 640]}
+          sizes="295px"
+          format="webp"
+          quality={86}
+          loading="eager"
+          decoding="async"
+          class="dy-hero__realize-key"
+        />
+
+        <!-- The second analogy beat: withheld behind its own small
+             affordance rather than appearing with the first thought, so
+             the visitor keeps control of pacing — same one-way,
+             click-only pattern as the discovery layers above, just
+             scoped to the realization state (data-gate="realized" keeps
+             it inert until that state exists at all; data-once disables
+             it the moment it's used, since there's nothing further to
+             press here). -->
+        <button type="button" class="dy-hero__realize-next" data-reveal-trigger="analogy2" data-gate="realized" data-once disabled>
+          And then? <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="dy-hero__realize-next-copy">
+          <p class="dy-hero__realize-next-text">They can enter your house.</p>
+          <p class="dy-hero__realize-next-subtext">That doesn't mean they can do whatever they want inside.</p>
+
+          <!-- The bridge back to the AI-agent story. Lives inside the
+               same copy block as the house-key lines above it, gated by
+               the same data-analogy2 state and the same single fade —
+               there's no separate click for this, it simply reads on
+               once the visitor gets here. Kept visually a step quieter
+               than the house-key pair so the analogy still leads. -->
+          <p class="dy-hero__realize-bridge-text">Your AI agent works the same way.</p>
+          <p class="dy-hero__realize-bridge-subtext">It could reach your digital world — but it still needed limits on what it could do.</p>
+
+          <!-- The closing editorial cue, not another CTA — reads as the
+               last line of this thought rather than a product action.
+               Only appears once the "And then?" state is already
+               revealed (data-gate="analogy2"); its own click just
+               records that the visitor is ready to move on
+               (data-advance) for whatever comes next — nothing on the
+               stage reacts to that state yet, so pressing it changes
+               nothing visible beyond the control itself. data-once
+               retires it the moment it's used, same as the other
+               one-shot prompts above it. -->
+          <button
+            type="button"
+            class="dy-hero__realize-turn"
+            data-reveal-trigger="advance"
+            data-gate="analogy2"
+            data-once
+            disabled
+          >
+            Now bring that back to the AI. <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- A deeper, layers-only recession for the final state — the
+             existing realize-scrim already eases the AI counterpart and
+             layers together; this adds extra fade starting to the right
+             of the AI avatar (never over it, and never over the human)
+             so specifically the technology layers quiet down enough for
+             the realization text to sit directly on them with no
+             background of its own. Soft-edged (no hard seam), and the
+             layers stay visible underneath — just quieter. -->
+        <div class="dy-hero__final-layer-fade" aria-hidden="true"></div>
+
+        <!-- The payoff line. Gated on the same data-advance state that
+             the turn button already sets — appears as the house-key
+             visual and its copy recede. Anchored to the right of both
+             figures entirely (never over the human or the AI avatar),
+             in the calmer right-hand portion of the layers rather than
+             their busy centre. No card, no background — editorial serif
+             and one small saffron mark leading in, the same restrained
+             language used everywhere else on this stage. The headline
+             carries the realization; the three supporting lines
+             underneath it are deliberately smaller and quieter. -->
+        <div class="dy-hero__final">
+          <p class="dy-hero__final-text">AI agents may seem new.<br />But the idea isn't.</p>
+          <p class="dy-hero__final-support">They need to know who they're helping,<br />what they can use,<br />and what they're allowed to do.</p>
+        </div>
+
+        <div class="dy-hero__chip dy-hero__chip--calendar">
+          <svg class="dy-hero__chip-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+            <path d="M3 9.5h18" stroke="currentColor" stroke-width="1.5" />
+            <path d="M7.5 2.8v3.2M16.5 2.8v3.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span class="dy-hero__chip-label">Calendar updated</span>
+        </div>
+
+        <div class="dy-hero__chip dy-hero__chip--confirmation">
+          <svg class="dy-hero__chip-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <rect x="2.5" y="5" width="19" height="14" rx="2.2" stroke="currentColor" stroke-width="1.5" />
+            <path d="M3 6.5 12 13l9-6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="dy-hero__chip-label">Confirmation sent</span>
+        </div>
+        </div>
+      </div>
+
+<script>
+    document.querySelectorAll('[data-hero-stage]').forEach((stage) => {
+      if (!(stage instanceof HTMLElement)) return;
+
+      // The composition is authored once at a fixed 640px (see
+      // .dy-hero__stage-inner's own comment). Below the width the grid
+      // can actually give it, --hero-scale shrinks the whole thing as one
+      // rigid block instead of a per-breakpoint re-layout — this is the
+      // one thing that has to be measured in script rather than expressed
+      // in CSS, since it depends on the stage's real rendered width.
+      const STAGE_DESIGN_WIDTH = 640;
+      if ('ResizeObserver' in window) {
+        const observer = new ResizeObserver((entries) => {
+          const entry = entries[0];
+          if (!entry) return;
+          const scale = Math.min(1, entry.contentRect.width / STAGE_DESIGN_WIDTH);
+          stage.style.setProperty('--hero-scale', String(scale));
+        });
+        observer.observe(stage);
+      } else {
+        // No ResizeObserver: fall back to the one state every browser can
+        // still resolve cheaply — full scale above the design width,
+        // otherwise sized off the viewport. Re-checked on resize since
+        // there's no observer doing it continuously.
+        const syncScaleFallback = () => {
+          const scale = Math.min(1, stage.getBoundingClientRect().width / STAGE_DESIGN_WIDTH);
+          stage.style.setProperty('--hero-scale', String(scale));
+        };
+        syncScaleFallback();
+        window.addEventListener('resize', syncScaleFallback);
+      }
+
+      const gatedButtons = stage.querySelectorAll('[data-gate]');
+
+      // Any button that names a `data-gate` state (the continue CTA
+      // gated on reveal3, the "And then?" prompt gated on realized)
+      // only becomes a real, activatable control once that state is
+      // actually reached — using `disabled` (not just the CSS
+      // opacity/pointer-events gate) so it's also unreachable by
+      // keyboard and screen readers until then.
+      const syncGatedButtons = () => {
+        gatedButtons.forEach((button) => {
+          if (button instanceof HTMLButtonElement) {
+            const gateKey = button.getAttribute('data-gate') || '';
+            button.disabled = stage.dataset[gateKey] !== '1';
+          }
+        });
+      };
+
+      syncGatedButtons();
+
+      // The fully expanded realization state reaches past the hero's
+      // own default height. The grid (not the stage) reserves the extra
+      // room for it — see the CSS note on .dy-hero__grid — so this just
+      // keeps that reservation in sync with the one state that needs it.
+      const grid = stage.closest('.dy-hero__grid');
+      const syncGridHeight = () => {
+        if (grid instanceof HTMLElement) {
+          grid.dataset.expanded = stage.dataset.analogy2 === '1' ? '1' : '0';
+        }
+      };
+
+      syncGridHeight();
+
+      // "See how" only makes sense before the visitor has actually
+      // started the right-side story — once the first layer is opened,
+      // the story has its own actions (and later, the analogy's own
+      // controls) to carry the visitor forward, so the CTA steps aside
+      // rather than sitting there competing with them. It reappears,
+      // relabelled "Replay", only once the visitor has reached the very
+      // end (data-advance) — same button, same position, just a
+      // different label/icon pair and a different click behaviour.
+      const seeHowCta = document.getElementById('dy-hero-see-how');
+      const syncSeeHowVisibility = () => {
+        if (!(seeHowCta instanceof HTMLElement)) return;
+        if (stage.dataset.advance === '1') {
+          seeHowCta.dataset.mode = 'replay';
+          seeHowCta.style.display = '';
+        } else if (stage.dataset.reveal === '1') {
+          seeHowCta.style.display = 'none';
+        } else {
+          seeHowCta.dataset.mode = 'see-how';
+          seeHowCta.style.display = '';
+        }
+      };
+
+      syncSeeHowVisibility();
+
+      // Puts the whole hero back exactly where it started: every
+      // reveal/realization flag back to its initial value, every
+      // hotspot's aria-expanded back to false (their opacity/animation
+      // are already driven off that plus the flags above, so resetting
+      // both is what actually restores the original AI-agent scene and
+      // an unopened Layer 1 dot rather than just hiding the text), and
+      // the gated buttons/grid height/CTA re-synced from that clean
+      // state the same way they sync on every other change here.
+      const resetStory = () => {
+        ['reveal', 'reveal2', 'reveal3', 'realized', 'analogy2', 'advance', 'entry'].forEach((key) => {
+          stage.dataset[key] = '0';
+        });
+        stage.querySelectorAll('[data-reveal-trigger][aria-controls]').forEach((trigger) => {
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+        syncGatedButtons();
+        syncGridHeight();
+        syncSeeHowVisibility();
+      };
+
+      stage.querySelectorAll('[data-reveal-trigger]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const key = trigger.getAttribute('data-reveal-trigger') || 'reveal';
+          // One-way: once a layer is found it stays found for the rest of
+          // this journey. A second press on an already-open point is a
+          // no-op rather than a collapse — only pressing the *next*
+          // layer's own point, once it has unlocked, moves things on.
+          if (stage.dataset[key] === '1') return;
+          stage.dataset[key] = '1';
+          if (trigger.hasAttribute('aria-controls')) {
+            trigger.setAttribute('aria-expanded', 'true');
+          }
+          syncGatedButtons();
+          syncGridHeight();
+          syncSeeHowVisibility();
+          // A handful of triggers (marked `data-once`) exist purely to
+          // move the story forward one beat and have nothing left to do
+          // once pressed — disable them immediately after the sync above
+          // (which would otherwise re-enable them, since the gate state
+          // it checks hasn't changed) rather than leaving an
+          // invisible-but-focusable control behind.
+          if (trigger.hasAttribute('data-once') && trigger instanceof HTMLButtonElement) {
+            trigger.disabled = true;
+          }
+        });
+      });
+
+      // "See how" lives outside this stage (in the brand column), but
+      // its whole job is to point at this stage's own first hotspot —
+      // clicking it doesn't open anything itself, it just switches on a
+      // brief attention cue around that one dot so a first-time visitor
+      // knows it's there to press. The cue stands down the moment the
+      // visitor actually presses it, the same way the hotspot's own
+      // ambient breathing ring already stands down on open. Once this
+      // same button has become "Replay" (data-mode), the same click
+      // instead resets the whole story back to that same starting point.
+      if (seeHowCta instanceof HTMLElement) {
+        seeHowCta.addEventListener('click', () => {
+          if (seeHowCta.dataset.mode === 'replay') {
+            resetStory();
+          } else {
+            stage.dataset.entry = '1';
+          }
+        });
+      }
+    });
+</script>
+
+<style>
+/* The seated visitor, their AI-agent counterpart, and the three stacked
+     layers — visible at every width now. The composition itself
+     (.dy-hero__stage-inner, below) is authored once at a fixed 640px and
+     scaled as a rigid unit to fit whatever width this box actually has, so
+     nothing here needs its own per-breakpoint layout: the aspect-ratio
+     always reserves exactly the grid space the scaled composition needs. */
+  .dy-hero__stage {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin-inline: auto;
+    aspect-ratio: 1536 / 1024;
+    align-self: center;
+  }
+
+
+  /* The fixed-640px composition, scaled down to fit .dy-hero__stage's own
+     (possibly narrower) width. `--hero-scale` is set by script from a
+     ResizeObserver on the stage itself — 1 once the stage has its full
+     640px, shrinking below that — so every child inside keeps the exact
+     same percentage/pixel position and proportion to every other child at
+     any width; only the whole rigid block gets smaller. This is what lets
+     the layer-reveal text and the composition's tiny discovery dots scale
+     down together with the artwork instead of colliding with it. */
+  .dy-hero__stage-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 640px;
+    height: 426.667px;
+    transform-origin: top left;
+    transform: scale(var(--hero-scale, 1));
+  }
+
+
+  .dy-hero__stage-inner img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+@media (min-width: 1320px) {
+    .dy-hero__stage {
+      justify-self: end;
+      transform: translateX(-50px);
+    }
+}
+
+
+  /* The one request, sitting in the clear space above the seated
+     visitor — left of the AI counterpart's head, so it never crosses
+     either face. */
+  .dy-hero__bubble {
+    position: absolute;
+    left: 3%;
+    top: 13%;
+    width: 26%;
+    max-width: 190px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: -0.008em;
+    box-shadow: 0 6px 14px rgba(17, 21, 28, 0.1);
+  }
+
+
+  .dy-hero__bubble::after {
+    content: '';
+    position: absolute;
+    right: 18px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 0 0 4px 0;
+    transform: rotate(45deg);
+  }
+
+
+  .dy-hero__bubble-who {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--cobalt);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+
+  .dy-hero__bubble em {
+    font-style: italic;
+  }
+
+
+  /* The reply, sitting above and right of the AI counterpart's head — the
+     whole strip above it is clear until the layers begin much lower and
+     further right, so it never has to cross the avatar or the glass. */
+  .dy-hero__bubble--ai {
+    left: 48%;
+    top: 2%;
+  }
+
+
+  .dy-hero__bubble--ai::after {
+    left: 18px;
+    right: auto;
+    border-radius: 0 0 0 4px;
+    transform: rotate(-45deg);
+  }
+
+
+  .dy-hero__bubble-result {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+
+  .dy-hero__bubble-check {
+    color: #1c9a6c;
+  }
+
+
+  /* First consequence card: what the booking cost. Sits in the same clear
+     strip as the AI reply, further right and still well above the layers'
+     top vertex (24% down) — with room short of the container's own right
+     edge for the two cards still to come. */
+  .dy-hero__card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    padding: 9px 14px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 5px 12px rgba(17, 21, 28, 0.08);
+  }
+
+
+  .dy-hero__card--pay {
+    left: 75%;
+    top: 4%;
+  }
+
+
+  .dy-hero__card-icon {
+    flex: none;
+    width: 19px;
+    height: 19px;
+    color: var(--cobalt);
+  }
+
+
+  .dy-hero__card-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+
+  .dy-hero__card-amount {
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+
+  .dy-hero__card-label {
+    color: #6d7484;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+
+  /* The first discovery cue: a quiet saffron ring around the payment
+     icon itself — the action noticed, not flagged — plus the very start
+     of a thread leading from that point down toward the top layer. The
+     line stops just short of the glass; this beat only opens the
+     question. */
+  .dy-hero__card-icon--spark {
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(232, 117, 36, 0.16), 0 0 9px rgba(232, 117, 36, 0.32);
+  }
+
+
+  /* Straight down from the card's own left edge — under the icon, left
+     of where Calendar begins (78%) — so it reads as a line dropping out
+     of the payment action into what's underneath it, never as a
+     connector reaching sideways for another card. */
+  .dy-hero__discovery {
+    position: absolute;
+    left: 76.5%;
+    top: 15.5%;
+    width: 2px;
+    height: 8.5%;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, rgba(232, 117, 36, 0.85), rgba(232, 117, 36, 0.18));
+  }
+
+
+  /* Where that line meets the glass: a small mark sitting on the same
+     spot, so the two read as one thread arriving rather than two
+     separate cues. Centred on the line's own end point — and, now, the
+     one thing on this stage a visitor can actually press. */
+  .dy-hero__discovery-hotspot {
+    position: absolute;
+    left: calc(76.5% - 3px);
+    top: calc(24% - 4px);
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--saffron);
+    box-shadow: 0 0 0 4px rgba(232, 117, 36, 0.18), 0 0 10px rgba(232, 117, 36, 0.4);
+    cursor: pointer;
+    transition: box-shadow 220ms ease, transform 220ms ease;
+  }
+
+
+  /* An invisible tap target, well past the dot's own tiny 8px box —
+     needed because the whole stage (this dot included) gets visually
+     smaller below 1320px (see --hero-scale). A fixed 44px box here,
+     counter-scaled by 1/--hero-scale, renders at a constant ~44px of
+     real screen regardless of how small the dot itself has become, so
+     the dot can stay exactly as tiny as the desktop design without
+     becoming unreliable to tap. Purely a hit area: no fill, no border,
+     nothing painted. */
+  .dy-hero__discovery-hotspot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%) scale(calc(1 / var(--hero-scale, 1)));
+    border-radius: 50%;
+  }
+
+
+  /* The breathing ring: a soft outline that grows and fades on its own
+     loop, well outside the dot itself, so it reads as "there's something
+     here" rather than as a badge or a button chrome. */
+  .dy-hero__discovery-hotspot::after {
+    content: '';
+    position: absolute;
+    inset: -7px;
+    border: 1px solid rgba(232, 117, 36, 0.55);
+    border-radius: 50%;
+    animation: dy-hotspot-breathe 2.6s ease-out infinite;
+  }
+
+
+  .dy-hero__discovery-hotspot:hover,
+  .dy-hero__discovery-hotspot[aria-expanded='true'] {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.24), 0 0 14px rgba(232, 117, 36, 0.5);
+  }
+
+
+  /* Once opened, the point has been found — the breathing cue stands
+     down rather than continuing to ask for attention. */
+  .dy-hero__discovery-hotspot[aria-expanded='true']::after {
+    animation: none;
+    opacity: 0;
+  }
+
+
+  /* Guided-attention cue for whichever of the first three points is
+     currently the one actionable target — driven entirely off the
+     stage's own existing state attributes (data-entry/data-reveal/
+     data-reveal2/data-reveal3), never a separate tracked sequence, so
+     it can't desync from the journey and resets for free whenever
+     resetStory() zeroes those attributes for Replay. One shared
+     keyframe/selector block covers all three points rather than three
+     separate implementations: only ever one of these three conditions
+     is true at a time (each one's own upcoming state attribute is
+     still '0'), so only one bubble is ever emphasised at once, and the
+     moment that attribute flips to '1' on activation, the matching
+     selector stops applying and this cue is simply gone — no explicit
+     "settle" step required. The animation itself plays once (no
+     infinite/repeating iteration) and its own final keyframe is a
+     restrained, still-noticeable-but-quiet state, not a return to
+     fully bare rest — "momentarily obvious", not "permanently louder". */
+  [data-entry='1'][data-reveal='0']
+    .dy-hero__discovery-hotspot:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3),
+  [data-reveal='1'][data-reveal2='0'] .dy-hero__discovery-hotspot--layer2,
+  [data-reveal2='1'][data-reveal3='0'] .dy-hero__discovery-hotspot--layer3 {
+    animation: dy-hotspot-attention-arrive 950ms cubic-bezier(0.16, 0.8, 0.3, 1) both;
+  }
+@media (prefers-reduced-motion: reduce) {
+    [data-entry='1'][data-reveal='0']
+      .dy-hero__discovery-hotspot:not(.dy-hero__discovery-hotspot--layer2):not(.dy-hero__discovery-hotspot--layer3),
+    [data-reveal='1'][data-reveal2='0'] .dy-hero__discovery-hotspot--layer2,
+    [data-reveal2='1'][data-reveal3='0'] .dy-hero__discovery-hotspot--layer3 {
+      animation: none;
+      transform: scale(1.05);
+      box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.22), 0 0 13px rgba(232, 117, 36, 0.46);
+    }
+}
+
+
+  .dy-hero__discovery-hotspot:focus-visible {
+    outline: 2px solid var(--saffron);
+    outline-offset: 4px;
+  }
+
+
+  /* Layer 2's point sits on the middle layer's right-front face — a
+     clean stretch of the plate clear of its own glints and the beams
+     running through it (checked against the artwork's actual pixels).
+     It exists from load, same as Layer 1's, but stays invisible and
+     unpressable until Layer 1 has been opened, so the layers are met
+     in order. */
+  .dy-hero__discovery-hotspot--layer2 {
+    left: calc(78% - 4px);
+    top: calc(49% - 4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+
+  [data-reveal='1'] .dy-hero__discovery-hotspot--layer2 {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+
+  /* Layer 3's point, on the bottom dark layer's right-front face — a
+     stretch of the plate checked clear of its scattered circuit-node
+     glints. Nudged right of its first placement so it continues the
+     same rightward drift Layer 1 (76.5%) → Layer 2 (78%) already
+     trace, reading as one discovery line down through the stack rather
+     than three unrelated points. Gated off Layer 2's own
+     `data-reveal2`, so it only appears once Layer 2 has been opened,
+     continuing the same order. */
+  .dy-hero__discovery-hotspot--layer3 {
+    left: calc(79% - 4px);
+    top: calc(70% - 4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms ease, box-shadow 220ms ease, transform 220ms ease;
+  }
+
+
+  [data-reveal2='1'] .dy-hero__discovery-hotspot--layer3 {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+
+  /* The immediate surroundings lighting up, once pressed — a soft bloom
+     sitting on the glass itself rather than a UI element on top of it. */
+  .dy-hero__reveal-glow {
+    position: absolute;
+    left: calc(76.5% - 16%);
+    top: calc(24% - 11%);
+    width: 32%;
+    height: 26%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232, 117, 36, 0.28), rgba(232, 117, 36, 0) 68%);
+    opacity: 0;
+    transition: opacity 480ms ease;
+    pointer-events: none;
+  }
+
+
+  [data-reveal='1'] .dy-hero__reveal-glow {
+    opacity: 1;
+  }
+
+
+  .dy-hero__reveal-glow--layer2 {
+    left: calc(78% - 16%);
+    top: calc(49% - 11%);
+  }
+
+
+  /* Overrides the base rule above (same specificity, later in source):
+     Layer 2's bloom stays dark even once Layer 1's own trigger has set
+     `data-reveal`, until its own trigger sets `data-reveal2`. */
+  [data-reveal='1'] .dy-hero__reveal-glow--layer2 {
+    opacity: 0;
+  }
+
+
+  [data-reveal2='1'] .dy-hero__reveal-glow--layer2 {
+    opacity: 1;
+  }
+
+
+  .dy-hero__reveal-glow--layer3 {
+    left: calc(79% - 16%);
+    top: calc(70% - 11%);
+  }
+
+
+  /* The base `[data-reveal='1'] .dy-hero__reveal-glow` rule above
+     matches this element too (it carries the shared base class), so it
+     needs its own override the moment Layer 1 opens — not just once
+     Layer 2 does — or it lights up two steps early. */
+  [data-reveal='1'] .dy-hero__reveal-glow--layer3 {
+    opacity: 0;
+  }
+
+
+  /* Same override pattern as Layer 2's: stays dark once Layer 2's own
+     `data-reveal2` is set, until Layer 3's own trigger sets
+     `data-reveal3`. */
+  [data-reveal2='1'] .dy-hero__reveal-glow--layer3 {
+    opacity: 0;
+  }
+
+
+  [data-reveal3='1'] .dy-hero__reveal-glow--layer3 {
+    opacity: 1;
+  }
+
+
+  /* The reveal itself — a responsive annotation anchored to the top
+     layer, not a fixed-position card. DEFAULT (this rule): there isn't
+     reliably enough clear margin past the artwork's right edge until
+     very wide viewports (checked against the actual grid math — the
+     stage-to-viewport-edge margin only clears a safe ~180px past
+     ~1700px), so the default keeps the annotation on the stage itself,
+     tucked into the top layer's front-right corner rather than its
+     centre, where it never needs to compete with Calendar/Confirmation
+     or run off the edge. Same type size in both variants — only
+     position and colour (for legibility against what's behind it)
+     change with viewport. */
+  .dy-hero__reveal {
+    position: absolute;
+    left: 78%;
+    top: 29%;
+    width: 24%;
+    max-width: 172px;
+    margin: 0;
+    /* Readability at 981–1699px: near-black type doesn't hold up read
+       directly against the purple layer's own busy pattern, so a very
+       faint cream haze rides along with it here — just enough to settle
+       the letterforms, not a panel. Shaped as a soft radial fade rather
+       than a filled rounded rect (mask-image cuts the same fade into
+       the blur itself), so the edges dissolve into the layer instead of
+       reading as a card sitting on top of it. Cleared in the wide
+       variant below, where the text sits on the page background and
+       needs none of this. */
+    padding: 8px 10px;
+    /* A plateau over the text's own footprint (0–60% of the gradient's
+       radius, which — because the ellipse is sized larger than the box
+       — covers the full title-plus-two-lines area at even strength),
+       fading only in the outer margin so the corners dissolve without
+       ever thinning over a letter. */
+    background: radial-gradient(
+      ellipse 135% 145% at 50% 50%,
+      rgba(248, 245, 239, 0.34) 0%,
+      rgba(248, 245, 239, 0.34) 60%,
+      rgba(248, 245, 239, 0.12) 82%,
+      rgba(248, 245, 239, 0) 100%
+    );
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    mask-image: radial-gradient(
+      ellipse 135% 145% at 50% 50%,
+      #000 0%,
+      #000 60%,
+      rgba(0, 0, 0, 0.55) 82%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 135% 145% at 50% 50%,
+      #000 0%,
+      #000 60%,
+      rgba(0, 0, 0, 0.55) 82%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 420ms ease, transform 420ms ease;
+    pointer-events: none;
+  }
+
+
+  [data-reveal='1'] .dy-hero__reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  /* No longer forced to one line: at narrower stage widths the fixed
+     `nowrap` here let the title silently overflow past its own box
+     (and past the viewport, invisibly clipped by .dy-hero's own
+     overflow: hidden) since a percentage-width container shrinks but
+     nowrap text doesn't. Wrapping is the safe fallback — it keeps the
+     full headline on-screen at every width instead of losing part of
+     it, and the box widths below already have room for two lines
+     without feeling cramped. */
+  .dy-hero__reveal-title {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+
+  .dy-hero__reveal-title::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin-bottom: 7px;
+    border-radius: 2px;
+    background: var(--saffron);
+  }
+
+
+  .dy-hero__reveal-text {
+    margin: 5px 0 0;
+    color: var(--ink);
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.004em;
+  }
+
+
+  /* Layer 2's own reveal: wider than Layer 1's, purely because "IT
+     COULD CONNECT" is the longer headline and still isn't allowed to
+     wrap — the box grows to fit it rather than the type shrinking.
+     Positioned a touch left of Layer 1's reveal (76% vs 78%) so the
+     wider box's right edge lands at the same safe distance from the
+     viewport edge, verified at both 1366px and 1440px. Gated the same
+     way as its hotspot and glow: hidden through Layer 1's own reveal,
+     shown only once its own trigger has been pressed. */
+  .dy-hero__reveal--layer2 {
+    left: 79.5%;
+    top: 53%;
+    /* Narrowed from 34% — at the stage's capped 640px width this was
+       landing ~86px past the stage's own right edge against a real
+       viewport margin of only ~84–86px at 1366–1440px (measured via
+       actual rendered text extent, not just the container box), so it
+       was quietly clipping by a few px at exactly the widths this was
+       "verified" at. 30% keeps the same visual position/behaviour and
+       holds a genuine (not razor-thin) safety margin across the full
+       981–1699px range, checked continuously rather than at single
+       points. */
+    width: 30%;
+    max-width: 236px;
+  }
+
+
+  [data-reveal='1'] .dy-hero__reveal--layer2 {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+
+  [data-reveal2='1'] .dy-hero__reveal--layer2 {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  /* Layer 3's own reveal: "IT COULD ACT FOR YOU" is the longest of the
+     three headlines, so this box is the widest — positioned further
+     left than Layer 2's so the wider box still lands inside the same
+     safe margin from the viewport edge, verified at 1366px and 1440px.
+     Placed lower on the stage, over the bottom layer's own right-front
+     face, clear of its circuit-node glints. Gated the same way as its
+     hotspot and glow: hidden through Layer 2's own reveal, shown only
+     once its own trigger has been pressed. */
+  .dy-hero__reveal--layer3 {
+    left: 78%;
+    top: 74%;
+    /* Narrowed from 38% for the same reason as Layer 2's box above —
+       this one overshot the stage's right edge by ~102px at 640px
+       stage width against a real margin of only ~84–86px, clipping
+       "…ACT FOR YOU" by several pixels at exactly 1366/1440px. 33%
+       holds a genuine safety margin across the whole 981–1699px range
+       (the ≥1700px wide variant below repositions this off-stage
+       anyway, where it already had generous room). */
+    width: 33%;
+    max-width: 266px;
+  }
+
+
+  /* Same gap as the glow's above: the base `[data-reveal='1']
+     .dy-hero__reveal` rule matches this panel too, so without its own
+     override here it would show up as soon as Layer 1 opens instead of
+     waiting for Layer 2. */
+  [data-reveal='1'] .dy-hero__reveal--layer3 {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+
+  [data-reveal2='1'] .dy-hero__reveal--layer3 {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+
+  [data-reveal3='1'] .dy-hero__reveal--layer3 {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  /* The single continuation trigger: it only ever makes sense once the
+     discovery sequence has run its full course, so it sits directly
+     under Layer 3's own text, anchored at the same left edge so the
+     whole column — three reveals plus this closing line — reads as one
+     piece. Hidden by default and only ever brought in by data-reveal3;
+     no earlier state shows it. Styled as a smaller, quieter echo of the
+     primary .dy-hero__cta pill (same ink fill, saffron circular arrow,
+     999px radius, hover lift) so it reads as the payoff of the
+     sequence rather than a new component vocabulary — just scaled
+     down and lighter so it stays subordinate to the hero's own CTA. */
+  .dy-hero__continue {
+    position: absolute;
+    left: 78%;
+    top: 92%;
+    width: fit-content;
+    max-width: 266px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 5px 5px 14px;
+    border: none;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.006em;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(17, 21, 28, 0.12);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 420ms ease, transform 420ms ease, box-shadow 180ms ease;
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+
+  .dy-hero__continue:disabled {
+    cursor: default;
+  }
+
+
+  [data-reveal3='1'] .dy-hero__continue {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+
+  [data-reveal3='1'] .dy-hero__continue:hover {
+    box-shadow: 0 12px 24px rgba(17, 21, 28, 0.18);
+  }
+
+
+  [data-reveal3='1'] .dy-hero__continue:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+
+  .dy-hero__continue span {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+  }
+
+
+  /* =========================================================
+     REALIZATION STATE
+     Reached only by activating the (already-wired) continue CTA,
+     which sets data-realized="1" on the stage. Nothing here changes
+     layout — every rule below is opacity/veil only, so the stage
+     keeps its exact footprint whether or not this state is active.
+     Deliberately a single quiet fade: one duration, one easing, no
+     staggering, no new artwork or copy — just the discovery layer
+     receding so a simpler moment can follow later.
+     ========================================================= */
+
+  /* The veil itself: transparent over the seated human's own portion
+     of the artwork (left ~40%), easing to a translucent cream wash —
+     the page's own background tone — over the AI counterpart and the
+     three layers, so they read as "still there, now background"
+     rather than erased. */
+  .dy-hero__realize-scrim {
+    position: absolute;
+    inset: 0;
+    left: 40%;
+    background: linear-gradient(
+      to right,
+      rgba(248, 245, 239, 0) 0%,
+      rgba(248, 245, 239, 0.82) 24%,
+      rgba(248, 245, 239, 0.82) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 650ms ease;
+  }
+
+
+  [data-realized='1'] .dy-hero__realize-scrim {
+    opacity: 1;
+  }
+
+
+  /* Once the visitor brings the story back to the AI, the veil eases
+     back — the human, the AI counterpart and the three layers return
+     to clearer presence, without fully restoring the original scene
+     (the speech bubbles, cards and hotspots stay retired). Same
+     specificity as the rule above; living after it in the sheet is
+     what lets this win once both realized and advance are true. */
+  [data-advance='1'] .dy-hero__realize-scrim {
+    opacity: 0.32;
+  }
+
+
+  /* An extra, layers-only recession on top of the shared veil above —
+     starts to the right of the AI counterpart (never over it, and
+     never over the human), so the technology layers specifically
+     quiet down into atmospheric context once the final realization
+     arrives. Soft-edged fade-in rather than a hard vertical seam. The
+     realization text sits directly on this — no background of its
+     own — so this is what actually carries its readability. */
+  .dy-hero__final-layer-fade {
+    position: absolute;
+    inset: 0;
+    left: 52%;
+    background: linear-gradient(
+      to right,
+      rgba(248, 245, 239, 0) 0%,
+      rgba(248, 245, 239, 0.6) 16%,
+      rgba(248, 245, 239, 0.6) 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms ease 250ms;
+  }
+
+
+  [data-advance='1'] .dy-hero__final-layer-fade {
+    opacity: 1;
+  }
+
+
+  /* Everything that belonged to the discovery journey itself — the
+     exchange bubbles, the consequence cards/chips, all three saffron
+     cues and their connecting thread, and the three reveal texts —
+     steps out of the way once that journey is done. Same treatment,
+     same timing, across all of them; explicit per-modifier selectors
+     (mirroring the layer2/layer3 gating above) so specificity ties
+     resolve correctly regardless of source order. */
+  [data-realized='1'] .dy-hero__bubble,
+  [data-realized='1'] .dy-hero__card--pay,
+  [data-realized='1'] .dy-hero__chip--calendar,
+  [data-realized='1'] .dy-hero__chip--confirmation,
+  [data-realized='1'] .dy-hero__discovery,
+  [data-realized='1'] .dy-hero__discovery-hotspot,
+  [data-realized='1'] .dy-hero__discovery-hotspot--layer2,
+  [data-realized='1'] .dy-hero__discovery-hotspot--layer3,
+  [data-realized='1'] .dy-hero__reveal-glow,
+  [data-realized='1'] .dy-hero__reveal-glow--layer2,
+  [data-realized='1'] .dy-hero__reveal-glow--layer3,
+  [data-realized='1'] .dy-hero__reveal,
+  [data-realized='1'] .dy-hero__reveal--layer2,
+  [data-realized='1'] .dy-hero__reveal--layer3,
+  [data-realized='1'] .dy-hero__continue {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+  }
+
+
+  /* The realization's opening line: editorial, not a UI element — no
+     card, no border, no background. Moved up into the top of the
+     right-side realization canvas — not leftover space around the
+     faded layers, but the head of a composition that still needs
+     room below it for the key visual, its explanation, and the
+     eventual realization copy, none of which exist yet. Kept clear
+     of the seated human and the AI counterpart's face. A small
+     saffron rule stands in for the discovery cues above it, just
+     enough to lead the eye in without reintroducing the hotspot
+     vocabulary. Fades up slightly after the scrim so it reads as the
+     thought that follows the recession, not simultaneous with it. */
+  .dy-hero__realize-thought {
+    position: absolute;
+    left: 58%;
+    top: 8%;
+    width: 40%;
+    max-width: 300px;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 600ms ease 150ms, transform 600ms ease 150ms;
+    pointer-events: none;
+  }
+
+
+  .dy-hero__realize-thought::before {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 2px;
+    margin-bottom: 14px;
+    border-radius: 2px;
+    background: var(--saffron);
+  }
+
+
+  [data-realized='1'] .dy-hero__realize-thought {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  /* The key visual: sits directly under/around the sentence rather
+     than in a card of its own — no border, background, or caption.
+     Anchored a little left of the text so it spans the width the
+     faded AI counterpart and layers occupy, using the photo's own
+     transparent hand-side edge to blend into that emptied space
+     instead of a hard rectangle. Stays right of the seated human's
+     own ~40% and well short of the stage's right/bottom edges, so it
+     reads as the focal point of this state without crowding out what
+     is still faintly visible behind it. Arrives a beat after the
+     sentence — same restrained single-fade language, just a later
+     start. */
+  .dy-hero__realize-key {
+    position: absolute;
+    left: 43%;
+    top: 27%;
+    width: 46%;
+    max-width: 320px;
+    height: auto;
+    display: block;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 650ms ease 280ms, transform 650ms ease 280ms;
+    pointer-events: none;
+    /* The source photo only fades to transparent on its hand side —
+       the door/lock side is a hard photographic rectangle. A soft
+       radial mask, centred over the key and lock themselves, fades
+       every edge of that rectangle into the page instead, so nothing
+       here reads as a bordered card or cut-out sticker. */
+    mask-image: radial-gradient(ellipse 58% 58% at 58% 45%, #000 32%, rgba(0, 0, 0, 0.55) 62%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: radial-gradient(ellipse 58% 58% at 58% 45%, #000 32%, rgba(0, 0, 0, 0.55) 62%, rgba(0, 0, 0, 0) 100%);
+  }
+
+
+  [data-realized='1'] .dy-hero__realize-key {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  /* The second analogy beat's own affordance — plain saffron text plus
+     an arrow, no pill/background, so it reads as editorial punctuation
+     rather than another UI control. Sits just under the key visual, in
+     the same left column as the opening thought. Visible (though still
+     disabled — see script) only once the realization state itself
+     exists; hidden again the moment it's used, since the two lines it
+     reveals take its place. */
+  .dy-hero__realize-next {
+    position: absolute;
+    left: 58%;
+    top: 80%;
+    width: fit-content;
+    max-width: 300px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: left;
+    color: var(--saffron);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.006em;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 500ms ease, transform 500ms ease;
+    pointer-events: none;
+  }
+
+
+  .dy-hero__realize-next:disabled {
+    cursor: default;
+  }
+
+
+  .dy-hero__realize-next:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+
+  [data-realized='1'] .dy-hero__realize-next {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+
+  [data-analogy2='1'] .dy-hero__realize-next {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+
+  /* The two revealed lines: same editorial serif voice as the opening
+     thought, so this reads as the next sentence in one story rather
+     than a new component. Clear hierarchy between them — the first is
+     set slightly stronger (closer in weight/size to the opening
+     thought), the second sits underneath it, smaller and in the
+     site's softer ink tone, the way a clarifying clause would in body
+     copy. Both stay hidden until the affordance above is pressed, and
+     arrive together as one restrained transition — the pair lives in
+     a single positioned wrapper with the lines stacked in normal flow
+     inside it, so the second line always sits cleanly under the
+     first no matter how many lines the first one wraps to. */
+  .dy-hero__realize-next-copy {
+    position: absolute;
+    left: 58%;
+    top: 80%;
+    width: 42%;
+    max-width: 310px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 550ms ease, transform 550ms ease;
+    pointer-events: none;
+  }
+
+
+  [data-analogy2='1'] .dy-hero__realize-next-copy {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+
+  .dy-hero__realize-next-text {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+  }
+
+
+  .dy-hero__realize-next-subtext {
+    margin: 8px 0 0;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.006em;
+  }
+
+
+  /* The bridge line back to the AI agent: a clear paragraph break
+     (not just a line break) from the house-key pair above it, and a
+     step quieter throughout — smaller than even the house-key
+     subtext — so the analogy still leads and this reads as its
+     natural continuation rather than a competing thought. */
+  .dy-hero__realize-bridge-text {
+    margin: 22px 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.006em;
+  }
+
+
+  .dy-hero__realize-bridge-subtext {
+    margin: 6px 0 0;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.004em;
+  }
+
+
+  /* The closing editorial cue — deliberately not the .dy-hero__cta /
+     .dy-hero__continue pill language. No fill, no border, no padding
+     box: just near-black text with a small saffron arrow, sitting in
+     normal flow under the bridge lines like the next sentence of the
+     same paragraph rather than a product control. Disabled (see
+     script) until the "And then?" state exists, so it's inert and
+     unfocusable before then; the generous top margin is the
+     "comfortable whitespace" this needs to read as a pause before
+     moving on, not a continuation of the same block. */
+  .dy-hero__realize-turn {
+    display: inline-block;
+    margin: 20px 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    text-align: left;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    /* Keeps the saffron circle on the same line as the text instead of
+       wrapping onto its own line — the line was just wide enough for
+       the sentence alone that adding the inline circle pushed past the
+       wrap width. */
+    white-space: nowrap;
+  }
+
+
+  /* A small circular action treatment on the arrow only — the same
+     saffron-circle language as .dy-hero__cta / .dy-hero__continue's
+     own arrows, just at a quieter scale, so this still reads as an
+     editorial transition rather than a second primary CTA. Text and
+     circle stay one clickable target (both live inside the single
+     <button>); the circle is what actually signals "this moves you
+     forward" now, so it carries the interactive affordance instead of
+     relying on a hover underline alone. */
+  .dy-hero__realize-turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+
+  .dy-hero__realize-turn:disabled {
+    cursor: default;
+  }
+
+
+  /* Subtle on purpose — a page-turn, not a button press: the text
+     gets a light underline, the circle a light lift, nothing louder. */
+  .dy-hero__realize-turn:hover:not(:disabled) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+
+  .dy-hero__realize-turn:hover:not(:disabled) span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+
+  .dy-hero__realize-turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+
+  /* The house-key analogy has done its job by this point, so it
+     recedes — gently, using each element's own existing fade
+     (600–650ms, already set above), not a hard cut. Same specificity
+     (attribute + class) as the opacity:1 rules these override, so
+     placement after them in the stylesheet is what makes the
+     override win. */
+  [data-advance='1'] .dy-hero__realize-thought,
+  [data-advance='1'] .dy-hero__realize-key,
+  [data-advance='1'] .dy-hero__realize-next-copy {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+
+  /* The layers-only recession that makes the text above readable
+     without any background of its own — see .dy-hero__final-layer-fade
+     above, which does that work now. Text-shadow and a local
+     multiply-darken behind the text were tried first and neither held
+     up; a haze/blur card behind the text worked but read as a
+     background, which this state should not have at all. */
+  .dy-hero__final {
+    position: absolute;
+    left: 56%;
+    top: 26%;
+    width: 42%;
+    max-width: 300px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 700ms ease 320ms, transform 700ms ease 320ms;
+    pointer-events: none;
+  }
+
+
+  [data-advance='1'] .dy-hero__final {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  .dy-hero__final-text {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+
+  .dy-hero__final-text::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 3px;
+    margin-bottom: 16px;
+    border-radius: 2px;
+    background: var(--saffron);
+  }
+
+
+  /* Sits directly beneath the headline — same flow parent, so the
+     left edge stays aligned automatically — with just enough gap to
+     read as the next line of one editorial block, not a separately
+     anchored annotation. Renders straight over the artwork with no
+     backdrop of any kind; readability comes only from solid
+     foreground contrast (var(--ink), the same near-black as the
+     headline, at full opacity, no shadow/glow behind it). */
+  .dy-hero__final-support {
+    margin: 18px 0 0;
+    /* Wider than the headline above it — its own three short lines
+       need more room than the headline's two-word-per-line rhythm
+       to each land as one line, and there's no other content beside
+       it at this depth in the artwork for the extra width to crowd. */
+    width: 320px;
+    max-width: 34vw;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.006em;
+  }
+@media (min-width: 1700px) {
+    .dy-hero__reveal {
+      left: 100%;
+      /* Was 20% — that put this right on top of the Calendar-updated
+         chip (top: 18%, ~29px tall, so it occupies roughly 18–25% of
+         the stage's own height): the chip's white pill background was
+         painting over this text's first letter. 28% clears the whole
+         chip/card cluster above it. */
+      top: 28%;
+      width: max-content;
+      max-width: 172px;
+      margin: 0 0 0 14px;
+      padding: 0;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+
+    .dy-hero__reveal-text {
+      color: #5a6272;
+    }
+
+    /* Layer 2/3 need their own explicit top here (not just width) —
+       this media query redeclares `top` on the shared `.dy-hero__reveal`
+       base above with a *later* source position, so without their own
+       value here they'd silently collapse onto Layer 1's exact spot
+       (same specificity, base rule simply wins by appearing later).
+
+       width uses `max-content` (capped by max-width), not `auto`: for
+       an absolutely positioned element whose `left` already consumes
+       the full containing-block width (left: 100%, inherited from the
+       base rule), `width: auto`'s shrink-to-fit calculation collapses
+       to the longest *unbreakable* word rather than the full content —
+       that's what was rendering these two as a near-single-word-wide
+       column of fragments. `max-content` sizes to the full unwrapped
+       line first, and max-width still wraps it exactly as intended. */
+    .dy-hero__reveal--layer2 {
+      top: 50%;
+      width: max-content;
+      /* 200px was measured against the margin available well past the
+         1700px entry point (~230px+), but right at 1700px itself the
+         real margin past the stage's own right edge is only ~180px —
+         200px plus the 14px left margin above overflowed the viewport
+         there. 150px holds inside that tightest case; the text wraps
+         an extra line rather than clipping. */
+      max-width: 150px;
+    }
+
+    .dy-hero__reveal--layer3 {
+      top: 72%;
+      width: max-content;
+      max-width: 150px;
+    }
+}
+
+
+  /* Second consequence: a single quiet line, well short of the paid
+     card's weight, stepping down and right from it — still clear of the
+     layers' top vertex, and leaving the corner free for the confirmation
+     still to come. */
+  .dy-hero__chip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+    padding: 7px 12.5px;
+    border-radius: 999px;
+    background: #fff;
+    white-space: nowrap;
+    box-shadow: 0 3px 8px rgba(17, 21, 28, 0.06);
+  }
+
+
+  .dy-hero__chip--calendar {
+    left: 80.5%;
+    top: 18%;
+  }
+
+
+  .dy-hero__chip-icon {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    color: var(--cobalt);
+  }
+
+
+  .dy-hero__chip-label {
+    color: var(--ink);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: -0.004em;
+  }
+
+
+  /* Third and last consequence. The gap between the AI counterpart's arm
+     and the layers' own top vertex is the only clear ground left below
+     the calendar chip's row — narrow, so this one stays the smallest and
+     quietest of the three, tucked well left of Calendar and short of the
+     glass. */
+  .dy-hero__chip--confirmation {
+    left: 50%;
+    top: 19%;
+    gap: 5px;
+    padding: 5px 10px;
+    box-shadow: 0 3px 7px rgba(17, 21, 28, 0.05);
+  }
+
+
+  .dy-hero__chip--confirmation .dy-hero__chip-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+
+  .dy-hero__chip--confirmation .dy-hero__chip-label {
+    font-size: 10.5px;
+  }
+
+
+  @keyframes dy-hotspot-breathe {
+    0% {
+      transform: scale(0.75);
+      opacity: 0.55;
+    }
+    75%,
+    100% {
+      transform: scale(1.7);
+      opacity: 0;
+    }
+  }
+
+
+  @keyframes dy-hotspot-attention-arrive {
+    0% {
+      transform: scale(0.85);
+      box-shadow: 0 0 0 4px rgba(232, 117, 36, 0.18), 0 0 10px rgba(232, 117, 36, 0.4);
+    }
+    45% {
+      transform: scale(1.3);
+      box-shadow: 0 0 0 10px rgba(232, 117, 36, 0.3), 0 0 22px rgba(232, 117, 36, 0.65);
+    }
+    100% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 6px rgba(232, 117, 36, 0.22), 0 0 13px rgba(232, 117, 36, 0.46);
+    }
+  }
+</style>

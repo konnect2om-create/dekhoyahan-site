@@ -44,6 +44,19 @@ body {
   color: var(--ink);
   font-family: var(--sans);
   background:
+    /* The homepage's shared cobalt atmosphere — previously a hero-only
+       .dy-hero::before overlay, folded in here so Header, Hero, Explore
+       and Join all read as one canvas instead of the tint stopping at
+       the hero's own edge. Positioned in px down the page (not %, which
+       on `body` would resolve against the full document height and
+       scale the wrong way on long pages) so it stays anchored near the
+       top — behind the header and the hero headline — same cobalt
+       family and comparably low opacity as the glow it replaces. The
+       radius scales with viewport width (clamped) rather than staying a
+       fixed 640px: unscaled, that circle is nearly as wide as an entire
+       phone screen, washing the tint edge-to-edge instead of reading as
+       an upper-left accent the way it does on desktop. */
+    radial-gradient(circle clamp(260px, 44vw, 640px) at 16% 170px, rgba(36, 92, 255, 0.05), transparent 72%),
     radial-gradient(circle at 72% 6%, rgba(36, 92, 255, 0.045), transparent 26%),
     radial-gradient(circle at 12% 9%, rgba(255, 255, 255, 0.90), transparent 21%),
     linear-gradient(180deg, #fcfaf6 0%, var(--cream) 52%, #f5efe6 100%);
