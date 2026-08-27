@@ -4293,6 +4293,21 @@ import { featuredStories } from '../data/stories';
       font-size: clamp(42px, 11vw, 56px);
     }
 
+    /* Below ~390px the travel-agent state's own content (agent label,
+       branch, realization, "See what changed") runs taller than the
+       3:2 photo ratio gives it, and the box's own overflow:hidden was
+       clipping "See what changed" off the bottom before the visitor
+       ever saw it. A floor under the aspect-ratio height, not a
+       replacement for it — width-driven height still wins above the
+       narrowest phones, where it already clears this floor on its own,
+       so nothing here touches wider mobile or desktop. Applied
+       unconditionally (not just to the explain stage) so the box never
+       changes height when a click swaps stages — only ever more room,
+       never a jump. */
+    .dy-hero__visual {
+      min-height: 250px;
+    }
+
     .dy-explore__grid {
       grid-template-columns: 1fr;
       max-width: 360px;
