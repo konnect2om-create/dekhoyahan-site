@@ -40,7 +40,7 @@ import { stories } from '../../data/stories';
               <span class="explore-index__glyph" aria-hidden="true">
                 <img src={story.thumb} alt="" width="720" height="480" loading="lazy" decoding="async" />
               </span>
-              <h3>{story.title}</h3>
+              <h3>{story.title}<span class="explore-index__arrow" aria-hidden="true">&rarr;</span></h3>
               <p>{story.line}</p>
             </a>
           </li>
@@ -49,6 +49,44 @@ import { stories } from '../../data/stories';
     </section>
   </article>
 </BaseLayout>
+
+<script>
+  // Analytics: fires `explore_view` through Cloudflare Zaraz once the
+  // page's main Explore content has been at least 50% visible in the
+  // viewport for a continuous second. Targets the existing
+  // .explore-index article (no markup added for this) and is isolated
+  // from the cards' own markup/links above — it only observes
+  // visibility and never touches layout, styling, or navigation.
+  const exploreMain = document.querySelector('.explore-index');
+
+  if (exploreMain instanceof HTMLElement) {
+    let visibleTimer = null;
+    let fired = false;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (fired) return;
+        const entry = entries[0];
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (visibleTimer === null) {
+            visibleTimer = window.setTimeout(() => {
+              fired = true;
+              window.zaraz?.track('explore_view');
+              observer.disconnect();
+            }, 1000);
+          }
+        } else if (visibleTimer !== null) {
+          clearTimeout(visibleTimer);
+          visibleTimer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(exploreMain);
+  }
+</script>
 
 <style>
   /* Scoped to this page only. First visual checkpoint for the Explore
@@ -175,6 +213,31 @@ import { stories } from '../../data/stories';
 
   .explore-index__item a:hover h3 {
     color: var(--cobalt);
+  }
+
+  /* Small, refined affordance sitting right beside each title — the
+     same saffron used for the homepage discovery cards' arrow, just
+     scaled down and placed inline rather than pinned to a fixed
+     position. Purely visual: the whole card is already the link. */
+  .explore-index__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    margin-left: 8px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    vertical-align: middle;
+    transition: transform 160ms ease;
+  }
+
+  .explore-index__item a:hover .explore-index__arrow {
+    transform: translateX(2px);
   }
 
   .explore-index__item p {

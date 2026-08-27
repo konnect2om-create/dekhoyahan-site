@@ -46,39 +46,63 @@ import { featuredStories } from '../data/stories';
           <span>See differently.</span>
         </div>
 
-        <!-- One button, one position, for the whole journey — "See how"
-             starts it, the same slot becomes "Replay" once the visitor
-             reaches the end, and clicking it there resets the story
-             rather than navigating anywhere. Both labels and both icons
-             live in the markup at all times; data-mode (set by script)
-             just toggles which pair is visible, so nothing about the
-             button's own position/box ever changes between states. -->
-        <button type="button" class="dy-hero__cta" id="dy-hero-see-how" data-mode="see-how">
-          <span class="dy-hero__cta__label dy-hero__cta__label--see-how">See how</span>
-          <span class="dy-hero__cta__label dy-hero__cta__label--replay">Replay</span>
-          <span class="dy-hero__cta__icon dy-hero__cta__icon--arrow" aria-hidden="true">→</span>
-          <span class="dy-hero__cta__icon dy-hero__cta__icon--replay" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" width="15" height="15" focusable="false">
-              <path
-                d="M3 12a9 9 0 0 1 15.5-6.3M21 12a9 9 0 0 1-15.5 6.3"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M18.5 3v4.5H14M5.5 21v-4.5H10"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </button>
+        <!-- Quiet editorial CTA, not the old black "See how" button — the
+             hero's own story action now lives beside the featured story
+             on the right (see .dy-hero__feature-row below). This one just
+             takes the visitor to the Explore library; it never starts the
+             hero sequence and fires no hero_start analytics. -->
+        <a class="dy-hero__explore-cta" href="/explore/">
+          Explore
+          <span class="dy-hero__explore-cta__arrow" aria-hidden="true">→</span>
+        </a>
       </div>
 
 
-      <div class="dy-hero__visual" id="dy-hero-visual" data-stage="photo">
+      <div class="dy-hero__feature">
+        <!-- The featured curiosity hook for the AI-agent story, sitting
+             directly above the laptop it introduces. "See how" is the
+             exact same control (same id, same data-mode/data-state
+             toggling) that used to live in the brand column on the
+             left — moved here, restyled as a quiet label + small saffron
+             circular arrow rather than a black pill, but wired to the
+             identical click handler and analytics further down this
+             script/file. Nothing about the hero sequence itself, its
+             stages, or hero_start/hero_complete changed — only where this
+             control visually sits. -->
+        <div class="dy-hero__feature-intro">
+          <p class="dy-eyebrow"><span></span> LOOK CLOSER</p>
+          <p class="dy-hero__feature-hook">
+            You gave it one instruction.<br />
+            Why did it keep going?
+          </p>
+          <div class="dy-hero__feature-row">
+            <span class="dy-hero__feature-label">AI agents</span>
+            <button type="button" class="dy-hero__cta" id="dy-hero-see-how" data-mode="see-how">
+              <span class="dy-hero__cta__label dy-hero__cta__label--see-how">See how</span>
+              <span class="dy-hero__cta__label dy-hero__cta__label--replay">Replay</span>
+              <span class="dy-hero__cta__icon dy-hero__cta__icon--arrow" aria-hidden="true">→</span>
+              <span class="dy-hero__cta__icon dy-hero__cta__icon--replay" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" width="15" height="15" focusable="false">
+                  <path
+                    d="M3 12a9 9 0 0 1 15.5-6.3M21 12a9 9 0 0 1-15.5 6.3"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M18.5 3v4.5H14M5.5 21v-4.5H10"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div class="dy-hero__visual" id="dy-hero-visual" data-stage="photo">
         <!-- The photographed laptop + its screen overlay, grouped so the
              pair can fade out together as one layer once the visitor
              clicks "See how" — see .dy-hero__explain-stage below, and the
@@ -587,6 +611,7 @@ import { featuredStories } from '../data/stories';
           </div>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
@@ -648,55 +673,8 @@ import { featuredStories } from '../data/stories';
         ? [...layout.querySelectorAll('[data-activity]')].filter((el) => el instanceof HTMLElement)
         : [];
       const boundary = layout instanceof HTMLElement ? layout.querySelector('[data-boundary]') : null;
-      const boundaryTitle = boundary instanceof HTMLElement ? boundary.querySelector('[data-boundary-title]') : null;
 
       const BETWEEN_DELAY = 550; // same brief pause before every line's entrance, goal's included
-      const REGISTER_DELAY = 1600; // long enough to actually read the working line
-      const RESOLVE_DIP = 180; // matches the CSS transition on .dy-hero__activity[data-activity='visible']
-      const BOUNDARY_DELAY = 950; // slightly longer than BETWEEN_DELAY — a different kind of moment
-      const BOUNDARY_SETTLE = 480; // let the boundary's own entrance finish before the first pulse
-      const PULSE_DURATION = 640; // matches the CSS keyframes below
-      const PULSE_INTERVAL = 700; // short gap between the first pulse and the softer second one
-
-      const resolveOne = (el) => new Promise((resolve) => {
-        el.dataset.activityState = 'resolving';
-        setTimeout(() => {
-          const textEl = el.querySelector('[data-activity-text]');
-          const doneText = el.dataset.activityDone;
-          if (textEl instanceof HTMLElement && doneText) textEl.textContent = doneText;
-          el.dataset.activityState = 'done';
-          resolve();
-        }, RESOLVE_DIP);
-      });
-
-      const runActivities = async () => {
-        for (const el of activities) {
-          await new Promise((r) => setTimeout(r, BETWEEN_DELAY));
-          el.dataset.activity = 'visible';
-          await new Promise((r) => setTimeout(r, REGISTER_DELAY));
-          await resolveOne(el);
-        }
-      };
-
-      const pulseOnce = (pulseName) => new Promise((resolve) => {
-        if (!(boundaryTitle instanceof HTMLElement)) { resolve(); return; }
-        boundaryTitle.dataset.pulse = pulseName;
-        setTimeout(() => {
-          delete boundaryTitle.dataset.pulse;
-          resolve();
-        }, PULSE_DURATION);
-      });
-
-      const runBoundary = async () => {
-        if (!(boundary instanceof HTMLElement)) return;
-        await new Promise((r) => setTimeout(r, BOUNDARY_DELAY));
-        boundary.dataset.boundary = 'visible';
-        await new Promise((r) => setTimeout(r, BOUNDARY_SETTLE));
-        await pulseOnce('1');
-        await new Promise((r) => setTimeout(r, PULSE_INTERVAL));
-        await pulseOnce('2');
-        // Nothing further is scheduled — the sequence stops here for good.
-      };
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -730,7 +708,13 @@ import { featuredStories } from '../data/stories';
           goal.dataset.goal = 'done';
           setTimeout(() => {
             goal.dataset.goal = 'settled';
-            runActivities().then(runBoundary);
+            // The ambient preview stops here — the first indication of
+            // activity, not the full mechanism. Every step resolving and
+            // the permission boundary only play out once the visitor
+            // clicks "See how"; that's what the explanation stage is for.
+            setTimeout(() => {
+              if (activities[0]) activities[0].dataset.activity = 'visible';
+            }, BETWEEN_DELAY);
           }, CURSOR_LINGER);
           return;
         }
@@ -1413,6 +1397,90 @@ import { featuredStories } from '../data/stories';
   }
 </script>
 
+<script>
+  // Analytics: fires `hero_view` through Cloudflare Zaraz once the hero
+  // section has been at least 50% visible in the viewport for a
+  // continuous second. Isolated from the hero's own visual/interaction
+  // script above — this only observes visibility and never touches the
+  // hero's markup, layout, or behavior.
+  const heroSection = document.querySelector('.dy-hero');
+
+  if (heroSection instanceof HTMLElement) {
+    let visibleTimer = null;
+    let fired = false;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (fired) return;
+        const entry = entries[0];
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (visibleTimer === null) {
+            visibleTimer = window.setTimeout(() => {
+              fired = true;
+              window.zaraz?.track('hero_view');
+              observer.disconnect();
+            }, 1000);
+          }
+        } else if (visibleTimer !== null) {
+          clearTimeout(visibleTimer);
+          visibleTimer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(heroSection);
+  }
+</script>
+
+<script>
+  // Analytics: fires `hero_start` through Cloudflare Zaraz the first time
+  // the hero's "See how" CTA is activated. Isolated from the hero's own
+  // click/animation handler above — this listener only reports the click,
+  // it never touches the CTA's markup, styling, or behavior. `{ once:
+  // true }` guarantees it fires at most once per page load even though
+  // the same button later doubles as "Replay" and can be clicked again.
+  document.getElementById('dy-hero-see-how')?.addEventListener(
+    'click',
+    () => window.zaraz?.track('hero_start'),
+    { once: true }
+  );
+</script>
+
+<script>
+  // Analytics: fires `hero_complete` through Cloudflare Zaraz once the
+  // hero's own transition logic actually opens the closing "AI agent"
+  // payoff block — the same `open()` call (removing data-shut from
+  // [data-agent-payoff]) the hero's own script above already uses to
+  // mark that beat as reached, so this reuses that real state change
+  // instead of a timer guessing when the sequence finished. Isolated
+  // from the hero's own scripts: it only observes, never mutates.
+  // Watching the persistent #dy-hero-visual container (rather than the
+  // payoff element itself) means this keeps working even after a
+  // restart replaces the hero's inner markup. Fires at most once per
+  // page load; does nothing if the visitor abandons the sequence before
+  // this beat is reached.
+  const heroVisual = document.getElementById('dy-hero-visual');
+
+  if (heroVisual instanceof HTMLElement) {
+    let fired = false;
+
+    const checkPayoff = () => {
+      if (fired) return;
+      const payoff = heroVisual.querySelector('[data-agent-payoff]');
+      if (payoff instanceof HTMLElement && !payoff.hasAttribute('data-shut')) {
+        fired = true;
+        window.zaraz?.track('hero_complete');
+        observer.disconnect();
+      }
+    };
+
+    const observer = new MutationObserver(checkPayoff);
+    observer.observe(heroVisual, { attributes: true, attributeFilter: ['data-shut'], subtree: true });
+  }
+</script>
+
 <style>
 /* `hidden` must win over the display rules below */
   [hidden] {
@@ -1444,6 +1512,92 @@ import { featuredStories } from '../data/stories';
     max-width: 650px;
     /* Sits just below the top of the feature stage opposite it. */
     padding-top: clamp(6px, 3.4vh, 34px);
+  }
+
+  /* Quiet editorial CTA replacing the old black "See how" pill on the
+     left: text + the same small saffron circular-arrow language now
+     used on the Explore cards, reusing var(--saffron) rather than a new
+     colour. The whole element is the link. */
+  .dy-hero__explore-cta {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    margin-top: clamp(26px, 3.5vh, 32px);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 620;
+    text-decoration: none;
+    letter-spacing: -0.006em;
+  }
+
+  .dy-hero__explore-cta__arrow {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 160ms ease;
+  }
+
+  .dy-hero__explore-cta:hover .dy-hero__explore-cta__arrow {
+    transform: translateX(2px);
+  }
+
+  .dy-hero__explore-cta:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* Right column wrapper: the featured-story intro stacked directly
+     above the laptop it introduces, in one flex column so both share
+     the same right-hand lane the visual used to occupy alone. */
+  .dy-hero__feature {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 2.6vh, 26px);
+  }
+
+  /* No card chrome — no border or background — so this stays a quiet
+     editorial lead-in rather than a boxed component. */
+  .dy-hero__feature-intro {
+    max-width: 640px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .dy-hero__feature-hook {
+    margin: 0;
+    max-width: 34ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(19px, 1.7vw, 23px);
+    font-weight: 560;
+    line-height: 1.32;
+    letter-spacing: -0.014em;
+  }
+
+  .dy-hero__feature-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .dy-hero__feature-label {
+    color: var(--muted);
+    font-size: 13.5px;
+    font-weight: 620;
+    letter-spacing: -0.004em;
   }
 
   /* The right-side focal visual: a single photographic image (laptop1),
@@ -2552,16 +2706,6 @@ import { featuredStories } from '../data/stories';
     .dy-hero__visual {
       justify-self: end;
     }
-
-    /* Desktop only: nudges the CTA rightward, toward the centre/right
-       third of the brand column, so it visually leads the eye across to
-       the laptop rather than sitting flush with the headline's own left
-       edge. A margin, not a repositioning of the column or the signature
-       strip above it — the button's own fit-content width means this
-       never reaches the column's right edge. */
-    .dy-hero__cta {
-      margin-left: 240px;
-    }
   }
 
 
@@ -2657,35 +2801,31 @@ import { featuredStories } from '../data/stories';
   }
 
 
+  /* Same control as before (id, data-mode/data-state, click handler and
+     analytics all unchanged) — restyled from a black pill into the
+     quiet label + small saffron circular arrow now used on the Explore
+     cards, so it reads as part of the editorial row beside "AI agents"
+     rather than a standalone button. */
   .dy-hero__cta {
     width: fit-content;
-    /* "Replay" is shorter than "See how" — without this, swapping
-       labels would narrow the fit-content button by ~11px even though
-       its left edge (and everything above it) never moves. Matches the
-       wider ("See how") state so the box itself stays constant too. */
-    min-width: 130px;
-    margin-top: clamp(26px, 3.5vh, 32px);
+    /* "Replay" is shorter than "See how" — keeps the row from narrowing
+       by a few px when the label swaps. */
+    min-width: 78px;
     display: inline-flex;
     align-items: center;
-    gap: 13px;
-    padding: 11px 12px 11px 18px;
+    gap: 8px;
+    padding: 0;
     border: none;
-    border-radius: 999px;
-    background: var(--ink);
-    color: #fff;
+    border-radius: 0;
+    background: none;
+    color: var(--ink);
     font-family: inherit;
     font-size: 14px;
-    font-weight: 720;
+    font-weight: 620;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 11px 28px rgba(17, 21, 28, 0.1);
-    transition: transform 180ms ease, box-shadow 180ms ease, opacity 220ms ease;
-  }
-
-
-  .dy-hero__cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 17px 36px rgba(17, 21, 28, 0.15);
+    box-shadow: none;
+    transition: opacity 220ms ease;
   }
 
 
@@ -2711,17 +2851,25 @@ import { featuredStories } from '../data/stories';
   /* Renamed from the old bare `.dy-hero__cta span` — now that the
      button holds two label spans alongside the icon (for the
      See how / Replay swap below), a selector matching any span would
-     wrongly circle-style the label text too. Same 31px saffron circle,
-     unchanged, just scoped to the icon spans specifically. */
+     wrongly circle-style the label text too. Sized to match the small
+     saffron circular arrow used on the Explore cards (~19px) rather
+     than the old button's larger 31px version; hover only shifts it
+     ~2px right, no scale/shadow. */
   .dy-hero__cta__icon {
-    width: 31px;
-    height: 31px;
+    width: 19px;
+    height: 19px;
     display: grid;
     place-items: center;
     border-radius: 50%;
     background: var(--saffron);
     color: #fff;
-    font-size: 15px;
+    font-size: 10px;
+    transition: transform 160ms ease;
+  }
+
+
+  .dy-hero__cta:hover .dy-hero__cta__icon {
+    transform: translateX(2px);
   }
 
 
@@ -3968,13 +4116,12 @@ import { featuredStories } from '../data/stories';
     background: var(--saffron);
     color: #fff;
     font-size: 11px;
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    transition: transform 160ms ease;
   }
 
 
   .dy-explore__link:hover .dy-explore__see span {
-    transform: scale(1.08);
-    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+    transform: translateX(2px);
   }
 
 
