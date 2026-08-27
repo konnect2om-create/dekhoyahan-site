@@ -4303,9 +4303,14 @@ import { featuredStories } from '../data/stories';
        so nothing here touches wider mobile or desktop. Applied
        unconditionally (not just to the explain stage) so the box never
        changes height when a click swaps stages — only ever more room,
-       never a jump. */
+       never a jump. Kept well past the ~241px this content actually
+       measures at in an emulated 375px phone: real Android Chrome
+       applies its own font-boosting on top of that (see
+       text-size-adjust in global.css, which turns most of it off, but
+       not reliably on every mobile browser), so the floor carries
+       extra headroom that emulation alone can't verify. */
     .dy-hero__visual {
-      min-height: 250px;
+      min-height: 290px;
     }
 
     .dy-explore__grid {

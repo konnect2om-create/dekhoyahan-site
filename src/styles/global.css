@@ -33,6 +33,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* Stops Android Chrome's automatic font-boosting, which inflates text
+     size in narrow columns (like the hero's explain-stage, ~290-360px
+     wide on small phones) to "improve readability" — invisible in every
+     desktop/emulated check, since that heuristic is Android-only, but on
+     a real phone it pushes this site's own carefully-fitted mobile text
+     past heights the layout budgeted for. */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
