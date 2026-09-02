@@ -6,6 +6,10 @@ import '../styles/global.css';
 const {
   title = "DekhoYahan — Understand the world that's arriving",
   description = "Some of it is already around us. Some of it is just beginning.",
+  // Pages that own a permanent address — a Feature's story page, say —
+  // declare it here; everything else is canonical at the URL it was
+  // requested at.
+  canonical = Astro.url.href,
 } = Astro.props;
 ---
 <!doctype html>
@@ -19,8 +23,8 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
-    <link rel="canonical" href={Astro.url.href} />
+    <meta property="og:url" content={canonical} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>

@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { features, canonicalUrl, type Feature } from '../features/registry';
+
+// Every Feature in the registry gets its own permanent page here, whether
+// or not it is the one currently on the homepage. Changing the homepage's
+// featured story does not touch these routes, so an address that has been
+// shared once keeps working.
+export function getStaticPaths() {
+  return features.map((feature) => ({
+    params: { feature: feature.slug },
+    props: { feature },
+  }));
+}
+
+const { feature } = Astro.props as { feature: Feature };
+const FeatureComponent = feature.Component;
+---
+
+<BaseLayout
+  title={feature.title}
+  description={feature.description}
+  canonical={canonicalUrl(feature)}
+>
+  <!-- The story, and nothing else. It is an experience, not an article:
+       no introduction, no contents, no second telling of what it just
+       showed. The page's only job is to give it room. -->
+  <section class="dy-feature-page">
+    <div class="shell dy-feature-page__frame">
+      <FeatureComponent />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dy-feature-page {
+    padding: 0 0 clamp(72px, 10vh, 128px);
+  }
+
+  /* Wide enough that the Feature's own `min(600px, 88%)` resolves to the
+     same 600px it has in the hero, so the story runs at exactly the size
+     it was designed and approved at. */
+  .dy-feature-page__frame {
+    width: min(720px, calc(100% - clamp(34px, 5vw, 72px)));
+    margin-inline: auto;
+  }
+</style>

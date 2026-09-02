@@ -1,0 +1,2986 @@
+---
+import { Image } from 'astro:assets';
+import securityDome from '../../assets/security-dome.png';
+
+// The Zero Trust Feature — the single source of truth for this story:
+// its markup, copy, scenes, animation, accessibility behaviour, replay
+// and asset references. The homepage and the story's permanent route
+// both render this component; neither owns a copy of any of it.
+//
+// Scene 1 is read as one editorial object in four beats: the
+// provocation, the visual evidence (outside → firewall → inside), the
+// unresolved question, and the invitation to enter it. The title
+// belongs to the WHOLE illustration, not just the dome, so it is
+// aligned on the artwork's own left axis; every vertical gap below is
+// measured against the artwork's VISIBLE pixels, not the PNG's
+// transparent box.
+---
+
+<div class="dy-hero__zt">
+  <!-- The Feature's question and, at the very end, its answer.
+       The second block is taken out of flow so the title keeps
+       exactly the height it has always had - Scene 1's geometry
+       is measured off it. -->
+  <p class="dy-hero__zt-title">
+    <span class="dy-hero__zt-title-swap">
+      <span class="dy-hero__zt-title-was">
+        <span class="dy-hero__zt-title-lead">Zero Trust</span>
+        <span class="dy-hero__zt-title-rest">is older than Zero Trust.</span>
+      </span>
+      <span class="dy-hero__zt-title-now" aria-live="polite">
+        <span class="dy-hero__zt-title-lead">The name came later.</span>
+      </span>
+    </span>
+  </p>
+
+  <div class="dy-hero__zt-stage">
+    <Image
+      class="dy-hero__zt-art"
+      src={securityDome}
+      alt=""
+      widths={[600, 760, 920, 1120]}
+      sizes="(min-width: 1320px) 600px, 86vw"
+      format="webp"
+      quality={90}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <!-- Scene 2 keeps the visitor inside the same picture. The
+         broad company boundary settles back to context, but the
+         outside and the firewall must stay as sharp as they
+         were — so the same artwork is laid over itself, masked
+         to just the internet/firewall side, and fades up as the
+         layer beneath it dims. Identical src and sizes, so the
+         browser reuses the image it already has. -->
+    <Image
+      class="dy-hero__zt-art-keep"
+      src={securityDome}
+      alt=""
+      widths={[600, 760, 920, 1120]}
+      sizes="(min-width: 1320px) 600px, 86vw"
+      format="webp"
+      quality={90}
+      loading="eager"
+      decoding="async"
+      aria-hidden="true"
+    />
+
+    <!-- Not a ring drawn around two things — a place, with a
+         wall behind it. A strip of ground immediately past the
+         firewall carries the publicly reachable services; a
+         second boundary then stands across the scene between
+         that strip and everything deeper in. Both shapes are
+         plotted on the illustration's own ground plane (the
+         dome's base ellipse) inside a viewBox 150x100 over its
+         3:2 frame, so they sit in the picture rather than on
+         top of it, at any size. -->
+    <div class="dy-hero__zt-s2" hidden>
+      <span class="dy-hero__zt-s2-focus" aria-hidden="true"></span>
+
+      <svg class="dy-hero__zt-s2-svg" viewBox="0 0 150 100" aria-hidden="true" focusable="false">
+        <path
+          class="dy-hero__zt-s2-zone"
+          d="M70.5 66 C74 73 80 76.5 99 80.4 L99 51.6 C80 55.5 74 59 70.5 66 Z"
+        />
+        <path
+          class="dy-hero__zt-s2-wall"
+          d="M99 78 C96.5 60 97 44 101 33 L110 33 C106 44 105.5 60 108 78 Z"
+        />
+        <path
+          class="dy-hero__zt-s2-edge dy-hero__zt-s2-edge--halo"
+          pathLength="1"
+          d="M99 78 C96.5 60 97 44 101 33"
+        />
+        <path
+          class="dy-hero__zt-s2-edge dy-hero__zt-s2-edge--line"
+          pathLength="1"
+          d="M99 78 C96.5 60 97 44 101 33"
+        />
+      </svg>
+
+      <span class="dy-hero__zt-s2-nodes">
+        <span class="dy-hero__zt-s2-chip dy-hero__zt-s2-chip--web">Web</span>
+        <span class="dy-hero__zt-s2-chip dy-hero__zt-s2-chip--mail">Mail</span>
+      </span>
+
+      <span class="dy-hero__zt-s2-label">DMZ</span>
+    </div>
+
+    <!-- Scene 3 goes THROUGH the second boundary. The outside,
+         the firewall and the DMZ stay in the picture but step
+         back under a soft veil — they are the visitor's history
+         here, not the subject. The ground beyond the wall then
+         shows itself as one area, and divides. Every shape is
+         plotted on the same ground plane (the dome's base
+         ellipse) as Scene 2's DMZ strip, in the same viewBox. -->
+    <div class="dy-hero__zt-s3" hidden>
+      <span class="dy-hero__zt-s3-veil" aria-hidden="true"></span>
+
+      <svg class="dy-hero__zt-s3-svg" viewBox="0 0 150 100" aria-hidden="true" focusable="false">
+        <path
+          class="dy-hero__zt-s3-whole"
+          d="M109.5 51 C124 51.6 138 55.5 148.5 66 C145 72 139 75.8 130.5 78.6 C126 79.8 118 80.7 109.5 81 Z"
+        />
+
+        <path class="dy-hero__zt-s3-plot dy-hero__zt-s3-plot--a" d="M109.5 51 C124 51.6 138 55.5 148.5 66 L109.5 66 Z" />
+        <path class="dy-hero__zt-s3-plot dy-hero__zt-s3-plot--b" d="M109.5 66 L124 66 L124 79.9 C120 80.5 116 80.9 109.5 81 Z" />
+        <path class="dy-hero__zt-s3-plot dy-hero__zt-s3-plot--c" d="M124 66 L148.5 66 C145 72 137 76.8 124 79.9 Z" />
+
+        <path class="dy-hero__zt-s3-cut dy-hero__zt-s3-cut--halo dy-hero__zt-s3-cut--one" pathLength="1" d="M109.5 66 L148.5 66" />
+        <path class="dy-hero__zt-s3-cut dy-hero__zt-s3-cut--line dy-hero__zt-s3-cut--one" pathLength="1" d="M109.5 66 L148.5 66" />
+        <path class="dy-hero__zt-s3-cut dy-hero__zt-s3-cut--halo dy-hero__zt-s3-cut--two" pathLength="1" d="M124 66 L124 79.9" />
+        <path class="dy-hero__zt-s3-cut dy-hero__zt-s3-cut--line dy-hero__zt-s3-cut--two" pathLength="1" d="M124 66 L124 79.9" />
+      </svg>
+
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s3-tag--a">Users</span>
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s3-tag--b">Finance</span>
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s3-tag--c">Production</span>
+    </div>
+
+    <!-- Scene 4. The company outgrew the outline. Nothing here
+         breaks the dome — it stays exactly where it was, still
+         doing its job. What changes is that legitimate work now
+         sits outside it and reaches across it, drawn in the
+         same blue the illustration already uses for normal
+         traffic. Three examples is the whole point; a fourth
+         would be inventory, not understanding. -->
+    <div class="dy-hero__zt-s4" hidden>
+      <span class="dy-hero__zt-s4-veil" aria-hidden="true"></span>
+
+      <svg class="dy-hero__zt-s4-svg" viewBox="0 0 150 100" aria-hidden="true" focusable="false">
+        <!-- Each connection runs from the object outside, across
+             the old outline, and dissolves once it is properly
+             inside — so it reads as something arriving in the
+             company rather than an annotation pointing at a
+             picture. No arrowheads, no notation: the fade is
+             what says "and it ends up in here". -->
+        <defs>
+          <linearGradient id="dyZtHaloWorker" gradientUnits="userSpaceOnUse" x1="81" y1="15.6" x2="85" y2="43">
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0" stop-opacity="0" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.26" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.52" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="1" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="dyZtLineWorker" gradientUnits="userSpaceOnUse" x1="81" y1="15.6" x2="85" y2="43">
+            <stop class="dy-hero__zt-s4-stop--line" offset="0" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="0.5" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="1" stop-opacity="0" />
+          </linearGradient>
+
+          <linearGradient id="dyZtHaloSaas" gradientUnits="userSpaceOnUse" x1="99" y1="13.8" x2="112" y2="41">
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0" stop-opacity="0" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.26" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.52" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="1" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="dyZtLineSaas" gradientUnits="userSpaceOnUse" x1="99" y1="13.8" x2="112" y2="41">
+            <stop class="dy-hero__zt-s4-stop--line" offset="0" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="0.5" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="1" stop-opacity="0" />
+          </linearGradient>
+
+          <linearGradient id="dyZtHaloCloud" gradientUnits="userSpaceOnUse" x1="137" y1="15.8" x2="131.5" y2="50">
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0" stop-opacity="0" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.26" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="0.52" stop-opacity="0.55" />
+            <stop class="dy-hero__zt-s4-stop--halo" offset="1" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="dyZtLineCloud" gradientUnits="userSpaceOnUse" x1="137" y1="15.8" x2="131.5" y2="50">
+            <stop class="dy-hero__zt-s4-stop--line" offset="0" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="0.5" stop-opacity="0.85" />
+            <stop class="dy-hero__zt-s4-stop--line" offset="1" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--halo dy-hero__zt-s4-link--worker" pathLength="1" d="M81 15.6 C81.4 24 82.6 34 85 43" />
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--line dy-hero__zt-s4-link--worker" pathLength="1" d="M81 15.6 C81.4 24 82.6 34 85 43" />
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--halo dy-hero__zt-s4-link--saas" pathLength="1" d="M99 13.8 C99.4 24 101.4 32 112 41" />
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--line dy-hero__zt-s4-link--saas" pathLength="1" d="M99 13.8 C99.4 24 101.4 32 112 41" />
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--halo dy-hero__zt-s4-link--cloud" pathLength="1" d="M137 15.8 C136.2 24 134.4 37 131.5 50" />
+        <path class="dy-hero__zt-s4-link dy-hero__zt-s4-link--line dy-hero__zt-s4-link--cloud" pathLength="1" d="M137 15.8 C136.2 24 134.4 37 131.5 50" />
+
+        <g class="dy-hero__zt-s4-mark dy-hero__zt-s4-mark--worker">
+          <path d="M78.2 8.5 H83.8 A0.8 0.8 0 0 1 84.6 9.3 V13 H77.4 V9.3 A0.8 0.8 0 0 1 78.2 8.5 Z" />
+          <path d="M75.8 13 H86.2 L85.4 14.6 H76.6 Z" />
+        </g>
+
+        <g class="dy-hero__zt-s4-mark dy-hero__zt-s4-mark--saas">
+          <path d="M96 7 H102 A0.8 0.8 0 0 1 102.8 7.8 V12.2 A0.8 0.8 0 0 1 102 13 H96 A0.8 0.8 0 0 1 95.2 12.2 V7.8 A0.8 0.8 0 0 1 96 7 Z" />
+          <path d="M95.2 9.2 H102.8" />
+        </g>
+
+        <g class="dy-hero__zt-s4-mark dy-hero__zt-s4-mark--cloud">
+          <path d="M134 15 C131.8 15 131.4 12 133.4 11.4 C133.2 8.6 136.8 7.4 138.4 9.6 C140.2 8.4 142.6 9.8 142.2 11.9 C143.6 12.4 143.2 15 141.6 15 Z" />
+        </g>
+      </svg>
+
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s4-tag dy-hero__zt-s4-tag--worker">Remote worker</span>
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s4-tag dy-hero__zt-s4-tag--saas">SaaS</span>
+      <span class="dy-hero__zt-s3-tag dy-hero__zt-s4-tag dy-hero__zt-s4-tag--cloud">Cloud</span>
+    </div>
+
+    <!-- Scene 5. One decision, looked at closely. Everything the
+         visitor has already been shown steps back to a ghost —
+         the globe, the firewall, the DMZ, the segments — and a
+         single clean boundary is drawn over where the dome
+         always was, so "inside" and "outside" still mean what
+         they meant. Two people want the same thing. Only one
+         of them is inside. That is the whole picture. -->
+    <div class="dy-hero__zt-s5" hidden>
+      <svg class="dy-hero__zt-s5-svg" viewBox="0 0 150 100" aria-hidden="true" focusable="false">
+        <path class="dy-hero__zt-s5-dome" pathLength="1" d="M46 84 C46 48 70 34 96 34 C122 34 146 48 146 84" />
+
+        <!-- The place they both want to reach. -->
+        <g class="dy-hero__zt-s5-mark dy-hero__zt-s5-mark--vault">
+          <path d="M109 47 H121 A1 1 0 0 1 122 48 V55 A1 1 0 0 1 121 56 H109 A1 1 0 0 1 108 55 V48 A1 1 0 0 1 109 47 Z" />
+          <path d="M112.6 51.5 H117.4" />
+        </g>
+
+        <g class="dy-hero__zt-s5-mark dy-hero__zt-s5-mark--home">
+          <path d="M15.8 39.5 H23.8 A0.9 0.9 0 0 1 24.7 40.4 V45.4 H14.9 V40.4 A0.9 0.9 0 0 1 15.8 39.5 Z" />
+          <path d="M13.4 45.4 H26.2 L25.3 47.4 H14.4 Z" />
+        </g>
+
+        <g class="dy-hero__zt-s5-mark dy-hero__zt-s5-mark--office">
+          <path d="M56.4 62 H64.4 A0.9 0.9 0 0 1 65.3 62.9 V67.9 H55.5 V62.9 A0.9 0.9 0 0 1 56.4 62 Z" />
+          <path d="M54 67.9 H66.8 L65.9 69.9 H55 Z" />
+        </g>
+
+        <!-- Two lanes, one above the other, both running left to
+             right at the same destination — so neither line ever
+             crosses the other and the eye can follow either one
+             from the person straight through to what happened.
+             The upper request has to cross the boundary to get
+             anywhere; the lower one never leaves it. -->
+        <path class="dy-hero__zt-s5-ask dy-hero__zt-s5-ask--halo dy-hero__zt-s5-ask--home" pathLength="1" d="M61 41.5 C74 42.6 92 46.6 107 50.5" />
+        <path class="dy-hero__zt-s5-ask dy-hero__zt-s5-ask--line dy-hero__zt-s5-ask--home" pathLength="1" d="M61 41.5 C74 42.6 92 46.6 107 50.5" />
+        <path class="dy-hero__zt-s5-ask dy-hero__zt-s5-ask--halo dy-hero__zt-s5-ask--office" pathLength="1" d="M94 71 C100 68.6 104 66 107.6 63.6" />
+        <path class="dy-hero__zt-s5-ask dy-hero__zt-s5-ask--line dy-hero__zt-s5-ask--office" pathLength="1" d="M94 71 C100 68.6 104 66 107.6 63.6" />
+
+        <!-- The outcomes sit where each request actually ended:
+             one of them came out the far side of Finance, the
+             other never reached it. -->
+        <path class="dy-hero__zt-s5-verdict dy-hero__zt-s5-verdict--open" pathLength="1" d="M124.5 51.5 L126.3 53.5 L129.5 49.7" />
+        <g class="dy-hero__zt-s5-verdict dy-hero__zt-s5-verdict--stop">
+          <path pathLength="1" d="M110 60.6 L113.2 63.8" />
+          <path pathLength="1" d="M113.2 60.6 L110 63.8" />
+        </g>
+      </svg>
+
+      <span class="dy-hero__zt-s5-name dy-hero__zt-s5-name--home">Working from home</span>
+      <span class="dy-hero__zt-s5-name dy-hero__zt-s5-name--office">In the office</span>
+      <span class="dy-hero__zt-s5-name dy-hero__zt-s5-name--vault">Finance</span>
+
+      <span class="dy-hero__zt-s5-said dy-hero__zt-s5-said--h1"><span class="dy-hero__zt-s5-tick" aria-hidden="true">&#10003;</span> Right person</span>
+      <span class="dy-hero__zt-s5-said dy-hero__zt-s5-said--h2"><span class="dy-hero__zt-s5-tick" aria-hidden="true">&#10003;</span> Work laptop</span>
+
+      <span class="dy-hero__zt-s5-said dy-hero__zt-s5-said--o1"><span class="dy-hero__zt-s5-tick" aria-hidden="true">&#10003;</span> Right person</span>
+      <span class="dy-hero__zt-s5-said dy-hero__zt-s5-said--o2"><span class="dy-hero__zt-s5-cross" aria-hidden="true">&#10007;</span> Unknown laptop</span>
+
+      <!-- One slot, two questions passing through it: the picture
+           asks them one at a time rather than laying a checklist
+           over itself, and then they leave again. What each of
+           them wants is not asked, because both lines are
+           already pointing at it. -->
+      <span class="dy-hero__zt-s5-ques dy-hero__zt-s5-ques--a">Who is asking?</span>
+      <span class="dy-hero__zt-s5-ques dy-hero__zt-s5-ques--b">What are they using?</span>
+
+      <span class="dy-hero__zt-s5-out dy-hero__zt-s5-out--open">OPEN</span>
+      <span class="dy-hero__zt-s5-out dy-hero__zt-s5-out--stop">STOP</span>
+    </div>
+
+    <!-- Scene 6. Nothing new is introduced here. The scene the
+         visitor has been walking through is redrawn as the one
+         shape it always had — a boundary that kept getting
+         smaller — and then even that is set aside, leaving the
+         single request the whole story was heading toward. -->
+    <div class="dy-hero__zt-s6" hidden>
+      <svg class="dy-hero__zt-s6-svg" viewBox="0 0 150 100" aria-hidden="true" focusable="false">
+        <rect class="dy-hero__zt-s6-ring dy-hero__zt-s6-ring--co" pathLength="1" x="66" y="36" width="78" height="44" rx="2.5" />
+        <rect class="dy-hero__zt-s6-ring dy-hero__zt-s6-ring--dmz" pathLength="1" x="78" y="43.5" width="56" height="29.5" rx="2.5" />
+        <rect class="dy-hero__zt-s6-ring dy-hero__zt-s6-ring--fin" pathLength="1" x="90" y="51" width="34" height="15" rx="2.5" />
+
+        <g class="dy-hero__zt-s6-mark">
+          <path d="M48.4 56 H56.4 A0.9 0.9 0 0 1 57.3 56.9 V61.9 H47.5 V56.9 A0.9 0.9 0 0 1 48.4 56 Z" />
+          <path d="M46 61.9 H58.8 L57.9 63.9 H47 Z" />
+        </g>
+
+        <path class="dy-hero__zt-s6-ask dy-hero__zt-s6-ask--halo" pathLength="1" d="M61 60.4 C70 60.2 80 60 89 59.8" />
+        <path class="dy-hero__zt-s6-ask dy-hero__zt-s6-ask--line" pathLength="1" d="M61 60.4 C70 60.2 80 60 89 59.8" />
+
+        <path class="dy-hero__zt-s6-yes" pathLength="1" d="M97 60.6 L99 62.8 L103 58.2" />
+      </svg>
+
+      <span class="dy-hero__zt-s6-name dy-hero__zt-s6-name--co">Company</span>
+      <span class="dy-hero__zt-s6-name dy-hero__zt-s6-name--dmz">DMZ</span>
+      <span class="dy-hero__zt-s6-name dy-hero__zt-s6-name--fin">Finance</span>
+
+      <!-- The same three questions the visitor already watched
+           decide one request, in the same one slot. -->
+      <span class="dy-hero__zt-s6-ques dy-hero__zt-s6-ques--a">Who is asking?</span>
+      <span class="dy-hero__zt-s6-ques dy-hero__zt-s6-ques--b">What are they using?</span>
+      <span class="dy-hero__zt-s6-ques dy-hero__zt-s6-ques--c">What do they want?</span>
+
+      <span class="dy-hero__zt-s6-out">YES</span>
+    </div>
+
+    <!-- Question and invitation are one control: the question
+         opens the gap, the invitation says it can be walked
+         through. -->
+    <button type="button" class="dy-hero__zt-callout" data-zt-open>
+      <span class="dy-hero__zt-question">
+        But was &ldquo;<span class="dy-hero__zt-question-em">inside</span>&rdquo; ever really one thing?
+      </span>
+      <span class="dy-hero__zt-cue">
+        Look closer
+        <span class="dy-hero__zt-cue-arrow" aria-hidden="true">→</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- The story's own space. Each of these is a collapsed row
+       until the scene that needs it opens it, so Scene 1 keeps
+       the compact hero it has always had and every later state
+       takes only the room its own writing asks for. They are
+       ordinary flow — a grid row animating 0fr to 1fr, not an
+       overlay — so the section below simply follows, nothing is
+       ever written over it, and the reading order stays
+       see → understand → question → act at every width. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--copy" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <!-- Both realisations share one cell, so the canvas never
+           has to hold two at once and the story reads as one
+           thought advancing rather than two stacked. -->
+      <div class="dy-hero__zt-copies">
+        <div class="dy-hero__zt-s2-copy" aria-live="polite">
+          <p class="dy-hero__zt-s2-lead">
+            &ldquo;<span class="dy-hero__zt-s2-em">Inside</span>&rdquo; was already being divided.
+          </p>
+          <p class="dy-hero__zt-s2-close">
+            Crossing one boundary didn&rsquo;t earn access to the next.
+          </p>
+        </div>
+
+        <div class="dy-hero__zt-s3-copy" aria-live="polite" hidden>
+          <p class="dy-hero__zt-s2-lead">
+            &ldquo;<span class="dy-hero__zt-s2-em">Inside</span>&rdquo; kept getting smaller.
+          </p>
+          <p class="dy-hero__zt-s2-close">
+            Being inside didn&rsquo;t mean you could reach everything.
+          </p>
+        </div>
+
+        <div class="dy-hero__zt-s4-copy" aria-live="polite" hidden>
+          <p class="dy-hero__zt-s2-lead">The exceptions became normal.</p>
+          <p class="dy-hero__zt-s2-close">
+            People, apps and data no longer stayed inside.
+          </p>
+        </div>
+
+        <div class="dy-hero__zt-s5-copy" aria-live="polite" hidden>
+          <p class="dy-hero__zt-s2-lead">
+            &ldquo;<span class="dy-hero__zt-s2-em">Inside</span>&rdquo; was no longer enough.
+          </p>
+          <p class="dy-hero__zt-s2-close">
+            Being inside didn&rsquo;t automatically mean you should get in.
+          </p>
+        </div>
+
+        <div class="dy-hero__zt-s6-copy dy-hero__zt-s6-copy--b" aria-live="polite" hidden>
+          <p class="dy-hero__zt-s2-lead">Each request needed its own yes.</p>
+          <p class="dy-hero__zt-s2-close">
+            That&rsquo;s the idea Zero Trust took further.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The next thought, below the realisation it follows from
+       and on the same internal side of the Feature — the eye
+       carries on through the second boundary rather than back
+       out toward the globe. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--next" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <button type="button" class="dy-hero__zt-callout dy-hero__zt-deeper" data-zt-deeper>
+        <span class="dy-hero__zt-question">
+          Was everything behind that wall trusted equally?
+        </span>
+        <span class="dy-hero__zt-cue">
+          Look deeper
+          <span class="dy-hero__zt-cue-arrow" aria-hidden="true">→</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scene 3's continuation, in its own row of the canvas: a
+       quiet line of setup, then the question, then the way in. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--onward" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <button type="button" class="dy-hero__zt-callout dy-hero__zt-onward" data-zt-onward>
+        <span class="dy-hero__zt-setup">Then something else changed.</span>
+        <span class="dy-hero__zt-question">
+          What if the company no longer fit inside the boundary?
+        </span>
+        <span class="dy-hero__zt-cue">
+          See what changed
+          <span class="dy-hero__zt-cue-arrow" aria-hidden="true">→</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scene 5's continuation, and the last thing in the Feature
+       the visitor is asked to do. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--idea" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <button type="button" class="dy-hero__zt-callout dy-hero__zt-idea" data-zt-idea>
+        <span class="dy-hero__zt-question">
+          So what actually changed?
+        </span>
+        <span class="dy-hero__zt-cue">
+          See the idea
+          <span class="dy-hero__zt-cue-arrow" aria-hidden="true">→</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scene 4's continuation. The question the whole scene has
+       been walking toward, in its own row of the canvas. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--find" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <button type="button" class="dy-hero__zt-callout dy-hero__zt-find" data-zt-find>
+        <span class="dy-hero__zt-question">
+          So what was &ldquo;inside&rdquo; still proving?
+        </span>
+        <span class="dy-hero__zt-cue">
+          Find out
+          <span class="dy-hero__zt-cue-arrow" aria-hidden="true">→</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- The epilogue. Not a scene and not a call to action - the
+       story closing its own loop, offered once the ending has
+       had time to settle. -->
+  <div class="dy-hero__zt-tail dy-hero__zt-tail--again" hidden inert>
+    <div class="dy-hero__zt-tail-in">
+      <button type="button" class="dy-hero__zt-callout dy-hero__zt-again" data-zt-again>
+        <span class="dy-hero__zt-setup">You were already looking at the idea.</span>
+        <span class="dy-hero__zt-cue">
+          See it again
+          <span class="dy-hero__zt-cue-arrow dy-hero__zt-cue-arrow--loop" aria-hidden="true">↺</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Zero Trust feature. The whole transition is CSS; this only flips
+  // the state, hands the invitation slot over from one control to the
+  // next, and keeps the keyboard path intact.
+  const ztFeature = document.querySelector('.dy-hero__zt');
+
+  if (ztFeature instanceof HTMLElement) {
+    // The Feature exactly as it looks before anyone has touched it.
+    // Replay restores this rather than trying to undo six scenes of
+    // state one property at a time: every hidden attribute, every
+    // animation, the original title and the collapsed rows all come
+    // back because the nodes themselves are new.
+    const pristine = ztFeature.innerHTML;
+    const states = [
+      'is-s2',
+      'is-s3',
+      'is-s4',
+      'is-s5',
+      'is-s6',
+      'is-s6-quiet',
+      'is-s6-still',
+    ];
+
+    // Every deferred step is tracked, so a replay can cancel whatever
+    // the finished run still had pending.
+    let timers = [];
+    const later = (fn, ms) => timers.push(window.setTimeout(fn, ms));
+
+    // Reachability follows the scene rather than a timetable. A
+    // continuation row is inert — untabbable, unreadable to assistive
+    // technology and unclickable — until it has actually opened, and
+    // becomes inert again the moment it closes. Watching the rendered
+    // height rather than the clock means this holds however the row got
+    // its size: animated open, or opened instantly under reduced motion.
+    let rowGuard = null;
+    const guardRows = () => {
+      if (rowGuard) rowGuard.disconnect();
+      if (typeof ResizeObserver !== 'function') return;
+      rowGuard = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          entry.target.inert = entry.target.getBoundingClientRect().height <= 1;
+        }
+      });
+      for (const row of ztFeature.querySelectorAll('.dy-hero__zt-tail')) {
+        row.inert = true;
+        rowGuard.observe(row);
+      }
+    };
+
+    // Each scene works the same way: put its markup in the document,
+    // then — on the next frame, so the collapsed rows have a height to
+    // animate from — flip the state class that runs the CSS timeline,
+    // and retire the control that got the visitor here so it does not
+    // linger in the tab order.
+    const openScene = (button, state, reveal, retire, retireAfter = 320) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      button.addEventListener(
+        'click',
+        () => {
+          for (const part of reveal) {
+            if (part instanceof HTMLElement) part.hidden = false;
+          }
+
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => ztFeature.classList.add(state))
+          );
+
+          later(() => {
+            button.hidden = true;
+          }, 320);
+
+          // The outgoing realisation leaves the flow only once it has
+          // faded, so the canvas never jumps between the two.
+          later(() => {
+            for (const part of retire) {
+              if (part instanceof HTMLElement) part.hidden = true;
+            }
+          }, retireAfter);
+        },
+        { once: true }
+      );
+    };
+
+    const wire = () => {
+      const q = (selector) => ztFeature.querySelector(selector);
+      const tails = ztFeature.querySelectorAll('.dy-hero__zt-tail');
+      const idea = q('[data-zt-idea]');
+
+      openScene(q('[data-zt-open]'), 'is-s2', [q('.dy-hero__zt-s2'), ...tails], []);
+      openScene(
+        q('[data-zt-deeper]'),
+        'is-s3',
+        [q('.dy-hero__zt-s3'), q('.dy-hero__zt-s3-copy')],
+        [q('.dy-hero__zt-s2-copy')]
+      );
+      // Scene 4's writing waits for the three outside examples to
+      // arrive, so Scene 3's realisation holds the slot until then.
+      openScene(
+        q('[data-zt-onward]'),
+        'is-s4',
+        [q('.dy-hero__zt-s4'), q('.dy-hero__zt-s4-copy')],
+        [q('.dy-hero__zt-s3-copy')],
+        3850
+      );
+      // Scene 5 holds the previous realisation right through the
+      // comparison, so the canvas is never blank while the two
+      // requests are being drawn and answered.
+      openScene(
+        q('[data-zt-find]'),
+        'is-s5',
+        [q('.dy-hero__zt-s5'), q('.dy-hero__zt-s5-copy')],
+        [q('.dy-hero__zt-s4-copy')],
+        10800
+      );
+      openScene(
+        idea,
+        'is-s6',
+        [q('.dy-hero__zt-s6'), q('.dy-hero__zt-s6-copy--b')],
+        [q('.dy-hero__zt-s5-copy')],
+        12600
+      );
+
+      // The two moments where the boundaries stop being the subject.
+      // They are state rather than entrances, so they ride on the same
+      // click instead of on a timeline of their own.
+      if (idea instanceof HTMLButtonElement) {
+        idea.addEventListener(
+          'click',
+          () => {
+            later(() => ztFeature.classList.add('is-s6-quiet'), 4200);
+            later(() => ztFeature.classList.add('is-s6-still'), 15000);
+          },
+          { once: true }
+        );
+      }
+
+      guardRows();
+
+      const again = q('[data-zt-again]');
+
+      if (again instanceof HTMLButtonElement) {
+        again.addEventListener(
+          'click',
+          () => {
+            for (const id of timers) window.clearTimeout(id);
+            timers = [];
+            ztFeature.classList.remove(...states);
+            ztFeature.innerHTML = pristine;
+            wire();
+
+            // The control that now stands where this one did takes the
+            // focus, so a keyboard visitor carries straight on instead
+            // of being dropped at the top of the document. Scrolling is
+            // suppressed: nothing has moved, so nothing should jump.
+            const open = ztFeature.querySelector('[data-zt-open]');
+            if (open instanceof HTMLElement) open.focus({ preventScroll: true });
+          },
+          { once: true }
+        );
+      }
+    };
+
+    wire();
+  }
+</script>
+
+<style>
+  /* `hidden` must win over the display rules below */
+  [hidden] {
+    display: none !important;
+  }
+
+
+
+  /* =========================================================
+     HERO — right-side stage, Scene 1: Zero Trust / SecurityDome
+     One object, not three stacked ones. The title drops down INTO the
+     illustration's own empty sky (negative margin below), and the
+     question is an annotation anchored to the painted dome boundary:
+     marker on the rim → hairline → question → cue. Everything after
+     the title is positioned in percentages of the stage, and the
+     stage matches the illustration's 3:2 frame exactly, so those
+     coordinates land on the same painted pixels at any size.
+     ========================================================= */
+  /* Every vertical relationship here is measured against the
+     ARTWORK'S VISIBLE PIXELS, not the PNG's box. Measured from the
+     asset's alpha channel: the painted illustration starts 17.25%
+     down the canvas and ends at 87.5%, so at any rendered size the
+     canvas carries 0.115 x its own width of empty sky above the
+     artwork and 0.0833 x below it. Those two constants are what the
+     title's overlap and the stage's height are derived from, so the
+     gaps below stay true at every viewport instead of drifting with
+     the invisible padding. */
+  .dy-hero__zt {
+    --zt-w: min(600px, 88%);
+    /* Empty canvas above the first painted pixel, as a share of width. */
+    --zt-sky: calc(var(--zt-w) * 0.115);
+    /* Gap from the headline down to the artwork's visible top edge. */
+    --zt-gap-top: 24px;
+    /* Gap from the artwork's visible bottom edge down to the question —
+       wide enough that the invitation reads as its own editorial beat
+       rather than as a caption hanging off the picture. */
+    --zt-gap-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    /* Starts the whole Feature below the left headline's own first
+       line, so "Understand the world that's arriving." establishes the
+       page and this reads as the story noticed next. The ceiling is
+       set by two things at once: the left column's own height (the
+       hero row must not grow) and the hero's bottom padding, which is
+       the space the invitation below the artwork sits in — .dy-hero
+       clips its overflow, so the invitation may not cross that edge.
+       Expressed in vh because that second ceiling is itself vertical
+       and closes up as the window gets shorter; this curve is tuned to
+       sit just inside both limits at every window height. */
+    padding-top: clamp(10px, calc(21vh - 146px), 66px);
+  }
+
+  /* =========================================================
+     THE ADAPTIVE CANVAS
+     The Feature's height is its content's height. Each later state
+     brings its own row, collapsed to nothing until that state opens
+     it — so Scene 1 keeps exactly the compact hero it has always had,
+     and a state that needs more room takes only what its own writing
+     asks for. Because these are flow rows inside the hero's own grid
+     column, the hero grows and the section below it simply moves down;
+     nothing is ever positioned over it.
+     ========================================================= */
+  .dy-hero__zt-tail {
+    display: grid;
+    /* Spans the column even where the Feature centres its children,
+       so the writing wraps against the picture's width rather than
+       shrink-wrapping to a narrow box of its own. */
+    width: 100%;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 640ms cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+
+  .dy-hero__zt-tail-in {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* The canvas opens just before the writing that needs it arrives, so
+     the space is never empty for long and never larger than the story.
+     Each state opens only its own row. */
+  .dy-hero__zt.is-s2 .dy-hero__zt-tail--copy {
+    grid-template-rows: 1fr;
+    transition-delay: 2500ms;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-tail--next {
+    grid-template-rows: 1fr;
+    transition-delay: 4160ms;
+  }
+
+  /* Each scene consumes the invitation that led to it, so the canvas
+     gives that room back rather than leaving a hole where it was. */
+  .dy-hero__zt.is-s3 .dy-hero__zt-tail--next {
+    grid-template-rows: 0fr;
+    transition-delay: 700ms;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-tail--onward {
+    grid-template-rows: 1fr;
+    transition-delay: 4840ms;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-tail--onward {
+    grid-template-rows: 0fr;
+    transition-delay: 700ms;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-tail--find {
+    grid-template-rows: 1fr;
+    transition-delay: 5200ms;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-tail--find {
+    grid-template-rows: 0fr;
+    transition-delay: 700ms;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-tail--idea {
+    grid-template-rows: 1fr;
+    transition-delay: 11700ms;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-tail--idea {
+    grid-template-rows: 0fr;
+    transition-delay: 700ms;
+  }
+
+  /* The epilogue takes back the room the invitation before it gave up,
+     so the section below never sits lower than it already did while
+     the story was running. */
+  .dy-hero__zt.is-s6 .dy-hero__zt-tail--again {
+    grid-template-rows: 1fr;
+    transition-delay: 17500ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-tail {
+      transition: none;
+    }
+  }
+
+  /* Shares the illustration's own box, so the title's left edge sits
+     on the artwork's left visual axis (the painted content runs the
+     full canvas width — measured 0.3% to 99.7% — so the box edge IS
+     the visual edge here). It belongs to the whole
+     outside → firewall → dome composition, not to the dome alone. */
+  .dy-hero__zt-title {
+    width: var(--zt-w);
+    /* Sits --zt-gap-top above the artwork's first visible pixel: the
+       overlap cancels exactly the transparent sky beneath it. */
+    margin: 0 0 calc(var(--zt-gap-top) - var(--zt-sky)) auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Side-by-side only: the title moves off its flow position into the
+     artwork's own empty upper-left sky — the open area above the
+     threat cloud and left of the dome. Done with relative offsets, so
+     nothing else in the composition shifts: the illustration and the
+     invitation keep the exact positions they had. Both offsets are
+     fractions of the illustration's width, so the title lands on the
+     same painted region at every desktop size.
+
+     The drop is padding rather than a `top` offset on purpose: --zt-w
+     carries a percentage, and a percentage in `top` resolves against
+     the container's height — which is auto here, so it comes out as
+     zero. Padding percentages resolve against WIDTH, like every other
+     measurement in this composition, and the same amount is taken back
+     out of the margin below so the flow is unchanged and the
+     illustration and invitation stay exactly where they were. */
+  @media (min-width: 1320px) {
+    .dy-hero__zt-title {
+      left: calc(var(--zt-w) * 0.051);
+      padding-top: calc(var(--zt-w) * 0.145);
+      margin-bottom: calc(var(--zt-gap-top) - var(--zt-sky) - var(--zt-w) * 0.145);
+    }
+  }
+
+  /* "Zero Trust" carries the hierarchy — larger, heavier — while the
+     completing clause reads as a quieter continuation, the reverse of
+     the left title's own emphasis pattern (there the SECOND line gets
+     the colour accent); here the FIRST word pair does, in weight
+     rather than colour. Both sizes stay well under the left hero's
+     72px ceiling so it never competes as a second homepage headline. */
+  .dy-hero__zt-title-lead {
+    display: block;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 620;
+    font-size: clamp(24px, 2.4vw, 30px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+
+  .dy-hero__zt-title-swap {
+    display: block;
+    position: relative;
+  }
+
+  .dy-hero__zt-title-was {
+    display: block;
+  }
+
+  /* Out of flow, so it contributes nothing to the title's height. */
+  .dy-hero__zt-title-now {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-title-rest {
+    display: block;
+    margin-top: 2px;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+    font-weight: 450;
+    font-size: clamp(16px, 1.7vw, 20.5px);
+    line-height: 1.2;
+    letter-spacing: -0.016em;
+  }
+
+  /* The illustration, large enough that outside → firewall → inside
+     is inspectable at a glance. Its own transparency is what lets it
+     sit directly on the page, so nothing here draws a card, panel or
+     border behind it. */
+  /* The stage box ends where the ARTWORK ends, not where the PNG
+     does: 87.5% of the image's own 3:2 height (0.875 x 2/3 = 0.5833
+     of the width). The image itself still renders at full size and
+     simply overflows the box with its transparent lower band, so
+     nothing is cropped, scaled or moved — but "100%" of this box now
+     means the artwork's real bottom edge, which is what the question
+     below is spaced against. */
+  .dy-hero__zt-stage {
+    position: relative;
+    width: var(--zt-w);
+    margin-left: auto;
+    aspect-ratio: 600 / 350;
+  }
+
+  /* Overflows its box with the transparent lower band, so it must not
+     swallow pointer events meant for the invitation sitting there. */
+  .dy-hero__zt-stage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+
+  /* Question + invitation as one control, sitting under the lower-right
+     of the artwork. Because the stage box above ends at the artwork's
+     VISIBLE bottom, this margin is a real perceptual gap, not a gap to
+     the PNG's transparent edge. No pill, border, card or background —
+     it's type, and the whole thing is the link. */
+  /* Hung off the stage rather than stacked in flow: the stage box ends
+     at the artwork's visible bottom, so "100%" here is the painted
+     edge — and because it doesn't add to the column's height, the hero
+     row keeps the height the left column sets for it. */
+  .dy-hero__zt-callout {
+    position: absolute;
+    right: 0;
+    top: calc(100% + var(--zt-gap-bottom));
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 9px;
+    text-align: right;
+    cursor: pointer;
+  }
+
+  /* A question is not a revelation. The serif is reserved for the
+     sentences the visitor should carry away; everything that sets up,
+     explains or asks is the page's own sans at ordinary weight, so the
+     three roles stay legible as roles rather than as sizes. */
+  .dy-hero__zt-question {
+    max-width: 74%;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: clamp(14px, 1.4vw, 15.5px);
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  /* The word the question turns on, picked out in the site's cobalt
+     the same way "arriving." is on the left hero. */
+  .dy-hero__zt-question-em {
+    color: var(--cobalt);
+  }
+
+  /* The invitation: the question raises the curiosity, this says there
+     is somewhere to go. Same sans as the question it belongs to, so
+     the two read as one thought — but in DekhoYahan blue at a heavier
+     weight, and carrying the exact saffron circular-arrow used by the
+     Explore CTA and the discovery cards. That is enough to be
+     recognised as an action without becoming a button. */
+  .dy-hero__zt-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cobalt);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 15.5px);
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .dy-hero__zt-cue-arrow {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 160ms ease;
+  }
+
+  /* Restrained hover: the arrow takes the same 2px step it does
+     everywhere else on the site, and the question warms toward the
+     link colour. Nothing else moves. */
+  .dy-hero__zt-callout:hover .dy-hero__zt-cue-arrow,
+  .dy-hero__zt-callout:focus-visible .dy-hero__zt-cue-arrow {
+    transform: translateX(2px);
+  }
+
+  .dy-hero__zt-question {
+    transition: color 160ms ease;
+  }
+
+  .dy-hero__zt-callout:hover .dy-hero__zt-question,
+  .dy-hero__zt-callout:focus-visible .dy-hero__zt-question {
+    color: var(--cobalt);
+  }
+
+  .dy-hero__zt-callout:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 8px;
+    border-radius: 2px;
+  }
+
+  /* =========================================================
+     SCENE 2 — the boundary inside the boundary
+     Everything here lives inside the same stage box Scene 1 uses, so
+     the hero's height, the section below it and the left column are
+     untouched by the transition.
+     ========================================================= */
+
+  /* The protected inside settles back — far enough to stop competing,
+     not so far that the visitor loses the system they were looking at.
+     The layer above keeps the outside and the firewall at full
+     strength, so the picture still reads as the same one. */
+  .dy-hero__zt-art,
+  .dy-hero__zt-art-keep {
+    transition: opacity 760ms cubic-bezier(0.3, 0.7, 0.3, 1) 120ms;
+  }
+
+  .dy-hero__zt-art-keep {
+    opacity: 0;
+    /* Full strength through the globe and the firewall (which end at
+       47% of the artwork's width), then handed back to the settled
+       layer across the dome's own left rim. */
+    -webkit-mask-image: linear-gradient(to right, #000 0 44%, transparent 62%);
+    mask-image: linear-gradient(to right, #000 0 44%, transparent 62%);
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-art {
+    opacity: 0.52;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-art-keep {
+    opacity: 1;
+  }
+
+  /* Scene 1's invitation leaves first, in place, before anything is
+     drawn — the visitor's own question is what the scene answers. */
+  .dy-hero__zt.is-s2 [data-zt-open] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 260ms ease;
+  }
+
+  /* The overlay carries the illustration's own 3:2 frame rather than
+     the stage's cropped box, so a percentage here is a percentage of
+     the picture. It never takes pointer events. */
+  .dy-hero__zt-s2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+  }
+
+  /* Beat 2: attention is walked to the space immediately behind the
+     firewall before anything is drawn there — a soft breath of the
+     page's own paper over everything else, which then lifts. No
+     marker, no outline, nothing left behind. */
+  .dy-hero__zt-s2-focus {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 22% 28% at 56% 65%,
+      rgba(248, 245, 239, 0) 52%,
+      rgba(248, 245, 239, 0.62) 100%
+    );
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s2-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+
+  /* The intermediate ground: a strip of the dome's own floor, lifted
+     just enough to read as its own place. Its edges are chords of the
+     base ellipse, so it lies in the scene's perspective instead of
+     floating over it. */
+  .dy-hero__zt-s2-zone {
+    fill: rgba(248, 245, 239, 0.52);
+    opacity: 0;
+  }
+
+  /* The second boundary: a pane of the same translucent material the
+     original dome is made of, standing across the scene where that
+     ground strip ends — so what separates the services from the
+     deeper systems belongs to the same world as the first boundary. */
+  .dy-hero__zt-s2-wall {
+    fill: rgba(36, 92, 255, 0.22);
+    opacity: 0;
+  }
+
+  /* Its leading edge, drawn rather than faded — this is the moment the
+     visitor is meant to catch. pathLength normalises it to 1 so a
+     single dash draws the whole line in. */
+  .dy-hero__zt-s2-edge {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  /* A breath of light carried under the line, the same way the site's
+     other hairlines sit over imagery: it keeps the boundary readable
+     across the bright parts of the illustration without thickening it
+     or fencing the zone off with a fill. */
+  .dy-hero__zt-s2-edge--halo {
+    stroke: #fff;
+    stroke-width: 1.3;
+    stroke-opacity: 0.62;
+  }
+
+  .dy-hero__zt-s2-edge--line {
+    stroke: var(--cobalt);
+    stroke-width: 0.46;
+    stroke-opacity: 0.95;
+  }
+
+  .dy-hero__zt-s2-nodes,
+  .dy-hero__zt-s2-label {
+    position: absolute;
+    margin: 0;
+  }
+
+  /* Standing on the intermediate ground, between the firewall and the
+     new wall — centred on that strip, so the two services stay inside
+     it at any stage width. */
+  .dy-hero__zt-s2-nodes {
+    left: 57%;
+    top: 60%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+
+  /* Small paper chips rather than boxes on a diagram: they carry their
+     own ground so they read against the settled illustration, with no
+     border or shadow to make the scene look like network topology. */
+  .dy-hero__zt-s2-chip {
+    padding: 0.42em 0.6em;
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: clamp(9.5px, 1vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    line-height: 1.1;
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  /* Metadata, not a headline: the smallest type in the scene, sitting
+     quietly under what it names. */
+  .dy-hero__zt-s2-label {
+    left: 57%;
+    top: 70.5%;
+    transform: translateX(-50%);
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(9px, 0.95vw, 10.5px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    opacity: 0;
+  }
+
+  /* The writing takes the slot the visitor was already reading, below
+     the picture — so Scene 2 puts nothing on top of the illustration
+     it is asking them to look at. Same geometry as Scene 1's
+     invitation, so the hero's height is unaffected. */
+  /* The realisations sit in flow directly under the picture, hard
+     against its right edge, so they read as the conclusion reached on
+     the internal side rather than a caption centred beneath it. The
+     stage box ends at the artwork’s deepest painted pixel (87.6% of
+     the canvas, under the dome’s base), so this margin is a real
+     measured gap. */
+  .dy-hero__zt-copies {
+    display: grid;
+    margin-top: 12px;
+  }
+
+  .dy-hero__zt-s2-copy,
+  .dy-hero__zt-s3-copy,
+  .dy-hero__zt-s4-copy,
+  .dy-hero__zt-s5-copy,
+  .dy-hero__zt-s6-copy {
+    grid-area: 1 / 1;
+    width: 100%;
+    text-align: right;
+    pointer-events: none;
+  }
+
+  /* One rule for the whole Feature's writing. The revelation — the
+     sentence the scene exists to earn — is set in the serif the story
+     is told in. Everything that explains, names or invites is set in
+     the sans the rest of the page already uses for that job. Nothing
+     here is italic: these are sentences to read at normal homepage
+     size, not asides. */
+  .dy-hero__zt-s2-lead,
+  .dy-hero__zt-s2-close {
+    margin: 0 0 0 auto;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s2-lead {
+    font-family: var(--serif);
+    letter-spacing: -0.012em;
+  }
+
+  .dy-hero__zt-s2-lead {
+    max-width: 66%;
+    color: var(--ink);
+    font-weight: 550;
+    font-size: clamp(16px, 1.7vw, 19.5px);
+    line-height: 1.24;
+  }
+
+  /* The word the whole scene turned on, in the same cobalt Scene 1
+     used to ask about it. */
+  .dy-hero__zt-s2-em {
+    color: var(--cobalt);
+  }
+
+  .dy-hero__zt-s2-close {
+    margin-top: 7px;
+    max-width: 82%;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: clamp(12.5px, 1.25vw, 13.5px);
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  /* Pacing: the picture explains itself first, and in the order the
+     idea has to land. Attention moves to the ground immediately past
+     the firewall, that ground separates out, the two services resolve
+     standing on it, it gets its quiet name — and only then does the
+     second boundary rise between them and everything deeper in. That
+     is the moment of the scene, so nothing is written until it has
+     happened. Click to settled reads in about 3.7s. */
+  @keyframes dy-s2-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes dy-s2-fade-x {
+    from {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes dy-s2-focus {
+    0% {
+      opacity: 0;
+    }
+    38% {
+      opacity: 1;
+    }
+    62% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes dy-s2-draw {
+    from {
+      opacity: 0;
+      stroke-dashoffset: 1;
+    }
+    16% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes dy-s2-in {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* translateX is already carrying these two onto the boundary's axis,
+     so their entrance keeps it rather than resetting it. */
+  @keyframes dy-s2-in-x {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 5px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-focus {
+    animation: dy-s2-focus 1000ms ease 300ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-zone {
+    animation: dy-s2-fade 520ms ease 900ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-chip--web {
+    animation: dy-s2-in 340ms ease 1350ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-chip--mail {
+    animation: dy-s2-in 340ms ease 1480ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-label {
+    animation: dy-s2-in-x 340ms ease 1720ms both;
+  }
+
+  /* The reveal: the wall's material settles in as its leading edge
+     draws down through the scene. */
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-wall {
+    animation: dy-s2-fade 640ms ease 2100ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-edge {
+    animation: dy-s2-draw 840ms cubic-bezier(0.3, 0.7, 0.3, 1) 2060ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-copy .dy-hero__zt-s2-lead {
+    animation: dy-s2-in 440ms ease 3020ms both;
+  }
+
+  .dy-hero__zt.is-s2 .dy-hero__zt-s2-copy .dy-hero__zt-s2-close {
+    animation: dy-s2-in 440ms ease 3460ms both;
+  }
+
+  /* The continuation arrives once the realisation has had a moment to
+     land — a separate beat, not part of the reveal. */
+  .dy-hero__zt.is-s2 .dy-hero__zt-deeper {
+    animation: dy-s2-in 440ms ease 4320ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-onward {
+    animation: dy-s2-in 440ms ease 5000ms both;
+  }
+
+  /* Reduced motion: the same sequence, the same order, but nothing
+     draws or travels — each part simply becomes present. */
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-s2-edge {
+      stroke-dashoffset: 0;
+    }
+
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-edge,
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-chip--web,
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-chip--mail,
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-copy .dy-hero__zt-s2-lead,
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-copy .dy-hero__zt-s2-close {
+      animation-name: dy-s2-fade;
+      animation-duration: 220ms;
+    }
+
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-label {
+      animation-name: dy-s2-fade-x;
+      animation-duration: 220ms;
+    }
+
+    /* The attention pass is motion for its own sake; without it the
+       boundary simply appears where it belongs. */
+    .dy-hero__zt.is-s2 .dy-hero__zt-s2-focus {
+      animation: none;
+      opacity: 0;
+    }
+
+    .dy-hero__zt-art,
+    .dy-hero__zt-art-keep {
+      transition-duration: 220ms;
+      transition-delay: 0ms;
+    }
+  }
+
+  /* =========================================================
+     SCENE 3 — the deeper inside divides again
+     Same stage box, same ground plane, same boundary language as
+     Scene 2. Nothing here contributes layout, so the hero's height,
+     the section below it and the left column are untouched.
+     ========================================================= */
+
+  /* Scene 2's continuation: an ordinary block in the flow, below the
+     realisation it follows from and aligned to the same right edge, so
+     the eye carries on through the second boundary instead of turning
+     back toward the globe. Same control as Scene 1's invitation — the
+     whole thing is the link, and nothing about it is a card or a
+     button. The space above it is the beat between understanding and
+     acting. */
+  .dy-hero__zt-deeper {
+    position: static;
+    width: 100%;
+    margin-top: 26px;
+    align-items: flex-end;
+    text-align: right;
+    gap: 7px;
+    opacity: 0;
+  }
+
+  /* Quieter than the realisation above it, but plainly readable — the
+     next thought, not a second conclusion. */
+  .dy-hero__zt-deeper .dy-hero__zt-question {
+    max-width: 76%;
+    color: var(--ink-soft);
+    font-size: clamp(13px, 1.3vw, 14.5px);
+  }
+
+  /* Through the wall: the outside, the firewall and the DMZ step back
+     under a breath of the page's own paper. They stay legible — they
+     are where the visitor has just been — while the ground beyond the
+     boundary comes forward. */
+  .dy-hero__zt-s3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+  }
+
+  .dy-hero__zt-s3-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(248, 245, 239, 0.44) 0 38%,
+      rgba(248, 245, 239, 0) 62%
+    );
+    opacity: 0;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-art {
+    opacity: 0.78;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-art-keep {
+    opacity: 0;
+  }
+
+  /* What the visitor already found stays on the page, quieter. */
+  .dy-hero__zt.is-s3 .dy-hero__zt-s2-chip,
+  .dy-hero__zt.is-s3 .dy-hero__zt-s2-label,
+  .dy-hero__zt.is-s3 .dy-hero__zt-s2-zone {
+    opacity: 0.5;
+    transition: opacity 700ms ease 260ms;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-onward,
+  .dy-hero__zt.is-s3 .dy-hero__zt-s2-copy,
+  .dy-hero__zt.is-s3 .dy-hero__zt-deeper {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .dy-hero__zt-s3-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+
+  /* One area first: the ground past the boundary, shown whole, so what
+     happens next is visibly a division of something that was single. */
+  .dy-hero__zt-s3-whole {
+    fill: rgba(248, 245, 239, 0.4);
+    opacity: 0;
+  }
+
+  /* Then the same ground as separate places — differently tinted, so
+     they read as areas under their own control rather than as one
+     floor with lines ruled across it. */
+  .dy-hero__zt-s3-plot {
+    stroke: var(--cobalt);
+    stroke-width: 0.22;
+    stroke-opacity: 0.5;
+    stroke-linejoin: round;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s3-plot--a {
+    fill: rgba(248, 245, 239, 0.38);
+  }
+
+  .dy-hero__zt-s3-plot--b {
+    fill: rgba(36, 92, 255, 0.17);
+  }
+
+  .dy-hero__zt-s3-plot--c {
+    fill: rgba(248, 245, 239, 0.34);
+  }
+
+  /* The separations themselves, in the second boundary's own hairline
+     language but thinner — smaller boundaries, of the same kind. */
+  .dy-hero__zt-s3-cut {
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s3-cut--halo {
+    stroke: #fff;
+    stroke-width: 1.05;
+    stroke-opacity: 0.6;
+  }
+
+  .dy-hero__zt-s3-cut--line {
+    stroke: var(--cobalt);
+    stroke-width: 0.4;
+    stroke-opacity: 0.92;
+  }
+
+  /* Named only after the division is visible, and named the way the
+     site writes anything else: sentence case in the UI sans, small
+     enough to stay well under the realisation below but set to be read
+     at arm's length rather than squinted at. The illustration behind
+     them is detailed, so each word sits on a small near-white ground
+     of its own — no border, no shadow, no glow. Quiet, but readable
+     first: a word you have to hunt for is not a label. */
+  .dy-hero__zt-s3-tag {
+    position: absolute;
+    margin: 0;
+    transform: translateX(-50%);
+    padding: 0.34em 0.46em;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: clamp(9px, 0.95vw, 10.5px);
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    line-height: 1.1;
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  /* Upper segment: set back from the tapering right end, clear of the
+     ground arc above and the separation below. */
+  .dy-hero__zt-s3-tag--a {
+    left: 82%;
+    top: 55.5%;
+  }
+
+  .dy-hero__zt-s3-tag--b {
+    left: 77.83%;
+    top: 71.5%;
+  }
+
+  /* The longest word in the smallest segment: sat well inside it, away
+     from the separation on its left and the dome's own edge on its
+     right. */
+  .dy-hero__zt-s3-tag--c {
+    left: 89.3%;
+    top: 68%;
+  }
+
+
+
+  /* Pacing: the ground past the boundary appears whole, holds for a
+     beat, then divides — and only once it has divided does anything
+     get a name. Click to segmented reads in about 2.9s, with the
+     writing following it. */
+  @keyframes dy-s3-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 4px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-veil {
+    animation: dy-s2-fade 800ms ease 300ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-cut--one {
+    animation: dy-s2-draw 620ms cubic-bezier(0.3, 0.7, 0.3, 1) 1480ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-cut--two {
+    animation: dy-s2-draw 560ms cubic-bezier(0.3, 0.7, 0.3, 1) 1900ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-whole {
+    animation: dy-s2-fade 520ms ease 880ms both, dy-s3-out 420ms ease 2140ms both;
+  }
+
+  @keyframes dy-s3-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-plot {
+    animation: dy-s2-fade 520ms ease 2140ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--a {
+    animation: dy-s3-in 320ms ease 2600ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--b {
+    animation: dy-s3-in 320ms ease 2720ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--c {
+    animation: dy-s3-in 320ms ease 2840ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-copy .dy-hero__zt-s2-lead {
+    animation: dy-s2-in 440ms ease 3500ms both;
+  }
+
+  .dy-hero__zt.is-s3 .dy-hero__zt-s3-copy .dy-hero__zt-s2-close {
+    animation: dy-s2-in 440ms ease 3940ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-s3-cut {
+      stroke-dashoffset: 0;
+    }
+
+    .dy-hero__zt.is-s2 .dy-hero__zt-deeper,
+    .dy-hero__zt.is-s3 .dy-hero__zt-onward,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-cut--one,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-cut--two,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-copy .dy-hero__zt-s2-lead,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-copy .dy-hero__zt-s2-close {
+      animation-name: dy-s2-fade;
+      animation-duration: 220ms;
+    }
+
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--a,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--b,
+    .dy-hero__zt.is-s3 .dy-hero__zt-s3-tag--c {
+      animation-name: dy-s2-fade-x;
+      animation-duration: 220ms;
+    }
+  }
+
+  /* =========================================================
+     SCENE 4 — the company stopped fitting inside the boundary
+     The dome is not broken, cracked or removed: it stays exactly as
+     the visitor found it. What changes is what is standing outside it.
+     ========================================================= */
+
+  /* The threat side steps further back — Scene 4 is not about anyone
+     getting through the firewall — while the dome's edge and the space
+     beyond it come forward. It is quieted, never erased. */
+  .dy-hero__zt-s4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+  }
+
+  .dy-hero__zt-s4-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(248, 245, 239, 0.34) 0 24%,
+      rgba(248, 245, 239, 0) 42%
+    );
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s4-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+
+  /* Drawn in the same hairline language as everything else the visitor
+     has been shown, and in the illustration's own blue — these are
+     ordinary, allowed relationships, not attacks. */
+  .dy-hero__zt-s4-mark path {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-width: 0.42;
+    stroke-opacity: 0.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dy-hero__zt-s4-mark {
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s4-link {
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  /* The gradients carry the opacity, so the stroke itself only sets
+     weight. The white underlay is there for the stretch that runs over
+     the illustration and fades out at both ends, where it would only
+     be a pale line on empty paper. */
+  .dy-hero__zt-s4-stop--halo {
+    stop-color: #fff;
+  }
+
+  .dy-hero__zt-s4-stop--line {
+    stop-color: var(--cobalt);
+  }
+
+  .dy-hero__zt-s4-link--halo {
+    stroke-width: 1.1;
+  }
+
+  .dy-hero__zt-s4-link--line {
+    stroke-width: 0.36;
+  }
+
+  .dy-hero__zt-s4-link--halo.dy-hero__zt-s4-link--worker {
+    stroke: url(#dyZtHaloWorker);
+  }
+
+  .dy-hero__zt-s4-link--line.dy-hero__zt-s4-link--worker {
+    stroke: url(#dyZtLineWorker);
+  }
+
+  .dy-hero__zt-s4-link--halo.dy-hero__zt-s4-link--saas {
+    stroke: url(#dyZtHaloSaas);
+  }
+
+  .dy-hero__zt-s4-link--line.dy-hero__zt-s4-link--saas {
+    stroke: url(#dyZtLineSaas);
+  }
+
+  .dy-hero__zt-s4-link--halo.dy-hero__zt-s4-link--cloud {
+    stroke: url(#dyZtHaloCloud);
+  }
+
+  .dy-hero__zt-s4-link--line.dy-hero__zt-s4-link--cloud {
+    stroke: url(#dyZtLineCloud);
+  }
+
+  /* Outside the old outline the sky is empty paper, so these names need
+     no ground of their own. They sit beside the thing they name, on its
+     own line — a name belonging to a small drawn object, not a chip
+     hovering at the end of a leader. */
+  .dy-hero__zt-s4-tag {
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--ink);
+    font-size: clamp(11px, 1.1vw, 12.5px);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.2;
+    transform: translateY(-50%);
+    /* Insurance only: the paper behind them, in case a name ever
+       reaches the artwork at a width we have not measured. */
+    text-shadow:
+      0 0 3px var(--cream),
+      0 0 7px var(--cream);
+  }
+
+  /* Each name takes the side its own object leaves open — the worker's
+     and the cloud's to their left, the app's to its right — and sits on
+     the object's centre line rather than above it. */
+  .dy-hero__zt-s4-tag--worker {
+    left: auto;
+    right: 50.7%;
+    top: 11.6%;
+  }
+
+  .dy-hero__zt-s4-tag--saas {
+    left: 69.7%;
+    top: 10%;
+  }
+
+  .dy-hero__zt-s4-tag--cloud {
+    left: auto;
+    right: 13.9%;
+    top: 11.2%;
+  }
+
+  /* The setup line: the quietest thing in the state — same sans as the
+     question, a step smaller and softer, so the question it introduces
+     is plainly the more prominent of the two. */
+  .dy-hero__zt-setup {
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(12px, 1.15vw, 13px);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .dy-hero__zt-onward {
+    position: static;
+    width: 100%;
+    margin-top: 26px;
+    align-items: flex-end;
+    text-align: right;
+    gap: 4px;
+  }
+
+  .dy-hero__zt-onward .dy-hero__zt-question {
+    max-width: 82%;
+    color: var(--ink);
+    font-size: clamp(14px, 1.4vw, 15.5px);
+  }
+
+  .dy-hero__zt-onward .dy-hero__zt-cue {
+    margin-top: 4px;
+  }
+
+  .dy-hero__zt-onward {
+    opacity: 0;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-veil {
+    animation: dy-s2-fade 800ms ease 260ms both;
+  }
+
+  /* One at a time, each with its connection drawn after it arrives, so
+     the visitor sees a thing appear outside and then watches the line
+     cross the old boundary. */
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-mark--worker {
+    animation: dy-s2-fade 420ms ease 800ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--worker {
+    animation: dy-s2-draw 620ms cubic-bezier(0.3, 0.7, 0.3, 1) 1100ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--worker {
+    animation: dy-s4-tag-in 340ms ease 1400ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-mark--saas {
+    animation: dy-s2-fade 420ms ease 1750ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--saas {
+    animation: dy-s2-draw 560ms cubic-bezier(0.3, 0.7, 0.3, 1) 2000ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--saas {
+    animation: dy-s4-tag-in 340ms ease 2250ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-mark--cloud {
+    animation: dy-s2-fade 420ms ease 2600ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--cloud {
+    animation: dy-s2-draw 560ms cubic-bezier(0.3, 0.7, 0.3, 1) 2850ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--cloud {
+    animation: dy-s4-tag-in 340ms ease 3100ms both;
+  }
+
+  /* These names are centred on their object rather than on themselves,
+     so their entrance keeps that centring instead of resetting it. */
+  @keyframes dy-s4-tag-in {
+    from {
+      opacity: 0;
+      transform: translateY(calc(-50% + 4px));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes dy-s4-tag-fade {
+    from {
+      opacity: 0;
+      transform: translateY(-50%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* The writing waits until all three are standing there with their
+     connections drawn — it names what has already been noticed. */
+  .dy-hero__zt.is-s4 .dy-hero__zt-s3-copy {
+    opacity: 0;
+    transition: opacity 400ms ease 3400ms;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-copy .dy-hero__zt-s2-lead {
+    animation: dy-s2-in 440ms ease 3700ms both;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-s4-copy .dy-hero__zt-s2-close {
+    animation: dy-s2-in 440ms ease 4150ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-s4-link {
+      stroke-dashoffset: 0;
+    }
+
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--worker,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--saas,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-link--cloud,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-copy .dy-hero__zt-s2-lead,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-copy .dy-hero__zt-s2-close {
+      animation-name: dy-s2-fade;
+      animation-duration: 220ms;
+    }
+
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--worker,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--saas,
+    .dy-hero__zt.is-s4 .dy-hero__zt-s4-tag--cloud {
+      animation-name: dy-s4-tag-fade;
+      animation-duration: 220ms;
+    }
+  }
+
+  /* =========================================================
+     SCENE 5 — being inside stops making the decision
+     Everything the visitor has been shown steps back to a ghost, and
+     one clean boundary is drawn where the dome always stood, so
+     "inside" and "outside" keep the meaning they were given. Then two
+     people ask for the same thing and only one of them is inside.
+     ========================================================= */
+
+  /* The historical detail is not deleted — it is put behind glass, so
+     the visitor can still see this is the same place. */
+  .dy-hero__zt.is-s5 .dy-hero__zt-art {
+    opacity: 0.075;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s2,
+  .dy-hero__zt.is-s5 .dy-hero__zt-s3,
+  .dy-hero__zt.is-s5 .dy-hero__zt-s4 {
+    opacity: 0;
+    transition: opacity 760ms ease 120ms;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-find {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .dy-hero__zt-find {
+    position: static;
+    width: 100%;
+    margin-top: 26px;
+    align-items: flex-end;
+    text-align: right;
+    gap: 7px;
+    opacity: 0;
+  }
+
+  .dy-hero__zt.is-s4 .dy-hero__zt-find {
+    animation: dy-s2-in 440ms ease 5400ms both;
+  }
+
+  .dy-hero__zt-s5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+  }
+
+  .dy-hero__zt-s5-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+
+  /* The boundary itself — the only line in the scene that is not about
+     a person or a request. */
+  .dy-hero__zt-s5-dome {
+    stroke: var(--cobalt);
+    stroke-width: 0.5;
+    stroke-opacity: 0.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s5-mark path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 0.42;
+    stroke-opacity: 0.78;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The destination is the one thing here that belongs to the company,
+     so it carries the company's colour. */
+  .dy-hero__zt-s5-mark--vault path {
+    stroke: var(--cobalt);
+    stroke-opacity: 0.85;
+  }
+
+  .dy-hero__zt-s5-mark {
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s5-ask {
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s5-ask--halo {
+    stroke: var(--cream);
+    stroke-width: 1;
+    stroke-opacity: 0.85;
+  }
+
+  .dy-hero__zt-s5-ask--line {
+    stroke: var(--cobalt);
+    stroke-width: 0.34;
+    stroke-opacity: 0.8;
+  }
+
+  .dy-hero__zt-s5-verdict {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s5-verdict--open {
+    stroke: var(--cobalt);
+    stroke-width: 0.75;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .dy-hero__zt-s5-verdict--stop path {
+    stroke: var(--ink);
+    stroke-width: 0.7;
+    stroke-opacity: 0.85;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  /* All of Scene 5's writing sits on nearly blank paper, so none of it
+     needs a ground of its own. The same three roles as everywhere
+     else: the names and the outcome are what to notice, what each
+     request answered is quieter, and the questions quieter still. */
+  .dy-hero__zt-s5-name,
+  .dy-hero__zt-s5-said,
+  .dy-hero__zt-s5-ques,
+  .dy-hero__zt-s5-out,
+  .dy-hero__zt-s6-name,
+  .dy-hero__zt-s6-ques,
+  .dy-hero__zt-s6-out {
+    position: absolute;
+    margin: 0;
+    font-family: var(--sans);
+    letter-spacing: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    opacity: 0;
+    text-shadow:
+      0 0 3px var(--cream),
+      0 0 7px var(--cream);
+  }
+
+  .dy-hero__zt-s5-name,
+  .dy-hero__zt-s6-name {
+    color: var(--ink);
+    font-size: clamp(11px, 1.1vw, 12.5px);
+    font-weight: 600;
+  }
+
+  .dy-hero__zt-s5-said {
+    color: var(--ink-soft);
+    font-size: clamp(10.5px, 1.05vw, 12px);
+    font-weight: 400;
+  }
+
+  .dy-hero__zt-s5-ques,
+  .dy-hero__zt-s6-ques {
+    color: var(--ink-soft);
+    font-size: clamp(11px, 1.1vw, 12.5px);
+    font-weight: 400;
+  }
+
+  .dy-hero__zt-s5-ques {
+    left: 55%;
+    top: 81.5%;
+  }
+
+  .dy-hero__zt-s5-out,
+  .dy-hero__zt-s6-out {
+    font-size: clamp(11px, 1.1vw, 12.5px);
+    font-weight: 700;
+    letter-spacing: 0.055em;
+  }
+
+  /* The two small verdicts carried by each line of the comparison. The
+     tick is the company's own blue; the cross is plain ink rather than
+     an alarm colour — this is a request that did not go through, not an
+     attack. */
+  .dy-hero__zt-s5-tick {
+    color: var(--cobalt);
+    font-weight: 700;
+  }
+
+  .dy-hero__zt-s5-cross {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .dy-hero__zt-s5-out--open {
+    left: 87.5%;
+    top: 49.6%;
+    color: var(--cobalt);
+  }
+
+  .dy-hero__zt-s5-out--stop {
+    left: 77%;
+    top: 60.4%;
+    color: var(--ink);
+  }
+
+  .dy-hero__zt-s5-name--home {
+    left: 19.1%;
+    top: 39.5%;
+  }
+
+  .dy-hero__zt-s5-name--office {
+    left: 46%;
+    top: 62%;
+  }
+
+  .dy-hero__zt-s5-name--vault {
+    left: 72.8%;
+    top: 42.4%;
+  }
+
+  .dy-hero__zt-s5-said--h1 {
+    left: 19.1%;
+    top: 46.5%;
+  }
+
+  .dy-hero__zt-s5-said--h2 {
+    left: 19.1%;
+    top: 52.5%;
+  }
+
+  .dy-hero__zt-s5-said--o1 {
+    left: 46%;
+    top: 69%;
+  }
+
+  .dy-hero__zt-s5-said--o2 {
+    left: 46%;
+    top: 75%;
+  }
+
+  /* Pacing. The place is drawn, then the two people, then what each of
+     them is asking for — and then the scene stops for a moment with
+     both requests on the canvas and nothing said about either. That
+     pause is the point: the visitor gets to notice on their own that
+     one came from outside and one from inside, before anything
+     suggests that settles it. Only then do the questions start. Click
+     to the last word reads in about 11.3s. */
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-dome {
+    animation: dy-s2-draw 900ms cubic-bezier(0.3, 0.7, 0.3, 1) 420ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-mark--vault {
+    animation: dy-s2-fade 420ms ease 1200ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--vault {
+    animation: dy-s2-in 340ms ease 1450ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-mark--home {
+    animation: dy-s2-fade 420ms ease 1800ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--home {
+    animation: dy-s2-in 340ms ease 2050ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-mark--office {
+    animation: dy-s2-fade 420ms ease 2350ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--office {
+    animation: dy-s2-in 340ms ease 2600ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-ask--home {
+    animation: dy-s2-draw 800ms cubic-bezier(0.3, 0.7, 0.3, 1) 3000ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-ask--office {
+    animation: dy-s2-draw 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 3500ms both;
+  }
+
+  /* The pause: 4.2s to 4.6s, nothing arrives. */
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-ques--a {
+    animation: dy-s5-ques 1900ms ease 4600ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--h1,
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--o1 {
+    animation: dy-s2-in 340ms ease 5150ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-ques--b {
+    animation: dy-s5-ques 1900ms ease 6500ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--h2,
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--o2 {
+    animation: dy-s2-in 340ms ease 7050ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-verdict--open {
+    animation: dy-s2-draw 420ms ease 9000ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-out--open {
+    animation: dy-s2-in 340ms ease 9150ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-verdict--stop {
+    animation: dy-s2-fade 220ms ease 9700ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-verdict--stop path {
+    animation: dy-s2-draw 380ms ease 9700ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-out--stop {
+    animation: dy-s2-in 340ms ease 9850ms both;
+  }
+
+  /* The writing names what has already been seen. */
+  .dy-hero__zt.is-s5 .dy-hero__zt-s4-copy {
+    opacity: 0;
+    transition: opacity 400ms ease 10200ms;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-copy .dy-hero__zt-s2-lead {
+    animation: dy-s2-in 440ms ease 10500ms both;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-s5-copy .dy-hero__zt-s2-close {
+    animation: dy-s2-in 440ms ease 10950ms both;
+  }
+
+  @keyframes dy-s5-ques {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    18% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    82% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes dy-s5-ques-flat {
+    0% {
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    82% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-s5-dome,
+    .dy-hero__zt-s5-ask,
+    .dy-hero__zt-s5-verdict--open,
+    .dy-hero__zt-s5-verdict--stop path {
+      stroke-dashoffset: 0;
+    }
+
+    .dy-hero__zt.is-s4 .dy-hero__zt-find,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-dome,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-ask--home,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-ask--office,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-verdict--open,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-verdict--stop path,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--home,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--office,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-name--vault,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--h1,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--o1,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--h2,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-said--o2,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-out--open,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-out--stop,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-copy .dy-hero__zt-s2-lead,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-copy .dy-hero__zt-s2-close {
+      animation-name: dy-s2-fade;
+      animation-duration: 220ms;
+    }
+
+    /* The questions still take their turns — that sequence is the
+       teaching, not decoration — they simply stop travelling. */
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-ques--a,
+    .dy-hero__zt.is-s5 .dy-hero__zt-s5-ques--b {
+      animation-name: dy-s5-ques-flat;
+    }
+  }
+
+  /* =========================================================
+     SCENE 6 — the pattern, and the name
+     Nothing new is built here. What the visitor walked through is
+     redrawn as the one shape it always had, and then set aside so the
+     single request at the end of it can be seen on its own.
+     ========================================================= */
+
+  /* Scene 5's comparison does not vanish — it settles back into the
+     paper, so the pattern is visibly drawn over the thing it came
+     from rather than replacing it. */
+  .dy-hero__zt.is-s6 .dy-hero__zt-s5 {
+    opacity: 0;
+    transition: opacity 900ms ease 120ms;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-idea {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+
+  .dy-hero__zt-idea {
+    position: static;
+    width: 100%;
+    margin-top: 26px;
+    align-items: flex-end;
+    text-align: right;
+    gap: 7px;
+    opacity: 0;
+  }
+
+  .dy-hero__zt.is-s5 .dy-hero__zt-idea {
+    animation: dy-s2-in 440ms ease 11900ms both;
+  }
+
+  .dy-hero__zt-s6 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    pointer-events: none;
+  }
+
+  .dy-hero__zt-s6-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    fill: none;
+  }
+
+  /* Three boundaries, each drawn inside the last. They are the same
+     hairline in the same blue, at the same weight — the only thing
+     that changes between them is how much they enclose. */
+  .dy-hero__zt-s6-ring {
+    fill: none;
+    stroke: var(--cobalt);
+    stroke-width: 0.42;
+    stroke-opacity: 0.62;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s6-mark path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 0.42;
+    stroke-opacity: 0.78;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dy-hero__zt-s6-mark {
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s6-ask {
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s6-ask--halo {
+    stroke: var(--cream);
+    stroke-width: 1;
+    stroke-opacity: 0.85;
+  }
+
+  .dy-hero__zt-s6-ask--line {
+    stroke: var(--cobalt);
+    stroke-width: 0.34;
+    stroke-opacity: 0.8;
+  }
+
+  .dy-hero__zt-s6-yes {
+    stroke: var(--cobalt);
+    stroke-width: 0.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-s6-name--co {
+    left: 45.7%;
+    top: 38%;
+  }
+
+  .dy-hero__zt-s6-name--dmz {
+    left: 53.7%;
+    top: 45.5%;
+  }
+
+  .dy-hero__zt-s6-name--fin {
+    left: 61.7%;
+    top: 53%;
+  }
+
+  .dy-hero__zt-s6-ques {
+    left: 44%;
+    top: 81%;
+  }
+
+  .dy-hero__zt-s6-out {
+    left: 70%;
+    top: 58.4%;
+    color: var(--cobalt);
+  }
+
+  /* Pacing. Each boundary is given time to be understood as smaller
+     than the one before it, and each one quiets as the next arrives —
+     so what the visitor watches is one boundary shrinking, not three
+     boxes accumulating. Then all of it steps back and the request the
+     whole story was heading toward is left on its own. */
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--co {
+    animation: dy-s2-draw 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 400ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--co {
+    animation: dy-s2-in 340ms ease 650ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--dmz {
+    animation: dy-s2-draw 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 1690ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--dmz {
+    animation: dy-s2-in 340ms ease 1940ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--fin {
+    animation: dy-s2-draw 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 2980ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--fin {
+    animation: dy-s2-in 340ms ease 3230ms both;
+  }
+
+  /* The boundaries stop being the subject. This has to be an animation
+     rather than a plain opacity: the entrances above are filled `both`,
+     so anything not animated never gets a say. The keyframes hold the
+     drawn state so the rings do not spring back to undrawn. */
+  .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-ring--co,
+  .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-ring--dmz,
+  .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-name--co,
+  .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-name--dmz {
+    animation: dy-s6-hush-mid 700ms ease both;
+  }
+
+  .dy-hero__zt.is-s6-still .dy-hero__zt-s6-ring--co,
+  .dy-hero__zt.is-s6-still .dy-hero__zt-s6-ring--dmz,
+  .dy-hero__zt.is-s6-still .dy-hero__zt-s6-name--co,
+  .dy-hero__zt.is-s6-still .dy-hero__zt-s6-name--dmz {
+    animation: dy-s6-hush 700ms ease both;
+  }
+
+  @keyframes dy-s6-hush-mid {
+    from {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    to {
+      opacity: 0.32;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes dy-s6-hush {
+    from {
+      opacity: 0.32;
+      stroke-dashoffset: 0;
+    }
+    to {
+      opacity: 0.1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-mark {
+    animation: dy-s2-fade 420ms ease 4400ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ask {
+    animation: dy-s2-draw 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 4800ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--a {
+    animation: dy-s5-ques 1700ms ease 5900ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--b {
+    animation: dy-s5-ques 1700ms ease 7600ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--c {
+    animation: dy-s5-ques 1700ms ease 9300ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-yes {
+    animation: dy-s2-draw 460ms ease 11400ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-out {
+    animation: dy-s2-in 340ms ease 11600ms both;
+  }
+
+  /* Scene 5's realisation leaves, and then nothing is written for a
+     moment: the answered request is left holding the canvas on its own
+     before anything names what it means. */
+  .dy-hero__zt.is-s6 .dy-hero__zt-s5-copy {
+    opacity: 0;
+    transition: opacity 400ms ease 12100ms;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-copy--b .dy-hero__zt-s2-lead {
+    animation: dy-s2-in 440ms ease 13400ms both;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-s6-copy--b .dy-hero__zt-s2-close {
+    animation: dy-s2-in 440ms ease 14000ms both;
+  }
+
+  /* And last, the question the Feature opened with answers itself, in
+     the place it was asked. */
+  .dy-hero__zt.is-s6 .dy-hero__zt-title-was {
+    opacity: 0;
+    transition: opacity 700ms ease 15200ms;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-title-now {
+    opacity: 1;
+    transition: opacity 700ms ease 15800ms;
+  }
+
+  /* Long after the last word has landed. The same control language as
+     every other invitation in the Feature - the quiet sans line, the
+     blue action, the saffron circle - with the only difference being
+     the glyph inside the circle, which says this one goes back rather
+     than on. */
+  .dy-hero__zt-again {
+    position: static;
+    width: 100%;
+    margin-top: 22px;
+    align-items: flex-end;
+    text-align: right;
+    gap: 6px;
+    opacity: 0;
+  }
+
+  .dy-hero__zt-cue-arrow--loop {
+    font-size: 11.5px;
+    line-height: 1;
+  }
+
+  .dy-hero__zt.is-s6 .dy-hero__zt-again {
+    animation: dy-s2-in 440ms ease 17800ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-s6-ring,
+    .dy-hero__zt-s6-ask,
+    .dy-hero__zt-s6-yes {
+      stroke-dashoffset: 0;
+    }
+
+    .dy-hero__zt.is-s5 .dy-hero__zt-idea,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--co,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--dmz,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ring--fin,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--co,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--dmz,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-name--fin,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ask,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-yes,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-out,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-copy--b .dy-hero__zt-s2-lead,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-copy--b .dy-hero__zt-s2-close,
+    .dy-hero__zt.is-s6 .dy-hero__zt-again {
+      animation-name: dy-s2-fade;
+      animation-duration: 220ms;
+    }
+
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--a,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--b,
+    .dy-hero__zt.is-s6 .dy-hero__zt-s6-ques--c {
+      animation-name: dy-s5-ques-flat;
+    }
+
+    /* The quieting has to be restated after the list above, which would
+       otherwise hand these elements back their entrance and leave the
+       outer boundaries at full strength for the rest of the scene. */
+    .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-ring--co,
+    .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-ring--dmz,
+    .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-name--co,
+    .dy-hero__zt.is-s6-quiet .dy-hero__zt-s6-name--dmz {
+      animation: dy-s6-hush-mid 220ms ease both;
+    }
+
+    .dy-hero__zt.is-s6-still .dy-hero__zt-s6-ring--co,
+    .dy-hero__zt.is-s6-still .dy-hero__zt-s6-ring--dmz,
+    .dy-hero__zt.is-s6-still .dy-hero__zt-s6-name--co,
+    .dy-hero__zt.is-s6-still .dy-hero__zt-s6-name--dmz {
+      animation: dy-s6-hush 220ms ease both;
+    }
+  }
+
+  /* Motion for this pass stays to three quiet beats: the title settles,
+     then the illustration, then the annotation — a gentle entrance,
+     not a sequence. */
+  @keyframes dy-zt-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dy-hero__zt-title {
+    animation: dy-zt-in 640ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+  }
+
+  .dy-hero__zt-stage {
+    animation: dy-zt-in 700ms cubic-bezier(0.2, 0.7, 0.25, 1) 160ms both;
+  }
+
+  .dy-hero__zt-callout {
+    animation: dy-zt-in 560ms ease 620ms both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__zt-title,
+    .dy-hero__zt-stage,
+    .dy-hero__zt-callout {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .dy-hero__zt-cue-arrow,
+    .dy-hero__zt-question {
+      transition: none;
+    }
+  }
+@media (max-width: 1319px) {
+
+    /* Below this breakpoint the grid stacks to one column, so the
+       Zero Trust stage moves under the brand copy rather than sitting
+       beside it — recomposed for the narrower column rather than just
+       shrunk: centred instead of left/right-anchored, and the
+       illustration is allowed to grow since it no longer shares a row
+       with the brand. */
+    /* One width variable drives the title, the stage and the
+       title's overlap together, so the measured gaps above and below
+       the artwork hold at this size too. */
+    .dy-hero__zt {
+      --zt-w: min(520px, 90%);
+      --zt-gap-bottom: 18px;
+      align-items: center;
+      text-align: center;
+      /* Stacked, not side-by-side: the left hero already read first,
+         so the desktop drop that separates the two columns isn't
+         needed (and would just open a hole in the stack) — and here
+         the whole stack sits against the hero's clipping bottom edge,
+         so the room goes to the invitation instead. */
+      padding-top: clamp(8px, 1.6vh, 14px);
+      /* Stacked, nothing faces this column, so the hero's height comes
+         from its own content — this reserves the last few pixels the
+         hanging invitation needs so .dy-hero's overflow never clips it. */
+      padding-bottom: 14px;
+    }
+
+    .dy-hero__zt-title,
+    .dy-hero__zt-stage {
+      margin-inline: auto;
+    }
+
+    /* Centred stack: the invitation centres with everything else
+       rather than hanging off the artwork's lower right. */
+    .dy-hero__zt-callout {
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Stacked, the continuation centres with the rest of the stack;
+       it has real room here, so it keeps its normal reading size. */
+    .dy-hero__zt-deeper .dy-hero__zt-question {
+      max-width: 92%;
+    }
+
+    .dy-hero__zt-question {
+      max-width: 92%;
+    }
+
+    /* Stacked, the Feature's title sits centred directly above the
+       picture, so Scene 4's marks drop clear of it — the whole group
+       moves together, connections included, and simply reaches a
+       little further into the dome. Their names then take the pockets
+       the artwork actually leaves free at this size. */
+    .dy-hero__zt-s4-svg {
+      transform: translateY(3.5%);
+    }
+
+    .dy-hero__zt-s4-tag {
+      font-size: clamp(9.5px, 1vw, 11px);
+    }
+
+    .dy-hero__zt-s4-tag--worker {
+      top: 15.1%;
+    }
+
+    .dy-hero__zt-s4-tag--saas {
+      top: 13.5%;
+    }
+
+    .dy-hero__zt-s4-tag--cloud {
+      top: 14.7%;
+    }
+
+    /* The picture is smaller here than the viewport suggests, so the
+       zone names are sized against it rather than against the window. */
+    .dy-hero__zt-s3-tag {
+      font-size: clamp(8px, 0.85vw, 9.5px);
+    }
+
+    .dy-hero__zt-s5-name,
+    .dy-hero__zt-s5-ques,
+    .dy-hero__zt-s5-out,
+    .dy-hero__zt-s6-name,
+    .dy-hero__zt-s6-ques,
+    .dy-hero__zt-s6-out {
+      font-size: clamp(9px, 0.95vw, 10.5px);
+    }
+
+    .dy-hero__zt-s5-said {
+      font-size: clamp(8.5px, 0.9vw, 10px);
+    }
+
+    /* Stacked, the whole feature is centred, so the writing below the
+       picture centres with it. */
+    .dy-hero__zt-s2-copy {
+      text-align: center;
+    }
+
+    .dy-hero__zt-s2-lead,
+    .dy-hero__zt-s2-close {
+      margin-inline: auto;
+      max-width: 92%;
+    }
+  }
+@media (max-width: 680px) {
+
+    /* Phone recomposition: the title reads as a short, centred
+       statement rather than the wider block the tablet layout still
+       has room for, and the illustration takes most of the shell
+       width — a tighter stage rather than the desktop's off-to-the-
+       side composition. */
+    .dy-hero__zt-title-lead {
+      font-size: clamp(21px, 6.2vw, 27px);
+    }
+
+    .dy-hero__zt-title-rest {
+      font-size: clamp(15px, 4.4vw, 18.5px);
+    }
+
+    .dy-hero__zt {
+      --zt-w: 96%;
+      /* The gaps tighten a little at phone size, where the artwork
+         itself is much smaller. Stacked here, so the Feature no longer
+         needs the desktop drop that separates it from the left hero. */
+      --zt-gap-top: 18px;
+      --zt-gap-bottom: 18px;
+      padding-top: clamp(6px, 1.2vh, 12px);
+    }
+
+    /* Phone: the picture is about half its desktop width, so Scene 2's
+       chips and writing scale with it rather than overrunning the
+       boundaries they belong to. */
+    /* Phone: the picture is about half its desktop width, so the two
+       things standing inside the new boundary scale with it rather
+       than overrunning it. */
+    .dy-hero__zt-s2-label {
+      font-size: 8.5px;
+      letter-spacing: 0.12em;
+    }
+
+    .dy-hero__zt-s2-nodes {
+      gap: 4px;
+    }
+
+    /* Phone: the three zone names are set small enough to stay off
+       each other on a picture this size, and staggered down the ground
+       plane rather than sitting in a row. */
+    .dy-hero__zt-s3-tag {
+      padding: 0.28em 0.34em;
+      font-size: clamp(6.6px, 1.8vw, 8.5px);
+    }
+
+    /* The zone names shrink because they have to fit between segments
+       of the picture. These sit in open sky, so they keep a size that
+       is still comfortable to read on a phone. */
+    .dy-hero__zt-s4-tag {
+      padding: 0;
+      font-size: clamp(8.5px, 2.3vw, 10px);
+    }
+
+    .dy-hero__zt-s5-name,
+    .dy-hero__zt-s5-out,
+    .dy-hero__zt-s6-name,
+    .dy-hero__zt-s6-out {
+      font-size: clamp(8.4px, 2.3vw, 9.6px);
+    }
+
+    .dy-hero__zt-s5-said {
+      font-size: clamp(8px, 2.15vw, 9.2px);
+    }
+
+    /* The longest line in the scene, and the one with the least room
+       beside it — it takes a size of its own rather than pushing the
+       shorter labels down to fit. */
+    .dy-hero__zt-s5-ques,
+    .dy-hero__zt-s6-ques {
+      font-size: clamp(7.6px, 2.05vw, 9px);
+    }
+
+    /* At this size the office block needs the extra width, and it has
+       it: the boundary is a long way to its left down here. */
+    /* At this size the words take a much larger share of the picture,
+       and the boundary curves in as it descends — so the home group
+       keeps its new height but sits further left, where it is still
+       plainly outside. Its laptop travels the same distance, so the
+       group stays one thing. The title is above the picture here
+       rather than in it, so there is nothing up there to clear. */
+    .dy-hero__zt-s5-name--home,
+    .dy-hero__zt-s5-said--h1,
+    .dy-hero__zt-s5-said--h2 {
+      left: 13%;
+    }
+
+    .dy-hero__zt-s5-mark--home {
+      transform-box: view-box;
+      transform: translateX(-6%);
+    }
+
+    .dy-hero__zt-s5-ques {
+      left: 50%;
+    }
+
+    .dy-hero__zt-s3-tag--a {
+      left: 82%;
+      top: 55.5%;
+    }
+
+    .dy-hero__zt-s3-tag--b {
+      left: 77.83%;
+      top: 71%;
+    }
+
+    .dy-hero__zt-s3-tag--c {
+      left: 89.5%;
+      top: 68%;
+    }
+
+    .dy-hero__zt-s2-chip {
+      padding: 0.34em 0.42em;
+      /* Sized off the viewport, not fixed: the two chips have to stay
+         between the firewall and the new wall on the narrowest phones
+         too, and everything around them is a share of the picture. */
+      font-size: clamp(6.6px, 2.15vw, 8.5px);
+      letter-spacing: 0.005em;
+    }
+
+    .dy-hero__zt-question {
+      font-size: 14px;
+    }
+  }
+</style>
