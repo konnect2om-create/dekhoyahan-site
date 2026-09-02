@@ -75,6 +75,13 @@ export const stories: Story[] = [
     thumb: '/images/thumbs/5g-card.webp',
     featured: false,
   },
+  {
+    slug: 'ai-agents-what-changed',
+    title: 'You gave it one instruction.',
+    line: 'Why did it keep going?',
+    thumb: '/images/thumbs/ai-agent-card.webp',
+    featured: false,
+  },
 ];
 
 /** The homepage's four cards, in homepage order. */
