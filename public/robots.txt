@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dekhoyahan.com/sitemap.xml
+Sitemap: https://dekhoyahan.com/sitemap-index.xml

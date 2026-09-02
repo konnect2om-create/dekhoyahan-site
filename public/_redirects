@@ -1,0 +1,5 @@
+# The sitemap used to be a hand-maintained /sitemap.xml. It is now generated
+# at build time, and Astro's sitemap integration names its entry point
+# /sitemap-index.xml. Keep the old address working permanently so anything
+# that already knows it — Search Console, other crawlers — still arrives.
+/sitemap.xml /sitemap-index.xml 301
