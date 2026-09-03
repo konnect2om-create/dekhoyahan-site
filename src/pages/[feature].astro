@@ -1,7 +1,13 @@
 ---
 import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { features, canonicalUrl, pageTitle, type Feature } from '../features/registry';
+import {
+  features,
+  canonicalUrl,
+  pageTitle,
+  featureLearningResource,
+  type Feature,
+} from '../features/registry';
 
 // Every Feature in the registry gets its own permanent page here, whether
 // or not it is the one currently on the homepage. Changing the homepage's
@@ -33,6 +39,8 @@ const share = await getImage({
   format: 'jpeg',
   quality: 82,
 });
+
+const shareUrl = new URL(share.src, Astro.site).href;
 ---
 
 <BaseLayout
@@ -40,11 +48,12 @@ const share = await getImage({
   description={feature.description}
   canonical={canonicalUrl(feature)}
   image={{
-    src: new URL(share.src, Astro.site).href,
+    src: shareUrl,
     alt: feature.socialImage.alt,
     width: 1200,
     height: 630,
   }}
+  schema={[featureLearningResource(feature, shareUrl)]}
 >
   <article class="dy-feature-page">
     <div class="shell dy-feature-page__frame">

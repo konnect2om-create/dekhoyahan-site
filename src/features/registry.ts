@@ -23,6 +23,7 @@
 import type { ImageMetadata } from 'astro';
 import ZeroTrustFeature from '../components/features/ZeroTrustFeature.astro';
 import securityDome from '../assets/security-dome.png';
+import { ORGANIZATION_ID, SITE, SITE_URL } from '../config/site';
 
 export type Feature = {
   /** The story's permanent address: /<slug>/ */
@@ -57,8 +58,6 @@ export type Feature = {
   Component: typeof ZeroTrustFeature;
 };
 
-const SITE = 'https://dekhoyahan.com';
-
 export const features: Feature[] = [
   {
     slug: 'zero-trust',
@@ -83,12 +82,37 @@ export const features: Feature[] = [
 export const featuredSlug = 'zero-trust';
 
 /** The canonical URL of a Feature's own page. */
-export const canonicalUrl = (feature: Feature) => `${SITE}/${feature.slug}/`;
+export const canonicalUrl = (feature: Feature) => `${SITE_URL}/${feature.slug}/`;
 
 /** The full <title>. Built from the headline so the sentence lives in one place. */
-export const pageTitle = (feature: Feature) => `${feature.headline} | DekhoYahan`;
+export const pageTitle = (feature: Feature) => `${feature.headline} | ${SITE.name}`;
 
 export const getFeature = (slug: string) => features.find((feature) => feature.slug === slug);
+
+/**
+ * A Feature described as structured data.
+ *
+ * Every claim below has a counterpart a visitor can read: the name is the
+ * question the page asks in its own <h2>, the abstract is the answer printed
+ * under it, and what it teaches is the line the page closes on. Nothing is
+ * asserted that is not on the page, and the publisher is named by reference
+ * so the site says who it is exactly once.
+ */
+export const featureLearningResource = (feature: Feature, imageUrl: string) => ({
+  '@type': 'LearningResource',
+  '@id': `${canonicalUrl(feature)}#learning-resource`,
+  name: feature.question,
+  url: canonicalUrl(feature),
+  abstract: feature.shortAnswer,
+  teaches: feature.keyTakeaway,
+  learningResourceType: 'interactive explainer',
+  inLanguage: SITE.language,
+  isAccessibleForFree: true,
+  datePublished: feature.publishedAt,
+  dateModified: feature.updatedAt,
+  image: imageUrl,
+  publisher: { '@id': ORGANIZATION_ID },
+});
 
 /**
  * Every Feature, with the one currently on the homepage first. Explore

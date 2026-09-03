@@ -1,0 +1,53 @@
+---
+import { SITE, ORGANIZATION_ID, WEBSITE_ID } from '../config/site';
+
+/**
+ * The site's only JSON-LD emitter.
+ *
+ * Every page carries the same two site-wide nodes — who publishes this, and
+ * what site it belongs to — and a page may add one node describing its own
+ * content. They travel together in a single @graph so that a page emits
+ * exactly one block, and so a page node can name its publisher by @id
+ * rather than restating the organisation.
+ *
+ * Pages never hand-write JSON. They pass a typed node and this decides how
+ * it is serialised.
+ */
+
+export type SchemaNode = Record<string, unknown>;
+
+type Props = {
+  /** Zero or more nodes describing this page's own content. */
+  nodes?: SchemaNode[];
+};
+
+const { nodes = [] } = Astro.props as Props;
+
+const organization: SchemaNode = {
+  '@type': 'Organization',
+  '@id': ORGANIZATION_ID,
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  sameAs: [...SITE.sameAs],
+};
+
+const website: SchemaNode = {
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  name: SITE.name,
+  url: SITE.url,
+  inLanguage: SITE.language,
+  publisher: { '@id': ORGANIZATION_ID },
+};
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, website, ...nodes],
+};
+
+// `<` is escaped so a value can never close this script element early.
+const json = JSON.stringify(graph).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />
