@@ -2408,12 +2408,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   });
 </script>
 
-<script define:vars={{ topic: 'ai-answered-you', rootSelector: '[data-answer]', finalAttr: 'final' }}>
+<script define:vars={{ topic: 'ai-answered-you', rootSelector: '[data-answer]', finalAttr: 'close' }}>
   // Analytics: story_view (visibility, same pattern as hero_view/explore_view)
   // and story_complete (driven by this story's own existing completion flag —
   // root.dataset[finalAttr] reaching '1', the same signal the script above
   // already uses to gate the closing content — not a timer). Isolated from
   // the story's own script; only observes, never mutates.
+  //
+  // The flag watched here is `close`, set by [data-understand] ("So what just
+  // happened?") — Scene 11, the last beat of the card, which is what reveals
+  // "It didn't pull that answer from a page. It built it, piece by piece."
+  // It is deliberately NOT `final`, which despite its name is Scene 5's flag
+  // ([data-again], "Watch it continue") and sits six beats short of the
+  // ending. Replay clears every flag including this one, but the observer
+  // disconnects the moment it fires, so a second run cannot report a second
+  // completion.
   const root = document.querySelector(rootSelector);
   if (root instanceof HTMLElement) {
     let viewFired = false;

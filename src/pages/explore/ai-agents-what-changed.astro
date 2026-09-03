@@ -3659,24 +3659,35 @@ import laptop1 from '../../assets/laptop1.png';
     });
   </script>
 
-<script define:vars={{ topic: 'ai-agents', rootSelector: '#dy-hero-visual', completeSelector: '.dy-hero__explain-stage', completeAttr: 'scene', completeValue: '3' }}>
+<script define:vars={{ topic: 'ai-agents', rootSelector: '#dy-hero-visual', completeSelector: '.dy-agent__name', completeAttr: 'reveal', completeValue: 'in' }}>
   // Analytics: story_view (visibility, the same pattern hero_view,
   // explore_view and the other stories use) and story_complete.
   //
-  // Completion is this story's own final state, not a timer: the visitor
-  // has clicked "dy-scene2-next", which sets data-scene="3" on the explain
-  // stage. That is the last forward step the story has — its own handler
-  // returns early if the scene is already '3', so it is one-way and one
-  // time, and the only control after it is Replay, which restarts the
-  // whole experience. Scene 3 is where the story names what it has been
-  // showing, so reaching it is reaching the point of the story.
+  // Completion is this story's own last piece of content, not a timer and
+  // not a scene number: .dy-agent__name — "What you just watched? That's an
+  // AI agent." — receiving data-reveal="in".
   //
-  // Isolated from the story's own script; this only observes, never
-  // mutates. The visibility root is the story's visual; the completion
-  // flag lives on the explain stage inside it, so the two are watched
-  // separately rather than assuming one element carries both.
+  // That state is only ever set inside the "dy-agent-next" handler ("So when
+  // does it need you?"), and in both of that handler's branches — animated
+  // and reduced-motion — it comes strictly after reveal(), which is what
+  // puts "Waiting for your approval / Review and confirm payment" on the
+  // laptop. So this one signal certifies that the visitor reached the
+  // approval boundary AND then reached the naming that closes the arc.
+  //
+  // It deliberately replaces data-scene="3" on the explain stage, which
+  // fired on *entering* Scene 3 — before the agent had run a single step,
+  // and long before the boundary. Everything that gives the story its point
+  // happens after that moment, so it was reporting arrival, not completion.
+  //
+  // Watched via the stable #dy-hero-visual with subtree: true rather than by
+  // holding a reference to the element itself, because Replay reassigns
+  // #dy-hero-visual's innerHTML from the pristine markup — a held reference
+  // would be detached and a completion on the second run would go unseen.
+  // The observer disconnects on its first fire, so a replay cannot produce a
+  // second completion either.
+  //
+  // Isolated from the story's own script; this only observes, never mutates.
   const root = document.querySelector(rootSelector);
-  const completeRoot = document.querySelector(completeSelector);
 
   if (root instanceof HTMLElement) {
     let viewFired = false;
@@ -3701,18 +3712,20 @@ import laptop1 from '../../assets/laptop1.png';
       { threshold: 0.5 }
     );
     viewObserver.observe(root);
-  }
 
-  if (completeRoot instanceof HTMLElement) {
     let completeFired = false;
     const completeObserver = new MutationObserver(() => {
       if (completeFired) return;
-      if (completeRoot.dataset[completeAttr] === completeValue) {
-        completeFired = true;
-        window.zaraz?.track('story_complete', { topic });
-        completeObserver.disconnect();
-      }
+      const end = root.querySelector(completeSelector);
+      if (!(end instanceof HTMLElement) || end.dataset[completeAttr] !== completeValue) return;
+      completeFired = true;
+      window.zaraz?.track('story_complete', { topic });
+      completeObserver.disconnect();
     });
-    completeObserver.observe(completeRoot, { attributes: true, attributeFilter: ['data-' + completeAttr] });
+    completeObserver.observe(root, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-' + completeAttr],
+    });
   }
 </script>

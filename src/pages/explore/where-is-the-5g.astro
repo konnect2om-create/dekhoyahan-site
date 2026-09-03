@@ -457,6 +457,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <p class="fiveg__reveal-text fiveg__reveal-text--close">
             It gets you into the network.<br />It isn’t the whole journey.
           </p>
+
+          <!-- The end of the story: the way on is another story, so this is
+               a real link rather than another beat — the same closing move
+               "Who said yes?" and "Did your face leave the phone?" both end
+               on, reusing this story's own .fiveg__turn so the serif, the
+               saffron circle and the quiet hover are the ones already
+               shared by every transition above it. -->
+          <a class="fiveg__turn fiveg__turn--link" href="/explore/">
+            Explore another <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>
@@ -1706,6 +1716,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
      body copy stacks at. */
   .fiveg__reveal-text--close {
     margin-top: 15px;
+  }
+
+  /* The turn control as a link rather than a button — same type, same
+     saffron disc, same hover. Identical to .tap__turn--link and
+     .face__turn--link, which is what the other two stories that end on
+     "Explore another" already use. */
+  .fiveg__turn--link {
+    text-decoration: none;
+  }
+
+  /* The answer lands first, then the way on appears under it — the same
+     second-beat treatment the opening caption's own turn gets above
+     ([data-stage='2'] .fiveg__reveal > .fiveg__turn), and the same reason
+     "Who said yes?" delays its link to last. .fiveg__final-copy's own
+     entrance settles at 760ms (240ms delay + 520ms), so this starts just
+     after it rather than riding in with the closing line. */
+  [data-final='1'] .fiveg__final-copy > .fiveg__turn--link {
+    animation: fiveg-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 900ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
