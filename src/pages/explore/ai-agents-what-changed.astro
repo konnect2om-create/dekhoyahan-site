@@ -655,6 +655,16 @@ import laptop1 from '../../assets/laptop1.png';
 
   .agent-story__visual {
     display: block;
+    /* A grid item defaults to min-width:auto, so it refuses to be narrower
+       than its content's own minimum. Below 680px .dy-hero__visual takes a
+       min-height of 290px (see the note beside that rule), and because the
+       box also carries aspect-ratio: 3/2 that floor resolves into a
+       minimum WIDTH of 435px - wider than the column on a phone, which
+       pushed the whole grid past the viewport. Letting this item shrink to
+       its track keeps the height floor doing its job (the box simply grows
+       taller than 3:2 on a narrow screen, which is what it was for) while
+       the width follows the column again. */
+    min-width: 0;
   }
 
 
