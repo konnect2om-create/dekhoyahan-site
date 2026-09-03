@@ -110,6 +110,44 @@ const features = featuresByProminence();
   }
 </script>
 
+<script>
+  // Analytics: fires `explore_card_open` through Cloudflare Zaraz, with a
+  // stable identifier for the thing being opened, the instant a visitor
+  // clicks any card in the library grid — right before the existing
+  // <a href> navigation takes over. No preventDefault and no new
+  // navigation logic: this only reads the card's own href, then lets the
+  // browser's click-to-navigate behaviour proceed unchanged. Isolated
+  // from explore_view's script above.
+  //
+  // One implementation covers both kinds of card. The identifier is the
+  // last segment of the card's own path, so a Feature at /zero-trust/ and
+  // a story at /explore/<slug>/ are both reported without the grid
+  // knowing which is which. The six stories that already had curated
+  // identifiers keep them, because story_view and story_complete report
+  // the same values and the three events have to line up.
+  const TOPIC_BY_SLUG = {
+    'looks-real-is-it': 'looks-real',
+    'ai-answered-you': 'ai-answered-you',
+    'did-your-face-leave-the-phone': 'face-unlock',
+    'who-said-yes': 'contactless-payment',
+    'how-your-photo-travels': 'photo-sharing',
+    'where-is-the-5g': '5g',
+    'ai-agents-what-changed': 'ai-agents',
+    'zero-trust': 'zero-trust',
+  };
+
+  for (const link of document.querySelectorAll('.explore-index__item a[href]')) {
+    link.addEventListener('click', () => {
+      // Anything the grid can link to has a path; its last segment names
+      // the item. Unmapped cards report their own slug rather than being
+      // dropped, so a newly published card is never silently missing.
+      const slug = (link.getAttribute('href') || '').split('/').filter(Boolean).pop();
+      if (!slug) return;
+      window.zaraz?.track('explore_card_open', { topic: TOPIC_BY_SLUG[slug] || slug });
+    });
+  }
+</script>
+
 <style>
   /* Scoped to this page only. First visual checkpoint for the Explore
      Library: a compact opening, a library opening, and the first row of

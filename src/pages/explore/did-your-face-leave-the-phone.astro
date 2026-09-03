@@ -2197,3 +2197,47 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     });
   });
 </script>
+
+<script define:vars={{ topic: 'face-unlock', rootSelector: '[data-face]', finalAttr: 'final' }}>
+  // Analytics: story_view (visibility, same pattern as hero_view/explore_view)
+  // and story_complete (driven by this story's own existing completion flag —
+  // root.dataset[finalAttr] reaching '1', the same signal the script above
+  // already uses to gate the closing content — not a timer). Isolated from
+  // the story's own script; only observes, never mutates.
+  const root = document.querySelector(rootSelector);
+  if (root instanceof HTMLElement) {
+    let viewFired = false;
+    let viewTimer = null;
+    const viewObserver = new IntersectionObserver(
+      (entries) => {
+        if (viewFired) return;
+        const entry = entries[0];
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (viewTimer === null) {
+            viewTimer = window.setTimeout(() => {
+              viewFired = true;
+              window.zaraz?.track('story_view', { topic });
+              viewObserver.disconnect();
+            }, 1000);
+          }
+        } else if (viewTimer !== null) {
+          clearTimeout(viewTimer);
+          viewTimer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+    viewObserver.observe(root);
+
+    let completeFired = false;
+    const completeObserver = new MutationObserver(() => {
+      if (completeFired) return;
+      if (root.dataset[finalAttr] === '1') {
+        completeFired = true;
+        window.zaraz?.track('story_complete', { topic });
+        completeObserver.disconnect();
+      }
+    });
+    completeObserver.observe(root, { attributes: true, attributeFilter: ['data-' + finalAttr] });
+  }
+</script>

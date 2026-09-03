@@ -3649,3 +3649,60 @@ import laptop1 from '../../assets/laptop1.png';
     });
   </script>
 
+<script define:vars={{ topic: 'ai-agents', rootSelector: '#dy-hero-visual', completeSelector: '.dy-hero__explain-stage', completeAttr: 'scene', completeValue: '3' }}>
+  // Analytics: story_view (visibility, the same pattern hero_view,
+  // explore_view and the other stories use) and story_complete.
+  //
+  // Completion is this story's own final state, not a timer: the visitor
+  // has clicked "dy-scene2-next", which sets data-scene="3" on the explain
+  // stage. That is the last forward step the story has — its own handler
+  // returns early if the scene is already '3', so it is one-way and one
+  // time, and the only control after it is Replay, which restarts the
+  // whole experience. Scene 3 is where the story names what it has been
+  // showing, so reaching it is reaching the point of the story.
+  //
+  // Isolated from the story's own script; this only observes, never
+  // mutates. The visibility root is the story's visual; the completion
+  // flag lives on the explain stage inside it, so the two are watched
+  // separately rather than assuming one element carries both.
+  const root = document.querySelector(rootSelector);
+  const completeRoot = document.querySelector(completeSelector);
+
+  if (root instanceof HTMLElement) {
+    let viewFired = false;
+    let viewTimer = null;
+    const viewObserver = new IntersectionObserver(
+      (entries) => {
+        if (viewFired) return;
+        const entry = entries[0];
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (viewTimer === null) {
+            viewTimer = window.setTimeout(() => {
+              viewFired = true;
+              window.zaraz?.track('story_view', { topic });
+              viewObserver.disconnect();
+            }, 1000);
+          }
+        } else if (viewTimer !== null) {
+          clearTimeout(viewTimer);
+          viewTimer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+    viewObserver.observe(root);
+  }
+
+  if (completeRoot instanceof HTMLElement) {
+    let completeFired = false;
+    const completeObserver = new MutationObserver(() => {
+      if (completeFired) return;
+      if (completeRoot.dataset[completeAttr] === completeValue) {
+        completeFired = true;
+        window.zaraz?.track('story_complete', { topic });
+        completeObserver.disconnect();
+      }
+    });
+    completeObserver.observe(completeRoot, { attributes: true, attributeFilter: ['data-' + completeAttr] });
+  }
+</script>

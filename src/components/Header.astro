@@ -48,3 +48,15 @@ const navItems = [
     <span aria-hidden="true">→</span>
   </a>
 </header>
+
+<script>
+  // Analytics: fires `join_early_click` through Cloudflare Zaraz the
+  // instant the header's "Join early" CTA is activated, right before its
+  // existing <a href="/#early-access"> navigation takes over. No
+  // preventDefault, no new navigation logic — this is the site's only
+  // "Join early" CTA (present in the header on every page), so `location`
+  // is always 'header'.
+  document.querySelector('.header-join')?.addEventListener('click', () => {
+    window.zaraz?.track('join_early_click', { location: 'header' });
+  });
+</script>
