@@ -9,6 +9,7 @@ import Sources from '../../components/explain/Sources.astro';
 import PhotoJourney from '../../components/explain/PhotoJourney.astro';
 import AgentStage from '../../components/explain/AgentStage.astro';
 import PhotoStory from '../../components/explain/PhotoStory.astro';
+import { storyPageMeta } from '../../data/storyMeta';
 
 // A topic opts into a signature scene by naming it in frontmatter. Topics
 // without one fall through to the standard template.
@@ -39,6 +40,13 @@ const storyOpenings: Record<string, any> = {
 
 const StoryOpening = storyOpenings[topic.id];
 
+// A topic that is also a published story takes its title, description and
+// share card from src/data/stories.ts, the same single source every other
+// story page now reads. `ai-agent-permissions` has no entry there — it is
+// deliberately unlisted — so it keeps the frontmatter-derived metadata it
+// has always had, unchanged.
+const meta = await storyPageMeta(topic.id, Astro.site);
+
 const categoryLabel: Record<string, string> = {
   'identity-security': 'Identity & security',
   networks: 'Networks',
@@ -48,7 +56,11 @@ const categoryLabel: Record<string, string> = {
 };
 ---
 
-<BaseLayout title={`${topic.data.title} — DekhoYahan`} description={topic.data.summary}>
+<BaseLayout
+  title={meta ? meta.title : `${topic.data.title} — DekhoYahan`}
+  description={meta ? meta.description : topic.data.summary}
+  image={meta ? meta.image : undefined}
+>
   <main class="topic-page">
     {StoryOpening ? (
       <StoryOpening />

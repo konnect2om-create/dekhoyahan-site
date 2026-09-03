@@ -10,12 +10,15 @@
 // never change once the story has started. Scene 2 (whatever "So what can
 // you know?" actually reveals) does not exist yet.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('looks-real-is-it', Astro.site))!;
 ---
 
-<BaseLayout
-  title="Looks real. Is it? — DekhoYahan"
-  description="Anything seem unusual?"
->
+<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
   <div class="look" data-look data-stage="1">
     <!-- Same reasoning as the 5G and photo openings: copy and the visual
          share one grid rather than a header sitting above a separate

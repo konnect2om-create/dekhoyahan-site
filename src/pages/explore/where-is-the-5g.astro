@@ -7,12 +7,15 @@
 // purpose — it doesn't have the layers/decision/sources a full topic
 // carries. Scene 2 (anything past this first reveal) does not exist yet.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('where-is-the-5g', Astro.site))!;
 ---
 
-<BaseLayout
-  title="Your phone says 5G. Where is the 5G? — DekhoYahan"
-  description="You see it every day. But where exactly is it coming from?"
->
+<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
   <div class="fiveg" data-fiveg data-stage="1">
     <!-- No ConceptHero here on purpose: its eyebrow + large-title/small-hook
          split reads as headline-and-detached-subtitle, which is exactly what

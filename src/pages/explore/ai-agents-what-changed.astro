@@ -16,12 +16,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import laptop1 from '../../assets/laptop1.png';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('ai-agents-what-changed', Astro.site))!;
 ---
 
-<BaseLayout
-  title="You gave it one instruction. Why did it keep going? — DekhoYahan"
-  description="It didn't stop to ask again."
->
+<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
   <div class="agent-story">
     <div class="agent-story__stage shell">
       <div class="agent-story__copy">

@@ -31,12 +31,15 @@
 // discipline Card 3 used: reveal it carefully, scope every claim, and do not
 // turn the story into a payments-architecture lesson.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('who-said-yes', Astro.site))!;
 ---
 
-<BaseLayout
-  title="You tapped. Approved. Who said yes? — DekhoYahan"
-  description="In seconds."
->
+<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
   <div class="tap" data-tap data-stage="1">
     <!-- Same reasoning as the other openings: copy and the visual share one
          grid rather than a header sitting above a separate stage, so on wide

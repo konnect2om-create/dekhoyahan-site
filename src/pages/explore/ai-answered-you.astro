@@ -17,12 +17,15 @@
 //
 // Scene 2 (whatever "How?" actually reveals) does not exist yet.
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('ai-answered-you', Astro.site))!;
 ---
 
-<BaseLayout
-  title="AI answered you. How did it know what to say? — DekhoYahan"
-  description="In seconds."
->
+<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
   <div class="answer" data-answer data-stage="1">
     <!-- Same reasoning as the other three openings: copy and the visual
          share one grid rather than a header sitting above a separate
