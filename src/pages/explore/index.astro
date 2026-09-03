@@ -1,6 +1,15 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { stories } from '../../data/stories';
+import { featuresByProminence } from '../../features/registry';
+
+// Registered Features lead the library, the one currently on the homepage
+// first. They are read from the Feature registry rather than copied into
+// the story manifest, so a Feature appears here for the same reason it has
+// a permanent route: because it is registered. When `featuredSlug` changes,
+// the new Feature takes the lead and the earlier ones stay listed below.
+const features = featuresByProminence();
 
 // The library is every published story, in manifest order: the four the
 // homepage features first (same order as the homepage), then the
@@ -34,6 +43,19 @@ import { stories } from '../../data/stories';
 
     <section class="explore-index__library shell">
       <ul class="explore-index__grid">
+        {features.map((feature) => (
+          <li class="explore-index__item">
+            <a href={`/${feature.slug}/`}>
+              <span class="explore-index__glyph" aria-hidden="true">
+                <Image src={feature.socialImage.src} alt="" width={720} height={480} background="#f8f5ef" loading="lazy" decoding="async" />
+              </span>
+              <p class="explore-index__kind">FEATURE</p>
+              <h3>{feature.headline}<span class="explore-index__arrow" aria-hidden="true">&rarr;</span></h3>
+              <p>{feature.question}</p>
+            </a>
+          </li>
+        ))}
+
         {stories.map((story) => (
           <li class="explore-index__item">
             <a href={`/explore/${story.slug}/`}>
@@ -191,6 +213,18 @@ import { stories } from '../../data/stories';
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* Marks the entries that are interactive Features rather than reading
+     stories. Deliberately the smallest type on the card, in the same
+     cobalt the page's own EXPLORE eyebrow uses, so it names the entry
+     without competing with its title. */
+  .explore-index__kind {
+    margin: 0 0 6px;
+    color: var(--cobalt);
+    font-size: 11px;
+    font-weight: 720;
+    letter-spacing: 0.09em;
   }
 
   /* Title/support treatment is informed by the homepage "There's more to
