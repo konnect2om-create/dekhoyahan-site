@@ -24,7 +24,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('ai-agents-what-changed', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="agent-story">
     <div class="agent-story__stage shell">
       <div class="agent-story__copy">

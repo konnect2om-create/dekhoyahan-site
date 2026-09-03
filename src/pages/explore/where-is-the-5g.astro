@@ -15,7 +15,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('where-is-the-5g', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="fiveg" data-fiveg data-stage="1">
     <!-- No ConceptHero here on purpose: its eyebrow + large-title/small-hook
          split reads as headline-and-detached-subtitle, which is exactly what

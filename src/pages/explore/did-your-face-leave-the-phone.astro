@@ -27,7 +27,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('did-your-face-leave-the-phone', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="face" data-face data-stage="1">
     <!-- Same reasoning as the other openings: copy and the visual share one
          grid rather than a header sitting above a separate stage, so on

@@ -39,7 +39,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('who-said-yes', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="tap" data-tap data-stage="1">
     <!-- Same reasoning as the other openings: copy and the visual share one
          grid rather than a header sitting above a separate stage, so on wide

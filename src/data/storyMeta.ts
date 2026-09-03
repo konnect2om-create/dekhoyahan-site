@@ -11,7 +11,9 @@
 // leaving that alone is what guarantees these addresses do not move.
 
 import { getImage } from 'astro:assets';
-import { storyBySlug, storyTitle, type Story } from './stories';
+import type { SchemaNode } from '../components/SchemaJsonLd.astro';
+import { ORGANIZATION_ID, SITE } from '../config/site';
+import { storyBySlug, storyCanonical, storyTitle, type Story } from './stories';
 
 // The share card, generated from each story's own Scene 1 picture rather than
 // a second file kept in step by hand — the same transform the Zero Trust
@@ -31,11 +33,49 @@ export const SHARE_CARD = {
   quality: 82,
 } as const;
 
+/**
+ * The story's own node in the page's schema graph.
+ *
+ * A plain mapping of the canonical meaning already stored in stories.ts: the
+ * question is the resource's name, the short answer its abstract, the key
+ * takeaway what it teaches. Nothing here is authored a second time, and no
+ * page hand-writes JSON — SchemaJsonLd serialises whatever it is handed.
+ *
+ * `dateModified` is present only when a story actually carries an
+ * `updatedAt`. None of the seven does today, so none of them emits the field;
+ * the moment an intentional date is added to an entry, that story starts
+ * emitting it and no other story is affected. It is never substituted from
+ * publishedAt, git, the build clock or a file's mtime — a date we cannot
+ * vouch for is worse than no date.
+ *
+ * Deliberately not routed through the Feature registry's own
+ * featureLearningResource(): that helper emits `dateModified` unconditionally,
+ * which is exactly the behaviour a story must not have. The two describe
+ * different things and are free to diverge.
+ */
+export const storyLearningResource = (story: Story, imageUrl: string): SchemaNode => ({
+  '@type': 'LearningResource',
+  '@id': `${storyCanonical(story)}#learning-resource`,
+  name: story.question,
+  url: storyCanonical(story),
+  abstract: story.shortAnswer,
+  teaches: story.keyTakeaway,
+  learningResourceType: 'interactive explainer',
+  inLanguage: SITE.language,
+  isAccessibleForFree: true,
+  datePublished: story.publishedAt,
+  ...(story.updatedAt ? { dateModified: story.updatedAt } : {}),
+  image: imageUrl,
+  publisher: { '@id': ORGANIZATION_ID },
+});
+
 export type StoryPageMeta = {
   story: Story;
   title: string;
   description: string;
   image: { src: string; alt: string; width: number; height: number };
+  /** This page's own schema nodes, ready for BaseLayout. */
+  schema: SchemaNode[];
 };
 
 export async function storyPageMeta(
@@ -46,16 +86,20 @@ export async function storyPageMeta(
   if (!story) return undefined;
 
   const share = await getImage({ src: story.image.src, ...SHARE_CARD });
+  const imageUrl = new URL(share.src, site).href;
 
   return {
     story,
     title: storyTitle(story),
     description: story.description,
     image: {
-      src: new URL(share.src, site).href,
+      src: imageUrl,
       alt: story.image.alt,
       width: SHARE_CARD.width,
       height: SHARE_CARD.height,
     },
+    // The same absolute URL the page shares, so the picture a person sees in
+    // a shared link and the one a machine reads are the same file.
+    schema: [storyLearningResource(story, imageUrl)],
   };
 }

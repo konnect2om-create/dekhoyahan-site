@@ -18,7 +18,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('looks-real-is-it', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="look" data-look data-stage="1">
     <!-- Same reasoning as the 5G and photo openings: copy and the visual
          share one grid rather than a header sitting above a separate

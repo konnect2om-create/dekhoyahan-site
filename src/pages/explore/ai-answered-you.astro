@@ -25,7 +25,7 @@ import { storyPageMeta } from '../../data/storyMeta';
 const meta = (await storyPageMeta('ai-answered-you', Astro.site))!;
 ---
 
-<BaseLayout title={meta.title} description={meta.description} image={meta.image}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="answer" data-answer data-stage="1">
     <!-- Same reasoning as the other three openings: copy and the visual
          share one grid rather than a header sitting above a separate

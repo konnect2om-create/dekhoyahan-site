@@ -60,6 +60,7 @@ const categoryLabel: Record<string, string> = {
   title={meta ? meta.title : `${topic.data.title} — DekhoYahan`}
   description={meta ? meta.description : topic.data.summary}
   image={meta ? meta.image : undefined}
+  schema={meta ? meta.schema : []}
 >
   <main class="topic-page">
     {StoryOpening ? (
