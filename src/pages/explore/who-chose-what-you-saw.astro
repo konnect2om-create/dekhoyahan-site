@@ -24,8 +24,8 @@ import item3 from '../../assets/who-chose-what-you-saw-item3.webp';
 //
 // SCENE 2 — the same three items, and what was behind them:
 //
-//     You chose one.
-//     These three were chosen first.
+//     You picked one.
+//     But these three were picked for you.
 //     From what? →
 //
 // The mechanism is deliberately still unnamed. Nothing here says algorithm,
@@ -43,12 +43,17 @@ import item3 from '../../assets/who-chose-what-you-saw-item3.webp';
 // perfectly still while the phone and the hand recede from under them, and
 // the field that was always behind them comes up.
 //
-// The field is quiet on purpose: plain tiles in the page's own ink, no
-// photographs, no icons, no labels, no counter, no diagram. It is not
-// illustrating a system — it is the size of what the three came out of. A
-// hundred and twelve of them against three is the whole point, and anything
-// drawn inside them would start explaining a mechanism this beat has not
-// named yet.
+// This beat reveals exactly one idea: that there is something behind the
+// three. Not how much, not what, and not how it got there. So all that
+// appears behind each item is a pair of edges, the way a card sitting on a
+// stack shows the ones underneath it — no grid, no field, no count. The
+// full extent of what the three were picked from belongs to the state after
+// "From what? →", which is not built yet; showing it here would answer the
+// question that turn is supposed to ask.
+//
+// The edges are plain slivers in the page's own ink. No photographs, icons,
+// labels, counters or diagrams: anything drawn inside them would start
+// explaining a mechanism this beat has not named.
 //
 // Built on the same opening construction /explore/looks-real-is-it/ uses,
 // and the 5G and photo stories before it: one grid, the editorial column on
@@ -79,9 +84,12 @@ const ITEMS = [
   { src: item3, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
 ];
 
-// The field behind them. Eight across is what makes a tile read as much
-// smaller than one of the three; fourteen down is what fills the box.
-const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
+// Two edges behind each item, stepped back far enough to be seen and no
+// further. Percentages of one item's own box, so they hold at every width.
+const BEHIND = [
+  { x: 3.4, y: 2.6, ink: 0.13 },
+  { x: 6.6, y: 5.1, ink: 0.07 },
+];
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
@@ -93,10 +101,10 @@ const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
         <div class="chose__lines" aria-live="polite">
           <h1 class="chose__opening">
             <span data-line="one">You chose this.</span>
-            <span data-line="two" hidden>You chose one.</span>
+            <span data-line="two" hidden>You picked one.</span>
           </h1>
 
-          <p class="chose__sub" data-line="two" hidden>These three were chosen first.</p>
+          <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
           <button type="button" class="chose__turn" data-line="one" data-onward>
             Did you? <span aria-hidden="true">&rarr;</span>
@@ -124,11 +132,6 @@ const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
            one occupied and no layout moves under it. -->
       <div class="chose__visual">
         <div class="chose__scene">
-          <!-- Behind everything. Empty until the second beat. -->
-          <div class="chose__field" aria-hidden="true">
-            {FIELD.map((i) => <span class="chose__tile" style={`--i:${i % 8};--j:${Math.floor(i / 8)}`}></span>)}
-          </div>
-
           <Image
             class="chose__art"
             src={scene1}
@@ -144,6 +147,20 @@ const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
                top of themselves. Invisible and out of the accessibility
                tree in scene 1 — the photograph is already showing them, and
                a screen reader should not meet each one twice. -->
+          <!-- The edges of whatever else is back there, one pair per item,
+               sitting between the ghosted photograph and the three. Shown
+               only in the second beat. -->
+          <div class="chose__behind" aria-hidden="true">
+            {ITEMS.map((item) =>
+              BEHIND.map((b) => (
+                <span
+                  class="chose__edge"
+                  style={`top:${item.top}%;height:${item.height}%;translate:${b.x}% ${b.y}%;background:rgba(17,21,28,${b.ink})`}
+                ></span>
+              ))
+            )}
+          </div>
+
           <div class="chose__items" aria-hidden="true">
             {ITEMS.map((item) => (
               <Image
@@ -356,91 +373,30 @@ const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
   }
 
-  /* ---- The field that was always behind them ---- */
+  /* ---- A hint of what is behind them ---- */
 
-  .chose__field {
+  .chose__behind {
     position: absolute;
     inset: 0;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    align-content: start;
-    gap: 2.1%;
-    overflow: hidden;
+  }
+
+  /* Each sits exactly where its item sits and is nudged back from it, so
+     all that shows is a sliver down one side and along the bottom — the
+     read is "there is another one under this", which is the entire idea
+     this beat is allowed to reveal. Same rounding as the items so the
+     edges belong to them. */
+  .chose__edge {
+    position: absolute;
+    left: 27.68%;
+    width: 43.99%;
+    display: block;
+    border-radius: 14px;
     opacity: 0;
     transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
-    /* Fades out towards the edges instead of stopping at them. Without
-       this the field ends in a hard rectangle and reads as a panel of a
-       known size — the opposite of the point, which is that what the three
-       came out of is larger than the frame and keeps going past it. */
-    mask-image: radial-gradient(
-      ellipse 78% 74% at 50% 46%,
-      #000 38%,
-      rgba(0, 0, 0, 0.55) 70%,
-      transparent 100%
-    );
   }
 
-  [data-stage='2'] .chose__field {
+  [data-stage='2'] .chose__edge {
     opacity: 1;
-  }
-
-  /* Plain, quiet, and the same proportion as one of the three — so a tile
-     reads as another one of these, just far smaller and further back.
-     Nothing is drawn inside them. */
-  .chose__tile {
-    aspect-ratio: 534 / 308;
-    border-radius: 3px;
-    background: var(--ink);
-    opacity: 0.07;
-  }
-
-  /* Every other row steps across by half a column, so the field reads as
-     a field of things rather than a table — a neat grid of identical
-     light rectangles looks like content still loading, which is a
-     different idea entirely. */
-  .chose__tile:nth-child(16n + 9),
-  .chose__tile:nth-child(16n + 10),
-  .chose__tile:nth-child(16n + 11),
-  .chose__tile:nth-child(16n + 12),
-  .chose__tile:nth-child(16n + 13),
-  .chose__tile:nth-child(16n + 14),
-  .chose__tile:nth-child(16n + 15),
-  .chose__tile:nth-child(16n) {
-    translate: 32% 0;
-  }
-
-  /* A little unevenness on top of that. Fixed per tile, never animated. */
-  .chose__tile:nth-child(3n) {
-    opacity: 0.05;
-  }
-
-  .chose__tile:nth-child(5n) {
-    opacity: 0.105;
-  }
-
-  .chose__tile:nth-child(7n) {
-    opacity: 0.038;
-  }
-
-  .chose__tile:nth-child(11n) {
-    opacity: 0.085;
-  }
-
-  /* The field settles in rather than switching on — the only movement in
-     the whole transition, and it is 10px. */
-  [data-stage='2'] .chose__tile {
-    animation: chose-settle 620ms cubic-bezier(0.2, 0.72, 0.28, 1) both;
-    /* Rows arrive fractionally after one another, outward from the top.
-       The whole stagger is under a third of a second. */
-    animation-delay: calc(var(--j) * 22ms + var(--i) * 6ms);
-  }
-
-  /* Only opacity, so it cannot fight the half-column row offset above —
-     animating `translate` here would reset it mid-transition. */
-  @keyframes chose-settle {
-    from {
-      opacity: 0;
-    }
   }
 
   /* Nothing here is load-bearing: with motion reduced the same two states
@@ -448,14 +404,13 @@ const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
   @media (prefers-reduced-motion: reduce) {
     .chose__art,
     .chose__item,
-    .chose__field {
+    .chose__edge {
       transition: none;
     }
 
     [data-stage='2'] .chose__opening span[data-line='two'],
     [data-stage='2'] .chose__sub,
-    [data-stage='2'] .chose__turn[data-further],
-    [data-stage='2'] .chose__tile {
+    [data-stage='2'] .chose__turn[data-further] {
       animation: none;
     }
   }
