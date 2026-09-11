@@ -3,43 +3,64 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyPageMeta } from '../../data/storyMeta';
 import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
+import item1 from '../../assets/who-chose-what-you-saw-item1.webp';
+import item2 from '../../assets/who-chose-what-you-saw-item2.webp';
+import item3 from '../../assets/who-chose-what-you-saw-item3.webp';
 
-// The permanent "Who chose what you saw?" Explore route.
+// The permanent "Who chose what you saw?" Explore route. Two beats.
 //
-// OPENING BEAT ONLY. Two lines and a picture.
-//
-// The story is entered *after* the familiar action, not before it. The
-// Explore card has already said "You chose it. / Who chose what you saw?",
-// and the picture already shows the choice being made — a thumb resting on
-// the middle of three things. So the opening does not ask for anything. It
-// says what just happened, then quietly doubts it:
+// SCENE 1 — the story is entered *after* the familiar action, not before
+// it. The Explore card has already said "You chose it. / Who chose what you
+// saw?", and the picture already shows the choice being made — a thumb
+// resting on the middle of three things. So the opening does not ask for
+// anything. It says what just happened, then quietly doubts it:
 //
 //     You chose this.
 //     Did you? →
 //
-// That is the whole scene. There is deliberately no eyebrow, no instruction,
-// no supporting line, nothing to select and nothing else competing with
-// those two lines and the artwork — the contradiction only works if it
-// arrives in a moment that feels completely ordinary.
+// No eyebrow, no instruction, nothing to select, nothing drawn over the
+// artwork. The contradiction only works if it arrives in a moment that
+// feels completely ordinary.
 //
-// What the story eventually reveals — that something had already decided
-// which three reached the screen — is absent from this page. Not in the
-// copy, the artwork or the alt text.
+// SCENE 2 — the same three items, and what was behind them:
+//
+//     You chose one.
+//     These three were chosen first.
+//     From what? →
+//
+// The mechanism is deliberately still unnamed. Nothing here says algorithm,
+// recommendation, AI, ranking or personalisation, and nothing explains how
+// the three were picked. The visitor sees *that* a prior selection happened
+// before anything gets named — which is the whole reason this beat exists
+// separately from the one that follows it.
+//
+// HOW THE SECOND BEAT IS BUILT. The three items are cut from the master at
+// the exact rectangles they occupy in it (see ITEMS below) and sit at those
+// same percentages, pixel-aligned on top of their own counterparts in the
+// photograph. In scene 1 they are invisible and the photograph shows them.
+// On the turn, they come up to full opacity as the photograph goes down to
+// a ghost — so the three things the visitor was looking at appear to hold
+// perfectly still while the phone and the hand recede from under them, and
+// the field that was always behind them comes up.
+//
+// The field is quiet on purpose: plain tiles in the page's own ink, no
+// photographs, no icons, no labels, no counter, no diagram. It is not
+// illustrating a system — it is the size of what the three came out of. A
+// hundred and twelve of them against three is the whole point, and anything
+// drawn inside them would start explaining a mechanism this beat has not
+// named yet.
 //
 // Built on the same opening construction /explore/looks-real-is-it/ uses,
 // and the 5G and photo stories before it: one grid, the editorial column on
 // the left, the visual stage on the right, both centred against each other,
 // falling back to a single column (copy first) below the stacking point.
-// "You chose this." holds the place "Looks real." holds there — the primary
-// serif line the scene is built around.
 //
-// "Did you? →" is the library's own turn treatment (serif, saffron circle,
-// quiet underline on hover) — the one every story uses to move to its next
-// beat, rather than the pill those stories use to *start* a story, which
-// this scene does not need: the story is already under way. The state past
-// it does not exist yet, so a click is intentionally inert at this
-// checkpoint — the same convention where-is-the-5g.astro uses for its
-// unbuilt scenes.
+// Both turns use the library's own turn treatment (serif, saffron circle,
+// quiet underline on hover) rather than the pill those stories use to
+// *start* a story, which this scene does not need: the story is already
+// under way. The state past "From what? →" does not exist yet, so a click
+// there is intentionally inert — the same convention where-is-the-5g.astro
+// uses for its unbuilt scenes.
 //
 // Title, description, canonical, share card and structured data all come
 // from this story's entry in src/data/stories.ts, through the same
@@ -47,17 +68,44 @@ import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
 // BaseLayout's own default (the URL the page was built at), which is
 // already this page's permanent address.
 const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
+
+// The three items, as they sit in the artwork: percentages of the master's
+// own 1214x1295 frame, measured from it. The scene box is locked to that
+// same ratio, which is what keeps each cut-out sitting exactly on its own
+// counterpart in the photograph at every width.
+const ITEMS = [
+  { src: item1, alt: 'A woman on a hillside at sunrise.', top: 10.58, height: 23.78 },
+  { src: item2, alt: 'A bowl of food on a table.', top: 35.83, height: 23.55 },
+  { src: item3, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
+];
+
+// The field behind them. Eight across is what makes a tile read as much
+// smaller than one of the three; fourteen down is what fills the box.
+const FIELD = Array.from({ length: 8 * 14 }, (_, i) => i);
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
-  <div class="chose" data-chose>
+  <div class="chose" data-chose data-stage="1">
     <div class="chose__stage shell">
       <div class="chose__copy">
-        <h1 class="chose__opening">You chose this.</h1>
+        <!-- Announced when it changes, because the change is the story
+             moving. The eyebrow-less, two-line opening is unchanged. -->
+        <div class="chose__lines" aria-live="polite">
+          <h1 class="chose__opening">
+            <span data-line="one">You chose this.</span>
+            <span data-line="two" hidden>You chose one.</span>
+          </h1>
 
-        <button type="button" class="chose__turn" data-onward>
-          Did you? <span aria-hidden="true">&rarr;</span>
-        </button>
+          <p class="chose__sub" data-line="two" hidden>These three were chosen first.</p>
+
+          <button type="button" class="chose__turn" data-line="one" data-onward>
+            Did you? <span aria-hidden="true">&rarr;</span>
+          </button>
+
+          <button type="button" class="chose__turn" data-line="two" data-further hidden>
+            From what? <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
       </div>
 
       <!-- ====================================================
@@ -67,15 +115,20 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
            photograph of a phone being held, with the choice already being
            made in it.
 
-           Nothing is drawn on top of it. No ring, no highlight, no label,
-           no arrow: the thumb on the middle item is what says which one was
-           chosen, and anything added would be the page explaining a picture
-           that is already clear.
+           Nothing is drawn over it in scene 1 — no ring, highlight, label
+           or arrow. The thumb on the middle item is what says which one was
+           chosen.
 
-           The box is locked to the master's own ratio, so nothing is
-           cropped or letterboxed. -->
+           The box is locked to the master's own ratio and never changes
+           size, so the second beat happens inside the same frame the first
+           one occupied and no layout moves under it. -->
       <div class="chose__visual">
         <div class="chose__scene">
+          <!-- Behind everything. Empty until the second beat. -->
+          <div class="chose__field" aria-hidden="true">
+            {FIELD.map((i) => <span class="chose__tile" style={`--i:${i % 8};--j:${Math.floor(i / 8)}`}></span>)}
+          </div>
+
           <Image
             class="chose__art"
             src={scene1}
@@ -86,6 +139,25 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
             fetchpriority="high"
             decoding="async"
           />
+
+          <!-- The same three, cut from the same picture, sitting exactly on
+               top of themselves. Invisible and out of the accessibility
+               tree in scene 1 — the photograph is already showing them, and
+               a screen reader should not meet each one twice. -->
+          <div class="chose__items" aria-hidden="true">
+            {ITEMS.map((item) => (
+              <Image
+                class="chose__item"
+                src={item.src}
+                alt={item.alt}
+                widths={[280, 380, 534]}
+                sizes="(max-width: 979px) 35vw, 250px"
+                loading="eager"
+                decoding="async"
+                style={`top:${item.top}%;height:${item.height}%`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -127,11 +199,24 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
     letter-spacing: -0.028em;
   }
 
+  .chose__sub {
+    margin: clamp(14px, 2vh, 20px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Both states live in the DOM; only one group is ever un-hidden, so
+     nothing is announced or focusable before its moment. */
+  [hidden] {
+    display: none !important;
+  }
+
   /* The library's turn treatment, unchanged: serif, the saffron circle,
      the quiet underline on hover. Sits a little further under the line
-     here than mid-story turns do, because it is the only other thing in
-     the column and the pause between the statement and the doubt is the
-     point. */
+     than mid-story turns do, because the pause between the statement and
+     the doubt is the point. */
   .chose__turn {
     display: inline-block;
     margin: clamp(20px, 3vh, 30px) 0 0;
@@ -178,6 +263,30 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
     outline-offset: 3px;
   }
 
+  /* The second beat's copy arrives under the line that was already there —
+     the same settle the other stories give copy that appears mid-scene,
+     and the same pace as the picture behind it. */
+  [data-stage='2'] .chose__opening span[data-line='two'],
+  [data-stage='2'] .chose__sub,
+  [data-stage='2'] .chose__turn[data-further] {
+    animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='2'] .chose__sub {
+    animation-delay: 180ms;
+  }
+
+  [data-stage='2'] .chose__turn[data-further] {
+    animation-delay: 360ms;
+  }
+
+  @keyframes chose-in {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+
   /* ====================================================
      THE SCENE
      ==================================================== */
@@ -192,8 +301,7 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
 
      Capped and centred rather than filling the column: the master is
      portrait, so at the full column width it would tower over the
-     editorial line instead of balancing it. At this cap the picture covers
-     a little more area than the café photograph does in the same slot. */
+     editorial line instead of balancing it. */
   .chose__scene {
     position: relative;
     aspect-ratio: 1214 / 1295;
@@ -203,10 +311,153 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
   }
 
   .chose__art {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
+    /* Matches the field coming up and the items coming forward, so the
+       three changes read as one movement rather than three. */
+    transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* The phone and the hand recede far enough that the three items are the
+     only things in focus, but not to nothing: the ghost is what keeps the
+     three sitting where they were rather than floating free. */
+  [data-stage='2'] .chose__art {
+    opacity: 0.13;
+  }
+
+  /* ---- The three, cut from the picture and sitting on themselves ---- */
+
+  .chose__items {
+    position: absolute;
+    inset: 0;
+  }
+
+  .chose__item {
+    position: absolute;
+    left: 27.68%;
+    width: 43.99%;
+    display: block;
+    object-fit: fill;
+    border-radius: 14px;
+    opacity: 0;
+    transition:
+      opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1),
+      box-shadow 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  /* Full opacity, and lifted off the field by a shadow rather than by
+     moving: they are the one thing on screen that does not shift. */
+  [data-stage='2'] .chose__item {
+    opacity: 1;
+    box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
+  }
+
+  /* ---- The field that was always behind them ---- */
+
+  .chose__field {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    align-content: start;
+    gap: 2.1%;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    /* Fades out towards the edges instead of stopping at them. Without
+       this the field ends in a hard rectangle and reads as a panel of a
+       known size — the opposite of the point, which is that what the three
+       came out of is larger than the frame and keeps going past it. */
+    mask-image: radial-gradient(
+      ellipse 78% 74% at 50% 46%,
+      #000 38%,
+      rgba(0, 0, 0, 0.55) 70%,
+      transparent 100%
+    );
+  }
+
+  [data-stage='2'] .chose__field {
+    opacity: 1;
+  }
+
+  /* Plain, quiet, and the same proportion as one of the three — so a tile
+     reads as another one of these, just far smaller and further back.
+     Nothing is drawn inside them. */
+  .chose__tile {
+    aspect-ratio: 534 / 308;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.07;
+  }
+
+  /* Every other row steps across by half a column, so the field reads as
+     a field of things rather than a table — a neat grid of identical
+     light rectangles looks like content still loading, which is a
+     different idea entirely. */
+  .chose__tile:nth-child(16n + 9),
+  .chose__tile:nth-child(16n + 10),
+  .chose__tile:nth-child(16n + 11),
+  .chose__tile:nth-child(16n + 12),
+  .chose__tile:nth-child(16n + 13),
+  .chose__tile:nth-child(16n + 14),
+  .chose__tile:nth-child(16n + 15),
+  .chose__tile:nth-child(16n) {
+    translate: 32% 0;
+  }
+
+  /* A little unevenness on top of that. Fixed per tile, never animated. */
+  .chose__tile:nth-child(3n) {
+    opacity: 0.05;
+  }
+
+  .chose__tile:nth-child(5n) {
+    opacity: 0.105;
+  }
+
+  .chose__tile:nth-child(7n) {
+    opacity: 0.038;
+  }
+
+  .chose__tile:nth-child(11n) {
+    opacity: 0.085;
+  }
+
+  /* The field settles in rather than switching on — the only movement in
+     the whole transition, and it is 10px. */
+  [data-stage='2'] .chose__tile {
+    animation: chose-settle 620ms cubic-bezier(0.2, 0.72, 0.28, 1) both;
+    /* Rows arrive fractionally after one another, outward from the top.
+       The whole stagger is under a third of a second. */
+    animation-delay: calc(var(--j) * 22ms + var(--i) * 6ms);
+  }
+
+  /* Only opacity, so it cannot fight the half-column row offset above —
+     animating `translate` here would reset it mid-transition. */
+  @keyframes chose-settle {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Nothing here is load-bearing: with motion reduced the same two states
+     simply appear, fully formed. */
+  @media (prefers-reduced-motion: reduce) {
+    .chose__art,
+    .chose__item,
+    .chose__field {
+      transition: none;
+    }
+
+    [data-stage='2'] .chose__opening span[data-line='two'],
+    [data-stage='2'] .chose__sub,
+    [data-stage='2'] .chose__turn[data-further],
+    [data-stage='2'] .chose__tile {
+      animation: none;
+    }
   }
 
   /* Two columns at the same width looks-real-is-it opens its own at, in
@@ -227,15 +478,51 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
   }
 </style>
 
+<script>
+  // The story's one movement: from the first beat to the second.
+  //
+  // Deliberately not here: anything past "From what? →". That button is
+  // real and focusable, and wired to nothing, because the state past it
+  // does not exist yet.
+  const root = document.querySelector('[data-chose]');
+
+  if (root instanceof HTMLElement) {
+    const onward = root.querySelector('[data-onward]');
+    const further = root.querySelector('[data-further]');
+
+    onward?.addEventListener('click', () => {
+      if (root.dataset.stage !== '1') return;
+      root.dataset.stage = '2';
+
+      // The copy swaps groups. The three cut-outs become the real thing on
+      // screen once the photograph behind them is a ghost, so they take
+      // over its description rather than doubling it.
+      for (const el of root.querySelectorAll('[data-line="one"]')) el.hidden = true;
+      for (const el of root.querySelectorAll('[data-line="two"]')) el.hidden = false;
+
+      const art = root.querySelector('.chose__art');
+      const items = root.querySelector('.chose__items');
+      if (art) art.setAttribute('aria-hidden', 'true');
+      if (items) items.removeAttribute('aria-hidden');
+
+      // The control that was just used no longer exists, so focus would
+      // fall to the document. Hand it to the one that replaced it, in the
+      // same place, rather than losing the visitor's position.
+      if (further instanceof HTMLElement) further.focus();
+    });
+  }
+</script>
+
 <script define:vars={{ topic: 'who-chose-what-you-saw', rootSelector: '[data-chose]' }}>
   // Analytics: story_view only, on the same visibility rule every other
   // Explore story uses — at least 50% of the story visible for a
   // continuous second.
   //
   // story_complete is deliberately absent. The editorial payoff this story
-  // exists to deliver has not been built yet, so there is nothing a
-  // visitor can reach that would honestly count as completing it. It gets
-  // wired up when the final state exists, and not before.
+  // exists to deliver has not been built yet — the mechanism is not even
+  // named — so there is nothing a visitor can reach that would honestly
+  // count as completing it. It gets wired up when the final state exists,
+  // and not before.
   const root = document.querySelector(rootSelector);
   if (root instanceof HTMLElement) {
     let viewFired = false;
