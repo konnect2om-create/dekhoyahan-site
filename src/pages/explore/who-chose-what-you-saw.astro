@@ -96,12 +96,19 @@ const BEHIND = [
 // the moment only works if the visitor recognises it as more of the same
 // kind of thing, not as a chart drawn over the story.
 //
-// The pictures are the three items' own, zoomed in and offset so each tile
-// shows a different part of one: a ridge line, a face, a bowl, a cup, the
-// cloth, the crowd, the grass. Nothing new is introduced and nothing is
-// invented — the same master supplies every pixel on this page. At tile
-// size these read as separate things to watch, which is what the beat needs
-// them to be.
+// PROVISIONAL. These tiles are still windows into the three items' own
+// pictures, at varying zoom and handedness. That is the whole photographic
+// stock this page has: the rest of the repository's images are other
+// stories' artwork — cell towers, a digital seal, a padlock — and a feed
+// built out of those would read as the technical diagram this beat must not
+// be. It holds the composition and it reads correctly at a glance, but it
+// cannot survive a stare: the same bowl and the same face recur if looked
+// for, which undercuts "many genuinely different things".
+//
+// The fix is a supplied sheet of distinct thumbnails. Nothing else on the
+// page changes when it arrives — it replaces the three sources this array
+// is built from, and the grid, sizing, mask, opacity and placement all
+// stay as they are.
 const TILE = await Promise.all(
   [item1, item2, item3].map((src) => getImage({ src, width: 420, format: 'webp', quality: 68 }))
 );
@@ -159,7 +166,7 @@ const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
           </button>
 
           <button type="button" class="chose__turn" data-line="three" data-onward3 hidden>
-            So what did? <span aria-hidden="true">&rarr;</span>
+            Why these three? <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
       </div>
@@ -411,11 +418,29 @@ const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
     transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
   }
 
-  /* The phone and the hand recede far enough that the three items are the
-     only things in focus, but not to nothing: the ghost is what keeps the
-     three sitting where they were rather than floating free. */
-  :is([data-stage='2'], [data-stage='3']) .chose__art {
+  /* Second beat: the phone and the hand recede far enough that the three
+     items are the only things in focus, but not to nothing — the ghost is
+     what keeps the three sitting where they were rather than floating
+     free while the doubt lands. */
+  [data-stage='2'] .chose__art {
     opacity: 0.13;
+  }
+
+  /* Third beat: they go entirely. Their job was to say "this is your feed,
+     and you are holding it", and by now that has been said and answered —
+     what is left to see is the three against everything they came out of,
+     and a phone drawn around them would only re-frame the scene as a
+     device shot at the moment it stops being about the device.
+
+     KNOWN GAP. This removes the phone and the hand, but not the thumb:
+     it is part of the photograph inside items 2 and 3, which are cut from
+     the master and cannot be un-occluded. With the hand gone it reads as a
+     finger with nothing attached to it. Fixing it needs clean versions of
+     the three pictures — the same three, without the thumb across them —
+     at which point this rule is already correct and only the item sources
+     change. */
+  [data-stage='3'] .chose__art {
+    opacity: 0;
   }
 
   /* ---- The three, cut from the picture and sitting on themselves ---- */
