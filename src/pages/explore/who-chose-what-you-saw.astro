@@ -6,32 +6,40 @@ import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
 
 // The permanent "Who chose what you saw?" Explore route.
 //
-// OPENING BEAT ONLY. Scene 1 is a feed and nothing else: three things to
-// watch, and an invitation to pick one. What the story eventually reveals —
-// that something had already decided which three reached the screen — is
-// deliberately absent from this page. Not hinted at in the copy, the
-// artwork, the alt text or the accessible names. The whole point of the
-// opening is that it looks like an ordinary moment, so the turn lands later.
+// OPENING BEAT ONLY. Two lines and a picture.
+//
+// The story is entered *after* the familiar action, not before it. The
+// Explore card has already said "You chose it. / Who chose what you saw?",
+// and the picture already shows the choice being made — a thumb resting on
+// the middle of three things. So the opening does not ask for anything. It
+// says what just happened, then quietly doubts it:
+//
+//     You chose this.
+//     Did you? →
+//
+// That is the whole scene. There is deliberately no eyebrow, no instruction,
+// no supporting line, nothing to select and nothing else competing with
+// those two lines and the artwork — the contradiction only works if it
+// arrives in a moment that feels completely ordinary.
+//
+// What the story eventually reveals — that something had already decided
+// which three reached the screen — is absent from this page. Not in the
+// copy, the artwork or the alt text.
 //
 // Built on the same opening construction /explore/looks-real-is-it/ uses,
 // and the 5G and photo stories before it: one grid, the editorial column on
 // the left, the visual stage on the right, both centred against each other,
-// falling back to a single column (copy first) below the stacking point. The
-// eyebrow is that story's own — small saffron dot, cobalt uppercase — and
-// "Pick one." takes the place its "Looks real." holds: the primary serif
-// line the scene is built around, not an instruction floating above a
-// picture.
+// falling back to a single column (copy first) below the stacking point.
+// "You chose this." holds the place "Looks real." holds there — the primary
+// serif line the scene is built around.
 //
-// One deliberate difference from looks-real-is-it: there, the left title is
-// the anchor and never changes once the story starts. Here it does. "Pick
-// one." is an invitation, and once it has been taken the scene has to answer
-// it — so the same slot carries "You chose this." and the way onward. The
-// eyebrow above it does not move, which is what keeps it reading as the same
-// scene rather than a new one.
-//
-// The state past "Did you? →" does not exist yet. That button is real and
-// focusable now, and a click is intentionally inert at this checkpoint —
-// the same convention where-is-the-5g.astro uses for its unbuilt scenes.
+// "Did you? →" is the library's own turn treatment (serif, saffron circle,
+// quiet underline on hover) — the one every story uses to move to its next
+// beat, rather than the pill those stories use to *start* a story, which
+// this scene does not need: the story is already under way. The state past
+// it does not exist yet, so a click is intentionally inert at this
+// checkpoint — the same convention where-is-the-5g.astro uses for its
+// unbuilt scenes.
 //
 // Title, description, canonical, share card and structured data all come
 // from this story's entry in src/data/stories.ts, through the same
@@ -39,60 +47,33 @@ import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
 // BaseLayout's own default (the URL the page was built at), which is
 // already this page's permanent address.
 const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
-
-// The three feed items, as they sit in the artwork. The picture is one
-// flat image, so these are the only description of where each item is:
-// percentages of the master's own 1214x1295 frame, measured from it. The
-// scene box below locks to that same aspect ratio, which is what keeps the
-// three buttons sitting exactly on the three cards at every width.
-//
-// The names are what a screen reader announces. They describe what is in
-// each thumbnail and nothing more — the same three ordinary things a
-// sighted visitor sees — so the choice reads the same either way.
-const PICKS = [
-  { id: 'a', name: 'A woman on a hillside at sunrise', top: 10.58, height: 23.78 },
-  { id: 'b', name: 'A bowl of food on a table', top: 35.83, height: 23.55 },
-  { id: 'c', name: 'A cricketer playing a shot', top: 60.85, height: 24.86 },
-];
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="chose" data-chose>
     <div class="chose__stage shell">
       <div class="chose__copy">
-        <!-- Fixed. The one thing that does not move between the two states,
-             so the scene stays the same scene. -->
-        <p class="chose__eyebrow"><span></span>Look again</p>
+        <h1 class="chose__opening">You chose this.</h1>
 
-        <!-- Announced as a whole when it changes, because the change *is*
-             the scene's reply to what the visitor just did. -->
-        <div class="chose__lines" aria-live="polite">
-          <h1 class="chose__opening">
-            <span data-line="ask">Pick one.</span>
-            <span data-line="chosen" hidden>You chose this.</span>
-          </h1>
-
-          <p class="chose__sub" data-line="ask">Whatever catches your attention.</p>
-
-          <!-- The same turn treatment every story in the library uses:
-               serif, the saffron circle, the quiet underline on hover. Real
-               and focusable once it arrives; the state past it does not
-               exist yet, so a click is intentionally inert here. -->
-          <button type="button" class="chose__turn" data-line="chosen" data-onward hidden>
-            Did you? <span aria-hidden="true">&rarr;</span>
-          </button>
-        </div>
+        <button type="button" class="chose__turn" data-onward>
+          Did you? <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
       <!-- ====================================================
            THE SCENE — the supplied phone/hand master, used as provided:
            transparent, on the page's own background, with no card, device
            frame, gradient or decoration behind it. It is already a
-           photograph of a phone being held.
+           photograph of a phone being held, with the choice already being
+           made in it.
+
+           Nothing is drawn on top of it. No ring, no highlight, no label,
+           no arrow: the thumb on the middle item is what says which one was
+           chosen, and anything added would be the page explaining a picture
+           that is already clear.
 
            The box is locked to the master's own ratio, so nothing is
-           cropped or letterboxed and the three buttons below can be placed
-           as percentages of it. -->
+           cropped or letterboxed. -->
       <div class="chose__visual">
         <div class="chose__scene">
           <Image
@@ -105,26 +86,6 @@ const PICKS = [
             fetchpriority="high"
             decoding="async"
           />
-
-          <!-- Real buttons over the three cards in the picture, rather than
-               click regions on the image. Keyboard, touch and screen readers
-               then work because they are buttons, not because this page
-               re-implemented any of it. `aria-pressed` is what carries the
-               chosen state to assistive technology; the ring is its visual
-               counterpart, not a separate source of truth. -->
-          <div class="chose__picks" role="group" aria-label="Three things to watch">
-            {PICKS.map((pick) => (
-              <button
-                type="button"
-                class="chose__pick"
-                data-pick={pick.id}
-                aria-pressed="false"
-                style={`top:${pick.top}%;height:${pick.height}%`}
-              >
-                <span class="chose__pick-label">{pick.name}</span>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>
@@ -154,27 +115,6 @@ const PICKS = [
     text-align: left;
   }
 
-  /* ConceptHero's eyebrow, the same one looks-real-is-it reuses. */
-  .chose__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 0 0 12px;
-    font-family: var(--sans);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--cobalt);
-  }
-
-  .chose__eyebrow span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--saffron);
-  }
-
   /* The story's primary line, at the same size and weight "Looks real."
      carries in this slot. */
   .chose__opening {
@@ -187,50 +127,20 @@ const PICKS = [
     letter-spacing: -0.028em;
   }
 
-  .chose__sub {
-    margin: clamp(16px, 2.2vh, 22px) 0 0;
-    max-width: 34ch;
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  /* The two states swap in place. Both are in the DOM from the start; only
-     one is ever un-hidden, so nothing is announced or focusable before its
-     moment. */
-  .chose__opening span[hidden],
-  .chose__sub[hidden],
-  .chose__turn[hidden] {
-    display: none;
-  }
-
-  /* Arrives as the reply to the choice — the same settle the other stories
-     give copy that appears mid-scene. */
-  [data-picked] .chose__opening span[data-line='chosen'],
-  [data-picked] .chose__turn {
-    animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
-  }
-
-  [data-picked] .chose__turn {
-    animation-delay: 260ms;
-  }
-
-  @keyframes chose-in {
-    from {
-      opacity: 0;
-      translate: 0 8px;
-    }
-  }
-
+  /* The library's turn treatment, unchanged: serif, the saffron circle,
+     the quiet underline on hover. Sits a little further under the line
+     here than mid-story turns do, because it is the only other thing in
+     the column and the pause between the statement and the doubt is the
+     point. */
   .chose__turn {
     display: inline-block;
-    margin: clamp(16px, 2.2vh, 22px) 0 0;
+    margin: clamp(20px, 3vh, 30px) 0 0;
     padding: 0;
     border: none;
     background: none;
     color: var(--ink);
     font-family: var(--serif);
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: -0.008em;
@@ -242,9 +152,9 @@ const PICKS = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
-    margin-left: 6px;
+    width: 21px;
+    height: 21px;
+    margin-left: 7px;
     border-radius: 50%;
     background: var(--saffron);
     color: #fff;
@@ -278,14 +188,12 @@ const PICKS = [
 
   /* Locked to the master's own frame (1214x1295) — no letterboxing and no
      cropping decision to make, the same way looks-real-is-it sizes its
-     scene box to its photograph's ratio. It is also what lets the three
-     buttons be positioned as percentages and stay on their cards at every
-     width, with no per-breakpoint nudging.
+     scene box to its photograph's ratio.
 
      Capped and centred rather than filling the column: the master is
      portrait, so at the full column width it would tower over the
      editorial line instead of balancing it. At this cap the picture covers
-     about the same area as the café photograph does in the same slot. */
+     a little more area than the café photograph does in the same slot. */
   .chose__scene {
     position: relative;
     aspect-ratio: 1214 / 1295;
@@ -299,90 +207,6 @@ const PICKS = [
     width: 100%;
     height: 100%;
     object-fit: contain;
-  }
-
-  .chose__picks {
-    position: absolute;
-    inset: 0;
-  }
-
-  /* Each button covers exactly one card in the picture. Transparent at
-     rest: the thing you are choosing between is the photograph, so the
-     affordance is the cursor, the hover lift and the focus ring rather
-     than chrome drawn on top of the artwork. */
-  .chose__pick {
-    position: absolute;
-    left: 27.68%;
-    width: 43.99%;
-    margin: 0;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: 14px;
-    background: none;
-    cursor: pointer;
-    transition:
-      border-color 400ms ease,
-      box-shadow 400ms ease;
-  }
-
-  /* The accessible name only. Present for assistive technology; the
-     picture already carries it for everyone else, and any text drawn here
-     would be text baked over the artwork. */
-  .chose__pick-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .chose__pick:hover {
-    box-shadow: 0 0 0 3px rgba(36, 92, 255, 0.16);
-  }
-
-  .chose__pick:focus-visible {
-    outline: 2px solid var(--cobalt);
-    outline-offset: 3px;
-  }
-
-  /* ACKNOWLEDGING THE CHOICE. Deliberately small: a quiet cobalt ring on
-     the one that was picked, and nothing else. No scale, no lift, no
-     motion across the scene — the layout and the picture hold still, and
-     the left column is where the scene answers. */
-  .chose__pick[aria-pressed='true'] {
-    border-color: var(--cobalt);
-    box-shadow: 0 0 0 4px rgba(36, 92, 255, 0.13);
-  }
-
-  /* Nothing is drawn on the two that were not chosen. Dimming them was
-     tried and removed: these buttons are rectangles sitting over one flat
-     photograph, so a veil over the third card also fell across the thumb
-     crossing it, and the finger ended up looking like it was behind
-     glass. The ring on the chosen one is the whole acknowledgement.
-
-     Once chosen, the other two are out of play all the same. `disabled`
-     is what makes that true for the keyboard and the pointer alike. The
-     chosen one stays enabled so focus is never pulled out from under the
-     visitor who just used it. */
-  .chose__pick[disabled] {
-    cursor: default;
-  }
-
-  /* The copy arrives by fading and settling, so with motion reduced there
-     is nothing to replace — the same states simply appear. The ring is
-     unaffected: it is the meaning, not the animation. */
-  @media (prefers-reduced-motion: reduce) {
-    .chose__pick {
-      transition: none;
-    }
-
-    [data-picked] .chose__opening span[data-line='chosen'],
-    [data-picked] .chose__turn {
-      animation: none;
-    }
   }
 
   /* Two columns at the same width looks-real-is-it opens its own at, in
@@ -402,43 +226,6 @@ const PICKS = [
     }
   }
 </style>
-
-<script>
-  // Scene 1's only behaviour: the visitor picks one of the three, the
-  // picture acknowledges it, and the left column answers.
-  //
-  // Deliberately not here: anything about what happens next. "Did you? →"
-  // is wired to nothing because the state past it does not exist yet.
-  const root = document.querySelector('[data-chose]');
-
-  if (root instanceof HTMLElement) {
-    const picks = Array.from(root.querySelectorAll('[data-pick]'));
-
-    const choose = (chosen) => {
-      // First choice wins. A second click cannot re-run the reveal or
-      // move the story anywhere it has not been taken.
-      if (root.dataset.picked) return;
-      root.dataset.picked = chosen.dataset.pick || '1';
-
-      for (const pick of picks) {
-        const isChosen = pick === chosen;
-        pick.setAttribute('aria-pressed', String(isChosen));
-        // The chosen one stays enabled: disabling the element that was
-        // just activated would drop keyboard focus to the document.
-        if (!isChosen) pick.disabled = true;
-      }
-
-      // The left column swaps to the state that answers the choice. The
-      // eyebrow above is not in either group, so it does not move.
-      for (const el of root.querySelectorAll('[data-line="ask"]')) el.hidden = true;
-      for (const el of root.querySelectorAll('[data-line="chosen"]')) el.hidden = false;
-    };
-
-    for (const pick of picks) {
-      pick.addEventListener('click', () => choose(pick));
-    }
-  }
-</script>
 
 <script define:vars={{ topic: 'who-chose-what-you-saw', rootSelector: '[data-chose]' }}>
   // Analytics: story_view only, on the same visibility rule every other
