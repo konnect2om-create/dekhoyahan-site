@@ -1,5 +1,6 @@
 ---
 import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyPageMeta } from '../../data/storyMeta';
 import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
@@ -96,48 +97,54 @@ const BEHIND = [
 // the moment only works if the visitor recognises it as more of the same
 // kind of thing, not as a chart drawn over the story.
 //
-// PROVISIONAL. These tiles are still windows into the three items' own
-// pictures, at varying zoom and handedness. That is the whole photographic
-// stock this page has: the rest of the repository's images are other
-// stories' artwork — cell towers, a digital seal, a padlock — and a feed
-// built out of those would read as the technical diagram this beat must not
-// be. It holds the composition and it reads correctly at a glance, but it
-// cannot survive a stare: the same bowl and the same face recur if looked
-// for, which undercuts "many genuinely different things".
+// The tiles are cut from the supplied Feed.png contact sheet: 42 genuinely
+// different pictures — people, food, sport, travel, nature, music,
+// animals, places, ordinary moments — sliced at the sheet's own gutters
+// (detected from the image, not an assumed even split) and stored under
+// src/assets/feed/. No text, no logos, no interface, and nothing derived
+// from the three items: every tile is its own subject, which is the whole
+// requirement of this beat.
 //
-// The fix is a supplied sheet of distinct thumbnails. Nothing else on the
-// page changes when it arrives — it replaces the three sources this array
-// is built from, and the grid, sizing, mask, opacity and placement all
-// stay as they are.
-const TILE = await Promise.all(
-  [item1, item2, item3].map((src) => getImage({ src, width: 420, format: 'webp', quality: 68 }))
+// One slice is deliberately left out. Tile 14 is a woman on a hillside at
+// sunrise — the same subject as item 1 — and in the field it would read as
+// the first card duplicated behind itself, which is exactly the thing the
+// three in front have to stay distinct from.
+const FEED_DUPLICATE = '14';
+
+const feedFiles = Object.entries(
+  import.meta.glob<{ default: ImageMetadata }>('../../assets/feed/*.webp', { eager: true })
+)
+  .filter(([path]) => !path.endsWith(`/${FEED_DUPLICATE}.webp`))
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+
+const feedTiles = await Promise.all(
+  feedFiles.map((src) => getImage({ src, width: 200, format: 'webp', quality: 70 }))
 );
 
-// Where in its picture each tile looks. Twenty windows across three
-// photographs, each at its own zoom and some mirrored, which is what stops
-// eighty-four tiles reading as three pictures repeated: the same ridge at a
-// different crop, scale and handedness does not look like itself.
-const LOOKS = [
-  [8, 14], [62, 22], [35, 78], [88, 48], [18, 62],
-  [72, 86], [46, 10], [95, 30], [26, 38], [55, 92],
-  [12, 88], [80, 66], [40, 46], [68, 54], [22, 18],
-  [92, 74], [50, 70], [14, 40], [76, 12], [34, 58],
-];
+// Enough rows to fill the box. There are more slots than pictures, so the
+// order is two independent shuffles laid end to end: everything appears
+// once before anything appears twice, and the two showings of the same
+// picture end up most of a field apart rather than side by side.
+const FIELD_SLOTS = 7 * 11;
 
-// A fixed hash per position rather than a cycle. Cycles line up with the
-// seven-column grid and print visible stripes of the same crop; this does
-// not, and it is deterministic, so the field is identical on every build
-// and every visit.
-const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
-  const h = (i * 2654435761) % 4294967296;
-  const look = LOOKS[h % LOOKS.length];
-  return {
-    src: TILE[Math.floor(h / 7) % 3].src,
-    look,
-    zoom: 205 + (Math.floor(h / 97) % 11) * 13,
-    flip: Math.floor(h / 1013) % 2 === 0,
-  };
-});
+// A fixed generator, so the field is identical on every build and every
+// visit — a field that rearranges itself between two people looking at the
+// same link is not a thing that was "always there".
+const shuffled = (seed: number) => {
+  const order = feedTiles.map((_, i) => i);
+  let state = seed;
+  for (let i = order.length - 1; i > 0; i--) {
+    state = (state * 1664525 + 1013904223) % 4294967296;
+    const j = state % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+};
+
+const FIELD = [...shuffled(7), ...shuffled(99)]
+  .slice(0, FIELD_SLOTS)
+  .map((i) => feedTiles[i]);
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
@@ -190,10 +197,7 @@ const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
           <!-- Behind everything, and empty until the third beat. -->
           <div class="chose__field" aria-hidden="true">
             {FIELD.map((t) => (
-              <span
-                class="chose__tile"
-                style={`background-image:url(${t.src});background-position:${t.look[0]}% ${t.look[1]}%;background-size:${t.zoom}%;scale:${t.flip ? '-1 1' : '1 1'}`}
-              ></span>
+              <span class="chose__tile" style={`background-image:url(${t.src})`}></span>
             ))}
           </div>
 
@@ -534,9 +538,11 @@ const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
   }
 
   .chose__tile {
-    aspect-ratio: 534 / 308;
+    aspect-ratio: 3 / 2;
     border-radius: 3px;
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 
   /* The three lift towards the reader as the field arrives behind them —
