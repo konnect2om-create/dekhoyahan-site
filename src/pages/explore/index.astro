@@ -4,12 +4,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { stories } from '../../data/stories';
 import { featuresByProminence } from '../../features/registry';
 
-// Registered Features lead the library, the one currently on the homepage
-// first. They are read from the Feature registry rather than copied into
-// the story manifest, so a Feature appears here for the same reason it has
-// a permanent route: because it is registered. When `featuredSlug` changes,
-// the new Feature takes the lead and the earlier ones stay listed below.
+// The library leads with the newest story, then the registered Features
+// (the one currently on the homepage first), then every other story.
+//
+// Features are read from the Feature registry rather than copied into the
+// story manifest, so a Feature appears here for the same reason it has a
+// permanent route: because it is registered. When `featuredSlug` changes,
+// the new Feature takes the lead of that block and the earlier ones stay
+// listed below it.
+//
+// The newest story is lifted out of the manifest and rendered ahead of that
+// block so the library opens on the most recent thing published, which a
+// Feature's registration would otherwise outrank indefinitely. It is a
+// position change only: the lifted story is still the same single entry in
+// src/data/stories.ts, still rendered by the same card markup below, and
+// every Feature keeps its own route, content and behaviour untouched.
+// `stories[0]` is the newest by the manifest's own documented order.
 const features = featuresByProminence();
+const [newest, ...olderStories] = stories;
 
 // The library is every published story, in manifest order: the four the
 // homepage features first (same order as the homepage), then the
@@ -43,6 +55,20 @@ const features = featuresByProminence();
 
     <section class="explore-index__library shell">
       <ul class="explore-index__grid">
+        {/* The newest story leads the library. Same card markup as the
+            story loop below — this entry is simply rendered ahead of the
+            Features block instead of waiting behind it. Not lazy-loaded:
+            it is the one card that is always above the fold. */}
+        <li class="explore-index__item">
+          <a href={`/explore/${newest.slug}/`}>
+            <span class="explore-index__glyph" aria-hidden="true">
+              <img src={newest.thumb} alt="" width="720" height="480" decoding="async" />
+            </span>
+            <h3>{newest.cardTitle}<span class="explore-index__arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>{newest.cardTeaser}</p>
+          </a>
+        </li>
+
         {features.map((feature) => (
           <li class="explore-index__item">
             <a href={`/${feature.slug}/`}>
@@ -56,7 +82,7 @@ const features = featuresByProminence();
           </li>
         ))}
 
-        {stories.map((story) => (
+        {olderStories.map((story) => (
           <li class="explore-index__item">
             <a href={`/explore/${story.slug}/`}>
               <span class="explore-index__glyph" aria-hidden="true">

@@ -8,8 +8,11 @@
 // the page source. A story is listed once — appearing on the homepage does
 // not create a second entry, and nothing is duplicated between the surfaces.
 //
-// Array order is the display order: featured first, matching the homepage,
-// then the Explore-only stories.
+// Array order is the display order in the Explore library: newest story
+// first, then the four the homepage features (in homepage order), then the
+// older Explore-only ones. The homepage is unaffected by position — it
+// renders `featuredStories`, which filters on `featured` rather than
+// reading from the front of this array.
 //
 // `cardTitle` and `cardTeaser` are the two halves of the same sentence pair.
 // The homepage sets them on one label with a break between; the library sets
@@ -54,6 +57,7 @@ import fiveG from '../../public/images/5G.webp';
 import laptop1 from '../assets/laptop1.png';
 import aiAnsweredShare from '../assets/social/ai-answered-you-share.webp';
 import aiStackScene1 from '../assets/ai-stack-scene1.webp';
+import whoChoseScene1 from '../assets/who-chose-what-you-saw-scene1.webp';
 
 export type Story = {
   /** Route is always `/explore/${slug}/`. */
@@ -85,6 +89,25 @@ export type Story = {
 };
 
 export const stories: Story[] = [
+  {
+    slug: 'who-chose-what-you-saw',
+    cardTitle: 'You chose it.',
+    cardTeaser: 'Who chose what you saw?',
+    headline: 'You chose it.',
+    question: 'Who chose what you saw?',
+    shortAnswer:
+      'Before you choose something from a feed, another system has already decided what reaches that feed.',
+    keyTakeaway: 'You chose from what reached you.',
+    description:
+      'See what happens before you choose something from a feed — and why the choices on your screen were already selected before you arrived.',
+    publishedAt: '2026-09-11',
+    image: {
+      src: whoChoseScene1,
+      alt: 'A hand holding a phone showing three things to watch, a thumb resting on the middle one.',
+    },
+    thumb: '/images/thumbs/who-chose-what-you-saw-card.webp',
+    featured: false,
+  },
   {
     slug: 'looks-real-is-it',
     cardTitle: 'Looks real.',
