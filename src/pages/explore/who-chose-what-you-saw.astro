@@ -162,7 +162,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
-          <p class="chose__sub" data-line="three" hidden>Most of it never reached your screen.</p>
+          <p class="chose__sub" data-line="three" hidden>Most of it never made it to your screen.</p>
 
           <button type="button" class="chose__turn" data-line="one" data-onward>
             Did you? <span aria-hidden="true">&rarr;</span>
@@ -438,11 +438,13 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
      KNOWN GAP. This removes the phone and the hand, but not the thumb:
      it is part of the photograph inside items 2 and 3, which are cut from
-     the master and cannot be un-occluded. With the hand gone it reads as a
-     finger with nothing attached to it. Fixing it needs clean versions of
-     the three pictures — the same three, without the thumb across them —
-     at which point this rule is already correct and only the item sources
-     change. */
+     the master and cannot be un-occluded — a fingertip across the bowl,
+     and a finger over about a third of the cricket card. With the hand
+     gone those read as a finger attached to nothing. Item 1 is already
+     clean and needs nothing. Fixing the other two is a source swap: the
+     same two subjects photographed without the thumb, dropped in as
+     who-chose-what-you-saw-item2/3.webp. This rule and everything around
+     it is already correct. */
   [data-stage='3'] .chose__art {
     opacity: 0;
   }
