@@ -7,6 +7,8 @@ import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
 import item1 from '../../assets/who-chose-what-you-saw-item1.webp';
 import item2 from '../../assets/who-chose-what-you-saw-item2.webp';
 import item3 from '../../assets/who-chose-what-you-saw-item3.webp';
+import item2Clean from '../../assets/who-chose-what-you-saw-item2-clean.webp';
+import item3Clean from '../../assets/who-chose-what-you-saw-item3-clean.webp';
 
 // The permanent "Who chose what you saw?" Explore route. Two beats.
 //
@@ -80,9 +82,9 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
 // same ratio, which is what keeps each cut-out sitting exactly on its own
 // counterpart in the photograph at every width.
 const ITEMS = [
-  { src: item1, alt: 'A woman on a hillside at sunrise.', top: 10.58, height: 23.78 },
-  { src: item2, alt: 'A bowl of food on a table.', top: 35.83, height: 23.55 },
-  { src: item3, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
+  { src: item1, clean: null, alt: 'A woman on a hillside at sunrise.', top: 10.58, height: 23.78 },
+  { src: item2, clean: item2Clean, alt: 'A bowl of food on a table.', top: 35.83, height: 23.55 },
+  { src: item3, clean: item3Clean, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
 ];
 
 // Two edges behind each item, stepped back far enough to be seen and no
@@ -232,16 +234,31 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
           <div class="chose__items" aria-hidden="true">
             {ITEMS.map((item) => (
-              <Image
-                class="chose__item"
-                src={item.src}
-                alt={item.alt}
-                widths={[280, 380, 534]}
-                sizes="(max-width: 979px) 35vw, 250px"
-                loading="eager"
-                decoding="async"
-                style={`top:${item.top}%;height:${item.height}%`}
-              />
+              <>
+                <Image
+                  class:list={["chose__item", "chose__item--held", item.clean && "chose__item--swapped"]}
+                  src={item.src}
+                  alt={item.alt}
+                  widths={[280, 380, 534]}
+                  sizes="(max-width: 979px) 35vw, 250px"
+                  loading="eager"
+                  decoding="async"
+                  style={`top:${item.top}%;height:${item.height}%`}
+                />
+
+                {item.clean && (
+                  <Image
+                    class="chose__item chose__item--clean"
+                    src={item.clean}
+                    alt=""
+                    widths={[280, 380, 534]}
+                    sizes="(max-width: 979px) 35vw, 250px"
+                    loading="eager"
+                    decoding="async"
+                    style={`top:${item.top}%;height:${item.height}%`}
+                  />
+                )}
+              </>
             ))}
           </div>
         </div>
@@ -474,6 +491,34 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
   :is([data-stage='2'], [data-stage='3']) .chose__item {
     opacity: 1;
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
+  }
+
+  /* THE HAND LEAVING, AND THE TWO CARDS IT WAS ON.
+     ----------------------------------------------
+     The thumb is part of the photograph inside items 2 and 3; it cannot be
+     cropped out, so those two are swapped for clean plates of the same two
+     subjects at the third beat — the beat where the phone and the hand go.
+
+     It has to be a swap at that beat rather than simply better sources
+     everywhere. In beats 1 and 2 the hand is still there (present, then a
+     ghost) and each card sits exactly on its own counterpart in the
+     photograph: a thumb-free bowl over a photograph that still has a thumb
+     on it would break the alignment those beats are built on, and the first
+     turn would read as the content changing rather than the phone receding.
+     So the held versions stay until the hand has gone, then cross-fade to
+     the clean ones on the same 900ms as everything else in that transition.
+
+     Item 1 has no clean twin because it never needed one — no thumb ever
+     crossed it — so it is a single picture throughout and simply carries on.
+
+     Both rules come after the shared opacity rule above and match its
+     specificity, so source order decides: the last one wins. */
+  :is([data-stage='1'], [data-stage='2']) .chose__item--clean {
+    opacity: 0;
+  }
+
+  [data-stage='3'] .chose__item--swapped {
+    opacity: 0;
   }
 
   /* ---- A hint of what is behind them ---- */
