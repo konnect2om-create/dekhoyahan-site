@@ -3,9 +3,9 @@
  *
  * A Feature is one self-contained experience: one component that owns its
  * markup, copy, scenes, animation, accessibility behaviour and replay. This
- * file is the only place that knows which Features exist, which one the
- * homepage is currently showing, and what each one says about itself to
- * search engines, answer engines and people sharing the link.
+ * file is the only place that knows which Features exist and what each one
+ * says about itself to search engines, answer engines and people sharing
+ * the link.
  *
  * To add a Feature:
  *   1. build it as a component under src/components/features/;
@@ -13,15 +13,22 @@
  *      short editorial answer fields.
  * It gets its permanent page at /<slug>/ and its Explore card automatically.
  *
- * To change what the homepage shows:
- *   3. point `featuredSlug` at the new entry.
- * Nothing else moves. Every Feature keeps its own route whether or not it
- * is the one on the homepage, so an address that has been shared once keeps
- * working after the homepage moves on.
+ * `featuredSlug` only orders this list for the Explore library (the
+ * Feature it names leads; see `featuresByProminence`) — it no longer
+ * decides what the homepage hero renders. That is `featuredHeroComponent`
+ * below, deliberately independent of this array: the homepage hero can be
+ * a story whose permanent, canonical, indexed address lives elsewhere (see
+ * AI Stack, whose permanent story is /explore/ai-stack/, not a /<slug>/
+ * route here) without that story ever entering `features[]` or gaining a
+ * second, duplicate permanent route. Every entry that *is* in `features[]`
+ * still keeps its own /<slug>/ route regardless of homepage status, so an
+ * address that has been shared once keeps working after the homepage
+ * moves on.
  */
 
 import type { ImageMetadata } from 'astro';
 import ZeroTrustFeature from '../components/features/ZeroTrustFeature.astro';
+import AiStackFeature from '../components/features/AiStackFeature.astro';
 import securityDome from '../assets/security-dome.png';
 import { ORGANIZATION_ID, SITE, SITE_URL } from '../config/site';
 
@@ -78,8 +85,19 @@ export const features: Feature[] = [
   },
 ];
 
-/** The Feature the homepage is currently showing. */
+/** Orders `featuresByProminence` below; no longer what selects the homepage hero. */
 export const featuredSlug = 'zero-trust';
+
+/**
+ * The component the homepage hero currently renders. Set independently of
+ * `features[]` and `featuredSlug` on purpose: swapping this one line is
+ * the entire homepage handover, and it never requires the story to join
+ * `features[]` or receive a /<slug>/ route here — AI Stack's own permanent,
+ * canonical, sitemapped address is /explore/ai-stack/ (see
+ * src/data/stories.ts and src/pages/explore/ai-stack.astro), and stays
+ * that way regardless of what the homepage is currently showing.
+ */
+export const featuredHeroComponent = AiStackFeature;
 
 /** The canonical URL of a Feature's own page. */
 export const canonicalUrl = (feature: Feature) => `${SITE_URL}/${feature.slug}/`;

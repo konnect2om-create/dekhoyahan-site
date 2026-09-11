@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { featuredStories } from '../data/stories';
-import { featuredFeature } from '../features/registry';
+import { featuredHeroComponent } from '../features/registry';
 
-// The homepage renders whichever story is currently marked as the
-// featured Feature. It never imports a specific Feature itself, so
-// swapping the story is a change to the registry, not to this page.
-const Feature = featuredFeature.Component;
+// The homepage renders whichever component the registry currently names
+// as its hero. It never imports a specific Feature itself, so swapping
+// the story is a change to the registry, not to this page.
+const Feature = featuredHeroComponent;
 ---
 
 <BaseLayout>

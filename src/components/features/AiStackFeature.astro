@@ -1,0 +1,26 @@
+---
+import AiStackExperience from '../explain/AiStackExperience.astro';
+
+// The AI Stack Feature — homepage wrapper.
+//
+// The complete approved AI Stack experience (artwork, every story state,
+// copy, timing, gating, reduced-motion and keyboard behaviour, and the
+// decoded-label and finale states) now lives in one place —
+// src/components/explain/AiStackExperience.astro — so the homepage Feature
+// surface and the permanent Explore route (/explore/ai-stack/) render the
+// same component rather than two copies of the same story. This file is
+// deliberately left with nothing of its own: the experience component
+// already carries its own width cap and right-column alignment
+// (--ais-w, margin-left: auto), which is exactly the "homepage-specific
+// sizing" this wrapper would otherwise need to supply, so there is nothing
+// left to add here without duplicating what the shared component already
+// does.
+//
+// PROTOTYPE. Not registered in src/features/registry.ts, so it has no
+// permanent route, no Explore card, no share image, no structured data and
+// no sitemap entry. The homepage still renders whatever the registry names
+// (currently Zero Trust). The only place this appears is the dev-only
+// preview route, /preview/ai-stack/.
+---
+
+<AiStackExperience />

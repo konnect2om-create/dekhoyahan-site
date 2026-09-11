@@ -53,6 +53,7 @@ import photoSend1 from '../../public/images/PhotoSend1.webp';
 import fiveG from '../../public/images/5G.webp';
 import laptop1 from '../assets/laptop1.png';
 import aiAnsweredShare from '../assets/social/ai-answered-you-share.webp';
+import aiStackScene1 from '../assets/ai-stack-scene1.webp';
 
 export type Story = {
   /** Route is always `/explore/${slug}/`. */
@@ -224,6 +225,26 @@ export const stories: Story[] = [
       alt: 'A laptop open on a desk beside a passport, a notebook and a coffee — the trip it was asked to plan not yet begun.',
     },
     thumb: '/images/thumbs/ai-agent-card.webp',
+    featured: false,
+  },
+  {
+    slug: 'ai-stack',
+    cardTitle: 'The AI stack, explained with dinner',
+    cardTeaser:
+      'Prompt. Memory. RAG. Tools. Agents. One grocery run makes the pieces easier to remember.',
+    headline: 'AI Stack Explained Simply: LLM, RAG, Memory, Tools & Agents',
+    question: 'How do prompt, context, memory, retrieval, tools and agents actually fit together?',
+    shortAnswer:
+      'They are not separate vocabulary — they are the parts of one ordinary process. An AI system takes an instruction (a prompt), uses what it already knows and what it is told (context and memory), looks up what it does not know (retrieval, or RAG), uses tools to act, and coordinates all of it toward a goal (agents and orchestration) — the same way an ordinary grocery run already works.',
+    keyTakeaway: 'Next time AI sounds complicated, think about dinner.',
+    description:
+      'Understand the modern AI stack through one familiar grocery run. See how prompts, context, memory, RAG, tools, agents and orchestration work together.',
+    publishedAt: '2026-09-07',
+    image: {
+      src: aiStackScene1,
+      alt: 'A young man in a navy hoodie stands listening as his mother, one hand open mid-sentence, speaks to him on her way out.',
+    },
+    thumb: '/images/thumbs/ai-stack-card.webp',
     featured: false,
   },
 ];

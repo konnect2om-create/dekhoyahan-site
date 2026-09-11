@@ -1,0 +1,3888 @@
+---
+import { Image } from 'astro:assets';
+import aiStack from '../../assets/ai-stack.webp';
+import scene1 from '../../assets/ai-stack-scene1.webp';
+
+// The AI Stack Feature — Scene 1 only.
+//
+// PROTOTYPE. Not registered in src/features/registry.ts, so it has no
+// permanent route, no Explore card, no share image, no structured data and
+// no sitemap entry. The homepage still renders whatever the registry names
+// (currently Zero Trust). The only place this appears is the dev-only
+// preview route, /preview/ai-stack/.
+//
+// The premise: people keep meeting LLM, prompt, context, memory, RAG, tools
+// and agents as separate vocabulary. One ordinary errand — "go get what we
+// need for dinner" — is the mental model that holds them together. So this
+// opening shows the errand and says nothing about the parts. The picture and
+// the sentence raise the question; the Explore story, when it exists, is what
+// answers it. Deliberately absent here: every term above, any diagram, any
+// label on the artwork, any second explanatory paragraph.
+//
+// Built on the same three-beat composition the Zero Trust Feature uses in
+// this slot, in the same editorial grammar: serif for the sentence worth
+// carrying away, the site's sans for the thought that helps you understand
+// it, cobalt sans plus the saffron circular arrow for the thing you can go
+// and explore. No new idiom is introduced.
+//
+// The artwork is the supplied AIStack master, unaltered, stored as lossless
+// WebP: the alpha channel is exact and the colour is bit-for-bit identical
+// across all 649,939 visible pixels, at 45% of the PNG's weight in the
+// repository. Same treatment src/assets/social/ai-answered-you-share.webp
+// already uses.
+
+// ENTERING THE STORY. "See why" no longer goes anywhere. It used to be a
+// link to a separate page, and the hard document switch broke the one thing
+// this Feature is for: the picture is the question, so throwing it away and
+// redrawing the visitor somewhere else made the answer look like a different
+// subject. Now the two pictures share one box and one position, and the
+// first dissolves into the second — the errand full of floating objects
+// resolving into the ordinary moment underneath it. Nothing scrolls, nothing
+// jumps, the page does not reload.
+//
+// It is the site's own two-state technique, unchanged: the same one the
+// "looks real, is it?" story uses to hold two images in a single stage and
+// cross-fade them by opacity. Same duration, same easing.
+//
+// THE NEXT BEAT — still inside Scene 1, still no navigation. "Got it" is
+// the natural, unremarkable response to being told to get dinner things: of
+// course you got it. Only once that's said does the gap become visible —
+// you understood an instruction that told you almost nothing. So this beat
+// doesn't leave the picture, it turns the same scene over: the request
+// fades, the artwork that illustrated it quiets so it stops asking to be
+// read, and what's left is the realisation and the question it raises.
+// "What's missing? →" is where this stops — it has no handler, on
+// purpose, until the beat after it is built.
+//
+// THE UNSPOKEN DECISIONS — the beat "What's missing? →" opens, still
+// without leaving this scene or this page, and without growing it: this
+// beat transforms the picture's own box rather than adding to the column
+// beneath it, so nothing here ever requires scrolling. The kicker and
+// bridge line — having done their job — fade the way "Got it" and the
+// request before them did. What replaces them is not more copy in the
+// tail: it is five short questions, placed directly over the artwork's
+// own quiet margins, around the two people already standing there — the
+// decisions the errand handed over without ever being said out loud,
+// surfacing where they actually happened. They arrive one at a time and
+// then stay, and once all five have landed, the realisation appears at
+// the centre of the same picture, larger and plainer than anything
+// around it.
+//
+// Three flags, one per beat (data-entered, then data-realized, then
+// data-unsaid), each gating the click that sets the next — the same
+// one-way, set-once pattern the Explore story itself uses. The turn
+// buttons ("Got it", "What's missing?") are the story's own page-turn
+// idiom — serif text, saffron circle, the same one "So you go" and "What
+// didn't she say?" use on the story page — not the cobalt "explore"
+// grammar "See why" uses, because nothing here leaves the scene.
+---
+
+<div class="dy-hero__ais" data-ais>
+  <!-- Two elements, in this order: the picture, then the line that turns
+       it into an invitation. There is no title above the artwork any more.
+       That is the whole point of this arrangement — the hero's own
+       "Understand the world that's arriving." is the page's only headline,
+       and a second sentence set above a second column made the visitor
+       choose which one to read first. Now the right column opens with a
+       picture, which cannot be read as a competing headline, and the only
+       words in it arrive underneath as a caption-scale invitation.
+    -->
+
+  <!-- The artwork, used exactly as supplied: nothing drawn over it, no
+       label baked in, no background behind it, no text. It carries the
+       whole SEE IT on its own — an ordinary grocery run.
+
+       It is now the feature's hook rather than its illustration, so it
+       takes the whole column instead of the 600px measure it shared with a
+       headline, and it is the first thing in the column.
+
+       Measured off the asset's alpha channel rather than its box: the
+       painted illustration starts 6.05% down the canvas and runs to the
+       very bottom edge, and spans 5.3%-95.7% across. Almost no empty sky
+       and no empty floor, so the stage is simply the PNG's own 3:2 frame,
+       and only that thin 4% of sky (as a share of width) is taken back out
+       of the gap below it. -->
+  <div class="dy-hero__ais-stage">
+    <Image
+      class="dy-hero__ais-art dy-hero__ais-art--stack"
+      src={aiStack}
+      alt="A shopper pushing a full grocery cart, a handwritten list in one hand, with the things the errand needed floating around them."
+      widths={[600, 760, 920, 1120, 1400]}
+      sizes="(min-width: 1320px) 700px, 92vw"
+      format="webp"
+      quality={90}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      data-art="stack"
+    />
+
+    <!-- The scene underneath, in the same box at the same size. Fetched
+         with the page rather than on the click, so the cross-fade has
+         something to fade to the moment it is asked for — but at low
+         priority, so it never competes with the picture actually on
+         screen. It is hidden from assistive technology until it is the
+         one being shown; the script hands that over with the fade. -->
+    <Image
+      class="dy-hero__ais-art dy-hero__ais-art--scene"
+      src={scene1}
+      alt="A young man in a navy hoodie stands listening as his mother, one hand open mid-sentence, speaks to him on her way out."
+      widths={[600, 760, 920, 1120, 1400]}
+      sizes="(min-width: 1320px) 700px, 92vw"
+      format="webp"
+      quality={90}
+      loading="eager"
+      fetchpriority="low"
+      decoding="async"
+      aria-hidden="true"
+      data-art="scene"
+    />
+
+    <!-- ============================================================
+         THE UNSPOKEN DECISIONS — laid directly over the artwork's own
+         box, not appended below it, so this beat transforms the scene
+         in place instead of growing the page. Hidden until earned (see
+         the CSS below); once open, nothing here recedes.
+
+         Five short lines, positioned in the artwork's own quiet
+         margins — the empty column of canvas to either side of the two
+         people, measured off the same alpha channel that placed the
+         quote earlier. Plain text, nothing drawn around them: no card,
+         no bubble, no pointer connecting a question to a body part,
+         which is what would turn this into a diagram. They are meant to
+         read as thoughts that were always there, only now visible.
+
+         The realisation is NOT in here — the picture's own canvas runs
+         flush to its bottom edge with no clear ground to set it on, and
+         forcing it to the centre put it directly over the two people's
+         faces. It closes the beat instead in the tail below (see
+         .dy-hero__ais-realize), the one place in this composition that
+         is genuinely clear, on the same reveal and the same timing. aria-
+         live so a screen reader hears each question as it arrives rather
+         than only on request. -->
+    <div class="dy-hero__ais-unsaid" tabindex="-1" data-unsaid-panel aria-live="polite">
+      <!-- Each question carries its own connector: a single thin curved
+           stroke, not an arrow — no head, no fill, nothing pointing at a
+           specific part of the picture, just a gentle line suggesting the
+           thought belongs to the scene it sits beside. Presentation only,
+           aria-hidden throughout. -->
+      <p class="dy-hero__ais-ask" data-ask="1">
+        Which shop?
+        <svg class="dy-hero__ais-ask-line" viewBox="0 0 48 30" aria-hidden="true" focusable="false">
+          <path d="M3 4 C 16 4, 30 14, 45 26" />
+        </svg>
+      </p>
+      <p class="dy-hero__ais-ask" data-ask="2">
+        Where is everything?
+        <svg class="dy-hero__ais-ask-line" viewBox="0 0 48 30" aria-hidden="true" focusable="false">
+          <path d="M45 4 C 32 4, 18 14, 3 26" />
+        </svg>
+      </p>
+      <p class="dy-hero__ais-ask" data-ask="3">
+        Sold out?
+        <svg class="dy-hero__ais-ask-line" viewBox="0 0 40 20" aria-hidden="true" focusable="false">
+          <path d="M2 4 C 16 2, 26 10, 38 16" />
+        </svg>
+      </p>
+      <p class="dy-hero__ais-ask" data-ask="4">
+        Are the tomatoes good?
+        <svg class="dy-hero__ais-ask-line" viewBox="0 0 48 30" aria-hidden="true" focusable="false">
+          <path d="M3 26 C 16 26, 30 16, 45 4" />
+        </svg>
+      </p>
+      <p class="dy-hero__ais-ask" data-ask="5">
+        How do you pay?
+        <svg class="dy-hero__ais-ask-line" viewBox="0 0 40 20" aria-hidden="true" focusable="false">
+          <path d="M38 4 C 24 2, 14 10, 2 16" />
+        </svg>
+      </p>
+    </div>
+
+    <!-- ============================================================
+         THE SWAP — "See where this goes" replaces the whole scene in
+         place rather than adding beneath it: the picture, the five
+         questions and the realisation below all fade out completely
+         (see their [data-bridge='1'] rules), and this one short line
+         takes over the exact same box the picture occupied, centred
+         both ways rather than sitting under where the artwork was.
+         Nothing named yet — no LLM, no prompt, no agent — this is only
+         the turn, not the explanation. tabindex="-1" so focus has
+         somewhere to land when the button that opened this disappears. -->
+    <div class="dy-hero__ais-swap" tabindex="-1" data-bridge-panel>
+      <p class="dy-hero__ais-swap-text">
+        <span class="dy-hero__ais-swap-setup">That grocery run?</span>
+        <span class="dy-hero__ais-swap-payoff">AI works more like that than you might think.</span>
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-showme='1'] rule), the same way "See where this goes"
+           faded once it opened this beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-swap-next" data-showme>
+        Show me <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE PROMPT — "Show me" replaces this scene the same way "See
+         where this goes" replaced the one before it: the previous copy
+         and its own control fade out completely (see their
+         [data-showme='1'] rules), and this takes over the same box,
+         centred the same way. The instruction the visitor already read
+         back in Scene 1 returns first, so what follows reads as "that
+         thing, named" rather than a new idea. The name itself arrives
+         in one plain sentence, not a heading or a badge — "prompt" gets
+         only a subtle weight lift within the same line, using the
+         existing type system's own heavier register rather than a new
+         idiom (no uppercase, no colour, no box). Nothing else named yet
+         — no LLM, no context, no memory, no RAG, no tools, no agent, no
+         orchestration — and no next control yet either. tabindex="-1"
+         so focus has somewhere to land when "Show me" disappears. -->
+    <div class="dy-hero__ais-prompt" tabindex="-1" data-prompt-panel aria-live="polite">
+      <p class="dy-hero__ais-prompt-quote">&ldquo;Go get the things we need for dinner.&rdquo;</p>
+      <p class="dy-hero__ais-prompt-line">
+        In AI, that instruction is called a <span class="dy-hero__ais-prompt-word">prompt</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-context='1'] rule), the same way "Show me" faded once
+           it opened this beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-prompt-next" data-context>
+        But that wasn&rsquo;t enough <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE CONTEXT — "But that wasn't enough" replaces this scene the
+         same way each turn before it has: the prompt beat and its own
+         control fade out completely (see their [data-context='1']
+         rules), and this takes over the same box. Two ordinary facts
+         arrive first — the kind of thing a visitor already knows to
+         factor into "the things we need" without being told to — then
+         the line that names the practical difference they make, then
+         the one sentence that names the category itself, the same
+         understated way "prompt" arrived: a subtle weight lift within
+         an otherwise plain sentence, not a heading or a badge. No image,
+         no card, no definition. Nothing else named yet — no memory, no
+         RAG, no tools, no agent, no orchestration — and no next control
+         yet either. tabindex="-1" so focus has somewhere to land when
+         "But that wasn't enough" disappears. -->
+    <div class="dy-hero__ais-context" tabindex="-1" data-context-panel aria-live="polite">
+      <p class="dy-hero__ais-context-fact">
+        Dinner is for four.<br />
+        Mum is making pasta.
+      </p>
+      <p class="dy-hero__ais-context-line dy-hero__ais-context-line--1">Now you know what to buy.</p>
+      <p class="dy-hero__ais-context-line dy-hero__ais-context-line--2">
+        In AI, that extra information is called <span class="dy-hero__ais-context-word">context</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-memory='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-context-next" data-memory>
+        And you already knew something else <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE MEMORY — "And you already knew something else" replaces
+         this scene the same way each turn before it has: the context
+         beat and its own control fade out completely (see their
+         [data-memory='1'] rules), and this takes over the same box.
+         Another ordinary fact arrives first, then the line that names
+         what was true without being said — the same realisation Scene
+         1's own kicker used — before the one sentence that names the
+         category, the same understated way "prompt" and "context" both
+         arrived: a subtle weight lift within an otherwise plain
+         sentence, not a heading or a badge.
+         No image, no card, no definition. Nothing else named yet — no
+         RAG, no tools, no agent, no orchestration — and no next control
+         yet either. tabindex="-1" so focus has somewhere to land when
+         "And you already knew something else" disappears. -->
+    <div class="dy-hero__ais-memory" tabindex="-1" data-memory-panel aria-live="polite">
+      <p class="dy-hero__ais-memory-fact">Dad always gets the same biscuits.</p>
+      <p class="dy-hero__ais-memory-line dy-hero__ais-memory-line--1">Nobody had to tell you this time.</p>
+      <p class="dy-hero__ais-memory-line dy-hero__ais-memory-line--3">
+        AI can remember things from before too. That&rsquo;s <span class="dy-hero__ais-memory-word">memory</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature, waiting for the beat it leads to. Deliberately not
+           wired to anything yet: no data-attribute, no listener; the
+           script below never queries it. -->
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-lookup='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-memory-next" data-lookup>
+        What if you&rsquo;re not sure? <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE LOOKUP — "What if you're not sure?" replaces this scene the
+         same way each turn before it has: the memory beat and its own
+         control fade out completely (see their [data-lookup='1'] rules),
+         and this takes over the same box. Three short lines walk the
+         same ordinary errand through a moment memory alone doesn't
+         cover — not knowing, then checking somewhere for the answer,
+         then having it — without naming what that is yet. No emphasised
+         word this time: nothing is being named, so nothing gets the
+         saffron treatment. No image, no card. Nothing named yet — no
+         RAG, no retrieval, no tools, no agent, no orchestration — and
+         no next control yet either. tabindex="-1" so focus has
+         somewhere to land when "What if you're not sure?" disappears. -->
+    <div class="dy-hero__ais-lookup" tabindex="-1" data-lookup-panel aria-live="polite">
+      <p class="dy-hero__ais-lookup-fact">You can&rsquo;t find the pasta sauce.</p>
+      <p class="dy-hero__ais-lookup-line dy-hero__ais-lookup-line--1">So you check the aisle signs.</p>
+      <p class="dy-hero__ais-lookup-line dy-hero__ais-lookup-line--2">Now you know where to look.</p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature, waiting for the beat it leads to. Deliberately not
+           wired to anything yet: no data-attribute, no listener; the
+           script below never queries it. -->
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-retrieval='1'] rule), the same way every control before
+           it faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-lookup-next" data-retrieval>
+        AI can do something similar <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE RETRIEVAL — "AI can do something similar" replaces this
+         scene the same way each turn before it has: the lookup beat and
+         its own control fade out completely (see their
+         [data-retrieval='1'] rules), and this takes over the same box.
+         Two short lines name what the previous beat's errand actually
+         showed — not needing to hold everything, being able to go find
+         what's missing instead — before the one sentence that names the
+         category, the same understated saffron lift "prompt", "context"
+         and "memory" all got: only the word, not the sentence. No
+         mechanism, no image, no card. Nothing else named yet — no RAG,
+         no databases, no search, no embeddings, no documents, no tools,
+         no agent, no orchestration — and no next control yet either.
+         tabindex="-1" so focus has somewhere to land when "AI can do
+         something similar" disappears. -->
+    <div class="dy-hero__ais-retrieval" tabindex="-1" data-retrieval-panel aria-live="polite">
+      <p class="dy-hero__ais-retrieval-fact">It doesn&rsquo;t have to know everything.</p>
+      <p class="dy-hero__ais-retrieval-line dy-hero__ais-retrieval-line--1">It can look for the information it needs.</p>
+      <p class="dy-hero__ais-retrieval-line dy-hero__ais-retrieval-line--2">
+        In AI, that&rsquo;s called <span class="dy-hero__ais-retrieval-word">retrieval</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature, waiting for the beat it leads to. Deliberately not
+           wired to anything yet: no data-attribute, no listener; the
+           script below never queries it. -->
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-rag='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-retrieval-next" data-rag>
+        But finding it is only part of it <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE RAG — "But finding it is only part of it" replaces this
+         scene the same way each turn before it has: the retrieval beat
+         and its own control fade out completely (see their
+         [data-rag='1'] rules), and this takes over the same box. The
+         same aisle-sign errand returns as two short facts — finding the
+         information, then acting on it — because that pairing is
+         exactly what the category names, then the one line that says AI
+         does both together, before the closing line that names it: the
+         same understated saffron lift every term before it got, only
+         the word itself. RAG stays as written — it is an acronym, not a
+         word being given emphasis-by-transform — and is not expanded or
+         explained here; that is a later beat, not this one. No
+         mechanism, no image, no card. Nothing else named yet — no
+         databases, no embeddings, no vector search, no documents, no
+         tools, no agent, no orchestration — and no next control yet
+         either. tabindex="-1" so focus has somewhere to land when "But
+         finding it is only part of it" disappears. -->
+    <div class="dy-hero__ais-rag" tabindex="-1" data-rag-panel aria-live="polite">
+      <p class="dy-hero__ais-rag-fact">
+        You checked the sign.<br />
+        Then you used what it told you.
+      </p>
+      <p class="dy-hero__ais-rag-line dy-hero__ais-rag-line--1">AI can do that too: find what it needs, then use it.</p>
+      <p class="dy-hero__ais-rag-line dy-hero__ais-rag-line--2">
+        That&rsquo;s <span class="dy-hero__ais-rag-word">RAG</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature, waiting for the beat it leads to. Deliberately not
+           wired to anything yet: no data-attribute, no listener; the
+           script below never queries it. -->
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-tools='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-rag-next" data-tools>
+        But dinner still isn&rsquo;t home <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE TOOLS — "But dinner still isn't home" replaces this scene
+         the same way each turn before it has: the RAG beat and its own
+         control fade out completely (see their [data-tools='1'] rules),
+         and this takes over the same box. Knowing something and finding
+         something both stop short of an ordinary evening's actual
+         demands — getting somewhere, paying for something — before the
+         one line that names what AI does about that gap: the same
+         understated saffron lift every term before it got, only the
+         word itself. No mechanism, no image, no card, no definition.
+         Nothing else named yet — no agent, no orchestration — and no
+         next control yet either. tabindex="-1" so focus has somewhere
+         to land when "But dinner still isn't home" disappears. -->
+    <div class="dy-hero__ais-tools" tabindex="-1" data-tools-panel aria-live="polite">
+      <p class="dy-hero__ais-tools-fact">You still have to get dinner home.</p>
+      <p class="dy-hero__ais-tools-line dy-hero__ais-tools-line--1">
+        Maps helps you find the shop.<br />
+        Your card helps you pay.
+      </p>
+      <p class="dy-hero__ais-tools-line dy-hero__ais-tools-line--2">AI can use things to get a job done too.</p>
+      <p class="dy-hero__ais-tools-line dy-hero__ais-tools-line--3">
+        That&rsquo;s <span class="dy-hero__ais-tools-word">tools</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature, waiting for the beat it leads to. Deliberately not
+           wired to anything yet: no data-attribute, no listener; the
+           script below never queries it. -->
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-plan='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-tools-next" data-plan>
+        But who decides what to do next? <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE PLAN — "But who decides what to do next?" replaces this
+         scene the same way each turn before it has: the tools beat and
+         its own control fade out completely (see their [data-plan='1']
+         rules), and this takes over the same box. The answer arrives
+         first, plainly, then the four ordinary steps the whole errand
+         was always made of, revealed one at a time, then the closing
+         thought that the visitor was never just following a fixed
+         script — a change partway through gets absorbed without the
+         errand falling apart. Deliberately no AI language anywhere in
+         this beat: no term is being named, so nothing here gets the
+         saffron treatment, and none of these lines emphasise a single
+         word the way every beat since "prompt" has. No image, no card.
+         tabindex="-1" so focus has somewhere to land when "But who
+         decides what to do next?" disappears. -->
+    <div class="dy-hero__ais-plan" tabindex="-1" data-plan-panel aria-live="polite">
+      <p class="dy-hero__ais-plan-fact">You do.</p>
+      <p class="dy-hero__ais-plan-step dy-hero__ais-plan-step--1">You decide where to go.</p>
+      <p class="dy-hero__ais-plan-step dy-hero__ais-plan-step--2">You get what you need.</p>
+      <p class="dy-hero__ais-plan-step dy-hero__ais-plan-step--3">You pay.</p>
+      <p class="dy-hero__ais-plan-step dy-hero__ais-plan-step--4">You head home.</p>
+      <p class="dy-hero__ais-plan-line">And if something changes, you adjust.</p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-agentic='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-plan-next" data-agentic>
+        What if AI could do that part too? <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         AGENTIC AI — "What if AI could do that part too?" replaces this
+         scene the same way each turn before it has: the plan beat and
+         its own control fade out completely (see their [data-agentic='1']
+         rules), and this takes over the same box. The goal arrives
+         first, then the three-part answer the plan beat just walked
+         through in human terms, then the name for it, with the same
+         understated saffron lift every term before it got, only the
+         two words themselves. No definition, no mechanism, no image, no
+         card. Orchestration is not named here. tabindex="-1" so focus
+         has somewhere to land when "What if AI could do that part too?"
+         disappears. -->
+    <div class="dy-hero__ais-agentic" tabindex="-1" data-agentic-panel aria-live="polite">
+      <p class="dy-hero__ais-agentic-fact">Give it the goal.</p>
+      <p class="dy-hero__ais-agentic-line dy-hero__ais-agentic-line--1">
+        It works out what to do next.<br />
+        It uses what it needs.<br />
+        If something changes, it adjusts.
+      </p>
+      <p class="dy-hero__ais-agentic-line dy-hero__ais-agentic-line--2">
+        That&rsquo;s <span class="dy-hero__ais-agentic-word">agentic AI</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-recap='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-agentic-next" data-recap>
+        But it isn&rsquo;t doing all of this alone <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE RECAP — "But it isn't doing all of this alone" replaces this
+         scene the same way each turn before it has: the agentic beat and
+         its own control fade out completely (see their [data-recap='1']
+         rules), and this takes over the same box. The prompt arrives
+         first, then the five things that actually happened over the
+         course of this whole sequence, named in plain terms rather than
+         their own AI labels, revealed one at a time, then the closing
+         thought. Deliberately no AI language and no saffron anywhere in
+         this beat: prompt, context, memory, retrieval, RAG, tools and
+         agentic AI are none of them named again here — this is a recap
+         in the visitor's own words, not a glossary. No image, no card.
+         tabindex="-1" so focus has somewhere to land when "But it isn't
+         doing all of this alone" disappears. -->
+    <div class="dy-hero__ais-recap" tabindex="-1" data-recap-panel aria-live="polite">
+      <p class="dy-hero__ais-recap-fact">Think about what just happened.</p>
+      <p class="dy-hero__ais-recap-step dy-hero__ais-recap-step--1">You had an instruction.</p>
+      <p class="dy-hero__ais-recap-step dy-hero__ais-recap-step--2">You used what you knew.</p>
+      <p class="dy-hero__ais-recap-step dy-hero__ais-recap-step--3">You remembered something.</p>
+      <p class="dy-hero__ais-recap-step dy-hero__ais-recap-step--4">You looked something up.</p>
+      <p class="dy-hero__ais-recap-step dy-hero__ais-recap-step--5">You used tools.</p>
+      <p class="dy-hero__ais-recap-line">All of it worked together to get dinner home.</p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-orchestration='1'] rule), the same way every control
+           before it faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-recap-next" data-orchestration>
+        So what brings it all together? <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         ORCHESTRATION — "So what brings it all together?" replaces this
+         scene the same way each turn before it has: the recap beat and
+         its own control fade out completely (see their
+         [data-orchestration='1'] rules), and this takes over the same
+         box. The need arrives first, then the same four parts the recap
+         beat just walked through, restated as the ingredients rather
+         than the events, then the parallel back to AI, then the name for
+         it, with the same understated saffron lift every term before it
+         got, only the word itself. No definition beyond the naming
+         sentence, no mechanism, no image, no card. tabindex="-1" so
+         focus has somewhere to land when "So what brings it all
+         together?" disappears. -->
+    <div class="dy-hero__ais-orchestration" tabindex="-1" data-orchestration-panel aria-live="polite">
+      <p class="dy-hero__ais-orchestration-fact">You brought all of it together.</p>
+      <p class="dy-hero__ais-orchestration-step dy-hero__ais-orchestration-step--1">What you knew.</p>
+      <p class="dy-hero__ais-orchestration-step dy-hero__ais-orchestration-step--2">What you remembered.</p>
+      <p class="dy-hero__ais-orchestration-step dy-hero__ais-orchestration-step--3">What you found.</p>
+      <p class="dy-hero__ais-orchestration-step dy-hero__ais-orchestration-step--4">The tools you used.</p>
+      <p class="dy-hero__ais-orchestration-line dy-hero__ais-orchestration-line--1">AI has to bring its parts together too.</p>
+      <p class="dy-hero__ais-orchestration-line dy-hero__ais-orchestration-line--2">
+        That&rsquo;s <span class="dy-hero__ais-orchestration-word">orchestration</span>.
+      </p>
+
+      <!-- The next turn — same idiom as every other page-turn in this
+           Feature. Fades out completely once used (see its own
+           [data-whole='1'] rule), the same way every control before it
+           faded once it opened its own beat. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-orchestration-next" data-whole>
+        Now look at what you just did <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE WHOLE PICTURE — "Now look at what you just did" replaces
+         this scene the same way each turn before it has: the
+         orchestration beat and its own control fade out completely (see
+         their [data-whole='1'] rules), but instead of a new text panel
+         taking over the box, this beat brings back .dy-hero__ais-art
+         --stack — the very picture the visitor saw before entering the
+         story — restoring its opacity to 1 the same way the picture at
+         the top of this stage is otherwise only ever faded. No new copy,
+         no concept label, no image change: the artwork itself is
+         untouched, only shown again, so the visitor sees the same visual
+         with everything they've since learned. The one interaction this
+         beat adds sits beneath the picture rather than centred over it,
+         the same positioning .dy-hero__ais-close uses further down for
+         the same reason — anchored to this stage, not the tail, so
+         "beneath" means beneath the artwork's own visible bottom edge.
+         Fades out completely once used (see its own [data-decode='1']
+         rule), the same way every control before it faded once it opened
+         its own beat. -->
+    <div class="dy-hero__ais-whole" tabindex="-1" data-whole-panel>
+      <!-- The eighth label, on its own: the cart the artwork already
+           ends on has no clear canvas beneath it to hold text the way
+           the other seven objects do, so this one sits here instead,
+           in the same "beneath the picture" position .dy-hero__ais-close
+           already established further down — still close to the cart it
+           names, just below the artwork's own bottom edge rather than
+           over the produce inside it. -->
+      <p class="dy-hero__ais-label dy-hero__ais-label--orchestration" data-label="orchestration">
+        <span class="dy-hero__ais-label-term">Orchestration</span>
+        <span class="dy-hero__ais-label-desc">brings the parts together</span>
+      </p>
+
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-whole-next" data-decode>
+        See what you already know <span aria-hidden="true">→</span>
+      </button>
+
+      <!-- Arrives once every label has had its moment, in the same spot
+           the button above it just vacated. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-decode-next" data-finale>
+        See it differently <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE DECODE — "See what you already know" doesn't replace the
+         picture, it annotates it: seven short labels here (an eighth,
+         orchestration, lives in .dy-hero__ais-whole above instead — see
+         its own comment there for why), each placed beside the object in
+         the artwork it already corresponds to, using the same
+         "positioned in the artwork's own quiet margins" technique
+         .dy-hero__ais-ask uses on the earlier scene — plain text, no
+         card, no pill, no connecting line, so this reads as the visitor
+         suddenly recognising what was already there rather than a new
+         infographic drawn over it. Each label is two lines: the term,
+         in the existing saffron reveal treatment every AI term in this
+         Feature already uses, and beneath it a short, neutral, visually
+         secondary description — never the reverse emphasis. The artwork
+         itself is untouched; nothing here is drawn on top of it besides
+         plain text. Revealed one at a time. tabindex="-1" so focus has
+         somewhere to land when "See what you already know" disappears. -->
+    <div class="dy-hero__ais-decode" tabindex="-1" data-decode-panel>
+      <p class="dy-hero__ais-label dy-hero__ais-label--llm" data-label="llm">
+        <span class="dy-hero__ais-label-term">LLM</span>
+        <span class="dy-hero__ais-label-desc">works with language</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--prompt" data-label="prompt">
+        <span class="dy-hero__ais-label-term">Prompt</span>
+        <span class="dy-hero__ais-label-desc">what you asked</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--context" data-label="context">
+        <span class="dy-hero__ais-label-term">Context</span>
+        <span class="dy-hero__ais-label-desc">what it knows about this task</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--memory" data-label="memory">
+        <span class="dy-hero__ais-label-term">Memory</span>
+        <span class="dy-hero__ais-label-desc">what it remembered</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--rag" data-label="rag">
+        <span class="dy-hero__ais-label-term">RAG</span>
+        <span class="dy-hero__ais-label-desc">what it found and used</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--tools" data-label="tools">
+        <span class="dy-hero__ais-label-term">Tools</span>
+        <span class="dy-hero__ais-label-desc">what it used</span>
+      </p>
+      <p class="dy-hero__ais-label dy-hero__ais-label--agent" data-label="agent">
+        <span class="dy-hero__ais-label-term">Agent</span>
+        <span class="dy-hero__ais-label-desc">works toward the goal</span>
+      </p>
+    </div>
+
+    <!-- ============================================================
+         THE FINALE — "See it differently" is the last turn this
+         Feature takes. The artwork, every label, and the control that
+         opened this beat are all removed from the layout outright (see
+         their own [data-finale='1'] display:none rules below) rather
+         than merely faded, so nothing outgoing can visually overlap or
+         remain tab-reachable underneath what replaces them. What
+         replaces them is deliberately plain: no card, no recap, no
+         saffron term — this beat names nothing new, it only closes the
+         one already spoken. "Think about dinner." is the exact line the
+         visitor read before any of this started, plain black this time
+         rather than .dy-hero__ais-line's own cobalt "dinner." — nothing
+         left to single out, just larger — the same words, meant to land
+         differently now that the visitor has seen what sits behind
+         them. The effect is left to do its own work: nothing on screen
+         explains it. tabindex="-1" so focus has somewhere to land when
+         "See it differently" disappears. -->
+    <div class="dy-hero__ais-finale" tabindex="-1" data-finale-panel aria-live="polite">
+      <p class="dy-hero__ais-finale-lead">Next time AI sounds complicated&hellip;</p>
+      <p class="dy-hero__ais-finale-echo">Think about <em>dinner.</em></p>
+      <a class="dy-hero__ais-turn dy-hero__ais-finale-link" href="/explore/">
+        Explore another <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <!-- ============================================================
+         THE CLOSE — anchored to this stage, not to the tail below it.
+         The picture's own box is what "beneath the people" has to mean:
+         .dy-hero__ais-tail sits right after this stage in flow, but it
+         reserves its own height for the invite/request/realise states it
+         holds regardless of which one is showing, so a sibling placed
+         after it inherits that reserved height as extra distance from
+         the artwork — which is what put the realisation far below the
+         figures rather than close beneath them. Positioned absolutely
+         against this stage instead (its nearest positioned ancestor),
+         so "100% + a small gap" means exactly the artwork's own visible
+         bottom edge plus that gap, independent of whatever the tail
+         beneath it is doing. Still gated purely by [data-unsaid='1'] on
+         the root — moving it changes nothing about when it appears, only
+         where relative to the picture. Fades out completely once
+         [data-bridge='1'] fires, along with the picture above it — see
+         its own rules below — rather than lingering, faded, on screen. -->
+    <div class="dy-hero__ais-close">
+      <p class="dy-hero__ais-final">
+        She gave you a goal.<br />
+        You figured out the rest.
+      </p>
+
+      <!-- The next turn — same idiom as "Got it" and "What's missing?",
+           same size, same saffron circle. Fades once used, the same way
+           "What's missing?" fades once the beat it opens has landed. -->
+      <div class="dy-hero__ais-final-next">
+        <button type="button" class="dy-hero__ais-turn dy-hero__ais-turn--bridge" data-bridge>
+          See where this goes <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two separate things under the picture, and the separation is the
+       point: the editorial hook, then the way in.
+
+       The hook is a paragraph and nothing else — no button around it, no
+       arrow, no hover, no pointer. Serif, because this is the idea to
+       remember, and "dinner." takes the cobalt exactly the way "arriving."
+       does in the headline opposite it: the site's own editorial accent on
+       the word a sentence turns on, which on this page already appears in
+       a line nobody can click.
+
+       The invitation below it is the control, in the site's established
+       exploring grammar — cobalt sans at a heavier weight, closed by the
+       saffron disc that the Zero Trust Feature's cue, the Explore CTA and
+       the discovery cards all use. Set well under the hook it belongs to,
+       so it reads as secondary to it while still being unmistakably
+       something you can use.
+
+       It is a link, not a button: the story it opens is a separate page
+       with its own permanent address, so this navigates rather than
+       changing state in place. -->
+  <div class="dy-hero__ais-tail">
+    <!-- Both states live in the same grid cell, so the words change without
+         the picture above them moving a pixel. -->
+    <div class="dy-hero__ais-invite">
+      <p class="dy-hero__ais-line">Think about <em>dinner.</em></p>
+
+      <button type="button" class="dy-hero__ais-callout" data-enter>
+        See why
+        <span class="dy-hero__ais-cue-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- The request and the response to it, together: both are visible at
+         once during this beat, so they share one grid cell and stack in
+         normal flow inside it rather than each claiming the whole cell
+         (which is what every other child of .dy-hero__ais-tail does, since
+         only one of them is ever showing at a time). -->
+    <div class="dy-hero__ais-request">
+      <!-- Scene 1's line, and nothing else. It arrives while the picture is
+           still resolving, so the sentence and the situation land together.
+           tabindex="-1" only so focus has somewhere to go when the button
+           it came from disappears; it is not in the tab order. -->
+      <p class="dy-hero__ais-quote" tabindex="-1" data-quote>
+        &ldquo;Go get the things we need for dinner.&rdquo;
+      </p>
+
+      <!-- The natural, unremarkable response — said once the request has
+           had a moment to land, not with it. In the story's own page-turn
+           idiom, not the explore grammar: this doesn't leave the scene, it
+           turns it over. -->
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-turn--gotit" data-gotit>
+        Got it <span aria-hidden="true">→</span>
+      </button>
+    </div>
+
+    <!-- ============================================================
+         THE REALISATION — still this scene, not a new one. The request
+         is gone, the picture that illustrated it has quieted, and what's
+         left is the gap "Got it" just glossed over. aria-live so a screen
+         reader hears all three lines as they arrive rather than only on
+         request. The closing line has no handler: it is the stopping
+         point for this implementation, not a dead end left by mistake. -->
+    <div class="dy-hero__ais-realize" aria-live="polite">
+      <p class="dy-hero__ais-kicker" tabindex="-1" data-kicker>You know exactly what to do.</p>
+
+      <!-- The bridge: quieter than the line above it on purpose — ink-soft,
+           not cobalt, and no bold — so it reads as the second, softer
+           thought rather than a second thing shouting for attention. This
+           is the "wait..." the closing question turns on. -->
+      <p class="dy-hero__ais-turnline">But she barely told you anything.</p>
+
+      <button type="button" class="dy-hero__ais-turn dy-hero__ais-turn--next" data-unsaid>
+        What&rsquo;s missing? <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* =========================================================
+     THE FEATURE'S OWN MEASURE
+     The picture is the hook now, so it takes the whole hero column
+     instead of the 600px measure it shared with a headline — at 1440
+     that is 700px against the 600 it had, half again the area. Nothing
+     about the hero slot itself changes.
+     ========================================================= */
+  .dy-hero__ais {
+    /* Scaled down ~18% from the original 720px measure: the composition
+       was winning too much of the column against the copy it accompanies.
+       Every percentage below (sky, quote inset) is defined off this
+       variable, so the whole picture and its alignment shrink together. */
+    --ais-w: min(590px, 100%);
+    /* The asset's empty sky above the first painted pixel, as a share of
+       width: 6.05% of a 3:2 canvas's height is 4.03% of its width. */
+    --ais-sky: calc(var(--ais-w) * 0.0403);
+    /* Gap from the artwork's visible bottom edge to the invitation. The
+       artwork runs to the very bottom of its box, so this is the whole
+       gap. Close enough that the line reads as belonging to the picture
+       rather than standing on its own beneath it — the two are one
+       object, and only one of them is meant to be looked at first. */
+    --ais-gap-bottom: 22px;
+    /* Where the painted figures start across the Scene 1 canvas, measured
+       off its alpha channel: the artwork's own content begins 17.06% in,
+       and everything left of that is empty. The quote lines up with the
+       drawing, not with the box around it. */
+    --ais-quote-inset: calc(var(--ais-w) * 0.1706);
+    display: flex;
+    flex-direction: column;
+    /* Deeper than before. The column no longer opens with a sentence the
+       eye can start on, so the picture is what arrives — and a picture
+       that begins level with the headline wins the first look outright.
+       This drops it to about the headline's second line, which is what
+       puts the reading order back: headline, then picture, then the
+       line under it. */
+    padding-top: clamp(26px, calc(21vh - 108px), 92px);
+  }
+
+  /* The stage is the asset's own 3:2 frame — the painted content reaches
+     the bottom edge, so unlike the Zero Trust stage there is nothing to
+     trim off the box. */
+  .dy-hero__ais-stage {
+    position: relative;
+    width: var(--ais-w);
+    margin-left: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  /* Two pictures, one position. Both are the same 1536x1024 canvas with the
+     same painted extents, so laying them over each other and cross-fading
+     puts the second exactly where the first was — no drift, no resize, no
+     reflow. The technique, the 900ms and the easing are lifted from the
+     "looks real, is it?" story's stage, which does the same thing. */
+  .dy-hero__ais-art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 900ms cubic-bezier(0.2, 0.72, 0.28, 1);
+  }
+
+  .dy-hero__ais-art--scene {
+    opacity: 0;
+  }
+
+  [data-entered='1'] .dy-hero__ais-art--stack {
+    opacity: 0;
+  }
+
+  [data-entered='1'] .dy-hero__ais-art--scene {
+    opacity: 1;
+  }
+
+  /* Quieted, not removed — the picture stays present as the room the
+     realisation is happening in, it just stops being the thing being
+     read. Reuses .dy-hero__ais-art's own 900ms transition, so it settles
+     over the same duration the cross-fade into it took. Source order is
+     what lets this win over the rule above once both attributes are set,
+     since data-realized is never present without data-entered. */
+  [data-realized='1'] .dy-hero__ais-art--scene {
+    opacity: 0.32;
+  }
+
+  /* Only once the questions are asking to coexist with the two people,
+     not before: "Got it" still quiets the picture the way it always has
+     (0.32, above), and this brings it most of the way back up so the
+     unspoken decisions read as thoughts about a scene that's still
+     clearly there, not over an image that's nearly gone. Same
+     specificity as the rule above; source order is what lets this one
+     win once both attributes are set, since data-unsaid is never present
+     without data-realized. */
+  [data-unsaid='1'] .dy-hero__ais-art--scene {
+    opacity: 0.86;
+  }
+
+  /* "See where this goes" replaces the whole scene in place rather than
+     adding beneath it: the picture fades out completely, the same
+     700ms/900ms register everything else in this stage already fades
+     on, so the new copy that follows isn't sharing the frame with a
+     receding image. Same specificity as the rule above; source order is
+     what lets this one win once both attributes are set, since
+     data-bridge is never present without data-unsaid. */
+  [data-bridge='1'] .dy-hero__ais-art--scene {
+    opacity: 0;
+  }
+
+  /* =========================================================
+     THE INVITATION
+     ========================================================= */
+
+  /* Carries the artwork's measure, so both the hook and the invitation
+     start on the picture's own left axis. */
+  /* One cell, two states. The invitation and the line that replaces it are
+     stacked in the same grid area rather than following one another, so the
+     picture above never moves while the words underneath change. The cell
+     takes the height of the taller of the two, which is why nothing shifts
+     at any point in the transition. */
+  /* pointer-events:none on the wrapper itself, not just its faded-out
+     children: this grid's three cells overlap in the same area (see the
+     comment below), and once a cell's own content has faded to
+     invisible it stops being painted — but the tail DIV that contains it
+     never does, so without this it would still sit in front of anything
+     positioned behind it (the whole .dy-hero__ais-close composition
+     below the stage overlaps this exact area) and silently swallow
+     clicks meant for what's actually showing there. Each real control
+     re-enables its own pointer-events below, while it's the one
+     actually visible. */
+  .dy-hero__ais-tail {
+    display: grid;
+    justify-items: start;
+    width: var(--ais-w);
+    margin: calc(var(--ais-gap-bottom)) 0 0 auto;
+    pointer-events: none;
+  }
+
+  .dy-hero__ais-tail > * {
+    grid-area: 1 / 1;
+  }
+
+  .dy-hero__ais-invite {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* visibility is held back until the fade has finished, otherwise it
+       snaps to hidden on the first frame and the opacity transition is
+       never seen. */
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  /* The invitation is spent the moment it is used. visibility rather than
+     opacity alone, so the button leaves the tab order and the accessibility
+     tree instead of lingering as an invisible control. */
+  [data-entered='1'] .dy-hero__ais-invite {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* The wrapper's own opacity is never animated — the quote and the "Got
+     it" button each fade on their own timing, exactly as before. It exists
+     only to put them in a normal top-to-bottom flow instead of the
+     overlapping grid-area every other child of the tail uses, since these
+     two are the one pair on screen together.
+
+     pointer-events does need setting here, though: with no opacity of its
+     own the wrapper is otherwise a fully hit-testable box the instant it
+     paints, invisible or not, and it sits over the invitation underneath
+     it in the same grid cell — it would swallow clicks meant for "See
+     why" before Scene 1 even starts. */
+  .dy-hero__ais-request {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: none;
+  }
+
+  [data-entered='1'] .dy-hero__ais-request {
+    pointer-events: auto;
+  }
+
+  /* Turned back off once "Got it" has done its job: this div's own
+     pointer-events:auto above was only ever meant to let that one button
+     be clicked during the request beat, but [data-entered='1'] never
+     stops being true afterward, so without this it kept intercepting
+     clicks meant for anything positioned behind it in every later beat —
+     which is exactly what made "See where this goes" unclickable once
+     the composition below the tail grew tall enough to reach behind
+     this grid cell. Source order, not specificity, is what lets this win
+     over the rule above once both attributes are set (data-realized is
+     never present without data-entered). */
+  [data-realized='1'] .dy-hero__ais-request {
+    pointer-events: none;
+  }
+
+  /* Scene 1's line, in Scene 1's own treatment: the site's serif at 500,
+     the same line-height and letter-spacing. A little smaller than on the
+     story page, because this column is 700px rather than the full measure.
+     It keeps the tail's alignment — on the picture's left axis at desktop,
+     centred when the hero stacks — so nothing about the composition moves. */
+  .dy-hero__ais-quote {
+    /* Pulled up out of the tail's own gap and held to a short measure, so
+       it stops behaving like a caption under a picture.
+
+       A caption is the full width of the frame, one line, set off from it.
+       This is neither: it breaks to two short lines and sits close under
+       the figures, at the same left edge the son actually stands on rather
+       than the edge of the empty canvas — the transparent margin down the
+       left of the asset is why a line starting at the box edge looked
+       stranded beneath nothing. Read together with the picture, it is what
+       is being said in the room. */
+    margin: calc(var(--ais-gap-bottom) * -0.55) 0 0 var(--ais-quote-inset);
+    max-width: 19ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    /* Reduced ~22% from the previous clamp(24px, 3.2vw, 40px): sized to
+       read as belonging to the scene rather than competing with it. */
+    font-size: clamp(19px, 2.5vw, 31px);
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    opacity: 0;
+    /* visibility, not opacity alone, so before the transition this line is
+       neither focusable nor announced. It flips the instant the flag is set
+       — only the fade is delayed — because focus has to be able to land on
+       it straight away. */
+    visibility: hidden;
+    /* Arrives while the picture is still resolving, not after it: the
+       sentence and the situation are meant to land as one thing. Fading
+       out (once realised) is quick and undelayed, matching the invitation
+       it once replaced. */
+    transition: opacity 620ms cubic-bezier(0.2, 0.78, 0.24, 1) 420ms,
+      visibility 0s linear 420ms;
+  }
+
+  .dy-hero__ais-quote:focus {
+    outline: none;
+  }
+
+  [data-entered='1'] .dy-hero__ais-quote {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Spent once the realisation lands, the same way the invitation was
+     spent once the request landed. */
+  [data-realized='1'] .dy-hero__ais-quote {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  /* =========================================================
+     "GOT IT" — the natural response, in the story's own page-turn
+     idiom (not the explore grammar "See why" uses): serif text, ink,
+     closed by the same saffron-circle arrow the Explore stories use to
+     turn a scene over. Shared with the closing, still-inert turn button
+     below via .dy-hero__ais-turn.
+     ========================================================= */
+  .dy-hero__ais-turn {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    white-space: nowrap;
+    /* "Got it" and "What's missing?" live inside .dy-hero__ais-tail,
+       which is pointer-events:none (see that rule) so its own faded-out,
+       overlapping grid cells never swallow clicks meant for whatever is
+       positioned behind them; this is the real control and needs its
+       own pointer-events back. A no-op for "See where this goes", which
+       isn't inside that wrapper to begin with. */
+    pointer-events: auto;
+  }
+
+  .dy-hero__ais-turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .dy-hero__ais-turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .dy-hero__ais-turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .dy-hero__ais-turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  /* "Got it" sits directly under the quote, on the same left axis, and
+     arrives once the sentence above it has had a moment to settle — said
+     after the request, not with it. */
+  .dy-hero__ais-turn--gotit {
+    margin: 14px 0 0 var(--ais-quote-inset);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 480ms cubic-bezier(0.2, 0.78, 0.24, 1) 1180ms,
+      visibility 0s linear 1180ms;
+  }
+
+  [data-entered='1'] .dy-hero__ais-turn--gotit {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  [data-realized='1'] .dy-hero__ais-turn--gotit {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  /* =========================================================
+     THE REALISATION
+     Two lines and the question they leave open, staggered exactly like
+     the Explore story's own beats: a kicker, the turn that follows it a
+     beat later, and the way onward after both have been read. No base
+     opacity on these three — display is governed by the wrapper below,
+     and animation-fill-mode: both already holds each one at the
+     keyframe's opacity 0 through its own delay, which is also what lets
+     reduced motion remove the animation and land on full opacity with
+     nothing further to override.
+     ========================================================= */
+  @keyframes dy-ais-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  .dy-hero__ais-realize {
+    max-width: 26ch;
+    margin-left: var(--ais-quote-inset);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  [data-realized='1'] .dy-hero__ais-realize {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .dy-hero__ais-kicker {
+    margin: 0;
+    color: var(--cobalt);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .dy-hero__ais-kicker:focus {
+    outline: none;
+  }
+
+  [data-realized='1'] .dy-hero__ais-kicker {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 120ms;
+  }
+
+  /* Fades once its job is done — the way the request and the invitation
+     before it did. The transition is declared inside this rule itself
+     rather than on the base class, because it only needs to run on this
+     one change, whenever [data-unsaid='1'] fires. */
+  [data-unsaid='1'] .dy-hero__ais-kicker {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  /* The bridge line. Deliberately NOT the kicker's treatment: ink-soft
+     rather than cobalt, regular weight rather than bold, so it reads as
+     quieter than "You know exactly what to do." rather than a second
+     accent competing with it — this is the thought that undercuts the
+     first one, not another headline. */
+  .dy-hero__ais-turnline {
+    margin: 8px 0 0;
+    color: var(--ink-soft);
+    font-size: clamp(15px, 1.6vw, 17px);
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  [data-realized='1'] .dy-hero__ais-turnline {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 640ms;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-turnline {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  /* Margin is unconditional even though the button only reveals under
+     [data-realized='1'] below: a grid track sizes to each item's current
+     computed box, not to some union of the states it might later be in.
+     Gating this spacing on the same attribute the animation uses left the
+     tail undersized until the moment "Got it" was clicked, and it grew by
+     exactly this margin at that instant — a small but real layout shift.
+     Setting it here, unconditionally, means the cell is already sized
+     correctly from the very first render, invisible or not. */
+  .dy-hero__ais-realize .dy-hero__ais-turn {
+    margin-top: 18px;
+  }
+
+  /* The question follows the bridge line by the same short pause the
+     bridge itself follows the kicker with — three beats: the obvious
+     thing, the quiet undercut, then the question it raises. */
+  [data-realized='1'] .dy-hero__ais-realize .dy-hero__ais-turn {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 1280ms;
+  }
+
+  /* Spent the moment it is used, like every other control in this
+     Feature — but unlike them, what it revealed does not go with it.
+     The transition is declared here rather than relying on the reveal
+     keyframe's own timing, because this fade needs to run independently,
+     whenever [data-unsaid='1'] fires, not on a fixed schedule from
+     [data-realized='1']. */
+  .dy-hero__ais-turn--next {
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-turn--next {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* =========================================================
+     THE UNSPOKEN DECISIONS
+     This beat transforms the picture's own box rather than the column
+     beneath it — nothing here can grow the page. Five short lines sit
+     directly over the artwork's own empty margins (the same alpha-
+     channel measurement that placed the quote earlier: the painted
+     figures run from about 17% to 87% across the canvas, so the columns
+     either side of them are genuinely empty — not text over faces), and
+     the realisation lands at the centre once they've all been read.
+     Nothing here recedes once shown.
+     ========================================================= */
+  /* Absolutely positioned over the stage, so it shares the artwork's own
+     box exactly rather than adding to the layout beneath it. Hidden until
+     earned, the same way every other beat in this Feature is: without an
+     explicit display:none, the questions — which only get their own
+     opacity from a keyframe that never runs until [data-unsaid='1']
+     exists — would sit at their plain default opacity of 1 from the very
+     first render. pointer-events:none because nothing inside is
+     interactive; it must never sit between a click and the picture
+     beneath it. */
+  .dy-hero__ais-unsaid {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: none;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-unsaid {
+    display: block;
+  }
+
+  .dy-hero__ais-unsaid:focus {
+    outline: none;
+  }
+
+  /* Each question its own beat, arriving after the one before it rather
+     than as a block. No base opacity here on purpose: animation-fill-mode:
+     both already holds each one at the keyframe's opacity 0 through its
+     own delay, and it's what lets reduced motion remove the animation
+     below and land on full opacity with nothing further to override.
+     Plain text, nothing drawn around it — no card, no bubble, no line
+     connecting it to anything, which is what would turn this into a
+     diagram rather than a thought becoming visible. */
+  .dy-hero__ais-ask {
+    position: absolute;
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: clamp(13px, 1.5vw, 15.5px);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  /* Positioned close against the two people, each one measured (off the
+     scene's own alpha channel) to land 35–70px from the nearest visible
+     edge of the figure it belongs to, not from the stage's own edge. top
+     values are set once per question and translateY(-50%) centres each
+     line on that point, the same way a label centres on the thing it is
+     next to. white-space:nowrap keeps every question a single natural
+     phrase rather than a narrow stack — deliberately no max-width here:
+     with nowrap already guaranteeing one line, a max-width narrower than
+     the phrase's own natural width doesn't wrap it, it silently overflows
+     past the box in whichever direction alignment pushes it, which is
+     exactly what made the 35–70px figure distances unreliable to hit. */
+  .dy-hero__ais-ask[data-ask='1'] { top: 14%; left: 3%; text-align: left; transform: translateY(-50%); }
+  .dy-hero__ais-ask[data-ask='3'] { top: 45%; left: -1%; text-align: left; transform: translateY(-50%); }
+  .dy-hero__ais-ask[data-ask='4'] { top: 76%; left: -17%; text-align: left; transform: translateY(-50%); }
+  .dy-hero__ais-ask[data-ask='2'] { top: 12%; right: -5.5%; text-align: right; transform: translateY(-50%); }
+  .dy-hero__ais-ask[data-ask='5'] { top: 58%; right: -12%; text-align: right; transform: translateY(-50%); }
+
+  [data-unsaid='1'] .dy-hero__ais-ask {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-ask[data-ask='1'] { animation-delay: 150ms; }
+  [data-unsaid='1'] .dy-hero__ais-ask[data-ask='2'] { animation-delay: 700ms; }
+  [data-unsaid='1'] .dy-hero__ais-ask[data-ask='3'] { animation-delay: 1250ms; }
+  [data-unsaid='1'] .dy-hero__ais-ask[data-ask='4'] { animation-delay: 1800ms; }
+  [data-unsaid='1'] .dy-hero__ais-ask[data-ask='5'] { animation-delay: 2350ms; }
+
+  /* "How do you pay?" is the one phrase in this set whose natural single-
+     line width doesn't fit the 35–55px target distance from the mother's
+     figure inside the room actually available at ordinary laptop widths:
+     the column right of the stage only opens up past roughly 1550–1600px
+     (measured directly — 33–36px of it from 1320px up to ~1500px, only
+     widening after that), and 1366/1440/1536 are exactly the widths most
+     desktop visitors actually have. Below that room, holding the single-
+     line position would either crowd the figure far under 35px or clip
+     against the viewport's own edge — both worse than two short natural
+     lines. Wrapped only in this band; wide enough screens keep the single
+     line, since there both the distance and the safety margin fit. */
+  @media (min-width: 1320px) and (max-width: 1599px) {
+    .dy-hero__ais-ask[data-ask='5'] {
+      right: -2.7%;
+      max-width: 8ch;
+      white-space: normal;
+      text-align: right;
+    }
+  }
+
+  /* The connector: one thin curved stroke per question, no arrowhead, no
+     fill — a suggestion that the thought belongs to the scene beside it,
+     not a diagram pointing at a specific part of it. Understated on
+     purpose: the text is what matters, this is just a hint underneath it.
+     Positioned per question below so each one leans toward the picture
+     rather than away from it. */
+  .dy-hero__ais-ask-line {
+    position: absolute;
+    width: 13px;
+    height: 8px;
+    overflow: visible;
+  }
+
+  .dy-hero__ais-ask-line path {
+    fill: none;
+    stroke: rgba(17, 21, 28, 0.22);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+  }
+
+  /* Shorter reach to match the tighter placement above — each still sits
+     just off the text's own edge nearest the people, angled the same
+     direction the question's own position already leans. */
+  [data-ask='1'] .dy-hero__ais-ask-line { right: -14px; bottom: -5px; }
+  [data-ask='2'] .dy-hero__ais-ask-line { left: -14px; bottom: -5px; }
+  [data-ask='3'] .dy-hero__ais-ask-line { right: -13px; top: 50%; margin-top: -3px; }
+  [data-ask='4'] .dy-hero__ais-ask-line { right: -14px; top: -5px; }
+  [data-ask='5'] .dy-hero__ais-ask-line { left: -13px; top: 50%; margin-top: -3px; }
+
+  /* THE CLOSE — one local coordinate system shared with the picture and
+     the questions around it: this wrapper is positioned against
+     .dy-hero__ais-stage itself (top: 100% = the artwork's own visible
+     bottom edge, the painted content runs flush to it), not against
+     whatever .dy-hero__ais-tail below is doing. That is what keeps the
+     gap to the realisation an actual, fixed small distance instead of
+     "however tall the tail's reserved states happen to be" — the tail
+     reserves its own height for the invite/request/realise states
+     regardless of which is showing, and a sibling placed after it used
+     to inherit that reserved height as extra, unintended distance from
+     the figures. Absolutely positioned, so it doesn't add to the stage's
+     own aspect-ratio height, and it renders in front of whatever the
+     tail shows beneath it — safe here because by the time this is
+     visible ([data-unsaid='1']), the tail's own kicker/turnline/button
+     have already faded to nothing.
+
+     padding-top is the 24–32px target itself; the flex gap below is the
+     14–18px between the realisation and the CTA — both requested as an
+     exact small distance, not a fraction of the picture's height, so
+     both are plain clamps against the viewport rather than percentages
+     of --ais-w. */
+  /* pointer-events:none for the same reason .dy-hero__ais-tail carries
+     it: this box's own overlap with the tail below (see the comment
+     above) is normally harmless because the tail's static content
+     simply paints on top of it — but that ordering turns out to depend
+     on .dy-hero__ais-stage staying an active animation target, which
+     stops being true the moment [prefers-reduced-motion] turns that
+     entrance animation off. Without an active animation forcing stage
+     into its own stacking context, this absolutely positioned box wins
+     the overlap instead and silently swallows clicks meant for "See
+     why" underneath it. Not worth depending on an animation side effect
+     either way: this stays click-through unconditionally, and its own
+     real control (.dy-hero__ais-turn, further down) re-enables its own
+     pointer-events the same way every other control in this Feature
+     does. */
+  .dy-hero__ais-close {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: clamp(20px, 2.4vw, 28px);
+    gap: clamp(12px, 1.2vw, 16px);
+    pointer-events: none;
+  }
+
+  /* The realisation this beat has been walking toward, once all five
+     questions have had a moment to be read. Full width of its wrapper so
+     text-align:center centres it under the picture as a whole, matching
+     "beneath the people/questions" rather than sitting off to one side
+     of them. Restrained rather than oversized: weight 500 and a modest
+     size, the same register the story's own realisations use elsewhere,
+     not a second headline. Explicit opacity/visibility here, not the "no
+     base opacity" shortcut the rest of this file uses: that shortcut
+     relies on an ancestor staying hidden until the exact moment a child
+     should appear, and this element no longer has one dedicated to it —
+     it is gated purely by its own rule below. */
+  .dy-hero__ais-final {
+    width: 100%;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(18px, 2.2vw, 23px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-final {
+    opacity: 1;
+    visibility: visible;
+    animation: dy-ais-reveal 620ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3100ms;
+  }
+
+  /* THE NEXT TURN — intentionally inert. A real control, styled and
+     focusable exactly like every other page-turn in this Feature, but
+     with no handler behind it: it is what "See why" and "What's missing?"
+     both were for a time, waiting for the beat it leads to. Centred like
+     the realisation above it, on the same width and the same axis, so
+     the two read as one closing thought rather than two unrelated lines. */
+  .dy-hero__ais-final-next {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  [data-unsaid='1'] .dy-hero__ais-final-next {
+    opacity: 1;
+    visibility: visible;
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+    animation-delay: 3550ms;
+  }
+
+  /* Spent the moment it is used, the same idiom "What's missing?" and
+     "Got it" already established: the control that opens a beat fades
+     once that beat has landed, so the composition below it reads as the
+     answer rather than sitting under a button still asking to be
+     pressed. The transition is declared here, not on the base class, so
+     it only runs on this one change. */
+  .dy-hero__ais-turn--bridge {
+    transition: opacity 300ms ease, visibility 0s linear 300ms;
+  }
+
+  [data-bridge='1'] .dy-hero__ais-turn--bridge {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Fades out completely, not to a quieter register: this beat replaces
+     the scene rather than annotating it, so nothing from the previous
+     beat should linger on screen once it's gone, faded or otherwise. The
+     transition lives in these rules rather than the base classes, for
+     the same reason every other fade in this file keeps its transition
+     local: it only has to run on this one change, and an animation
+     still holds these elements' resting opacity via fill-mode — a
+     transition is a higher-priority effect than that held animation
+     value, which is what actually lets this override it. */
+  [data-bridge='1'] .dy-hero__ais-ask {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  [data-bridge='1'] .dy-hero__ais-final {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  /* THE SWAP — takes over the picture's own box once it and everything
+     around it has faded, rather than sitting in the column beneath it:
+     inset:0 against .dy-hero__ais-stage (its nearest positioned
+     ancestor) is what makes this the exact same area the artwork
+     occupied, and flex-centering both axes is what puts the line in the
+     middle of that area instead of pinned to one edge of it. display:none
+     until earned, the same reason .dy-hero__ais-unsaid uses it: nothing
+     else hides this before [data-bridge='1'] exists, so without it the
+     line would sit at its own default opacity of 1, fully visible, from
+     the very first render. */
+  .dy-hero__ais-swap {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+  }
+
+  [data-bridge='1'] .dy-hero__ais-swap {
+    display: flex;
+    animation: dy-ais-reveal 620ms cubic-bezier(0.2, 0.78, 0.24, 1) 420ms both;
+  }
+
+  /* Fades out completely once "Show me" is used, the same full-fade
+     .dy-hero__ais-ask and .dy-hero__ais-final use for the beat before
+     this one: nothing from Scene 4 should linger once Scene 5 takes the
+     same box. The transition lives here, not on the base rule, for the
+     same reason it does everywhere else in this file — it only needs to
+     run on this one change, and it's what lets it override the
+     [data-bridge='1'] animation's own held opacity above. */
+  [data-showme='1'] .dy-hero__ais-swap {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-swap:focus {
+    outline: none;
+  }
+
+  /* Wraps just the two existing lines, now that .dy-hero__ais-swap holds
+     the new button as a third piece too — margin:0 so this <p>'s own
+     default browser spacing doesn't add anything beyond the 10px the two
+     lines already had between them. */
+  .dy-hero__ais-swap-text {
+    margin: 0;
+  }
+
+  /* The quiet setup — the site's own body copy, small and unremarkable
+     on purpose: this is the callback, not the point. Same family, size
+     register and weight the rest of this Feature's own quiet asides use
+     (.dy-hero__ais-turnline, .dy-hero__ais-bridge-sub before it), so it
+     reads as a continuation of the same voice rather than a new one. */
+  .dy-hero__ais-swap-setup {
+    display: block;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* The payoff — the site's own display register: Georgia, the same
+     family and weight (500, "normal/medium", never the sans's own bold)
+     the homepage's own hero headline uses for the line it wants read
+     first. Clearly larger than the setup above it, so the two read as
+     quiet question then the actual point, not two lines of equal
+     weight. No colour accent on "AI" — this turn doesn't introduce the
+     cobalt "explorable" grammar, it's still the same plain ink the rest
+     of this beat has used throughout. */
+  .dy-hero__ais-swap-payoff {
+    display: block;
+    /* Replaces the flex gap the two lines used to share directly on
+       .dy-hero__ais-swap, now that it holds the new button as well —
+       same 10px, so this pairing's own spacing is exactly what it was
+       before. */
+    margin-top: 10px;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(24px, 2.8vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  /* THE PROMPT — takes over the same box .dy-hero__ais-swap just
+     vacated, the same technique: display:none until earned, inset:0
+     against the stage, centred both ways. pointer-events:none since
+     nothing in here is interactive yet (no next control this beat) —
+     costs nothing now and avoids this box ever silently intercepting a
+     click meant for whatever eventually sits behind or after it, the
+     same lesson .dy-hero__ais-tail and .dy-hero__ais-close were both
+     fixed for. */
+  .dy-hero__ais-prompt {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-showme='1'] .dy-hero__ais-prompt {
+    display: flex;
+  }
+
+  /* Fades out completely once "But that wasn't enough" is used, the
+     same full-fade every prior scene in this sequence uses for the beat
+     before it. Transition lives here, not the base rule, so it only
+     runs on this one change and can override the [data-showme='1']
+     display swap's own held state the same way it does everywhere else
+     in this file. */
+  [data-context='1'] .dy-hero__ais-prompt {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-prompt:focus {
+    outline: none;
+  }
+
+  /* The instruction itself, returning — the same words Scene 1 already
+     showed, so what follows reads as that thing, named, not a new idea
+     arriving. Serif and the same size register .dy-hero__ais-swap-payoff
+     used for its own payoff line: this is the thing being looked at
+     now, not a caption under it. No base opacity: only ever made visible
+     by its own keyframe, the same technique .dy-hero__ais-ask and
+     .dy-hero__ais-kicker use, so it and the line after it can each
+     arrive on their own schedule within the one wrapper's display:flex. */
+  .dy-hero__ais-prompt-quote {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-showme='1'] .dy-hero__ais-prompt-quote {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The quieter follow-on, the same ink-soft/regular-weight register
+     .dy-hero__ais-swap-setup and .dy-hero__ais-turnline both use for a
+     thought that finishes the line above it rather than starting a new
+     one. */
+  .dy-hero__ais-prompt-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-showme='1'] .dy-hero__ais-prompt-line {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  /* "prompt" gets only a subtle lift, not a badge or a heading: the
+     site's own saffron — the colour this Feature otherwise reserves for
+     its turn-button circles — marking the moment an ordinary thing gets
+     its AI name, and the same 600 weight .dy-hero__ais-turn already uses
+     elsewhere in this Feature, an existing step on this type system's
+     own scale, not a new one. Only the word, not the sentence around
+     it. No uppercase, no background, no underline, no badge. */
+  .dy-hero__ais-prompt-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-showme='1'] .dy-hero__ais-prompt-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* THE CONTEXT — takes over the same box the prompt beat just vacated,
+     the same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-context {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-context='1'] .dy-hero__ais-context {
+    display: flex;
+  }
+
+  /* Fades out completely once "And you already knew something else" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-memory='1'] .dy-hero__ais-context {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-context:focus {
+    outline: none;
+  }
+
+  /* The two ordinary facts, arriving first — same serif register
+     .dy-hero__ais-prompt-quote used for the instruction itself, because
+     these are what the visitor is meant to actually look at now, not a
+     caption under something else. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-context-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-context='1'] .dy-hero__ais-context-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register .dy-hero__ais-prompt-line already established for this
+     beat's own "thought that finishes the one above it" register — the
+     second one just happens to carry the emphasised word. */
+  .dy-hero__ais-context-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-context='1'] .dy-hero__ais-context-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-context='1'] .dy-hero__ais-context-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* "context" gets exactly the same subtle lift "prompt" got before it
+     — the same saffron marking an ordinary thing getting its AI name,
+     the same existing 600 weight, no uppercase, no background, no
+     underline. Consistent treatment for the same kind of word, not a
+     new idiom. */
+  .dy-hero__ais-context-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-context='1'] .dy-hero__ais-context-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* THE MEMORY — takes over the same box the context beat just vacated,
+     the same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-memory {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-memory='1'] .dy-hero__ais-memory {
+    display: flex;
+  }
+
+  /* Fades out completely once "What if you're not sure?" is used, the
+     same full-fade every prior scene in this sequence uses for the beat
+     before it. Transition lives here, not the base rule, for the same
+     reason it does everywhere else in this file. */
+  [data-lookup='1'] .dy-hero__ais-memory {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-memory:focus {
+    outline: none;
+  }
+
+  /* The fact, arriving first — same serif register every earlier beat's
+     own opening fact has used, because this is what the visitor is
+     meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-memory-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-memory='1'] .dy-hero__ais-memory-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The three quieter follow-on lines share the same ink-soft/regular-
+     weight register every earlier beat's own quiet asides use — the
+     last one just happens to carry the emphasised word, and arrives
+     after a longer pause than the one before it, a beat further apart
+     than this Feature's usual 650ms step, so the realisation reads as
+     landing rather than simply continuing the list. */
+  .dy-hero__ais-memory-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-memory='1'] .dy-hero__ais-memory-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-memory='1'] .dy-hero__ais-memory-line--3 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2700ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-memory='1'] .dy-hero__ais-memory-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3350ms both;
+  }
+
+  /* "memory" gets exactly the same subtle lift "prompt" and "context"
+     both got before it — the same saffron marking an ordinary thing
+     getting its AI name, the same existing 600 weight, no uppercase, no
+     background, no underline. Consistent treatment for the same kind
+     of word, not a new idiom. */
+  .dy-hero__ais-memory-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* THE LOOKUP — takes over the same box the memory beat just vacated,
+     the same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-lookup {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-lookup='1'] .dy-hero__ais-lookup {
+    display: flex;
+  }
+
+  /* Fades out completely once "AI can do something similar" is used,
+     the same full-fade every prior scene in this sequence uses for the
+     beat before it. Transition lives here, not the base rule, for the
+     same reason it does everywhere else in this file. */
+  [data-retrieval='1'] .dy-hero__ais-lookup {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-lookup:focus {
+    outline: none;
+  }
+
+  /* The fact, arriving first — same serif register every earlier beat's
+     own opening fact has used, because this is what the visitor is
+     meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-lookup-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-lookup='1'] .dy-hero__ais-lookup-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register every earlier beat's own quiet asides use. Neither carries
+     an emphasised word — nothing is named this beat, so nothing gets
+     the saffron treatment yet. */
+  .dy-hero__ais-lookup-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-lookup='1'] .dy-hero__ais-lookup-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-lookup='1'] .dy-hero__ais-lookup-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-lookup='1'] .dy-hero__ais-lookup-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* THE RETRIEVAL — takes over the same box the lookup beat just
+     vacated, the same technique throughout: display:none until earned,
+     inset:0 against the stage, centred both ways, pointer-events:none
+     since nothing in here is interactive yet either. */
+  .dy-hero__ais-retrieval {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-retrieval='1'] .dy-hero__ais-retrieval {
+    display: flex;
+  }
+
+  /* Fades out completely once "But finding it is only part of it" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-rag='1'] .dy-hero__ais-retrieval {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-retrieval:focus {
+    outline: none;
+  }
+
+  /* The fact, arriving first — same serif register every earlier beat's
+     own opening fact has used, because this is what the visitor is
+     meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-retrieval-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-retrieval='1'] .dy-hero__ais-retrieval-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register every earlier beat's own quiet asides use — the second one
+     just happens to carry the emphasised word. */
+  .dy-hero__ais-retrieval-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-retrieval='1'] .dy-hero__ais-retrieval-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-retrieval='1'] .dy-hero__ais-retrieval-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-retrieval='1'] .dy-hero__ais-retrieval-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* "retrieval" gets exactly the same subtle saffron lift "prompt",
+     "context" and "memory" all got before it — marking an ordinary
+     thing getting its AI name, the same existing 600 weight, no
+     uppercase, no background, no underline. Consistent treatment for
+     the same kind of word, not a new idiom. */
+  .dy-hero__ais-retrieval-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* THE RAG — takes over the same box the retrieval beat just vacated,
+     the same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-rag {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-rag='1'] .dy-hero__ais-rag {
+    display: flex;
+  }
+
+  /* Fades out completely once "But dinner still isn't home" is used,
+     the same full-fade every prior scene in this sequence uses for the
+     beat before it. Transition lives here, not the base rule, for the
+     same reason it does everywhere else in this file. */
+  [data-tools='1'] .dy-hero__ais-rag {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-rag:focus {
+    outline: none;
+  }
+
+  /* The two facts, arriving first — same serif register every earlier
+     beat's own opening fact has used, because this is what the visitor
+     is meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-rag-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-rag='1'] .dy-hero__ais-rag-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register every earlier beat's own quiet asides use — the second one
+     just happens to carry the emphasised word. */
+  .dy-hero__ais-rag-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-rag='1'] .dy-hero__ais-rag-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-rag='1'] .dy-hero__ais-rag-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-rag='1'] .dy-hero__ais-rag-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* "RAG" gets exactly the same subtle saffron lift "prompt", "context",
+     "memory" and "retrieval" all got before it — marking an ordinary
+     thing getting its AI name, the same existing 600 weight, no
+     background, no underline. Written as the acronym it is rather than
+     transformed by CSS — this word doesn't have a lowercase form the
+     way the others did — but otherwise the identical treatment.
+     Consistent for the same kind of word, not a new idiom. */
+  .dy-hero__ais-rag-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* THE TOOLS — takes over the same box the RAG beat just vacated, the
+     same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-tools {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-tools='1'] .dy-hero__ais-tools {
+    display: flex;
+  }
+
+  /* Fades out completely once "But who decides what to do next?" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-plan='1'] .dy-hero__ais-tools {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-tools:focus {
+    outline: none;
+  }
+
+  /* The fact, arriving first — same serif register every earlier beat's
+     own opening fact has used, because this is what the visitor is
+     meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-tools-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-tools='1'] .dy-hero__ais-tools-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register every earlier beat's own quiet asides use — the second one
+     just happens to carry the emphasised word. */
+  .dy-hero__ais-tools-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-tools='1'] .dy-hero__ais-tools-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-tools='1'] .dy-hero__ais-tools-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  [data-tools='1'] .dy-hero__ais-tools-line--3 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     explanation above it has had a moment to land. */
+  [data-tools='1'] .dy-hero__ais-tools-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3100ms both;
+  }
+
+  /* "tools" gets exactly the same subtle saffron lift "prompt",
+     "context", "memory", "retrieval" and "RAG" all got before it —
+     marking an ordinary thing getting its AI name, the same existing
+     600 weight, no uppercase, no background, no underline. Consistent
+     treatment for the same kind of word, not a new idiom. */
+  .dy-hero__ais-tools-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* THE PLAN — takes over the same box the tools beat just vacated, the
+     same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-plan {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan {
+    display: flex;
+  }
+
+  /* Fades out completely once "What if AI could do that part too?" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-agentic='1'] .dy-hero__ais-plan {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-plan:focus {
+    outline: none;
+  }
+
+  /* The answer, arriving first — same serif register every earlier
+     beat's own opening fact has used, because this is what the visitor
+     is meant to actually look at now. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-plan-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The four steps share the same ink-soft/regular-weight register
+     every earlier beat's own quiet asides use — no emphasised word on
+     any of them, this beat names nothing. A tighter stagger than the
+     rest of this Feature's usual 650ms step, since these four are one
+     continuous list rather than separate thoughts. */
+  .dy-hero__ais-plan-step {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-step--1 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-step--2 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1650ms both;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-step--3 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2150ms both;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-step--4 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2650ms both;
+  }
+
+  /* The closing thought, the same quiet register as the steps above it
+     — a longer pause before it than between the steps themselves, the
+     usual gap this Feature gives a line that closes a beat rather than
+     continuing a list. No emphasised word: nothing is named yet. */
+  .dy-hero__ais-plan-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-plan='1'] .dy-hero__ais-plan-line {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3300ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     closing thought above it has had a moment to land. */
+  [data-plan='1'] .dy-hero__ais-plan-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3950ms both;
+  }
+
+  /* AGENTIC AI — takes over the same box the plan beat just vacated, the
+     same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-agentic {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-agentic='1'] .dy-hero__ais-agentic {
+    display: flex;
+  }
+
+  /* Fades out completely once "But it isn't doing all of this alone" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-recap='1'] .dy-hero__ais-agentic {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-agentic:focus {
+    outline: none;
+  }
+
+  /* The goal, arriving first — same serif register every earlier beat's
+     own opening fact has used. No base opacity: only ever made visible
+     by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-agentic-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-agentic='1'] .dy-hero__ais-agentic-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* Both quieter follow-on lines share the same ink-soft/regular-weight
+     register every earlier beat's own quiet asides use — the second one
+     just happens to carry the emphasised words. */
+  .dy-hero__ais-agentic-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-agentic='1'] .dy-hero__ais-agentic-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-agentic='1'] .dy-hero__ais-agentic-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 1800ms both;
+  }
+
+  /* "agentic AI" gets exactly the same subtle saffron lift "prompt",
+     "context", "memory", "retrieval", "RAG" and "tools" all got before
+     it — marking an ordinary thing getting its AI name, the same
+     existing 600 weight, no uppercase, no background, no underline.
+     Consistent treatment for the same kind of word, not a new idiom. */
+  .dy-hero__ais-agentic-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     name above it has had a moment to land. */
+  [data-agentic='1'] .dy-hero__ais-agentic-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2450ms both;
+  }
+
+  /* THE RECAP — takes over the same box the agentic beat just vacated,
+     the same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways, pointer-events:none since
+     nothing in here is interactive yet either. */
+  .dy-hero__ais-recap {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap {
+    display: flex;
+  }
+
+  /* Fades out completely once "So what brings it all together?" is
+     used, the same full-fade every prior scene in this sequence uses
+     for the beat before it. Transition lives here, not the base rule,
+     for the same reason it does everywhere else in this file. */
+  [data-orchestration='1'] .dy-hero__ais-recap {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-recap:focus {
+    outline: none;
+  }
+
+  /* The prompt, arriving first — same serif register every earlier
+     beat's own opening fact has used. No base opacity: only ever made
+     visible by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-recap-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The five steps share the same ink-soft/regular-weight register every
+     earlier beat's own quiet asides use — no emphasised word on any of
+     them, this beat names nothing. Same tighter stagger the plan beat's
+     own four-item list used, since these five are one continuous list
+     rather than separate thoughts. */
+  .dy-hero__ais-recap-step {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-step--1 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-step--2 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1650ms both;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-step--3 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2150ms both;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-step--4 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2650ms both;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-step--5 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 3150ms both;
+  }
+
+  /* The closing thought, the same quiet register as the steps above it
+     — a longer pause before it than between the steps themselves, the
+     usual gap this Feature gives a line that closes a beat rather than
+     continuing a list. No emphasised word: nothing is named here. */
+  .dy-hero__ais-recap-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-recap='1'] .dy-hero__ais-recap-line {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3800ms both;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     closing thought above it has had a moment to land. */
+  [data-recap='1'] .dy-hero__ais-recap-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 4450ms both;
+  }
+
+  /* ORCHESTRATION — takes over the same box the recap beat just
+     vacated, the same technique throughout: display:none until earned,
+     inset:0 against the stage, centred both ways, pointer-events:none
+     since nothing in here is interactive yet either. */
+  .dy-hero__ais-orchestration {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration {
+    display: flex;
+  }
+
+  /* Fades out completely once "Now look at what you just did" is used,
+     the same full-fade every prior scene in this sequence uses for the
+     beat before it. Transition lives here, not the base rule, for the
+     same reason it does everywhere else in this file. */
+  [data-whole='1'] .dy-hero__ais-orchestration {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+
+  .dy-hero__ais-orchestration:focus {
+    outline: none;
+  }
+
+  /* The need, arriving first — same serif register every earlier beat's
+     own opening fact has used. No base opacity: only ever made visible
+     by its own keyframe, same as every reveal in this Feature. */
+  .dy-hero__ais-orchestration-fact {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-fact {
+    animation: dy-ais-reveal 560ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The four parts share the same ink-soft/regular-weight register
+     every earlier beat's own quiet asides use — no emphasised word on
+     any of them, this list names nothing yet. Same tighter stagger the
+     plan and recap beats' own lists used, since these four are one
+     continuous list rather than separate thoughts. */
+  .dy-hero__ais-orchestration-step {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-step--1 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1150ms both;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-step--2 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 1650ms both;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-step--3 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2150ms both;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-step--4 {
+    animation: dy-ais-reveal 400ms cubic-bezier(0.2, 0.78, 0.24, 1) 2650ms both;
+  }
+
+  /* Both closing lines share the same ink-soft/regular-weight register
+     every earlier beat's own quiet asides use — the second one just
+     happens to carry the emphasised word. A longer pause before the
+     first of them than between the steps themselves, the usual gap
+     this Feature gives a line that closes a list rather than continuing
+     it. */
+  .dy-hero__ais-orchestration-line {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-line--1 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3300ms both;
+  }
+
+  [data-orchestration='1'] .dy-hero__ais-orchestration-line--2 {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 3950ms both;
+  }
+
+  /* "orchestration" gets exactly the same subtle saffron lift "prompt",
+     "context", "memory", "retrieval", "RAG", "tools" and "agentic AI"
+     all got before it — marking an ordinary thing getting its AI name,
+     the same existing 600 weight, no uppercase, no background, no
+     underline. Consistent treatment for the same kind of word, not a
+     new idiom. */
+  .dy-hero__ais-orchestration-word {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  /* The next turn — same idiom as every other page-turn in this
+     Feature, waiting for the beat it leads to. Arrives last, once the
+     name above it has had a moment to land. */
+  [data-orchestration='1'] .dy-hero__ais-orchestration-next {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 4600ms both;
+  }
+
+  /* THE WHOLE PICTURE — brings .dy-hero__ais-art--stack back to full
+     opacity, overriding the [data-entered='1'] rule that faded it out at
+     the very start of the story. Same specificity as that rule; source
+     order is what lets this one win once both attributes are set, since
+     data-whole is never present without data-entered. The scene image
+     stays exactly as every later rule already left it (opacity 0, via
+     [data-bridge='1']), so only the original picture returns. */
+  [data-whole='1'] .dy-hero__ais-art--stack {
+    opacity: 1;
+  }
+
+  /* The one interaction this beat adds, positioned beneath the picture
+     itself rather than centred over it — same technique
+     .dy-hero__ais-close uses further down for the same reason:
+     positioned absolutely against this stage (its nearest positioned
+     ancestor), so "100% + a small gap" is exactly the artwork's own
+     visible bottom edge. display:none until earned, like every other
+     scene's own wrapper. */
+  .dy-hero__ais-whole {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding-top: clamp(2px, 0.3vw, 4px);
+    margin: 0;
+    pointer-events: none;
+  }
+
+  /* Grid rather than flex: the orchestration label gets its own row, but
+     this beat's own control and the one that eventually replaces it (see
+     .dy-hero__ais-decode-next below) share the row beneath it as a
+     single cell, centred, so the fade from one to the other never
+     reserves space for both at once and never reflows whatever is
+     beneath it. */
+  [data-whole='1'] .dy-hero__ais-whole {
+    display: grid;
+    justify-items: center;
+    row-gap: clamp(2px, 0.3vw, 4px);
+  }
+
+  .dy-hero__ais-whole-next,
+  .dy-hero__ais-decode-next {
+    grid-row: 2;
+    grid-column: 1;
+  }
+
+  .dy-hero__ais-whole:focus {
+    outline: none;
+  }
+
+  /* display:none rather than opacity — this slot holds three mutually
+     exclusive CTA states (this control, then nothing while the labels
+     reveal, then .dy-hero__ais-decode-next), so "hidden" has to mean
+     genuinely out of layout and unpainted rather than faded-to-
+     invisible, which is what let this control and the next one visibly
+     overlap before. Gated on [data-whole-ready='1'] rather than
+     [data-whole='1'] directly: the script below sets that flag 1050ms
+     after "Now look at what you just did" is used, the same hold this
+     control's old fade-in delay gave the picture's own 900ms cross-fade
+     back to the original artwork (see .dy-hero__ais-art's transition)
+     before this control arrived. Two plain, un-animated declarations of
+     equal specificity; source order alone decides which one wins, which
+     is reliable in a way an active CSS animation's held value is not. */
+  .dy-hero__ais-whole-next {
+    display: none;
+  }
+
+  [data-whole-ready='1'] .dy-hero__ais-whole-next {
+    display: inline-block;
+  }
+
+  /* Removed from layout completely — not faded — the instant "See what
+     you already know" is used, so there is no frame in which it and
+     .dy-hero__ais-decode-next (shown only once [data-decode-done='1'],
+     set by the script below once every label has actually finished
+     revealing) can both occupy this slot. */
+  [data-decode='1'] .dy-hero__ais-whole-next {
+    display: none;
+  }
+
+  /* THE DECODE — eight short labels, each positioned outside the
+     artwork's own silhouette, in the whitespace around it, connected
+     back to the object it names by a short leader line — the same
+     "close against the figure it belongs to" spirit .dy-hero__ais-ask
+     uses on the earlier scene, but never over the figure itself this
+     time. Absolute against this stage, display:none until earned,
+     pointer-events:none throughout since none of this is interactive. */
+  .dy-hero__ais-decode {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: none;
+  }
+
+  [data-decode='1'] .dy-hero__ais-decode {
+    display: block;
+  }
+
+  .dy-hero__ais-decode:focus {
+    outline: none;
+  }
+
+  /* Plain text, nothing drawn around it — no card, no pill, no
+     background, no border, no shadow. The short leader line and its dot
+     are the only mark connecting a label to the artwork; nothing else
+     ties them together. No base opacity here on purpose, the same
+     reason .dy-hero__ais-ask has none: animation-fill-mode:both already
+     holds each one at the keyframe's opacity 0 through its own delay,
+     and it's what lets reduced motion remove the animation and land on
+     full opacity with nothing further to override. */
+  .dy-hero__ais-label {
+    position: absolute;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    max-width: 108px;
+  }
+
+  /* The term itself gets exactly the same subtle saffron lift every
+     other AI term in this Feature already uses — the same weight, no
+     uppercase, no background, no underline. Consistent treatment for
+     the same kind of word, not a new idiom for this scene. */
+  .dy-hero__ais-label-term {
+    color: var(--saffron);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(12.5px, 1.35vw, 14.5px);
+    line-height: 1.25;
+  }
+
+  /* The meaning underneath stays neutral and visually secondary on
+     purpose — supporting text, not a second thing competing with the
+     term for attention. */
+  .dy-hero__ais-label-desc {
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: clamp(10.5px, 1.05vw, 12px);
+    line-height: 1.3;
+  }
+
+  /* Positions, each measured against the artwork's own objects: the
+     brain, the checklist, the paper in his hand, the sticky notes and
+     cookie, the search icon, and the phone/map/card cluster — the same
+     "close against the figure it belongs to" approach .dy-hero__ais-ask
+     uses on the earlier scene, adapted to this artwork's own layout and
+     this column's available width. Every one of these sits in a
+     genuinely empty stretch of the canvas — measured directly off the
+     artwork, not merely against the nearest object — so no label ever
+     sits on top of a person, an icon, or the cart itself. Context sits
+     in the open gap between the paper he's holding and the search icon,
+     rather than over either one, since that paper — not the list
+     floating beside him — is "what it knows about this task." Agent
+     sits in the clear space beneath the robot rather than beside it or
+     over the cart handle: he is the one deciding what to do next, using
+     what he needs and adjusting, which is what the term names here —
+     the robot stays in the artwork but isn't this label's anchor. */
+  .dy-hero__ais-label--llm { top: 2%; left: 18%; text-align: left; }
+  .dy-hero__ais-label--prompt { top: 21%; left: 0%; text-align: left; }
+  .dy-hero__ais-label--context {
+    top: 37%;
+    left: 63%;
+    text-align: left;
+    max-width: 85px;
+  }
+  .dy-hero__ais-label--memory { top: 66%; left: -10%; text-align: left; }
+  .dy-hero__ais-label--rag { top: 15%; right: 0%; text-align: right; }
+  .dy-hero__ais-label--tools { top: 42%; right: -4%; text-align: right; }
+  .dy-hero__ais-label--agent {
+    top: 91%;
+    left: 83%;
+    text-align: left;
+    max-width: 100px;
+  }
+
+  /* Orchestration lives in .dy-hero__ais-whole, not this overlay (see the
+     comment there for why), so it isn't positioned against the artwork
+     like the other seven — it sits in the grid's own first row instead,
+     centred like the controls beneath it. Its container is already on
+     screen well before this label's own reveal condition, unlike the
+     other seven whose ancestor stays display:none until earned, so —
+     the same explicit-opacity idiom .dy-hero__ais-final uses further
+     down for the same reason — it carries its own opacity:0 base rather
+     than the "no base opacity" shortcut, and its reveal rule sets
+     opacity:1 as a literal property alongside the animation, not only
+     through it. */
+  .dy-hero__ais-label--orchestration {
+    position: static;
+    grid-row: 1;
+    grid-column: 1;
+    text-align: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  [data-decode='1'] .dy-hero__ais-label {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-decode='1'] .dy-hero__ais-label--llm { animation-delay: 200ms; }
+  [data-decode='1'] .dy-hero__ais-label--prompt { animation-delay: 650ms; }
+  [data-decode='1'] .dy-hero__ais-label--context { animation-delay: 1100ms; }
+  [data-decode='1'] .dy-hero__ais-label--memory { animation-delay: 1550ms; }
+  [data-decode='1'] .dy-hero__ais-label--rag { animation-delay: 2000ms; }
+  [data-decode='1'] .dy-hero__ais-label--tools { animation-delay: 2450ms; }
+  [data-decode='1'] .dy-hero__ais-label--agent { animation-delay: 2900ms; }
+  [data-decode='1'] .dy-hero__ais-label--orchestration {
+    opacity: 1;
+    visibility: visible;
+    animation-delay: 3350ms;
+  }
+
+  /* display:none, not the "no base opacity" shortcut every other -next
+     control uses: this slot must never hold both this control and
+     .dy-hero__ais-whole-next at once, so absence has to mean out of
+     layout rather than merely invisible. [data-decode-done='1'] is set
+     by the script below once every label above has actually finished
+     revealing — not on a CSS delay that could drift out of step with
+     the labels' own timing — so this arrives exactly when the reveal is
+     done, in the same spot "See what you already know" already
+     vacated (see the shared grid rule above). The animation is cosmetic
+     only: nothing ever hides this control again afterward, so there is
+     no later plain declaration for an active animation to defeat. */
+  .dy-hero__ais-decode-next {
+    display: none;
+  }
+
+  [data-decode-done='1'] .dy-hero__ais-decode-next {
+    display: inline-block;
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  /* Removed from the layout outright, not merely faded, the instant
+     "See it differently" is used — the artwork, every concept label and
+     leader, the orchestration annotation, and the control that opened
+     this beat all go at once, so nothing outgoing can visually overlap
+     or remain reachable beneath what replaces them. */
+  [data-finale='1'] .dy-hero__ais-art--stack,
+  [data-finale='1'] .dy-hero__ais-decode,
+  [data-finale='1'] .dy-hero__ais-whole {
+    display: none;
+  }
+
+  /* THE FINALE — takes over the same box the artwork just vacated, the
+     same technique throughout: display:none until earned, inset:0
+     against the stage, centred both ways. No card, no recap, no
+     saffron term: this beat names nothing new, it only closes the one
+     already spoken. */
+  .dy-hero__ais-finale {
+    display: none;
+    position: absolute;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0;
+    padding: 0 6%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  [data-finale='1'] .dy-hero__ais-finale {
+    display: flex;
+  }
+
+  .dy-hero__ais-finale:focus {
+    outline: none;
+  }
+
+  /* The lead-in, quiet and secondary — the same ink-soft/regular-weight
+     register every earlier beat's own asides use. No base opacity: only
+     ever made visible by its own keyframe, same as every reveal in this
+     Feature. */
+  .dy-hero__ais-finale-lead {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 16px);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  [data-finale='1'] .dy-hero__ais-finale-lead {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 500ms both;
+  }
+
+  /* The echo — the exact line the visitor read before any of this
+     started (see .dy-hero__ais-line further down), in the same serif
+     register but entirely black this time rather than that line's own
+     cobalt "dinner." — nothing singled out, just larger: the one line
+     in this beat allowed to feel like an ending rather than an
+     explanation. A longer hold and a slower reveal than the lead line
+     above it — the extra weight this beat gives the line
+     it's actually here for. */
+  .dy-hero__ais-finale-echo {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 620;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+  }
+
+  .dy-hero__ais-finale-echo em {
+    font-style: normal;
+  }
+
+  [data-finale='1'] .dy-hero__ais-finale-echo {
+    animation: dy-ais-reveal 620ms cubic-bezier(0.2, 0.78, 0.24, 1) 1400ms both;
+  }
+
+  /* The way onward — a real link, not another beat in this story, so it
+     uses the same .dy-hero__ais-turn treatment as every other control
+     in this Feature (serif, the same saffron disc, the same hover)
+     rather than a new idiom for the one moment this leaves the page. */
+  [data-finale='1'] .dy-hero__ais-finale-link {
+    animation: dy-ais-reveal 460ms cubic-bezier(0.2, 0.78, 0.24, 1) 2050ms both;
+  }
+
+  /* THE HOOK — plain editorial text. Serif, because this is the idea to
+     remember, not an explanation. "dinner." carries the cobalt the way
+     "arriving." does in the headline opposite: an accent on the word the
+     sentence turns on, which on this page already appears in a line that
+     is plainly not a link. Nothing here is a control — no arrow, no
+     hover, no pointer, no focus.
+
+     Caption scale on purpose. At 1440 this is ~24px against the
+     headline's 63px, which is what stops the right column reading as a
+     second thing to start on. */
+  .dy-hero__ais-line {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 620;
+    font-size: clamp(19px, 1.9vw, 24px);
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+  }
+
+  .dy-hero__ais-line em {
+    color: var(--cobalt);
+    font-style: normal;
+  }
+
+  /* THE INVITATION — the site's exploring grammar, unchanged: DekhoYahan
+     blue at a heavier weight in the page's sans, carrying the same 19px
+     saffron disc the Zero Trust Feature's cue, the Explore CTA and the
+     discovery cards use. Recognisable as an action without becoming a
+     button.
+
+     Sans against the hook's serif, and roughly two-thirds its size, so it
+     is clearly the secondary of the two — the hook is what you read, this
+     is what you do about it. */
+  .dy-hero__ais-callout {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    margin-top: 11px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--cobalt);
+    font-family: var(--sans);
+    font-size: clamp(14px, 1.4vw, 15.5px);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    /* The tail itself is pointer-events:none (see .dy-hero__ais-tail);
+       this is the real control and needs its own clicks back. */
+    pointer-events: auto;
+  }
+
+  .dy-hero__ais-cue-arrow {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 160ms ease;
+  }
+
+  /* Restrained hover: the arrow takes the same 2px step it does
+     everywhere else on the site, and the words take the site's own light
+     underline. Nothing else moves. */
+  .dy-hero__ais-callout:hover .dy-hero__ais-cue-arrow,
+  .dy-hero__ais-callout:focus-visible .dy-hero__ais-cue-arrow {
+    transform: translateX(2px);
+  }
+
+  .dy-hero__ais-callout:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .dy-hero__ais-callout:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 6px;
+    border-radius: 2px;
+  }
+
+  /* =========================================================
+     ENTRANCE
+     Two beats, and the later one starts well after the headline opposite
+     has settled — the picture arrives, then the line under it. It is the
+     composition arriving, not decoration: nothing loops, nothing moves
+     after it lands, and the artwork itself is never animated.
+     ========================================================= */
+  @keyframes dy-ais-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .dy-hero__ais-stage {
+    animation: dy-ais-in 700ms cubic-bezier(0.2, 0.7, 0.25, 1) 260ms both;
+  }
+
+  .dy-hero__ais-tail {
+    animation: dy-ais-in 560ms ease 700ms both;
+  }
+
+  /* The same state change, with nothing animated. Entering the story still
+     works exactly as it does otherwise — the first picture is replaced by
+     the second, the invitation goes, the line appears — it simply happens
+     at once instead of over a second. Nothing is lost, because the meaning
+     is in what changed, not in the fading. */
+  @media (prefers-reduced-motion: reduce) {
+    .dy-hero__ais-stage,
+    .dy-hero__ais-tail {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .dy-hero__ais-cue-arrow,
+    .dy-hero__ais-turn span,
+    .dy-hero__ais-art,
+    .dy-hero__ais-invite,
+    .dy-hero__ais-quote,
+    .dy-hero__ais-turn--gotit,
+    .dy-hero__ais-turn--next,
+    /* The fade-out declares its own transition on a more specific selector
+       than the plain-class rules just above, so specificity — not source
+       order — decides which wins, and a plain ".dy-hero__ais-quote" here
+       would lose to it. Matching the selector exactly is what lets this
+       override reach it. */
+    [data-realized='1'] .dy-hero__ais-quote,
+    [data-realized='1'] .dy-hero__ais-turn--gotit,
+    [data-unsaid='1'] .dy-hero__ais-turn--next,
+    [data-unsaid='1'] .dy-hero__ais-kicker,
+    [data-unsaid='1'] .dy-hero__ais-turnline,
+    [data-bridge='1'] .dy-hero__ais-turn--bridge,
+    [data-bridge='1'] .dy-hero__ais-ask,
+    [data-bridge='1'] .dy-hero__ais-final,
+    [data-showme='1'] .dy-hero__ais-swap,
+    [data-context='1'] .dy-hero__ais-prompt,
+    [data-memory='1'] .dy-hero__ais-context,
+    [data-lookup='1'] .dy-hero__ais-memory,
+    [data-retrieval='1'] .dy-hero__ais-lookup,
+    [data-rag='1'] .dy-hero__ais-retrieval,
+    [data-tools='1'] .dy-hero__ais-rag,
+    [data-plan='1'] .dy-hero__ais-tools,
+    [data-agentic='1'] .dy-hero__ais-plan,
+    [data-recap='1'] .dy-hero__ais-agentic,
+    [data-orchestration='1'] .dy-hero__ais-recap,
+    [data-whole='1'] .dy-hero__ais-orchestration {
+      transition: none;
+    }
+
+    /* No base opacity is set on the kicker, the turnline, the closing
+       turn button, the five questions, the swap line, or any of the
+       prompt's, context's, memory's, lookup's, retrieval's, RAG's or
+       tools' own lines — they are only ever made visible by a keyframe
+       (the swap, the prompt, the context, the memory, the lookup, the
+       retrieval, the RAG box and the tools box by display:none as
+       well), so removing the animation here leaves each at its plain,
+       un-animated opacity of 1. The final line does carry an explicit
+       opacity:0 base (see .dy-hero__ais-final above), but its reveal
+       rule sets opacity:1 as a literal property alongside the
+       animation, not only through it, so removing just the animation
+       here still leaves it visible once its own attribute is set — in
+       every case, each group still only appears once its own control
+       is used, it simply arrives all at once instead of one line after
+       another. */
+    .dy-hero__ais-kicker,
+    .dy-hero__ais-turnline,
+    .dy-hero__ais-ask,
+    .dy-hero__ais-final,
+    .dy-hero__ais-final-next,
+    .dy-hero__ais-swap,
+    .dy-hero__ais-prompt-quote,
+    .dy-hero__ais-prompt-line,
+    .dy-hero__ais-prompt-next,
+    .dy-hero__ais-context-fact,
+    .dy-hero__ais-context-line,
+    .dy-hero__ais-context-next,
+    .dy-hero__ais-memory-fact,
+    .dy-hero__ais-memory-line,
+    .dy-hero__ais-memory-next,
+    .dy-hero__ais-lookup-fact,
+    .dy-hero__ais-lookup-line,
+    .dy-hero__ais-lookup-next,
+    .dy-hero__ais-retrieval-fact,
+    .dy-hero__ais-retrieval-line,
+    .dy-hero__ais-retrieval-next,
+    .dy-hero__ais-rag-fact,
+    .dy-hero__ais-rag-line,
+    .dy-hero__ais-rag-next,
+    .dy-hero__ais-tools-fact,
+    .dy-hero__ais-tools-line,
+    .dy-hero__ais-tools-next,
+    .dy-hero__ais-plan-fact,
+    .dy-hero__ais-plan-step,
+    .dy-hero__ais-plan-line,
+    .dy-hero__ais-plan-next,
+    .dy-hero__ais-agentic-fact,
+    .dy-hero__ais-agentic-line,
+    .dy-hero__ais-agentic-next,
+    .dy-hero__ais-recap-fact,
+    .dy-hero__ais-recap-step,
+    .dy-hero__ais-recap-line,
+    .dy-hero__ais-recap-next,
+    .dy-hero__ais-orchestration-fact,
+    .dy-hero__ais-orchestration-step,
+    .dy-hero__ais-orchestration-line,
+    .dy-hero__ais-orchestration-next,
+    .dy-hero__ais-label,
+    .dy-hero__ais-decode-next,
+    .dy-hero__ais-finale-lead,
+    .dy-hero__ais-finale-echo,
+    .dy-hero__ais-finale-link,
+    [data-realized='1'] .dy-hero__ais-realize .dy-hero__ais-turn {
+      animation: none !important;
+    }
+  }
+
+  /* =========================================================
+     STACKED — below the hero's own 1320px side-by-side threshold the
+     Feature is the full column, so the composition centres instead of
+     hanging off the column's right edge. Same breakpoint and same
+     behaviour as the Zero Trust Feature, so the hero's responsive
+     rhythm is unchanged.
+     ========================================================= */
+  @media (max-width: 1319px) {
+    .dy-hero__ais {
+      --ais-w: min(560px, 100%);
+      /* Centred, the figures are already centred in their own frame, so
+         the line centres under them without an inset. */
+      --ais-quote-inset: 0;
+      align-items: center;
+      /* Stacked, the headline is already read and gone before the picture
+         is reached, so there is nothing left to defer to. */
+      padding-top: 0;
+    }
+
+    .dy-hero__ais-stage,
+    .dy-hero__ais-tail {
+      margin-inline: auto;
+    }
+
+    /* Centred stack: the hook and its invitation centre under the picture
+       rather than sitting on its left axis, and so does the line that
+       replaces them. */
+    .dy-hero__ais-tail {
+      justify-items: center;
+      text-align: center;
+    }
+
+    /* --ais-quote-inset is already 0 at this breakpoint, so the request,
+       "Got it" and realisation all centre with no further change needed —
+       only their own align-items has to follow the tail's centring. */
+    .dy-hero__ais-invite,
+    .dy-hero__ais-request {
+      align-items: center;
+    }
+
+    /* A compact composition rather than the desktop radial spread: the
+       stage itself is centred in a narrower column here, with far less
+       clear ground on either side of it, so the wide desktop offsets
+       would either overlap the people or run off the edge of the
+       viewport. Pulled in close and sized down instead. */
+    .dy-hero__ais-ask {
+      font-size: clamp(11.5px, 2.6vw, 13.5px);
+    }
+
+    .dy-hero__ais-ask[data-ask='1'] { left: -2%; }
+    .dy-hero__ais-ask[data-ask='3'] { left: -3%; }
+    .dy-hero__ais-ask[data-ask='4'] { left: -2%; }
+    .dy-hero__ais-ask[data-ask='2'] { right: 0%; }
+    .dy-hero__ais-ask[data-ask='5'] { right: 0%; }
+
+    .dy-hero__ais-ask-line {
+      width: 13px;
+      height: 8px;
+    }
+  }
+
+  /* On a phone the hook closes up under the picture so the two still read
+     as one object on a short screen. */
+  @media (max-width: 680px) {
+    .dy-hero__ais {
+      --ais-w: min(490px, 100%);
+      --ais-gap-bottom: 18px;
+    }
+
+    .dy-hero__ais-line {
+      font-size: clamp(20px, 5.4vw, 24px);
+    }
+
+    .dy-hero__ais-callout {
+      margin-top: 10px;
+    }
+
+    /* Reduced ~22% to match the desktop clamp, same proportion. */
+    .dy-hero__ais-quote {
+      font-size: clamp(19px, 5vw, 25px);
+    }
+
+    /* A short screen has neither the tablet breakpoint's modest margins
+       nor the desktop's real gap beside the stage — pulled flush against
+       the picture's own edges instead of spilling past them, and the
+       connector strokes are dropped rather than shrunk past legibility;
+       the questions alone still read as thoughts around the scene. */
+    .dy-hero__ais-ask {
+      /* nowrap was what let the desktop and tablet versions hold a
+         generous max-width to a single line — here there simply isn't
+         room for that, and nowrap combined with a narrow max-width
+         doesn't wrap, it overflows past both the box and the edge of
+         the viewport, which is silently clipped rather than scrollable
+         (see .dy-hero's own overflow:hidden). Restoring normal wrapping
+         is what makes the narrower max-width below actually take effect. */
+      white-space: normal;
+      font-size: clamp(11px, 3.4vw, 12.5px);
+      max-width: 9ch !important;
+    }
+
+    .dy-hero__ais-ask[data-ask='1'],
+    .dy-hero__ais-ask[data-ask='3'],
+    .dy-hero__ais-ask[data-ask='4'] {
+      left: 0;
+    }
+
+    .dy-hero__ais-ask[data-ask='2'],
+    .dy-hero__ais-ask[data-ask='5'] {
+      right: 0;
+    }
+
+    .dy-hero__ais-ask-line {
+      display: none;
+    }
+
+    /* Memory sits in the gutter to the stage's own left on every wider
+       layout (this component shares a row with the headline column
+       there, leaving real room beside it) — but stacked full-width at
+       this size, that gutter doesn't exist, and the same negative left
+       offset that placed it there instead pushed it off the left edge
+       of the viewport, clipped rather than scrollable (see .dy-hero's
+       own overflow:hidden). Pulled back to the artwork's own edge
+       instead, the same accommodation .dy-hero__ais-ask already makes
+       just above for the identical reason. */
+    .dy-hero__ais-label--memory {
+      left: 0%;
+    }
+  }
+</style>
+
+<script>
+  // Two beats, two flags, each set once and each gated on the one before
+  // it — the same one-way pattern the Explore story's own script uses.
+  // Every part of what each beat changes — the pictures, the copy, the
+  // controls — hangs off the flag in CSS; the script only sets the flag,
+  // hands descriptions between elements, and moves focus to where the
+  // change happened. Nothing here navigates, loads or reads anything
+  // outside this component, and there is no analytics: the Feature is not
+  // registered and the story is not finished.
+  document.querySelectorAll('[data-ais]').forEach((root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    // Everywhere else in this Feature, a reduced-motion visitor gets the
+    // same held-back timing collapsed to instant purely through CSS
+    // (killing the transition/animation the delay lives on). The two
+    // waits below are plain JS timers instead, since what they gate is a
+    // display:none swap rather than a fade — so this is checked once and
+    // used to zero both, keeping that same "instant, nothing skipped"
+    // behaviour for those two waits.
+    const prefersReducedMotion =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const enter = root.querySelector('[data-enter]');
+    const gotit = root.querySelector('[data-gotit]');
+    const unsaid = root.querySelector('[data-unsaid]');
+    const stack = root.querySelector('[data-art="stack"]');
+    const scene = root.querySelector('[data-art="scene"]');
+    const quote = root.querySelector('[data-quote]');
+    const kicker = root.querySelector('[data-kicker]');
+    const unsaidPanel = root.querySelector('[data-unsaid-panel]');
+    const bridge = root.querySelector('[data-bridge]');
+    const bridgePanel = root.querySelector('[data-bridge-panel]');
+    const showme = root.querySelector('[data-showme]');
+    const promptPanel = root.querySelector('[data-prompt-panel]');
+    const context = root.querySelector('[data-context]');
+    const contextPanel = root.querySelector('[data-context-panel]');
+    const memory = root.querySelector('[data-memory]');
+    const memoryPanel = root.querySelector('[data-memory-panel]');
+    const lookup = root.querySelector('[data-lookup]');
+    const lookupPanel = root.querySelector('[data-lookup-panel]');
+    const retrieval = root.querySelector('[data-retrieval]');
+    const retrievalPanel = root.querySelector('[data-retrieval-panel]');
+    const rag = root.querySelector('[data-rag]');
+    const ragPanel = root.querySelector('[data-rag-panel]');
+    const tools = root.querySelector('[data-tools]');
+    const toolsPanel = root.querySelector('[data-tools-panel]');
+    const plan = root.querySelector('[data-plan]');
+    const planPanel = root.querySelector('[data-plan-panel]');
+    const agentic = root.querySelector('[data-agentic]');
+    const agenticPanel = root.querySelector('[data-agentic-panel]');
+    const recap = root.querySelector('[data-recap]');
+    const recapPanel = root.querySelector('[data-recap-panel]');
+    const orchestration = root.querySelector('[data-orchestration]');
+    const orchestrationPanel = root.querySelector('[data-orchestration-panel]');
+    const whole = root.querySelector('[data-whole]');
+    const wholePanel = root.querySelector('[data-whole-panel]');
+    const decode = root.querySelector('[data-decode]');
+    const decodePanel = root.querySelector('[data-decode-panel]');
+    const finale = root.querySelector('[data-finale]');
+    const finalePanel = root.querySelector('[data-finale-panel]');
+
+    // Moves focus without letting the browser's own scroll-into-view undo
+    // the "nothing about this transition moves the page" rule.
+    //
+    // Retried on requestAnimationFrame, over a real span of time rather
+    // than a fixed number of frames, because the two things this focuses
+    // become focusable on two different schedules: the quote's own
+    // visibility rule is deliberately held back until its 420ms fade-in
+    // delay elapses (so it isn't focusable while still invisible), while
+    // the kicker's focusability depends on an ancestor's inherited
+    // visibility, which empirically has landed within about one frame —
+    // but not reliably the very first one, even after forcing a
+    // synchronous layout read. A single cutoff comfortably past the
+    // longer of the two covers both without a fixed frame-count guessing
+    // at a machine's actual refresh rate. The control that had focus
+    // before this runs is normally still focusable for a beat after the
+    // click (also intentional, for the same reason), so there's no
+    // dead moment with focus nowhere in between.
+    const focusInPlace = (el, deadline = performance.now() + 800) => {
+      if (!(el instanceof HTMLElement)) return;
+      requestAnimationFrame(() => {
+        el.focus({ preventScroll: true });
+        if (document.activeElement !== el && performance.now() < deadline) {
+          focusInPlace(el, deadline);
+        }
+      });
+    };
+
+    if (enter instanceof HTMLElement) {
+      enter.addEventListener('click', () => {
+        if (root.dataset.entered === '1') return;
+        root.dataset.entered = '1';
+
+        // Hand the description over with the picture, so what is announced
+        // is always the picture actually being shown.
+        stack?.setAttribute('aria-hidden', 'true');
+        scene?.removeAttribute('aria-hidden');
+
+        focusInPlace(quote);
+      });
+    }
+
+    if (gotit instanceof HTMLElement) {
+      gotit.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before entry, and
+        // can't fire twice.
+        if (root.dataset.entered !== '1' || root.dataset.realized === '1') return;
+        root.dataset.realized = '1';
+
+        focusInPlace(kicker);
+      });
+    }
+
+    if (unsaid instanceof HTMLElement) {
+      unsaid.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "Got it",
+        // and can't fire twice.
+        if (root.dataset.realized !== '1' || root.dataset.unsaid === '1') return;
+        root.dataset.unsaid = '1';
+
+        // Synchronous, not the retried requestAnimationFrame version the
+        // two beats above use: this button's own disappearance is what was
+        // producing an unwanted scroll here, not the focus target. Once
+        // this button is clicked, Chromium's own "the focused control just
+        // became unfocusable" recovery reassigns focus on its own — and
+        // does so a frame or more later, scrolling the page to whatever it
+        // lands on, regardless of any preventScroll this script requests.
+        // Claiming focus immediately, in the same tick as the click and
+        // the attribute change, is what pre-empts that recovery from ever
+        // running; forcing a layout read first is what lets the
+        // just-applied display:block actually take effect before focus()
+        // is asked to use it.
+        if (unsaidPanel instanceof HTMLElement) {
+          void unsaidPanel.offsetWidth;
+          unsaidPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (bridge instanceof HTMLElement) {
+      bridge.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "What's
+        // missing?", and can't fire twice.
+        if (root.dataset.unsaid !== '1' || root.dataset.bridge === '1') return;
+        root.dataset.bridge = '1';
+
+        // Same synchronous claim as the panel above, for the same reason:
+        // this button disappears the instant the click is handled, and
+        // claiming focus in the same tick pre-empts Chromium's own
+        // recovery from scrolling the page to wherever it would otherwise
+        // land.
+        if (bridgePanel instanceof HTMLElement) {
+          void bridgePanel.offsetWidth;
+          bridgePanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (showme instanceof HTMLElement) {
+      showme.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "See where
+        // this goes", and can't fire twice.
+        if (root.dataset.bridge !== '1' || root.dataset.showme === '1') return;
+        root.dataset.showme = '1';
+
+        // Same synchronous claim as the two panels above, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (promptPanel instanceof HTMLElement) {
+          void promptPanel.offsetWidth;
+          promptPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (context instanceof HTMLElement) {
+      context.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "Show
+        // me", and can't fire twice.
+        if (root.dataset.showme !== '1' || root.dataset.context === '1') return;
+        root.dataset.context = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (contextPanel instanceof HTMLElement) {
+          void contextPanel.offsetWidth;
+          contextPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (memory instanceof HTMLElement) {
+      memory.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "But that
+        // wasn't enough", and can't fire twice.
+        if (root.dataset.context !== '1' || root.dataset.memory === '1') return;
+        root.dataset.memory = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (memoryPanel instanceof HTMLElement) {
+          void memoryPanel.offsetWidth;
+          memoryPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (lookup instanceof HTMLElement) {
+      lookup.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "And you
+        // already knew something else", and can't fire twice.
+        if (root.dataset.memory !== '1' || root.dataset.lookup === '1') return;
+        root.dataset.lookup = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (lookupPanel instanceof HTMLElement) {
+          void lookupPanel.offsetWidth;
+          lookupPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (retrieval instanceof HTMLElement) {
+      retrieval.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "What if
+        // you're not sure?", and can't fire twice.
+        if (root.dataset.lookup !== '1' || root.dataset.retrieval === '1') return;
+        root.dataset.retrieval = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (retrievalPanel instanceof HTMLElement) {
+          void retrievalPanel.offsetWidth;
+          retrievalPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (rag instanceof HTMLElement) {
+      rag.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "AI can
+        // do something similar", and can't fire twice.
+        if (root.dataset.retrieval !== '1' || root.dataset.rag === '1') return;
+        root.dataset.rag = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (ragPanel instanceof HTMLElement) {
+          void ragPanel.offsetWidth;
+          ragPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (tools instanceof HTMLElement) {
+      tools.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "But
+        // finding it is only part of it", and can't fire twice.
+        if (root.dataset.rag !== '1' || root.dataset.tools === '1') return;
+        root.dataset.tools = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (toolsPanel instanceof HTMLElement) {
+          void toolsPanel.offsetWidth;
+          toolsPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (plan instanceof HTMLElement) {
+      plan.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "But
+        // dinner still isn't home", and can't fire twice.
+        if (root.dataset.tools !== '1' || root.dataset.plan === '1') return;
+        root.dataset.plan = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (planPanel instanceof HTMLElement) {
+          void planPanel.offsetWidth;
+          planPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (agentic instanceof HTMLElement) {
+      agentic.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "But who
+        // decides what to do next?", and can't fire twice.
+        if (root.dataset.plan !== '1' || root.dataset.agentic === '1') return;
+        root.dataset.agentic = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (agenticPanel instanceof HTMLElement) {
+          void agenticPanel.offsetWidth;
+          agenticPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (recap instanceof HTMLElement) {
+      recap.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "But it
+        // isn't doing all of this alone", and can't fire twice.
+        if (root.dataset.agentic !== '1' || root.dataset.recap === '1') return;
+        root.dataset.recap = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (recapPanel instanceof HTMLElement) {
+          void recapPanel.offsetWidth;
+          recapPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (orchestration instanceof HTMLElement) {
+      orchestration.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "So what
+        // brings it all together?", and can't fire twice.
+        if (root.dataset.recap !== '1' || root.dataset.orchestration === '1') return;
+        root.dataset.orchestration = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (orchestrationPanel instanceof HTMLElement) {
+          void orchestrationPanel.offsetWidth;
+          orchestrationPanel.focus({ preventScroll: true });
+        }
+      });
+    }
+
+    if (whole instanceof HTMLElement) {
+      whole.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "So what
+        // brings it all together?", and can't fire twice.
+        if (root.dataset.orchestration !== '1' || root.dataset.whole === '1') return;
+        root.dataset.whole = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (wholePanel instanceof HTMLElement) {
+          void wholePanel.offsetWidth;
+          wholePanel.focus({ preventScroll: true });
+        }
+
+        // A separate flag, set a beat later, purely for when "See what
+        // you already know" itself is allowed to appear (see its own
+        // [data-whole-ready='1'] rule) — kept apart from data-whole,
+        // which everything else this beat controls (the picture's own
+        // return, the orchestration label) still reacts to immediately.
+        window.setTimeout(
+          () => {
+            root.dataset.wholeReady = '1';
+          },
+          prefersReducedMotion ? 0 : 1050,
+        );
+      });
+    }
+
+    if (decode instanceof HTMLElement) {
+      decode.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before "Now look
+        // at what you just did", and can't fire twice.
+        if (root.dataset.whole !== '1' || root.dataset.decode === '1') return;
+        root.dataset.decode = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (decodePanel instanceof HTMLElement) {
+          void decodePanel.offsetWidth;
+          decodePanel.focus({ preventScroll: true });
+        }
+
+        // "See it differently" is only allowed to appear once every
+        // label has actually finished revealing — the last of them
+        // (orchestration) completes its own 460ms animation at 3810ms
+        // (see [data-decode='1'] .dy-hero__ais-label--orchestration's
+        // 3350ms delay) — so this flag lands a short beat after that,
+        // never on the same tick as any label still resolving.
+        window.setTimeout(
+          () => {
+            root.dataset.decodeDone = '1';
+          },
+          prefersReducedMotion ? 0 : 4000,
+        );
+      });
+    }
+
+    if (finale instanceof HTMLElement) {
+      finale.addEventListener('click', () => {
+        // Gated on the beat before it: this can't fire before every
+        // label has finished revealing, and can't fire twice.
+        if (root.dataset.decodeDone !== '1' || root.dataset.finale === '1') return;
+        root.dataset.finale = '1';
+
+        // Same synchronous claim as every panel before it, for the same
+        // reason: this button disappears the instant the click is
+        // handled, and claiming focus in the same tick pre-empts
+        // Chromium's own recovery from scrolling the page to wherever it
+        // would otherwise land.
+        if (finalePanel instanceof HTMLElement) {
+          void finalePanel.offsetWidth;
+          finalePanel.focus({ preventScroll: true });
+        }
+
+        // A semantic completion signal, separate from data-finale above.
+        // data-finale='1' only marks that this panel has been swapped in;
+        // "Think about dinner." — the actual payoff line, .dy-hero__ais-
+        // finale-echo — is still mid-reveal at that instant (its own
+        // animation lands at 1400ms + 620ms = 2020ms, see
+        // [data-finale='1'] .dy-hero__ais-finale-echo above). This flag
+        // lands once that line has genuinely finished presenting, the
+        // same "gate on the thing actually being true" idiom the
+        // decodeDone flag above already uses. Under reduced motion the
+        // echo's own animation is removed (animation: none !important)
+        // and it is visible the instant [data-finale='1'] applies, so
+        // this collapses to the same instant, exactly like decodeDone
+        // does for its own wait.
+        //
+        // A plain data flag, not a network call — this file stays an
+        // experience component, not an analytics emitter. Consumers
+        // (e.g. the Explore page) observe it themselves.
+        window.setTimeout(
+          () => {
+            root.dataset.complete = '1';
+          },
+          prefersReducedMotion ? 0 : 2020,
+        );
+      });
+    }
+  });
+</script>

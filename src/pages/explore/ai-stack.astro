@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AiStackExperience from '../../components/explain/AiStackExperience.astro';
+import { storyPageMeta } from '../../data/storyMeta';
+
+// The permanent AI Stack Explore route.
+//
+// Renders the shared AI Stack experience component — the same one the
+// homepage Feature surface uses (see src/components/features/
+// AiStackFeature.astro) — so there is one source of truth for every story
+// state, all copy, the artwork, timing, gating, reduced-motion and
+// keyboard behaviour, and the decoded-label and finale states. Nothing
+// about the story itself lives in this file; a cold visit here always
+// starts at the shared component's own first state, the same as every
+// other page that renders it.
+//
+// Title, description, share card and structured data all come from this
+// story's entry in src/data/stories.ts, the same single source every other
+// story page reads — the same construction who-said-yes.astro and its
+// siblings use. Canonical is left to BaseLayout's own default (the URL the
+// page was built at), which is already this page's address.
+const meta = (await storyPageMeta('ai-stack', Astro.site))!;
+---
+
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
+  <div class="ai-stack-explore">
+    <AiStackExperience />
+  </div>
+</BaseLayout>
+
+<style>
+  /* The shared experience component supplies its own width cap and
+     right-column alignment (--ais-w, margin-left: auto) — sized for
+     sitting beside the homepage's headline column. This wrapper is just
+     wide enough for that cap to have no room left to push into, so the
+     same right-aligned block reads as centred on its own page instead of
+     looking like it's missing a left column — the same reasoning the
+     story's own centred-column precedent already uses elsewhere. Nothing
+     about the shared component itself is touched here. */
+  .ai-stack-explore {
+    max-width: 590px;
+    margin: 0 auto;
+    padding: clamp(40px, 7vh, 86px) 24px clamp(72px, 12vh, 132px);
+  }
+</style>
+
+<script define:vars={{ topic: 'ai-stack', rootSelector: '[data-ais]', finalAttr: 'complete' }}>
+  // Analytics: story_view (visibility, same pattern as every other Explore
+  // story) and story_complete (driven by the shared AiStackExperience
+  // component's own semantic completion flag -- root.dataset[finalAttr]
+  // reaching '1' once "Think about dinner." has genuinely finished
+  // presenting, not merely on the See it differently click or the decoded
+  // AIStack label state -- see the data-complete comment in
+  // AiStackExperience.astro). Isolated from the shared component's own
+  // script; only observes, never mutates. This script exists only on this
+  // page, so rendering the shared component on the homepage Feature or the
+  // dev-only preview route never emits it.
+  const root = document.querySelector(rootSelector);
+  if (root instanceof HTMLElement) {
+    let viewFired = false;
+    let viewTimer = null;
+    const viewObserver = new IntersectionObserver(
+      (entries) => {
+        if (viewFired) return;
+        const entry = entries[0];
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (viewTimer === null) {
+            viewTimer = window.setTimeout(() => {
+              viewFired = true;
+              window.zaraz?.track('story_view', { topic });
+              viewObserver.disconnect();
+            }, 1000);
+          }
+        } else if (viewTimer !== null) {
+          clearTimeout(viewTimer);
+          viewTimer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+    viewObserver.observe(root);
+
+    let completeFired = false;
+    const completeObserver = new MutationObserver(() => {
+      if (completeFired) return;
+      if (root.dataset[finalAttr] === '1') {
+        completeFired = true;
+        window.zaraz?.track('story_complete', { topic });
+        completeObserver.disconnect();
+      }
+    });
+    completeObserver.observe(root, { attributes: true, attributeFilter: ['data-' + finalAttr] });
+  }
+</script>
