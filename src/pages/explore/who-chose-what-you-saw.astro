@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyPageMeta } from '../../data/storyMeta';
 import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
@@ -90,6 +90,47 @@ const BEHIND = [
   { x: 3.4, y: 2.6, ink: 0.13 },
   { x: 6.6, y: 5.1, ink: 0.07 },
 ];
+
+// THE FIELD, for the third beat. Real photographs rather than grey boxes —
+// it has to look like content that could have turned up in a feed, because
+// the moment only works if the visitor recognises it as more of the same
+// kind of thing, not as a chart drawn over the story.
+//
+// The pictures are the three items' own, zoomed in and offset so each tile
+// shows a different part of one: a ridge line, a face, a bowl, a cup, the
+// cloth, the crowd, the grass. Nothing new is introduced and nothing is
+// invented — the same master supplies every pixel on this page. At tile
+// size these read as separate things to watch, which is what the beat needs
+// them to be.
+const TILE = await Promise.all(
+  [item1, item2, item3].map((src) => getImage({ src, width: 420, format: 'webp', quality: 68 }))
+);
+
+// Where in its picture each tile looks. Twenty windows across three
+// photographs, each at its own zoom and some mirrored, which is what stops
+// eighty-four tiles reading as three pictures repeated: the same ridge at a
+// different crop, scale and handedness does not look like itself.
+const LOOKS = [
+  [8, 14], [62, 22], [35, 78], [88, 48], [18, 62],
+  [72, 86], [46, 10], [95, 30], [26, 38], [55, 92],
+  [12, 88], [80, 66], [40, 46], [68, 54], [22, 18],
+  [92, 74], [50, 70], [14, 40], [76, 12], [34, 58],
+];
+
+// A fixed hash per position rather than a cycle. Cycles line up with the
+// seven-column grid and print visible stripes of the same crop; this does
+// not, and it is deterministic, so the field is identical on every build
+// and every visit.
+const FIELD = Array.from({ length: 7 * 12 }, (_, i) => {
+  const h = (i * 2654435761) % 4294967296;
+  const look = LOOKS[h % LOOKS.length];
+  return {
+    src: TILE[Math.floor(h / 7) % 3].src,
+    look,
+    zoom: 205 + (Math.floor(h / 97) % 11) * 13,
+    flip: Math.floor(h / 1013) % 2 === 0,
+  };
+});
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
@@ -102,9 +143,12 @@ const BEHIND = [
           <h1 class="chose__opening">
             <span data-line="one">You chose this.</span>
             <span data-line="two" hidden>You picked one.</span>
+            <span data-line="three" hidden>From all of this.</span>
           </h1>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
+
+          <p class="chose__sub" data-line="three" hidden>Most of it never reached your screen.</p>
 
           <button type="button" class="chose__turn" data-line="one" data-onward>
             Did you? <span aria-hidden="true">&rarr;</span>
@@ -112,6 +156,10 @@ const BEHIND = [
 
           <button type="button" class="chose__turn" data-line="two" data-further hidden>
             From what? <span aria-hidden="true">&rarr;</span>
+          </button>
+
+          <button type="button" class="chose__turn" data-line="three" data-onward3 hidden>
+            So what did? <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
       </div>
@@ -132,6 +180,16 @@ const BEHIND = [
            one occupied and no layout moves under it. -->
       <div class="chose__visual">
         <div class="chose__scene">
+          <!-- Behind everything, and empty until the third beat. -->
+          <div class="chose__field" aria-hidden="true">
+            {FIELD.map((t) => (
+              <span
+                class="chose__tile"
+                style={`background-image:url(${t.src});background-position:${t.look[0]}% ${t.look[1]}%;background-size:${t.zoom}%;scale:${t.flip ? '-1 1' : '1 1'}`}
+              ></span>
+            ))}
+          </div>
+
           <Image
             class="chose__art"
             src={scene1}
@@ -285,7 +343,10 @@ const BEHIND = [
      and the same pace as the picture behind it. */
   [data-stage='2'] .chose__opening span[data-line='two'],
   [data-stage='2'] .chose__sub,
-  [data-stage='2'] .chose__turn[data-further] {
+  [data-stage='2'] .chose__turn[data-further],
+  [data-stage='3'] .chose__opening span[data-line='three'],
+  [data-stage='3'] .chose__sub,
+  [data-stage='3'] .chose__turn[data-onward3] {
     animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -295,6 +356,17 @@ const BEHIND = [
 
   [data-stage='2'] .chose__turn[data-further] {
     animation-delay: 360ms;
+  }
+
+  /* "Most of it never reached your screen." is the beat that lands, so it
+     waits until the field behind has actually arrived rather than racing
+     it. The way onward follows that. */
+  [data-stage='3'] .chose__sub {
+    animation-delay: 620ms;
+  }
+
+  [data-stage='3'] .chose__turn[data-onward3] {
+    animation-delay: 900ms;
   }
 
   @keyframes chose-in {
@@ -342,7 +414,7 @@ const BEHIND = [
   /* The phone and the hand recede far enough that the three items are the
      only things in focus, but not to nothing: the ghost is what keeps the
      three sitting where they were rather than floating free. */
-  [data-stage='2'] .chose__art {
+  :is([data-stage='2'], [data-stage='3']) .chose__art {
     opacity: 0.13;
   }
 
@@ -368,7 +440,7 @@ const BEHIND = [
 
   /* Full opacity, and lifted off the field by a shadow rather than by
      moving: they are the one thing on screen that does not shift. */
-  [data-stage='2'] .chose__item {
+  :is([data-stage='2'], [data-stage='3']) .chose__item {
     opacity: 1;
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
   }
@@ -399,18 +471,74 @@ const BEHIND = [
     opacity: 1;
   }
 
+  /* Spent: the third beat shows the actual thing these were standing in
+     for, so the stand-in goes. */
+  [data-stage='3'] .chose__edge {
+    opacity: 0;
+  }
+
+  /* ---- The larger field, third beat ---- */
+
+  .chose__field {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-content: start;
+    gap: 2%;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1000ms cubic-bezier(0.2, 0.72, 0.28, 1);
+    /* Fades out towards the edges rather than stopping at them, so what
+       the three came from reads as continuing past the frame instead of
+       being a panel of a known size. */
+    mask-image: radial-gradient(
+      ellipse 82% 78% at 50% 48%,
+      #000 40%,
+      rgba(0, 0, 0, 0.5) 72%,
+      transparent 100%
+    );
+  }
+
+  /* Held well back from full strength. These are photographs, and at full
+     contrast eighty-four of them would fight the three in front and turn
+     the scene into wallpaper. Quiet enough to read as "more of the same
+     kind of thing", not so quiet that it becomes a grey diagram. */
+  [data-stage='3'] .chose__field {
+    opacity: 0.46;
+  }
+
+  .chose__tile {
+    aspect-ratio: 534 / 308;
+    border-radius: 3px;
+    background-repeat: no-repeat;
+  }
+
+  /* The three lift towards the reader as the field arrives behind them —
+     a few per cent, which at this size is a couple of pixels of growth and
+     a deeper shadow. Enough to keep them plainly in front, not enough to
+     read as a zoom. */
+  [data-stage='3'] .chose__item {
+    scale: 1.045;
+    box-shadow: 0 26px 60px rgba(28, 34, 52, 0.3);
+  }
+
   /* Nothing here is load-bearing: with motion reduced the same two states
      simply appear, fully formed. */
   @media (prefers-reduced-motion: reduce) {
     .chose__art,
     .chose__item,
-    .chose__edge {
+    .chose__edge,
+    .chose__field {
       transition: none;
     }
 
     [data-stage='2'] .chose__opening span[data-line='two'],
     [data-stage='2'] .chose__sub,
-    [data-stage='2'] .chose__turn[data-further] {
+    [data-stage='2'] .chose__turn[data-further],
+    [data-stage='3'] .chose__opening span[data-line='three'],
+    [data-stage='3'] .chose__sub,
+    [data-stage='3'] .chose__turn[data-onward3] {
       animation: none;
     }
   }
@@ -434,37 +562,52 @@ const BEHIND = [
 </style>
 
 <script>
-  // The story's one movement: from the first beat to the second.
+  // The story's movement, one beat at a time: 1 -> 2 -> 3. Each turn shows
+  // exactly one new thing and hands focus to the turn that replaced it.
   //
-  // Deliberately not here: anything past "From what? →". That button is
-  // real and focusable, and wired to nothing, because the state past it
-  // does not exist yet.
+  // Deliberately not here: anything past "So what did? →". That button is
+  // real and focusable and wired to nothing, because the state past it does
+  // not exist yet — the same convention where-is-the-5g.astro uses for its
+  // unbuilt scenes.
   const root = document.querySelector('[data-chose]');
 
   if (root instanceof HTMLElement) {
-    const onward = root.querySelector('[data-onward]');
-    const further = root.querySelector('[data-further]');
+    // from -> [the control that advances it, the group it reveals]
+    const BEATS = {
+      1: ['[data-onward]', 'two'],
+      2: ['[data-further]', 'three'],
+    };
 
-    onward?.addEventListener('click', () => {
-      if (root.dataset.stage !== '1') return;
-      root.dataset.stage = '2';
+    const advance = (from) => {
+      const beat = BEATS[from];
+      if (!beat || root.dataset.stage !== String(from)) return;
+      const [, group] = beat;
+      root.dataset.stage = String(from + 1);
 
-      // The copy swaps groups. The three cut-outs become the real thing on
-      // screen once the photograph behind them is a ghost, so they take
-      // over its description rather than doubling it.
-      for (const el of root.querySelectorAll('[data-line="one"]')) el.hidden = true;
-      for (const el of root.querySelectorAll('[data-line="two"]')) el.hidden = false;
+      // Only one group of copy is ever un-hidden, so nothing below the
+      // current beat is announced or reachable by keyboard.
+      for (const el of root.querySelectorAll('[data-line]')) {
+        el.hidden = el.getAttribute('data-line') !== group;
+      }
 
-      const art = root.querySelector('.chose__art');
-      const items = root.querySelector('.chose__items');
-      if (art) art.setAttribute('aria-hidden', 'true');
-      if (items) items.removeAttribute('aria-hidden');
+      // Stepping off the first beat, the three cut-outs become the real
+      // thing on screen once the photograph behind them is a ghost, so
+      // they take over its description rather than doubling it.
+      if (from === 1) {
+        root.querySelector('.chose__art')?.setAttribute('aria-hidden', 'true');
+        root.querySelector('.chose__items')?.removeAttribute('aria-hidden');
+      }
 
       // The control that was just used no longer exists, so focus would
       // fall to the document. Hand it to the one that replaced it, in the
       // same place, rather than losing the visitor's position.
-      if (further instanceof HTMLElement) further.focus();
-    });
+      const next = root.querySelector(`[data-line="${group}"].chose__turn`);
+      if (next instanceof HTMLElement) next.focus();
+    };
+
+    for (const [from, [selector]] of Object.entries(BEATS)) {
+      root.querySelector(selector)?.addEventListener('click', () => advance(Number(from)));
+    }
   }
 </script>
 
