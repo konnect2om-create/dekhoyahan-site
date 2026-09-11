@@ -53,8 +53,8 @@ const meta = (await storyPageMeta('ai-stack', Astro.site))!;
   // AIStack label state -- see the data-complete comment in
   // AiStackExperience.astro). Isolated from the shared component's own
   // script; only observes, never mutates. This script exists only on this
-  // page, so rendering the shared component on the homepage Feature or the
-  // dev-only preview route never emits it.
+  // page, so rendering the shared component in the homepage hero never
+  // emits it.
   const root = document.querySelector(rootSelector);
   if (root instanceof HTMLElement) {
     let viewFired = false;

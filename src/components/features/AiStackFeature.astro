@@ -16,11 +16,10 @@ import AiStackExperience from '../explain/AiStackExperience.astro';
 // left to add here without duplicating what the shared component already
 // does.
 //
-// PROTOTYPE. Not registered in src/features/registry.ts, so it has no
-// permanent route, no Explore card, no share image, no structured data and
-// no sitemap entry. The homepage still renders whatever the registry names
-// (currently Zero Trust). The only place this appears is the dev-only
-// preview route, /preview/ai-stack/.
+// This wrapper is what `featuredHeroComponent` in src/features/registry.ts
+// names, and it is what the homepage hero currently renders. It is not an
+// entry in `features[]` and has no /<slug>/ route: the story's permanent,
+// canonical, sitemapped address is /explore/ai-stack/.
 ---
 
 <AiStackExperience />

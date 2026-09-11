@@ -3,20 +3,22 @@ import { Image } from 'astro:assets';
 import aiStack from '../../assets/ai-stack.webp';
 import scene1 from '../../assets/ai-stack-scene1.webp';
 
-// The AI Stack Feature — Scene 1 only.
+// The AI Stack experience.
 //
-// PROTOTYPE. Not registered in src/features/registry.ts, so it has no
-// permanent route, no Explore card, no share image, no structured data and
-// no sitemap entry. The homepage still renders whatever the registry names
-// (currently Zero Trust). The only place this appears is the dev-only
-// preview route, /preview/ai-stack/.
+// Rendered in two places, both live: the homepage hero, via
+// AiStackFeature.astro and `featuredHeroComponent` in
+// src/features/registry.ts; and the story's permanent, canonical,
+// sitemapped address, /explore/ai-stack/, via src/pages/explore/ai-stack.astro
+// and the `ai-stack` entry in src/data/stories.ts. It is not a Feature in
+// `features[]` and deliberately has no /<slug>/ route of its own, so
+// /explore/ai-stack/ stays its single permanent address.
 //
 // The premise: people keep meeting LLM, prompt, context, memory, RAG, tools
 // and agents as separate vocabulary. One ordinary errand — "go get what we
 // need for dinner" — is the mental model that holds them together. So this
 // opening shows the errand and says nothing about the parts. The picture and
-// the sentence raise the question; the Explore story, when it exists, is what
-// answers it. Deliberately absent here: every term above, any diagram, any
+// the sentence raise the question; the Explore story at /explore/ai-stack/
+// is what answers it. Deliberately absent here: every term above, any diagram, any
 // label on the artwork, any second explanatory paragraph.
 //
 // Built on the same three-beat composition the Zero Trust Feature uses in
