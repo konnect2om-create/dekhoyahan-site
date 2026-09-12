@@ -5,7 +5,7 @@ import { storyBySlug, storyTitle } from '../../data/stories';
 import doorScene1 from '../../assets/security-door-scene1.webp';
 import doorScene2 from '../../assets/security-door-scene2.webp';
 
-// The Security story's permanent Explore route. Two beats.
+// The Security story's permanent Explore route. Three beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -46,9 +46,27 @@ import doorScene2 from '../../assets/security-door-scene2.webp';
 // ecosystem is the beat — the complexity was real, and it is now
 // entirely out of sight.
 //
-// The turn on scene 2 is real and focusable and wired to nothing, because
-// scene 3 does not exist yet — the same convention where-is-the-5g.astro
-// and who-chose-what-you-saw.astro use for their unbuilt scenes.
+// SCENE 3. The same door, closer:
+//
+//     Because you trust the lock.
+//     You don't stay behind to guard the door.
+//     You expect the lock to do its job after you've walked away.
+//     Then someone else needs to get in →
+//
+// The one idea the story is willing to name yet is trust, and this is
+// where it is named. Still nothing about what a lock is, what it can
+// fail at, or who else is involved.
+//
+// The picture does not change: it is the same element and the same file
+// as scene 2, moved in on by a transform rather than swapped for a
+// second crop. That is the whole point of the beat — the reader has not
+// been shown a new picture, they have stepped closer to the one they
+// were already looking at. See .door__frame in the styles.
+//
+// The turn on scene 3 is real and focusable and wired to nothing,
+// because scene 4 does not exist yet — the same convention
+// where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
+// unbuilt scenes.
 //
 // Still deliberately absent until the story is finished: a
 // LearningResource, a share card, and a sitemap entry (see NOT_INDEXABLE
@@ -73,6 +91,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             </span>
 
             <span data-line="two" hidden>You leave home.</span>
+            <span data-line="three" hidden>Because you trust the lock.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -86,6 +105,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>You lock it.</span>
             <span>Then you walk away.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="three" hidden>
+            <span>You don't stay behind to guard the door.</span>
+            <span>You expect the lock to do its job after you've walked away.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -97,10 +121,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
         <button type="button" class="door__turn" data-line="two" data-further hidden>
           Why? <span aria-hidden="true">&rarr;</span>
         </button>
+
+        <button type="button" class="door__turn" data-line="three" data-onward3 hidden>
+          Then someone else needs to get in <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
-      <!-- Locked to the crop's own frame, so later beats can happen
-           inside the same box without anything moving under them. -->
+      <!-- Scene 1's composition, then the door both later beats share. -->
       <div class="door__visual">
         <div class="door__scene">
           <Image
@@ -115,19 +142,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             data-line="one"
           />
 
-          <!-- The same door, on its own. Whole asset, its own ratio,
-               nothing cropped and nothing over it. -->
-          <Image
-            class="door__art door__plain"
-            src={doorScene2}
-            alt="An ordinary front door, closed, with a lock and a handle."
-            widths={[420, 560, 760, 1122]}
-            sizes="(max-width: 979px) 92vw, 480px"
-            loading="eager"
-            decoding="async"
-            data-line="two"
-            hidden
-          />
+          <!-- The same door for both of the last two beats: whole in
+               scene 2, then moved in on in scene 3. One element, one
+               file, one transform — see .door__frame below. Served at
+               its full width because the close-up magnifies it 2.24x and
+               a column-sized file would go soft under that. -->
+          <div class="door__frame" data-line="two three" hidden>
+            <Image
+              class="door__art door__plain"
+              src={doorScene2}
+              alt="An ordinary front door, closed, with a lock and a handle."
+              widths={[1122]}
+              sizes="1122px"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -155,7 +185,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     gap: clamp(24px, 4vh, 36px);
   }
 
-  .door__copy {
+  .door__copy,
+  .door__visual {
+    /* Grid items default to min-width: auto, which lets a long
+       unbreakable line push a column wider than its track. */
+    min-width: 0;
     text-align: left;
   }
 
@@ -291,14 +325,44 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        the transparent margin it carries on its own left side. */
   }
 
-  /* Scene 2's door is portrait where scene 1's composition is landscape.
-     It always fills whatever width it is given and takes its own height
-     from that — the sizing decision is made by the column it sits in
-     (below), never by cropping or stretching the picture. */
+  /* ---- The door the last two beats share ----
+
+     One picture, one file, one element. Scene 2 shows all of it; scene 3
+     moves in on the lock. The frame is the fixed window both beats look
+     through: it is the asset's own ratio, so at rest the door fills it
+     exactly with nothing cropped and nothing letterboxed, and it never
+     changes size — which is what lets scene 3 be a move rather than a
+     cut. Nothing moves on the page when the beat lands; only what is
+     inside the window does. */
+  .door__frame {
+    width: 100%;
+    aspect-ratio: 1122 / 1402;
+    overflow: hidden;
+  }
+
   .door__plain {
     width: 100%;
-    height: auto;
-    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 0 0;
+    /* Slow and single-curve on purpose: the reader should feel they
+       stepped closer to the same door, not that a picture was swapped. */
+    transition: transform 1100ms cubic-bezier(0.32, 0.7, 0.24, 1);
+  }
+
+  /* The close-up. The window lands on x 230-730, y 410-1035 of the
+     1122x1402 file — the deadbolt and the handle, the door's edge and
+     its jamb on the left, and the width of a panel of wood to the right,
+     so it is plainly the same door. Same aspect ratio as the frame, so
+     nothing is stretched; a scale and an offset, so nothing is resampled
+     beyond the magnification itself.
+
+         scale      1122 / 500   = 2.244
+         translate  -230 / 1122  = -20.5%
+                    -410 / 1402  = -29.244%   (percentages of the
+                    element, applied before the scale) */
+  [data-stage='3'] .door__plain {
+    transform: scale(2.244) translate(-20.5%, -29.244%);
   }
 
   /* ---- The beat arriving ----
@@ -321,15 +385,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='2'] .door__opening span[data-line='two'],
   [data-stage='2'] .door__steps,
   [data-stage='2'] .door__turn[data-further],
-  [data-stage='2'] .door__plain {
+  [data-stage='2'] .door__frame,
+  [data-stage='3'] .door__opening span[data-line='three'],
+  [data-stage='3'] .door__steps,
+  [data-stage='3'] .door__turn[data-onward3] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
-  [data-stage='2'] .door__steps {
+  [data-stage='2'] .door__steps,
+  [data-stage='3'] .door__steps {
     animation-delay: 150ms;
   }
 
-  [data-stage='2'] .door__turn[data-further] {
+  [data-stage='2'] .door__turn[data-further],
+  [data-stage='3'] .door__turn[data-onward3] {
     animation-delay: 300ms;
   }
 
@@ -340,15 +409,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='2'] .door__opening span[data-line='two'],
     [data-stage='2'] .door__steps,
     [data-stage='2'] .door__turn[data-further],
-    [data-stage='2'] .door__plain {
+    [data-stage='2'] .door__frame,
+    [data-stage='3'] .door__opening span[data-line='three'],
+    [data-stage='3'] .door__steps,
+    [data-stage='3'] .door__turn[data-onward3] {
       animation: none;
     }
 
     [data-stage='2'] .door__steps,
-    [data-stage='2'] .door__turn[data-further] {
+    [data-stage='3'] .door__steps,
+    [data-stage='2'] .door__turn[data-further],
+    [data-stage='3'] .door__turn[data-onward3] {
       animation-delay: 0s;
     }
 
+    /* The close-up still happens — it is what the beat is about — it
+       just arrives instead of travelling. */
+    .door__plain,
     .door__turn span {
       transition: none;
     }
@@ -384,9 +461,19 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
        The picture's column is its own rendered width (its height capped
        against the viewport, times its 0.8 ratio), so the track is the
-       size of the door rather than the size of the source file. */
-    [data-stage='2'] .door__stage {
-      grid-template-columns: max-content min(52.8vh, 496px);
+       size of the door rather than the size of the source file.
+
+       The copy column is a fixed measure rather than max-content across
+       these two beats, and that is load-bearing: scene 3's headline is
+       wider than scene 2's, so a content-sized track would grow by
+       160px when the beat lands and shove the picture sideways —
+       turning a move toward the door into a jump across the page. The
+       width is scene 3's headline set on one line (about 11 times the
+       headline's own font size, which is itself clamped against the
+       viewport), so both beats share one column and the frame never
+       moves. */
+    :is([data-stage='2'], [data-stage='3']) .door__stage {
+      grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
   }
@@ -405,8 +492,16 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        a screenful. The cap only bites above phone width: at 390 the
        column is already narrower than it, so the door is still the full
        width of the text there. */
-    .door__plain {
+    .door__frame {
       max-width: 420px;
+    }
+
+    /* Scene 3's turn is a whole sentence. Held on one line it is wider
+       than a 320px screen, and because a grid item will not shrink below
+       its content by default, that pushed the column — and the picture
+       with it — past the viewport. It wraps here instead. */
+    .door__turn {
+      white-space: normal;
     }
   }
 </style>
@@ -464,6 +559,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     // from -> [the control that advances it, the group it reveals]
     const BEATS = {
       1: ['[data-onward]', 'two'],
+      2: ['[data-further]', 'three'],
     };
 
     const advance = (from) => {
@@ -471,8 +567,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       if (!beat || story.dataset.stage !== String(from)) return;
       const [, group] = beat;
 
+      // data-line takes a list, so one element can belong to more than
+      // one beat — the door stays on screen from scene 2 into scene 3,
+      // which is the only way the close-up can be a move rather than a
+      // swap.
       for (const el of story.querySelectorAll('[data-line]')) {
-        el.hidden = el.getAttribute('data-line') !== group;
+        const groups = (el.getAttribute('data-line') || '').split(' ');
+        el.hidden = !groups.includes(group);
       }
 
       story.dataset.stage = String(from + 1);
