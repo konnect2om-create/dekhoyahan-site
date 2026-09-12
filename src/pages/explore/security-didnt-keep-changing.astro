@@ -7,7 +7,7 @@ import doorScene2 from '../../assets/security-door-scene2.webp';
 import doorScene4 from '../../assets/security-door-scene4.webp';
 import doorScene6 from '../../assets/security-door-scene6.webp';
 
-// The Security story's permanent Explore route. Six beats.
+// The Security story's permanent Explore route. Seven beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -128,8 +128,33 @@ import doorScene6 from '../../assets/security-door-scene6.webp';
 // the lit glass and the lamp are untouched, and no pixel of the subject
 // was altered. Composition, colour and framing are exactly as delivered.
 //
-// The turn on scene 6 is real and focusable and wired to nothing,
-// because scene 7 does not exist yet — the same convention
+// SCENE 7. The idea the story has been walking toward, said plainly and
+// still not named:
+//
+//     You didn't choose him.
+//     You didn't check him.
+//     You don't even know him.
+//     But the plumber does.
+//     So now you're trusting someone
+//     because someone you trust trusts him.
+//     And that's only one step away →
+//
+// The last sentence is the beat, so it gets the story's serif at full
+// ink a step down from the headline (.door__lands) and the turn waits
+// an extra moment before it appears — the line should be read before
+// there is a way onward. No terminology: not vendor, not third party,
+// not fourth party, not supply chain. The reader gets the idea first;
+// the word for it can come later.
+//
+// The picture moves onto the two of them — same file, a transform on
+// the element already on screen. The door is still behind them but its
+// pediment, the lamp and the far planter fall outside the frame, so the
+// pair is what the scene is about and the door is what they are standing
+// at. Nothing is drawn between them: no arrow, no line, no diagram. The
+// sentence is the only thing connecting them.
+//
+// The turn on scene 7 is real and focusable and wired to nothing,
+// because scene 8 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -167,6 +192,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             </span>
 
             <span data-line="six" hidden>He arrives.</span>
+            <span data-line="seven" hidden>You didn't choose him.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -202,6 +228,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>He brought someone to help.</span>
             <span>You've never met him.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="seven" hidden>
+            <span>You didn't check him.</span>
+            <span>You don't even know him.</span>
+            <span>But the plumber does.</span>
+          </p>
+
+          <!-- The beat's own conclusion, and the first thing in the story
+               the reader is meant to carry rather than just watch. It sits
+               between the quiet lines and the turn, in the story's serif
+               at full ink but under the headline's size — the same type,
+               one step down. Set as two lines because the sentence turns
+               on its second half. -->
+          <p class="door__lands" data-line="seven" hidden>
+            <span>So now you're trusting someone</span>
+            <span>because someone you trust trusts him.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -229,6 +272,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
         <button type="button" class="door__turn" data-line="six" data-onward6 hidden>
           And yet he's about to enter your home. <span aria-hidden="true">&rarr;</span>
         </button>
+
+        <button type="button" class="door__turn" data-line="seven" data-onward7 hidden>
+          And that's only one step away <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
       <!-- Scene 1's composition, then the door both later beats share. -->
@@ -246,14 +293,15 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             data-line="one"
           />
 
-          <!-- One window for the last five beats. The door whole in
-               scene 2, moved in on in scene 3, the same porch with
-               someone at it for scenes 4 and 5, then two people on it in
-               scene 6. All three files are 1122x1402, so the place never
-               shifts between beats. Served at full width because the
-               close-up magnifies 3.3x and a column-sized file would go
-               soft under that. -->
-          <div class="door__frame" data-line="two three four five six" hidden>
+          <!-- One window for the last six beats. The door whole in scene
+               2, moved in on in scene 3, the same porch with someone at
+               it for scenes 4 and 5, two people on it in scene 6, and the
+               two of them closer in scene 7 — every move a transform on
+               the element already there, never a swap. All three files
+               are 1122x1402, so the place never shifts between beats.
+               Served at full width because the close-up magnifies 3.3x
+               and a column-sized file would go soft under that. -->
+          <div class="door__frame" data-line="two three four five six seven" hidden>
             <Image
               class="door__art door__plain"
               src={doorScene2}
@@ -293,7 +341,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               sizes="1122px"
               loading="lazy"
               decoding="async"
-              data-line="six"
+              data-line="six seven"
               hidden
             />
           </div>
@@ -371,6 +419,25 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     color: var(--muted);
     font-size: 15px;
     line-height: 1.5;
+  }
+
+  /* Where a beat reaches its own conclusion. The story's serif at full
+     ink, one step down from the headline, so it reads as the sentence
+     that matters on the screen without competing with the line that
+     opened it. Two blocks, because the thought turns on its second half. */
+  .door__lands {
+    margin: clamp(16px, 2.4vh, 22px) 0 0;
+    max-width: 30ch;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(19px, 1.7vw, 22px);
+    font-weight: 500;
+    line-height: 1.34;
+    letter-spacing: -0.016em;
+  }
+
+  .door__lands > span {
+    display: block;
   }
 
   /* Scene 2's three steps: same type as the aside above, set one per
@@ -523,6 +590,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     transform: scale(1.122) translate(-5.437%, -4.565%);
   }
 
+  /* Scene 7 moves onto the two of them: x 20-890, y 230-1317 of the same
+     1122x1402 file. Both men are whole, from a little above their caps to
+     their boots, and the door is still there behind them — but its
+     pediment, the lamp and the far planter fall outside, so the pair is
+     what the frame is about and the door is what they are standing at.
+     A move on the picture already on screen; no second file.
+
+         scale      1122 / 870   = 1.2897
+         translate  -20 / 1122   = -1.783%
+                    -230 / 1402  = -16.405%  */
+  [data-stage='7'] .door__plain {
+    transform: scale(1.2897) translate(-1.783%, -16.405%);
+  }
+
   /* ---- The beat arriving ----
      The library's settle, unchanged: the replacing copy, the turn and the
      picture all come in on the same curve at the same pace, so the change
@@ -558,7 +639,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='6'] .door__opening span[data-line='six'],
   [data-stage='6'] .door__steps,
   [data-stage='6'] .door__turn[data-onward6],
-  [data-stage='6'] .door__plain[data-line='six'] {
+  [data-stage='6'] .door__plain[data-line='six seven'],
+  [data-stage='7'] .door__opening span[data-line='seven'],
+  [data-stage='7'] .door__steps,
+  [data-stage='7'] .door__lands,
+  [data-stage='7'] .door__turn[data-onward7] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -570,8 +655,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='3'] .door__steps,
   [data-stage='4'] .door__steps,
   [data-stage='5'] .door__steps,
-  [data-stage='6'] .door__steps {
+  [data-stage='6'] .door__steps,
+  [data-stage='7'] .door__steps {
     animation-delay: 180ms;
+  }
+
+  [data-stage='7'] .door__lands {
+    animation-delay: 300ms;
   }
 
   [data-stage='2'] .door__turn[data-further],
@@ -580,6 +670,12 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='5'] .door__turn[data-onward5],
   [data-stage='6'] .door__turn[data-onward6] {
     animation-delay: 330ms;
+  }
+
+  /* One step later than the other turns: the sentence above it is the
+     beat, and it should be read before the way out appears. */
+  [data-stage='7'] .door__turn[data-onward7] {
+    animation-delay: 480ms;
   }
 
   /* Cancelled one-for-one against the rules above — matched selector by
@@ -604,7 +700,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='6'] .door__opening span[data-line='six'],
     [data-stage='6'] .door__steps,
     [data-stage='6'] .door__turn[data-onward6],
-    [data-stage='6'] .door__plain[data-line='six'] {
+    [data-stage='6'] .door__plain[data-line='six seven'],
+    [data-stage='7'] .door__opening span[data-line='seven'],
+    [data-stage='7'] .door__steps,
+    [data-stage='7'] .door__lands,
+    [data-stage='7'] .door__turn[data-onward7] {
       animation: none;
     }
 
@@ -613,12 +713,15 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='4'] .door__steps,
     [data-stage='5'] .door__steps,
     [data-stage='6'] .door__steps,
+    [data-stage='7'] .door__steps,
+    [data-stage='7'] .door__lands,
     [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
     [data-stage='2'] .door__turn[data-further],
     [data-stage='3'] .door__turn[data-onward3],
     [data-stage='4'] .door__turn[data-onward4],
     [data-stage='5'] .door__turn[data-onward5],
-    [data-stage='6'] .door__turn[data-onward6] {
+    [data-stage='6'] .door__turn[data-onward6],
+    [data-stage='7'] .door__turn[data-onward7] {
       animation-delay: 0s;
     }
 
@@ -671,7 +774,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        headline's own font size, which is itself clamped against the
        viewport), so both beats share one column and the frame never
        moves. */
-    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .door__stage {
+    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
@@ -762,6 +865,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       3: ['[data-onward3]', 'four'],
       4: ['[data-onward4]', 'five'],
       5: ['[data-onward5]', 'six'],
+      6: ['[data-onward6]', 'seven'],
     };
 
     const advance = (from) => {
