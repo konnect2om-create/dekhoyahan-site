@@ -3,8 +3,9 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyBySlug, storyTitle } from '../../data/stories';
 import doorScene1 from '../../assets/security-door-scene1.webp';
+import doorScene2 from '../../assets/security-door-scene2.webp';
 
-// The Security story's permanent Explore route. Scene 1 only.
+// The Security story's permanent Explore route. Two beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -26,9 +27,28 @@ import doorScene1 from '../../assets/security-door-scene1.webp';
 // on purpose: the visitor should be asking why this ordinary door
 // matters, not reading a diagram.
 //
-// The turn is real and focusable and wired to nothing, because scene 2
-// does not exist yet — the same convention where-is-the-5g.astro and
-// who-chose-what-you-saw.astro use for their unbuilt scenes.
+// SCENE 2. Everything scene 1 put around the door is taken away, and what
+// is left is the door:
+//
+//     You leave home.
+//     You close the door.
+//     You lock it.
+//     Then you walk away.
+//     Why? →
+//
+// Four things the reader has done a thousand times, in the order they do
+// them, and then the question. Nothing is named and nothing is explained,
+// because the point of this beat is the answer the reader gives
+// themselves before the story gives them one.
+//
+// The picture is the other supplied asset, whole: an ordinary front door
+// on its own. Going back to a plain door after the first scene's
+// ecosystem is the beat — the complexity was real, and it is now
+// entirely out of sight.
+//
+// The turn on scene 2 is real and focusable and wired to nothing, because
+// scene 3 does not exist yet — the same convention where-is-the-5g.astro
+// and who-chose-what-you-saw.astro use for their unbuilt scenes.
 //
 // Still deliberately absent until the story is finished: a
 // LearningResource, a share card, and a sitemap entry (see NOT_INDEXABLE
@@ -51,10 +71,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               <span>Security didn't keep changing.</span>
               <span>What you trusted did.</span>
             </span>
+
+            <span data-line="two" hidden>You leave home.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
             And you probably didn't notice when it happened.
+          </p>
+
+          <!-- Three steps in the order they happen, each on its own line,
+               so the sequence reads as a sequence rather than a sentence. -->
+          <p class="door__sub door__steps" data-line="two" hidden>
+            <span>You close the door.</span>
+            <span>You lock it.</span>
+            <span>Then you walk away.</span>
           </p>
         </div>
 
@@ -62,6 +92,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
              serif, the saffron circle, the quiet underline on hover. -->
         <button type="button" class="door__turn" data-line="one" data-onward>
           Start with your front door <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="two" data-further hidden>
+          Why? <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -78,6 +112,21 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             loading="eager"
             fetchpriority="high"
             decoding="async"
+            data-line="one"
+          />
+
+          <!-- The same door, on its own. Whole asset, its own ratio,
+               nothing cropped and nothing over it. -->
+          <Image
+            class="door__art door__plain"
+            src={doorScene2}
+            alt="An ordinary front door, closed, with a lock and a handle."
+            widths={[420, 560, 760, 1122]}
+            sizes="(max-width: 979px) 92vw, 480px"
+            loading="eager"
+            decoding="async"
+            data-line="two"
+            hidden
           />
         </div>
       </div>
@@ -149,6 +198,17 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     color: var(--muted);
     font-size: 15px;
     line-height: 1.5;
+  }
+
+  /* Scene 2's three steps: same type as the aside above, set one per
+     line and a touch more open, because they are a sequence of things
+     done in order rather than a sentence that happens to be long. */
+  .door__steps > span {
+    display: block;
+  }
+
+  .door__steps > span + span {
+    margin-top: 3px;
   }
 
   /* Both states live in the DOM; only one group is ever un-hidden, so
@@ -231,6 +291,69 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        the transparent margin it carries on its own left side. */
   }
 
+  /* Scene 2's door is portrait where scene 1's composition is landscape.
+     It always fills whatever width it is given and takes its own height
+     from that — the sizing decision is made by the column it sits in
+     (below), never by cropping or stretching the picture. */
+  .door__plain {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  /* ---- The beat arriving ----
+     The library's settle, unchanged: the replacing copy, the turn and the
+     picture all come in on the same curve at the same pace, so the change
+     reads as one movement. The outgoing group is simply hidden — the two
+     pictures share no frame and no ratio, and cross-fading them would
+     draw attention to the swap rather than to what is now missing. */
+  @keyframes door-in {
+    from {
+      opacity: 0;
+      transform: translateY(9px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  [data-stage='2'] .door__opening span[data-line='two'],
+  [data-stage='2'] .door__steps,
+  [data-stage='2'] .door__turn[data-further],
+  [data-stage='2'] .door__plain {
+    animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='2'] .door__steps {
+    animation-delay: 150ms;
+  }
+
+  [data-stage='2'] .door__turn[data-further] {
+    animation-delay: 300ms;
+  }
+
+  /* Cancelled one-for-one against the rules above — matched selector by
+     selector, because a shorter selector here would lose on specificity
+     and leave the movement running for the people who asked for none. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-stage='2'] .door__opening span[data-line='two'],
+    [data-stage='2'] .door__steps,
+    [data-stage='2'] .door__turn[data-further],
+    [data-stage='2'] .door__plain {
+      animation: none;
+    }
+
+    [data-stage='2'] .door__steps,
+    [data-stage='2'] .door__turn[data-further] {
+      animation-delay: 0s;
+    }
+
+    .door__turn span {
+      transition: none;
+    }
+  }
+
   @media (min-width: 980px) {
     /* Roughly 38 / 52 between the sentence and the picture, which is what
        it takes for the whole composition to be legible at this width —
@@ -250,6 +373,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     .door__opening {
       max-width: none;
     }
+
+    /* Scene 2 has four short lines where scene 1 has a long statement, so
+       the halves that suit the first scene would leave the door stranded
+       across an empty middle. Both columns are sized to their contents
+       instead and the pair stays anchored at the left, exactly where the
+       sentence already was: the text does not move when the beat lands,
+       and the door simply comes in closer. Which is also the beat — the
+       composition contracts as everything around the door is taken away.
+
+       The picture's column is its own rendered width (its height capped
+       against the viewport, times its 0.8 ratio), so the track is the
+       size of the door rather than the size of the source file. */
+    [data-stage='2'] .door__stage {
+      grid-template-columns: max-content min(52.8vh, 496px);
+      justify-content: start;
+    }
   }
 
   /* Stacked, copy first, the picture immediately under the turn — the
@@ -258,6 +397,16 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   @media (max-width: 979px) {
     .door__stage {
       gap: clamp(16px, 2.4vh, 24px);
+    }
+
+    /* Stacked, the door takes the column the way scene 1's composition
+       does — but it is portrait, so on a wide stacked screen a full
+       column would make it about 970px tall and push the page well past
+       a screenful. The cap only bites above phone width: at 390 the
+       column is already narrower than it, so the door is still the full
+       width of the text there. */
+    .door__plain {
+      max-width: 420px;
     }
   }
 </style>
@@ -297,5 +446,49 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     );
 
     observer.observe(root);
+  }
+</script>
+
+<script>
+  // The story's movement, one beat at a time: 1 -> 2. The turn that was
+  // clicked is replaced by the group it reveals, and focus goes to
+  // whatever replaced it, so the keyboard never lands on a hidden
+  // control and never has to hunt for the next one.
+  //
+  // Deliberately not here: anything past the last turn. "Why? →" is real
+  // and focusable and wired to nothing, because the state past it does
+  // not exist yet.
+  const story = document.querySelector('[data-door]');
+
+  if (story instanceof HTMLElement) {
+    // from -> [the control that advances it, the group it reveals]
+    const BEATS = {
+      1: ['[data-onward]', 'two'],
+    };
+
+    const advance = (from) => {
+      const beat = BEATS[from];
+      if (!beat || story.dataset.stage !== String(from)) return;
+      const [, group] = beat;
+
+      for (const el of story.querySelectorAll('[data-line]')) {
+        el.hidden = el.getAttribute('data-line') !== group;
+      }
+
+      story.dataset.stage = String(from + 1);
+
+      // The turn that replaced the one just used, or the copy itself
+      // when a beat ends without one.
+      const next = story.querySelector(`.door__turn[data-line="${group}"]`);
+      const target = next instanceof HTMLElement ? next : story.querySelector('.door__lines');
+      if (target instanceof HTMLElement) target.focus();
+    };
+
+    for (const [from, [selector]] of Object.entries(BEATS)) {
+      const control = story.querySelector(selector);
+      if (control instanceof HTMLElement) {
+        control.addEventListener('click', () => advance(Number(from)));
+      }
+    }
   }
 </script>
