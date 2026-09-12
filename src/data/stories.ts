@@ -97,7 +97,7 @@ export const stories: Story[] = [
     question: 'Who chose what you saw?',
     shortAnswer:
       'Before you choose something from a feed, another system has already decided what reaches that feed.',
-    keyTakeaway: 'You chose from what reached you.',
+    keyTakeaway: "You didn't tap. But your pause still counted.",
     description:
       'See what happens before you choose something from a feed — and why the choices on your screen were already selected before you arrived.',
     publishedAt: '2026-09-11',
