@@ -7,6 +7,7 @@ import scene1 from '../../assets/who-chose-what-you-saw-scene1.webp';
 import item1 from '../../assets/who-chose-what-you-saw-item1.webp';
 import item2 from '../../assets/who-chose-what-you-saw-item2.webp';
 import item3 from '../../assets/who-chose-what-you-saw-item3.webp';
+import item1Clean from '../../assets/who-chose-what-you-saw-item1-clean.webp';
 import item2Clean from '../../assets/who-chose-what-you-saw-item2-clean.webp';
 import item3Clean from '../../assets/who-chose-what-you-saw-item3-clean.webp';
 
@@ -82,7 +83,7 @@ const meta = (await storyPageMeta('who-chose-what-you-saw', Astro.site))!;
 // same ratio, which is what keeps each cut-out sitting exactly on its own
 // counterpart in the photograph at every width.
 const ITEMS = [
-  { src: item1, clean: null, alt: 'A woman on a hillside at sunrise.', top: 10.58, height: 23.78 },
+  { src: item1, clean: item1Clean, alt: 'A woman on a hillside at sunrise.', top: 10.58, height: 23.78 },
   { src: item2, clean: item2Clean, alt: 'A bowl of food on a table.', top: 35.83, height: 23.55 },
   { src: item3, clean: item3Clean, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
 ];
@@ -508,8 +509,15 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      So the held versions stay until the hand has gone, then cross-fade to
      the clean ones on the same 900ms as everything else in that transition.
 
-     Item 1 has no clean twin because it never needed one — no thumb ever
-     crossed it — so it is a single picture throughout and simply carries on.
+     Item 1 is swapped for the same reason even though no thumb ever crossed
+     it: its plate carries the feed's own chrome — a play glyph and a menu —
+     baked into the photograph, and at the third beat there is no feed left
+     for that chrome to belong to. Its play glyph could not simply be
+     painted out either; it sits over her hair and shoulder, not over
+     background, so removing it would have meant inventing her rather than
+     deleting an overlay. The clean plate is framed to match the held one as
+     closely as the source allows, so what changes at the swap is the UI
+     leaving, not the picture.
 
      Both rules come after the shared opacity rule above and match its
      specificity, so source order decides: the last one wins. */
