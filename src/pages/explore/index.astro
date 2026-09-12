@@ -64,6 +64,7 @@ const [newest, ...olderStories] = stories;
             <span class="explore-index__glyph" aria-hidden="true">
               <img src={newest.thumb} alt="" width="720" height="480" decoding="async" />
             </span>
+            {newest.label && <p class="explore-index__kind">{newest.label}</p>}
             <h3>{newest.cardTitle}<span class="explore-index__arrow" aria-hidden="true">&rarr;</span></h3>
             <p>{newest.cardTeaser}</p>
           </a>

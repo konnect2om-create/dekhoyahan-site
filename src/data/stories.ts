@@ -58,6 +58,7 @@ import laptop1 from '../assets/laptop1.png';
 import aiAnsweredShare from '../assets/social/ai-answered-you-share.webp';
 import aiStackScene1 from '../assets/ai-stack-scene1.webp';
 import whoChoseScene1 from '../assets/who-chose-what-you-saw-scene1.webp';
+import securityScene1 from '../assets/security-didnt-keep-changing-scene1.webp';
 
 export type Story = {
   /** Route is always `/explore/${slug}/`. */
@@ -84,11 +85,43 @@ export type Story = {
   image: { src: ImageMetadata; alt: string };
   /** 720x480 WebP under /images/thumbs/. */
   thumb: string;
+  /**
+   * The small label above the card title in the Explore library, using the
+   * library's existing FEATURE treatment. Optional and presentational only:
+   * it marks a story the library is currently leading with. It does not put
+   * the story in the Feature registry, give it a /<slug>/ route, or change
+   * anything the homepage renders.
+   */
+  label?: 'FEATURE';
   /** Featured stories are the homepage's four cards. */
   featured: boolean;
 };
 
 export const stories: Story[] = [
+  {
+    slug: 'security-didnt-keep-changing',
+    cardTitle: "Security didn't keep changing.",
+    cardTeaser: 'What you trusted did.',
+    headline: "Security didn't keep changing.",
+    // PROVISIONAL: question, shortAnswer, keyTakeaway and description are
+    // the story's canonical meaning and are not approved yet — the story
+    // itself is not built. Nothing here is rendered or asserted anywhere:
+    // the shell route emits no LearningResource and is held out of the
+    // sitemap (see astro.config.mjs) until the story exists. The library
+    // card reads only cardTitle, cardTeaser, label and thumb.
+    question: 'What actually changed about security?',
+    shortAnswer: 'Not written yet.',
+    keyTakeaway: 'Not written yet.',
+    description: "Security didn't keep changing. What you trusted did.",
+    publishedAt: '2026-09-12',
+    image: {
+      src: securityScene1,
+      alt: 'A front door, with the people, devices, cameras, buildings and suppliers connected to it arranged around it.',
+    },
+    thumb: '/images/thumbs/security-didnt-keep-changing-card.webp',
+    label: 'FEATURE',
+    featured: false,
+  },
   {
     slug: 'who-chose-what-you-saw',
     cardTitle: 'You chose it.',
