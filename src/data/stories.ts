@@ -85,14 +85,6 @@ export type Story = {
   image: { src: ImageMetadata; alt: string };
   /** 720x480 WebP under /images/thumbs/. */
   thumb: string;
-  /**
-   * The small label above the card title in the Explore library, using the
-   * library's existing FEATURE treatment. Optional and presentational only:
-   * it marks a story the library is currently leading with. It does not put
-   * the story in the Feature registry, give it a /<slug>/ route, or change
-   * anything the homepage renders.
-   */
-  label?: 'FEATURE';
   /** Featured stories are the homepage's four cards. */
   featured: boolean;
 };
@@ -119,7 +111,6 @@ export const stories: Story[] = [
       alt: 'A front door, with the people, devices, cameras, buildings and suppliers connected to it arranged around it.',
     },
     thumb: '/images/thumbs/security-didnt-keep-changing-card.webp',
-    label: 'FEATURE',
     featured: false,
   },
   {
