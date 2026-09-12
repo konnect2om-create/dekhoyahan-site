@@ -198,9 +198,28 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
                what the whole story has been for. Making the second one
                small supporting copy would hand the reframe to a caption. -->
           <p class="chose__close" data-line="eight" hidden>
-            <span>You chose from the feed.</span>
-            <span>Then the feed changed around you.</span>
+            <span>You don't only choose with taps.</span>
+            <span>You also choose with time.</span>
           </p>
+
+          <!-- The one line that sends the visitor back out to their own
+               feed rather than summarising what they just read. -->
+          <p class="chose__sub chose__sub--close" data-line="eight" hidden>
+            Next time you pause, notice what comes next.
+          </p>
+
+          <!-- The end of the story: the way on is another story, so these
+               are real links rather than another beat — the same treatment
+               where-is-the-5g, who-said-yes and did-your-face-leave-the-phone
+               all close on, which is this story's own turn with its
+               underline removed. -->
+          <div class="chose__end" data-line="eight" hidden>
+            <a class="chose__turn chose__turn--link" href="/explore/">
+              See another thing differently <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a class="chose__back" href="/explore/">Back to Explore</a>
+          </div>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
@@ -577,6 +596,55 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 620ms;
   }
 
+  [data-stage='8'] .chose__sub--close,
+  [data-stage='8'] .chose__end {
+    animation: chose-in 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='8'] .chose__sub--close {
+    animation-delay: 1320ms;
+  }
+
+  [data-stage='8'] .chose__end {
+    animation-delay: 1720ms;
+  }
+
+  /* The two ways out, stacked. The first is the story's own turn with its
+     underline removed, exactly as the other stories close; the second is
+     plain navigation and is set well below it so it never competes. */
+  .chose__end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(14px, 2vh, 20px);
+    margin-top: clamp(22px, 3.2vh, 32px);
+  }
+
+  .chose__turn--link {
+    margin-top: 0;
+    text-decoration: none;
+  }
+
+  .chose__back {
+    color: var(--muted);
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: -0.003em;
+    text-decoration: none;
+  }
+
+  .chose__back:hover {
+    color: var(--cobalt);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .chose__back:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
   /* The closing couplet, at the size the story's own lines carry. The
      second sits in the site's softer ink rather than a smaller size: the
      same voice, a half-step quieter, the way a thought lands after the
@@ -872,7 +940,14 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='6'] .chose__turn[data-onward6],
     [data-stage='7'] .chose__opening span[data-line='seven'],
     [data-stage='7'] .chose__turn[data-onward7],
-    [data-stage='8'] .chose__close span {
+    /* Matched to the specificity of the rules they switch off: the
+       closing lines are animated through span:nth-child(), so cancelling
+       them with a plain `span` loses on specificity and the animation
+       keeps running with motion reduced. */
+    [data-stage='8'] .chose__close span:nth-child(1),
+    [data-stage='8'] .chose__close span:nth-child(2),
+    [data-stage='8'] .chose__sub--close,
+    [data-stage='8'] .chose__end {
       animation: none;
     }
   }
@@ -946,6 +1021,55 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       const lines = root.querySelector('.chose__lines');
       if (next instanceof HTMLElement) next.focus();
       else if (lines instanceof HTMLElement) lines.focus();
+
+      // COMPLETION. Set once the last beat has actually finished
+      // presenting — not when it is entered, and not on the click that
+      // leads to it. "You also choose with time." is the line the story
+      // exists to deliver, so the flag waits for that line to finish
+      // arriving; with motion reduced there is no animation to wait for
+      // and the state is already whole, so it is set straight away.
+      if (group === 'eight') {
+        const closing = root.querySelector('.chose__close span:last-child');
+        const done = () => { root.dataset.complete = '1'; };
+
+        // Waits on the line's own animation rather than on an animationend
+        // event: the element goes from display:none to displayed in the
+        // same tick the stage changes, and in that case the event does not
+        // arrive at all (measured, not assumed). The animation object is
+        // read a frame later, once styles have been recalculated, and its
+        // finished promise is what says the line has landed. With motion
+        // reduced there is no animation, so the list is empty and the flag
+        // is set immediately -- which is correct, because the state is
+        // already whole.
+        // The animation object does not exist on the first frame after the
+        // element stops being display:none, so one frame is not enough to
+        // find it -- checking there and giving up is what made this fire
+        // while the line was still arriving. Two frames, then the line's
+        // own timing read back off it as a last resort, so the wait is
+        // never a number written twice.
+        const settle = () => {
+          const running = closing.getAnimations ? closing.getAnimations() : [];
+          if (!running.length) return false;
+          Promise.all(running.map((a) => a.finished)).then(done, done);
+          return true;
+        };
+
+        if (!(closing instanceof HTMLElement)) done();
+        else requestAnimationFrame(() => {
+          if (settle()) return;
+          requestAnimationFrame(() => {
+            if (settle()) return;
+            const style = window.getComputedStyle(closing);
+            const wait =
+              ((parseFloat(style.animationDelay) || 0) +
+                (parseFloat(style.animationDuration) || 0)) * 1000;
+            // No animation at all means motion is reduced and the closing
+            // state is already whole on screen.
+            if (wait > 0) window.setTimeout(done, wait);
+            else done();
+          });
+        });
+      }
     };
 
     for (const [from, [selector]] of Object.entries(BEATS)) {
@@ -959,11 +1083,12 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
   // Explore story uses — at least 50% of the story visible for a
   // continuous second.
   //
-  // story_complete is deliberately absent. The editorial payoff this story
-  // exists to deliver has not been built yet — the mechanism is not even
-  // named — so there is nothing a visitor can reach that would honestly
-  // count as completing it. It gets wired up when the final state exists,
-  // and not before.
+  // story_complete now exists, because the payoff does. It is driven by the
+  // story's own semantic completion flag -- root.dataset.complete reaching
+  // '1' once the closing lines have genuinely finished presenting -- rather
+  // than by page load, by entering the last beat, by a timer or by scroll
+  // depth. The same construction ai-stack.astro uses, for the same reason:
+  // the analytics definition follows the editorial one.
   const root = document.querySelector(rootSelector);
   if (root instanceof HTMLElement) {
     let viewFired = false;
@@ -988,5 +1113,16 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       { threshold: 0.5 }
     );
     viewObserver.observe(root);
+
+    let completeFired = false;
+    const completeObserver = new MutationObserver(() => {
+      if (completeFired) return;
+      if (root.dataset.complete === '1') {
+        completeFired = true;
+        window.zaraz?.track('story_complete', { topic });
+        completeObserver.disconnect();
+      }
+    });
+    completeObserver.observe(root, { attributes: true, attributeFilter: ['data-complete'] });
   }
 </script>
