@@ -88,6 +88,19 @@ const ITEMS = [
   { src: item3, clean: item3Clean, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
 ];
 
+// THE FOUR SIGNALS, for the fourth beat. Placed in the gutters either side
+// of the three cards — percentages of the scene box, alternating sides so
+// they read as things surfacing around the feed rather than as a column of
+// labels beside it. Nothing joins them to anything: no line, no arrow, no
+// bracket. There are four of them and three cards, and any connector would
+// promise a this-one-because-of-that mapping that does not exist.
+const SIGNALS = [
+  { word: 'Watched', side: 'left', edge: 1, top: 19 },
+  { word: 'Skipped', side: 'right', edge: 1, top: 35 },
+  { word: 'Searched', side: 'left', edge: 1, top: 55 },
+  { word: 'Stayed', side: 'right', edge: 1, top: 71 },
+];
+
 // Two edges behind each item, stepped back far enough to be seen and no
 // further. Percentages of one item's own box, so they hold at every width.
 const BEHIND = [
@@ -168,20 +181,16 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
           <p class="chose__sub" data-line="three" hidden>Most of it never made it to your screen.</p>
 
-          <p class="chose__sub" data-line="four" hidden>Based on what you've done before.</p>
+          <p class="chose__sub" data-line="four" hidden>It watches what you do.</p>
 
-          <!-- The five arrive one at a time, in the column rather than
-               pinned to the pictures: there are five of them and three
-               cards, so anything drawn on the cards would promise a
-               this-one-because-of-that mapping that does not exist. No
-               bullets, no numbers, no icons — five short lines, each one a
-               thing the visitor has actually done. -->
-          <ul class="chose__reasons" data-line="four" hidden>
-            <li>What you watched</li>
-            <li>What you skipped</li>
-            <li>What you searched</li>
-            <li>What kept you there</li>
-            <li>What others like you picked</li>
+          <!-- The four signals are shown in the scene, not here. This is the
+               same four words in the place a screen reader should meet them:
+               between the line they belong to and the way onward, rather
+               than after the turn, which is where the scene's own copy falls
+               in reading order. The visible ones are hidden from assistive
+               technology so they are announced once, not twice. -->
+          <ul class="chose__signals-sr" data-line="four" hidden>
+            {SIGNALS.map((s) => <li>{s.word}</li>)}
           </ul>
 
           <button type="button" class="chose__turn" data-line="one" data-onward>
@@ -197,7 +206,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
           </button>
 
           <button type="button" class="chose__turn" data-line="four" data-onward4 hidden>
-            So every tap teaches it something. <span aria-hidden="true">&rarr;</span>
+            And that changes what comes next. <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
       </div>
@@ -281,6 +290,19 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
                   />
                 )}
               </>
+            ))}
+          </div>
+
+          <!-- Quiet words in the space either side of the three, arriving
+               one at a time. Hidden from assistive technology because the
+               list in the copy column above says the same four things in a
+               better reading position. -->
+          <div class="chose__signals" aria-hidden="true">
+            {SIGNALS.map((signal) => (
+              <span
+                class="chose__signal"
+                style={`top:${signal.top}%;${signal.side}:${signal.edge}%`}
+              >{signal.word}</span>
             ))}
           </div>
         </div>
@@ -419,16 +441,15 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 900ms;
   }
 
-  /* THE REASONS, ONE AT A TIME.
-     -------------------------
-     The line lands, then what it is based on, then the five — each far
-     enough behind the last to be read on its own rather than as a block
-     that appeared. The whole sequence is under two and a half seconds, and
-     the way onward waits until the last one has settled so it never invites
-     the visitor past something they have not read yet. */
+  /* THE SIGNALS, ONE AT A TIME.
+     --------------------------
+     The line lands, then what it does, then the four — each far enough
+     behind the last to be noticed on its own rather than as a group that
+     appeared. The way onward waits until the last has settled, so it never
+     invites the visitor past something they have not seen. */
   [data-stage='4'] .chose__opening span[data-line='four'],
   [data-stage='4'] .chose__sub,
-  [data-stage='4'] .chose__reasons li,
+  [data-stage='4'] .chose__signal,
   [data-stage='4'] .chose__turn[data-onward4] {
     animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
@@ -437,56 +458,26 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 200ms;
   }
 
-  [data-stage='4'] .chose__reasons li:nth-child(1) { animation-delay: 620ms; }
-  [data-stage='4'] .chose__reasons li:nth-child(2) { animation-delay: 900ms; }
-  [data-stage='4'] .chose__reasons li:nth-child(3) { animation-delay: 1180ms; }
-  [data-stage='4'] .chose__reasons li:nth-child(4) { animation-delay: 1460ms; }
-  [data-stage='4'] .chose__reasons li:nth-child(5) { animation-delay: 1740ms; }
+  [data-stage='4'] .chose__signal:nth-child(1) { animation-delay: 700ms; }
+  [data-stage='4'] .chose__signal:nth-child(2) { animation-delay: 1050ms; }
+  [data-stage='4'] .chose__signal:nth-child(3) { animation-delay: 1400ms; }
+  [data-stage='4'] .chose__signal:nth-child(4) { animation-delay: 1750ms; }
 
   [data-stage='4'] .chose__turn[data-onward4] {
-    animation-delay: 2140ms;
+    animation-delay: 2200ms;
   }
 
-  /* Five plain lines. No bullets, no numbers, no icons, no rules between
-     them — they are things the visitor has done, not a specification. The
-     saffron marker is the one the site already uses on its eyebrows, at the
-     smallest it appears anywhere, so the list belongs to this page rather
-     than introducing a new idiom. */
-  .chose__reasons {
-    list-style: none;
-    margin: clamp(16px, 2.2vh, 22px) 0 0;
-    padding: 0;
-  }
-
-  .chose__reasons li {
-    position: relative;
-    margin: 0;
-    padding-left: 18px;
-    color: var(--ink-soft);
-    font-size: 15px;
-    line-height: 1.5;
-  }
-
-  .chose__reasons li + li {
-    margin-top: 7px;
-  }
-
-  .chose__reasons li::before {
-    content: '';
+  /* The four words the scene shows, repeated here for assistive technology
+     in the right reading position. Never visible. */
+  .chose__signals-sr {
     position: absolute;
-    left: 0;
-    top: 0.62em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--saffron);
-  }
-
-  @keyframes chose-in {
-    from {
-      opacity: 0;
-      translate: 0 8px;
-    }
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   /* ====================================================
@@ -676,7 +667,41 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0.46;
   }
 
-  /* Quieter again once the reasons start arriving. The field has already
+  /* ---- The four signals ---- */
+
+  .chose__signals {
+    position: absolute;
+    inset: 0;
+    /* The words are something the scene says, not something to click. */
+    pointer-events: none;
+  }
+
+  /* Set in the gutters beside the three, in the site's own supporting
+     colour at its supporting size. The paper-coloured glow is what lifts
+     them off the field without giving them a box, a pill or a rule — the
+     field is pale enough at this beat that a soft halo is all they need. */
+  .chose__signal {
+    position: absolute;
+    display: block;
+    max-width: 27%;
+    color: var(--ink-soft);
+    font-size: clamp(12px, 1.05vw, 14.5px);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-shadow:
+      0 0 7px var(--paper),
+      0 0 14px var(--paper),
+      0 0 22px var(--paper);
+    opacity: 0;
+  }
+
+  [data-stage='4'] .chose__signal {
+    opacity: 1;
+  }
+
+  /* Quieter again once the signals start arriving. The field has already
      made its point — it is no longer the thing being said, it is the thing
      being said *about* — so it steps back and leaves the three cards and
      the reasons beside them as the only things with any weight. */
@@ -719,7 +744,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='3'] .chose__turn[data-onward3],
     [data-stage='4'] .chose__opening span[data-line='four'],
     [data-stage='4'] .chose__sub,
-    [data-stage='4'] .chose__reasons li,
+    [data-stage='4'] .chose__signal,
     [data-stage='4'] .chose__turn[data-onward4] {
       animation: none;
     }
