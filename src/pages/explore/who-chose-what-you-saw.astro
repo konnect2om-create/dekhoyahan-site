@@ -190,8 +190,17 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
             <span data-line="four" hidden>Yesterday, you stopped on this.</span>
             <span data-line="five" hidden>Today, you see more like it.</span>
             <span data-line="six" hidden>You didn't have to tap anything.</span>
-            <span data-line="seven" hidden>You chose one.</span>
+            <span data-line="seven" hidden>To change what showed up next.</span>
           </h1>
+
+          <!-- The ending. Both lines carry the same weight: the first is
+               what the visitor already believed walking in, the second is
+               what the whole story has been for. Making the second one
+               small supporting copy would hand the reframe to a caption. -->
+          <p class="chose__close" data-line="eight" hidden>
+            <span>You chose from the feed.</span>
+            <span>Then the feed changed around you.</span>
+          </p>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
@@ -199,7 +208,6 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
           <p class="chose__sub" data-line="six" hidden>Pausing was enough.</p>
 
-          <p class="chose__sub" data-line="seven" hidden>But your choices started shaping what came next.</p>
 
           <!-- The same turn treatment every story in the library uses:
                serif, the saffron circle, the quiet underline on hover. -->
@@ -231,6 +239,14 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
                nothing else in this beat depends on which words it carries. -->
           <button type="button" class="chose__turn" data-line="six" data-onward6 hidden>
             Enough for what? <span aria-hidden="true">&rarr;</span>
+          </button>
+
+          <!-- PROVISIONAL WORDING, like the one above it: the way from the
+               seventh beat into the ending was not given. It returns to the
+               question the Explore card asked in the first place, which is
+               what the ending then answers by reframing it. -->
+          <button type="button" class="chose__turn" data-line="seven" data-onward7 hidden>
+            So who chose? <span aria-hidden="true">&rarr;</span>
           </button>
 
         </div>
@@ -532,16 +548,55 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 700ms;
   }
 
-  /* The seventh beat, same shape as the rest: the line, then what it means
-     under it. Still no way onward — the ending is not built, and a turn
-     that goes nowhere would say the story is over. */
+  /* The seventh beat is one line and the way onward. Nothing is added
+     under it: the picture is the explanation at this point — the thing the
+     visitor paused on, and the things that came because of it — and a
+     second sentence would only describe what is already on screen. */
   [data-stage='7'] .chose__opening span[data-line='seven'],
-  [data-stage='7'] .chose__sub {
+  [data-stage='7'] .chose__turn[data-onward7] {
     animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
-  [data-stage='7'] .chose__sub {
-    animation-delay: 320ms;
+  [data-stage='7'] .chose__turn[data-onward7] {
+    animation-delay: 520ms;
+  }
+
+  /* THE ENDING.
+     ----------
+     Two lines, the second a beat behind the first, because the turn is in
+     the gap between them: the visitor reads back what they believed, and
+     then what was actually happening. Slower than the other reveals — 620ms
+     rather than 320 — so the second line arrives as a realisation rather
+     than as the rest of a sentence. */
+  [data-stage='8'] .chose__close span:nth-child(1),
+  [data-stage='8'] .chose__close span:nth-child(2) {
+    animation: chose-in 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='8'] .chose__close span:nth-child(2) {
+    animation-delay: 620ms;
+  }
+
+  /* The closing couplet, at the size the story's own lines carry. The
+     second sits in the site's softer ink rather than a smaller size: the
+     same voice, a half-step quieter, the way a thought lands after the
+     thing that prompted it. */
+  .chose__close {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(27px, 3.4vw, 40px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
+  }
+
+  .chose__close span {
+    display: block;
+  }
+
+  .chose__close span:nth-child(2) {
+    color: var(--ink-soft);
   }
 
   /* ====================================================
@@ -602,7 +657,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      same two subjects photographed without the thumb, dropped in as
      who-chose-what-you-saw-item2/3.webp. This rule and everything around
      it is already correct. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__art {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__art {
     opacity: 0;
   }
 
@@ -628,7 +683,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Full opacity, and lifted off the field by a shadow rather than by
      moving: they are the one thing on screen that does not shift. */
-  :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__item {
+  :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__item {
     opacity: 1;
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
   }
@@ -664,7 +719,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0;
   }
 
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__item--swapped {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__item--swapped {
     opacity: 0;
   }
 
@@ -691,7 +746,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0;
   }
 
-  :is([data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__more-item {
+  :is([data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__more-item {
     opacity: 1;
   }
 
@@ -723,7 +778,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Spent: the third beat shows the actual thing these were standing in
      for, so the stand-in goes. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__edge {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__edge {
     opacity: 0;
   }
 
@@ -761,15 +816,15 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
   /* Gone from the fourth beat. What the scene is about stops being the
      size of the set and becomes one card and what happened around it, and
      a wall of other pictures behind that would only be scenery. */
-  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__field {
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__field {
     opacity: 0;
   }
 
   /* The two the visitor did not stop on go with it. The one that is left
      is the one the thumb was resting on in the very first picture — the
      same card, never moved, never resized. */
-  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__item--first,
-  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__item--last {
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__item--first,
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__item--last {
     opacity: 0;
   }
 
@@ -786,7 +841,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      a few per cent, which at this size is a couple of pixels of growth and
      a deeper shadow. Enough to keep them plainly in front, not enough to
      read as a zoom. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7']) .chose__item {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8']) .chose__item {
     scale: 1.045;
     box-shadow: 0 26px 60px rgba(28, 34, 52, 0.3);
   }
@@ -816,7 +871,8 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='6'] .chose__sub,
     [data-stage='6'] .chose__turn[data-onward6],
     [data-stage='7'] .chose__opening span[data-line='seven'],
-    [data-stage='7'] .chose__sub {
+    [data-stage='7'] .chose__turn[data-onward7],
+    [data-stage='8'] .chose__close span {
       animation: none;
     }
   }
@@ -858,6 +914,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       4: ['[data-onward4]', 'five'],
       5: ['[data-onward5]', 'six'],
       6: ['[data-onward6]', 'seven'],
+      7: ['[data-onward7]', 'eight'],
     };
 
     const advance = (from) => {
