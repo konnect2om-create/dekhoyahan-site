@@ -8,7 +8,7 @@ import doorScene4 from '../../assets/security-door-scene4.webp';
 import doorScene6 from '../../assets/security-door-scene6.webp';
 import doorScene9 from '../../assets/security-door-scene9.webp';
 
-// The Security story's permanent Explore route. Nine beats.
+// The Security story's permanent Explore route. Ten beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -193,8 +193,28 @@ import doorScene9 from '../../assets/security-door-scene9.webp';
 // proportions — a frame built for 0.8 would have letterboxed or cropped
 // it. Nothing else about the composition changes.
 //
-// The turn on scene 9 is real and focusable and wired to nothing,
-// because scene 10 does not exist yet — the same convention
+// SCENE 10. What the convenience cost, listed and not explained:
+//
+//     Your door now depends on things you can't see.
+//     Your phone.
+//     Software.
+//     A connection.
+//     And none of them stop at your house →
+//
+// Three nouns, no sentences around them. The story still does not say
+// where the software runs, who operates it, or what any of it connects
+// to — only that the door no longer works by itself.
+//
+// The picture moves in on the phone and the lock: x 65-655, y 307-972 of
+// the 1181x1332 file, a transform on the element already on screen. The
+// two of them and the gap between them are the subject now, but the lit
+// glass, the door frame, the wood and the planter are all still in shot,
+// so it stays plainly the same door. The dependencies arrive in the
+// words; nothing is drawn on the picture — no signal, no cloud, no
+// arrow, no label.
+//
+// The turn on scene 10 is real and focusable and wired to nothing,
+// because scene 11 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -235,6 +255,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="seven" hidden>You didn't choose him.</span>
             <span data-line="eight" hidden>Trust can travel.</span>
             <span data-line="nine" hidden>You replace the lock.</span>
+            <span data-line="ten" hidden>Your door now depends on things you can't see.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -299,6 +320,12 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>Your phone opens the door.</span>
             <span>It feels simpler.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="ten" hidden>
+            <span>Your phone.</span>
+            <span>Software.</span>
+            <span>A connection.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -337,6 +364,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="nine" data-onward9 hidden>
           But something else just changed. <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="ten" data-onward10 hidden>
+          And none of them stop at your house <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -410,21 +441,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
           </div>
 
           <!-- The same door with a smart lock on it, and a phone at the
-               lock. It is 1181x1332 where the other three are 1122x1402,
-               so it sits beside the shared window rather than inside it
-               and keeps its own proportions — nothing cropped, nothing
-               stretched, and no frame to letterbox it. -->
-          <Image
-            class="door__art door__lockshot"
-            src={doorScene9}
-            alt="The same front door, now with a keypad lock above the handle, and a hand holding a phone up to it."
-            widths={[480, 760, 1181]}
-            sizes="(max-width: 979px) 92vw, 500px"
-            loading="lazy"
-            decoding="async"
-            data-line="nine"
-            hidden
-          />
+               lock — whole in scene 9, moved in on in scene 10. Its own
+               window, because this file is 1181x1332 where the other
+               three are 1122x1402: at that ratio it fills the box exactly
+               at rest, so nothing is cropped or letterboxed until the
+               beat that means to move. -->
+          <div class="door__lockframe" data-line="nine ten" hidden>
+            <Image
+              class="door__art door__lockshot"
+              src={doorScene9}
+              alt="The same front door, now with a keypad lock above the handle, and a hand holding a phone up to it."
+              widths={[1181]}
+              sizes="1181px"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -695,6 +727,38 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     transform: scale(1.122) translate(-5.437%, -4.565%);
   }
 
+  /* The smart-lock picture's own window. Same idea as .door__frame, at
+     this asset's own 1181x1332 rather than the other three's 1122x1402:
+     the picture fills it exactly at rest, so scene 9 shows all of it with
+     nothing cropped or letterboxed, and scene 10 can move in without the
+     box changing size or anything on the page shifting. */
+  .door__lockframe {
+    width: 100%;
+    aspect-ratio: 1181 / 1332;
+    overflow: hidden;
+  }
+
+  .door__lockshot {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 0 0;
+    transition: transform 1100ms cubic-bezier(0.32, 0.7, 0.24, 1);
+  }
+
+  /* Scene 10 moves in on the phone and the lock: x 65-655, y 307-972 of
+     the 1181x1332 file. The two of them and the space between them are
+     the subject now, but the lit glass above, the door frame, the wood
+     and the planter are all still in shot, so it is plainly the same
+     door. Nothing is drawn on it.
+
+         scale      1181 / 590   = 2.0017
+         translate  -65 / 1181   = -5.504%
+                    -307 / 1332  = -23.048%  */
+  [data-stage='10'] .door__lockshot {
+    transform: scale(2.0017) translate(-5.504%, -23.048%);
+  }
+
   /* ---- The beat arriving ----
      The library's settle, unchanged: the replacing copy, the turn and the
      picture all come in on the same curve at the same pace, so the change
@@ -741,7 +805,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='9'] .door__opening span[data-line='nine'],
   [data-stage='9'] .door__steps,
   [data-stage='9'] .door__turn[data-onward9],
-  [data-stage='9'] .door__lockshot {
+  [data-stage='9'] .door__lockframe,
+  [data-stage='10'] .door__opening span[data-line='ten'],
+  [data-stage='10'] .door__steps,
+  [data-stage='10'] .door__turn[data-onward10] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -756,7 +823,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='6'] .door__steps,
   [data-stage='7'] .door__steps,
   [data-stage='8'] .door__steps,
-  [data-stage='9'] .door__steps {
+  [data-stage='9'] .door__steps,
+  [data-stage='10'] .door__steps {
     animation-delay: 180ms;
   }
 
@@ -770,7 +838,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='5'] .door__turn[data-onward5],
   [data-stage='6'] .door__turn[data-onward6],
   [data-stage='8'] .door__turn[data-onward8],
-  [data-stage='9'] .door__turn[data-onward9] {
+  [data-stage='9'] .door__turn[data-onward9],
+  [data-stage='10'] .door__turn[data-onward10] {
     animation-delay: 330ms;
   }
 
@@ -807,6 +876,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='7'] .door__steps,
     [data-stage='8'] .door__steps,
     [data-stage='9'] .door__steps,
+    [data-stage='10'] .door__steps,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -815,7 +885,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='9'] .door__opening span[data-line='nine'],
     [data-stage='9'] .door__steps,
     [data-stage='9'] .door__turn[data-onward9],
-    [data-stage='9'] .door__lockshot {
+    [data-stage='9'] .door__lockframe,
+    [data-stage='10'] .door__opening span[data-line='ten'],
+    [data-stage='10'] .door__steps,
+    [data-stage='10'] .door__turn[data-onward10] {
       animation: none;
     }
 
@@ -834,13 +907,15 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='6'] .door__turn[data-onward6],
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__turn[data-onward8],
-    [data-stage='9'] .door__turn[data-onward9] {
+    [data-stage='9'] .door__turn[data-onward9],
+    [data-stage='10'] .door__turn[data-onward10] {
       animation-delay: 0s;
     }
 
     /* The close-up still happens — it is what the beat is about — it
        just arrives instead of travelling. */
     .door__plain,
+    .door__lockshot,
     .door__turn span {
       transition: none;
     }
@@ -887,7 +962,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        headline's own font size, which is itself clamped against the
        viewport), so both beats share one column and the frame never
        moves. */
-    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8'], [data-stage='9']) .door__stage {
+    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6'], [data-stage='7'], [data-stage='8'], [data-stage='9'], [data-stage='10']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
@@ -908,7 +983,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        column is already narrower than it, so the door is still the full
        width of the text there. */
     .door__frame,
-    .door__lockshot {
+    .door__lockframe {
       max-width: 420px;
     }
 
@@ -982,6 +1057,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       6: ['[data-onward6]', 'seven'],
       7: ['[data-onward7]', 'eight'],
       8: ['[data-onward8]', 'nine'],
+      9: ['[data-onward9]', 'ten'],
     };
 
     const advance = (from) => {
