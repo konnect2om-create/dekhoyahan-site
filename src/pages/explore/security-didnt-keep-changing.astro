@@ -4,8 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyBySlug, storyTitle } from '../../data/stories';
 import doorScene1 from '../../assets/security-door-scene1.webp';
 import doorScene2 from '../../assets/security-door-scene2.webp';
+import doorScene4 from '../../assets/security-door-scene4.webp';
 
-// The Security story's permanent Explore route. Three beats.
+// The Security story's permanent Explore route. Four beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -63,8 +64,28 @@ import doorScene2 from '../../assets/security-door-scene2.webp';
 // been shown a new picture, they have stepped closer to the one they
 // were already looking at. See .door__frame in the styles.
 //
-// The turn on scene 3 is real and focusable and wired to nothing,
-// because scene 4 does not exist yet — the same convention
+// SCENE 4. Someone else is at the door:
+//
+//     A pipe starts leaking.
+//     You call a plumber.
+//     You won't be home when he arrives.
+//     So you leave him a key.
+//     What changed? →
+//
+// Four ordinary decisions, none of them careless, and the story does not
+// say what they add up to. The reader is the one who notices that
+// somebody who is not them can now open the door — which is why the turn
+// asks rather than tells.
+//
+// The picture is the same porch at the same size, with a person at it:
+// the file is the Frontdoor asset's exact dimensions, so it lands in the
+// window the door already occupied and the beat reads as someone
+// arriving at a place the reader knows, not as a new picture. He is
+// deliberately unremarkable — work clothes, a toolbag, reaching for the
+// handle.
+//
+// The turn on scene 4 is real and focusable and wired to nothing,
+// because scene 5 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -92,6 +113,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
             <span data-line="two" hidden>You leave home.</span>
             <span data-line="three" hidden>Because you trust the lock.</span>
+            <span data-line="four" hidden>A pipe starts leaking.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -110,6 +132,12 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>You don't stay behind to guard the door.</span>
             <span>You expect the lock to do its job after you've walked away.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="four" hidden>
+            <span>You call a plumber.</span>
+            <span>You won't be home when he arrives.</span>
+            <span>So you leave him a key.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -124,6 +152,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="three" data-onward3 hidden>
           Then someone else needs to get in <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="four" data-onward4 hidden>
+          What changed? <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -142,12 +174,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             data-line="one"
           />
 
-          <!-- The same door for both of the last two beats: whole in
-               scene 2, then moved in on in scene 3. One element, one
-               file, one transform — see .door__frame below. Served at
-               its full width because the close-up magnifies it 2.24x and
-               a column-sized file would go soft under that. -->
-          <div class="door__frame" data-line="two three" hidden>
+          <!-- One window for the last three beats. The door whole in
+               scene 2, moved in on in scene 3 by a transform on the same
+               element, then the same porch with someone at it in scene 4.
+               Both files are 1122x1402, so nothing shifts between them.
+               Served at full width because the close-up magnifies 3.3x
+               and a column-sized file would go soft under that. -->
+          <div class="door__frame" data-line="two three four" hidden>
             <Image
               class="door__art door__plain"
               src={doorScene2}
@@ -156,6 +189,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               sizes="1122px"
               loading="eager"
               decoding="async"
+              data-line="two three"
+            />
+
+            <!-- The same porch, same size, same file dimensions, with
+                 someone at the door. It lands in the window the door
+                 already occupied, so the beat is a person arriving at a
+                 place the reader knows rather than a new picture. -->
+            <Image
+              class="door__art door__plain"
+              src={doorScene4}
+              alt="A plumber standing at the front door with a toolbag, reaching for the handle."
+              widths={[1122]}
+              sizes="1122px"
+              loading="lazy"
+              decoding="async"
+              data-line="four"
+              hidden
             />
           </div>
         </div>
@@ -391,17 +441,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='2'] .door__frame,
   [data-stage='3'] .door__opening span[data-line='three'],
   [data-stage='3'] .door__steps,
-  [data-stage='3'] .door__turn[data-onward3] {
+  [data-stage='3'] .door__turn[data-onward3],
+  [data-stage='4'] .door__opening span[data-line='four'],
+  [data-stage='4'] .door__steps,
+  [data-stage='4'] .door__turn[data-onward4],
+  [data-stage='4'] .door__plain[data-line='four'] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
   [data-stage='2'] .door__steps,
-  [data-stage='3'] .door__steps {
+  [data-stage='3'] .door__steps,
+  [data-stage='4'] .door__steps {
     animation-delay: 150ms;
   }
 
   [data-stage='2'] .door__turn[data-further],
-  [data-stage='3'] .door__turn[data-onward3] {
+  [data-stage='3'] .door__turn[data-onward3],
+  [data-stage='4'] .door__turn[data-onward4] {
     animation-delay: 300ms;
   }
 
@@ -415,14 +471,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='2'] .door__frame,
     [data-stage='3'] .door__opening span[data-line='three'],
     [data-stage='3'] .door__steps,
-    [data-stage='3'] .door__turn[data-onward3] {
+    [data-stage='3'] .door__turn[data-onward3],
+    [data-stage='4'] .door__opening span[data-line='four'],
+    [data-stage='4'] .door__steps,
+    [data-stage='4'] .door__turn[data-onward4],
+    [data-stage='4'] .door__plain[data-line='four'] {
       animation: none;
     }
 
     [data-stage='2'] .door__steps,
     [data-stage='3'] .door__steps,
+    [data-stage='4'] .door__steps,
     [data-stage='2'] .door__turn[data-further],
-    [data-stage='3'] .door__turn[data-onward3] {
+    [data-stage='3'] .door__turn[data-onward3],
+    [data-stage='4'] .door__turn[data-onward4] {
       animation-delay: 0s;
     }
 
@@ -475,7 +537,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        headline's own font size, which is itself clamped against the
        viewport), so both beats share one column and the frame never
        moves. */
-    :is([data-stage='2'], [data-stage='3']) .door__stage {
+    :is([data-stage='2'], [data-stage='3'], [data-stage='4']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
@@ -563,6 +625,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     const BEATS = {
       1: ['[data-onward]', 'two'],
       2: ['[data-further]', 'three'],
+      3: ['[data-onward3]', 'four'],
     };
 
     const advance = (from) => {
@@ -583,9 +646,16 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
       // The turn that replaced the one just used, or the copy itself
       // when a beat ends without one.
+      //
+      // preventScroll, because the story must never move the page under
+      // the reader: every beat is composed to sit where the last one
+      // did, and the replacing turn is always in the same place near the
+      // top of the copy, so there is nothing to scroll to. Without it a
+      // beat landing while the previous one is still settling can scroll
+      // the focused control into view and shift the whole composition.
       const next = story.querySelector(`.door__turn[data-line="${group}"]`);
       const target = next instanceof HTMLElement ? next : story.querySelector('.door__lines');
-      if (target instanceof HTMLElement) target.focus();
+      if (target instanceof HTMLElement) target.focus({ preventScroll: true });
     };
 
     for (const [from, [selector]] of Object.entries(BEATS)) {
