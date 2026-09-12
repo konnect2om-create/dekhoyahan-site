@@ -11,17 +11,21 @@ import item1Clean from '../../assets/who-chose-what-you-saw-item1-clean.webp';
 import item2Clean from '../../assets/who-chose-what-you-saw-item2-clean.webp';
 import item3Clean from '../../assets/who-chose-what-you-saw-item3-clean.webp';
 
-// "More like it", for the fifth beat: six of the feed slices that are the
-// same kind of thing as the one the visitor stopped on — food, a table, a
-// meal. They are the pictures the field is already made of, so what appears
-// is more of what was always there rather than anything new introduced to
-// make a point.
+// "More like it", for the fifth beat. Not food in general — bowls. The card
+// the visitor stopped on is a bowl of food shot close on a table, and these
+// are the four slices in the sheet that are the same photograph in kind: a
+// salad bowl, a noodle bowl, a bowl of fruit, a row of spice bowls. The
+// burger, the coffee and the rest are food too, and that was the earlier
+// mistake — "more like it" has to be recognisably the same thing, not the
+// same category.
+//
+// They are pictures the field is already made of, so what arrives is more
+// of what was always there rather than anything new brought in to make the
+// point.
 import more1 from '../../assets/feed/07.webp';
 import more2 from '../../assets/feed/24.webp';
-import more3 from '../../assets/feed/20.webp';
-import more4 from '../../assets/feed/35.webp';
-import more5 from '../../assets/feed/16.webp';
-import more6 from '../../assets/feed/02.webp';
+import more3 from '../../assets/feed/35.webp';
+import more4 from '../../assets/feed/16.webp';
 
 // The permanent "Who chose what you saw?" Explore route. Two beats.
 //
@@ -104,12 +108,10 @@ const ITEMS = [
 // that stayed, three a side, never overlapping it. Percentages of the scene
 // box, so they hold at every width.
 const MORE = [
-  { src: more1, alt: '', side: 'left', edge: 0.5, top: 5 },
-  { src: more2, alt: '', side: 'right', edge: 0.5, top: 13 },
-  { src: more3, alt: '', side: 'left', edge: 0.5, top: 32 },
-  { src: more4, alt: '', side: 'right', edge: 0.5, top: 40 },
-  { src: more5, alt: '', side: 'left', edge: 0.5, top: 59 },
-  { src: more6, alt: '', side: 'right', edge: 0.5, top: 67 },
+  { src: more1, side: 'left', edge: 0.5, top: 11 },
+  { src: more2, side: 'right', edge: 0.5, top: 25 },
+  { src: more3, side: 'left', edge: 0.5, top: 51 },
+  { src: more4, side: 'right', edge: 0.5, top: 65 },
 ];
 
 // Two edges behind each item, stepped back far enough to be seen and no
@@ -180,18 +182,21 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       <div class="chose__copy">
         <!-- Announced when it changes, because the change is the story
              moving. The eyebrow-less, two-line opening is unchanged. -->
-        <div class="chose__lines" aria-live="polite">
+        <div class="chose__lines" aria-live="polite" tabindex="-1">
           <h1 class="chose__opening">
             <span data-line="one">You chose this.</span>
             <span data-line="two" hidden>You picked one.</span>
             <span data-line="three" hidden>From all of this.</span>
             <span data-line="four" hidden>Yesterday, you stopped on this.</span>
             <span data-line="five" hidden>Today, you see more like it.</span>
+            <span data-line="six" hidden>You didn't have to.</span>
           </h1>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
           <p class="chose__sub" data-line="three" hidden>Most of it never made it to your screen.</p>
+
+          <p class="chose__sub" data-line="six" hidden>Stopping was enough.</p>
 
           <!-- The same turn treatment every story in the library uses:
                serif, the saffron circle, the quiet underline on hover. -->
@@ -212,7 +217,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
           </button>
 
           <button type="button" class="chose__turn" data-line="five" data-onward5 hidden>
-            You never asked for it. <span aria-hidden="true">&rarr;</span>
+            You never asked for them. <span aria-hidden="true">&rarr;</span>
           </button>
 
         </div>
@@ -358,6 +363,12 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     text-align: left;
   }
 
+  /* Focused only when the last beat lands and there is no turn left to
+     hand focus to; it should never draw a ring of its own for that. */
+  .chose__lines:focus {
+    outline: none;
+  }
+
   /* The story's primary line, at the same size and weight "Looks real."
      carries in this slot. */
   .chose__opening {
@@ -491,6 +502,18 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 1800ms;
   }
 
+  /* The sixth beat is two lines and nothing else. No way onward yet: what
+     follows it is the reframe, which is not built, and offering a turn that
+     goes nowhere would promise the story is finished when it is not. */
+  [data-stage='6'] .chose__opening span[data-line='six'],
+  [data-stage='6'] .chose__sub {
+    animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='6'] .chose__sub {
+    animation-delay: 320ms;
+  }
+
   /* ====================================================
      THE SCENE
      ==================================================== */
@@ -549,7 +572,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      same two subjects photographed without the thumb, dropped in as
      who-chose-what-you-saw-item2/3.webp. This rule and everything around
      it is already correct. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__art {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__art {
     opacity: 0;
   }
 
@@ -575,7 +598,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Full opacity, and lifted off the field by a shadow rather than by
      moving: they are the one thing on screen that does not shift. */
-  :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item {
+  :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__item {
     opacity: 1;
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
   }
@@ -611,7 +634,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0;
   }
 
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item--swapped {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__item--swapped {
     opacity: 0;
   }
 
@@ -638,7 +661,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0;
   }
 
-  [data-stage='5'] .chose__more-item {
+  :is([data-stage='5'], [data-stage='6']) .chose__more-item {
     opacity: 1;
   }
 
@@ -670,7 +693,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Spent: the third beat shows the actual thing these were standing in
      for, so the stand-in goes. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__edge {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__edge {
     opacity: 0;
   }
 
@@ -708,15 +731,15 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
   /* Gone from the fourth beat. What the scene is about stops being the
      size of the set and becomes one card and what happened around it, and
      a wall of other pictures behind that would only be scenery. */
-  :is([data-stage='4'], [data-stage='5']) .chose__field {
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__field {
     opacity: 0;
   }
 
   /* The two the visitor did not stop on go with it. The one that is left
      is the one the thumb was resting on in the very first picture — the
      same card, never moved, never resized. */
-  :is([data-stage='4'], [data-stage='5']) .chose__item--first,
-  :is([data-stage='4'], [data-stage='5']) .chose__item--last {
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__item--first,
+  :is([data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__item--last {
     opacity: 0;
   }
 
@@ -733,7 +756,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      a few per cent, which at this size is a couple of pixels of growth and
      a deeper shadow. Enough to keep them plainly in front, not enough to
      read as a zoom. */
-  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .chose__item {
     scale: 1.045;
     box-shadow: 0 26px 60px rgba(28, 34, 52, 0.3);
   }
@@ -758,7 +781,9 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='4'] .chose__turn[data-onward4],
     [data-stage='5'] .chose__opening span[data-line='five'],
     [data-stage='5'] .chose__more-item,
-    [data-stage='5'] .chose__turn[data-onward5] {
+    [data-stage='5'] .chose__turn[data-onward5],
+    [data-stage='6'] .chose__opening span[data-line='six'],
+    [data-stage='6'] .chose__sub {
       animation: none;
     }
   }
@@ -798,6 +823,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       2: ['[data-further]', 'three'],
       3: ['[data-onward3]', 'four'],
       4: ['[data-onward4]', 'five'],
+      5: ['[data-onward5]', 'six'],
     };
 
     const advance = (from) => {
@@ -822,9 +848,13 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
       // The control that was just used no longer exists, so focus would
       // fall to the document. Hand it to the one that replaced it, in the
-      // same place, rather than losing the visitor's position.
+      // same place, rather than losing the visitor's position. The last
+      // beat has no turn — what follows it is not built — so focus goes to
+      // the lines themselves, which is where the story now is.
       const next = root.querySelector(`[data-line="${group}"].chose__turn`);
+      const lines = root.querySelector('.chose__lines');
       if (next instanceof HTMLElement) next.focus();
+      else if (lines instanceof HTMLElement) lines.focus();
     };
 
     for (const [from, [selector]] of Object.entries(BEATS)) {
