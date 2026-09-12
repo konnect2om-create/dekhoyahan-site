@@ -6,7 +6,7 @@ import doorScene1 from '../../assets/security-door-scene1.webp';
 import doorScene2 from '../../assets/security-door-scene2.webp';
 import doorScene4 from '../../assets/security-door-scene4.webp';
 
-// The Security story's permanent Explore route. Four beats.
+// The Security story's permanent Explore route. Five beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -84,8 +84,26 @@ import doorScene4 from '../../assets/security-door-scene4.webp';
 // deliberately unremarkable — work clothes, a toolbag, reaching for the
 // handle.
 //
-// The turn on scene 4 is real and focusable and wired to nothing,
-// because scene 5 does not exist yet — the same convention
+// SCENE 5. The first callback to the opening, in the opening's own shape:
+//
+//     The lock didn't change.
+//     Who you trusted did.
+//     The same key still opens the same door.
+//     But now someone else can use it.
+//     Then he arrives →
+//
+// Deliberately not the opening sentence repeated — the same couplet
+// construction with different words, so the rhyme is felt before it is
+// recognised. Still no mechanism, still nothing named beyond trust.
+//
+// The picture stays the plumber and steps forward slightly. The move is
+// small on purpose: anything strong enough to actually re-centre on the
+// man would have to cut the door or a planter in half, and this beat
+// needs the place unchanged, because that is what it says. The sentence
+// moves the attention, not the camera.
+//
+// The turn on scene 5 is real and focusable and wired to nothing,
+// because scene 6 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -114,6 +132,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="two" hidden>You leave home.</span>
             <span data-line="three" hidden>Because you trust the lock.</span>
             <span data-line="four" hidden>A pipe starts leaking.</span>
+
+            <!-- The opening's couplet construction, reused deliberately:
+                 the shape of the sentence is the callback. -->
+            <span data-line="five" hidden>
+              <span>The lock didn't change.</span>
+              <span>Who you trusted did.</span>
+            </span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -138,6 +163,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>You won't be home when he arrives.</span>
             <span>So you leave him a key.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="five" hidden>
+            <span>The same key still opens the same door.</span>
+            <span>But now someone else can use it.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -157,6 +187,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
         <button type="button" class="door__turn" data-line="four" data-onward4 hidden>
           What changed? <span aria-hidden="true">&rarr;</span>
         </button>
+
+        <button type="button" class="door__turn" data-line="five" data-onward5 hidden>
+          Then he arrives <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
       <!-- Scene 1's composition, then the door both later beats share. -->
@@ -174,13 +208,14 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             data-line="one"
           />
 
-          <!-- One window for the last three beats. The door whole in
-               scene 2, moved in on in scene 3 by a transform on the same
-               element, then the same porch with someone at it in scene 4.
-               Both files are 1122x1402, so nothing shifts between them.
-               Served at full width because the close-up magnifies 3.3x
-               and a column-sized file would go soft under that. -->
-          <div class="door__frame" data-line="two three four" hidden>
+          <!-- One window for the last four beats. The door whole in
+               scene 2, moved in on in scene 3, then the same porch with
+               someone at it for scenes 4 and 5 — each a transform on the
+               element that is already there, never a swap. Both files are
+               1122x1402, so nothing shifts between them. Served at full
+               width because the close-up magnifies 3.3x and a
+               column-sized file would go soft under that. -->
+          <div class="door__frame" data-line="two three four five" hidden>
             <Image
               class="door__art door__plain"
               src={doorScene2}
@@ -204,7 +239,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               sizes="1122px"
               loading="lazy"
               decoding="async"
-              data-line="four"
+              data-line="four five"
               hidden
             />
           </div>
@@ -418,6 +453,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     transform: scale(3.3) translate(-28.075%, -36.734%);
   }
 
+  /* Scene 5 steps forward a little on the same picture — x 61-1061,
+     y 64-1314 of the 1122x1402 file. Only the outermost soft edges of
+     the two pots fall outside it; the plumber, the whole door and the
+     step are all still there, which is the point: nothing about the
+     place has changed. It is a small move on purpose. Anything strong
+     enough to actually re-centre on the man would have to cut the door
+     or a planter in half, and this beat needs both of them intact —
+     the sentence is what moves the attention, not the camera.
+
+         scale      1122 / 1000  = 1.122
+         translate  -61 / 1122   = -5.437%
+                    -64 / 1402   = -4.565%  */
+  [data-stage='5'] .door__plain {
+    transform: scale(1.122) translate(-5.437%, -4.565%);
+  }
+
   /* ---- The beat arriving ----
      The library's settle, unchanged: the replacing copy, the turn and the
      picture all come in on the same curve at the same pace, so the change
@@ -445,20 +496,30 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='4'] .door__opening span[data-line='four'],
   [data-stage='4'] .door__steps,
   [data-stage='4'] .door__turn[data-onward4],
-  [data-stage='4'] .door__plain[data-line='four'] {
+  [data-stage='4'] .door__plain[data-line='four five'],
+  [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(1),
+  [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
+  [data-stage='5'] .door__steps,
+  [data-stage='5'] .door__turn[data-onward5] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+  }
+
+  [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2) {
+    animation-delay: 90ms;
   }
 
   [data-stage='2'] .door__steps,
   [data-stage='3'] .door__steps,
-  [data-stage='4'] .door__steps {
-    animation-delay: 150ms;
+  [data-stage='4'] .door__steps,
+  [data-stage='5'] .door__steps {
+    animation-delay: 180ms;
   }
 
   [data-stage='2'] .door__turn[data-further],
   [data-stage='3'] .door__turn[data-onward3],
-  [data-stage='4'] .door__turn[data-onward4] {
-    animation-delay: 300ms;
+  [data-stage='4'] .door__turn[data-onward4],
+  [data-stage='5'] .door__turn[data-onward5] {
+    animation-delay: 330ms;
   }
 
   /* Cancelled one-for-one against the rules above — matched selector by
@@ -475,16 +536,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='4'] .door__opening span[data-line='four'],
     [data-stage='4'] .door__steps,
     [data-stage='4'] .door__turn[data-onward4],
-    [data-stage='4'] .door__plain[data-line='four'] {
+    [data-stage='4'] .door__plain[data-line='four five'],
+    [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(1),
+    [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
+    [data-stage='5'] .door__steps,
+    [data-stage='5'] .door__turn[data-onward5] {
       animation: none;
     }
 
     [data-stage='2'] .door__steps,
     [data-stage='3'] .door__steps,
     [data-stage='4'] .door__steps,
+    [data-stage='5'] .door__steps,
+    [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
     [data-stage='2'] .door__turn[data-further],
     [data-stage='3'] .door__turn[data-onward3],
-    [data-stage='4'] .door__turn[data-onward4] {
+    [data-stage='4'] .door__turn[data-onward4],
+    [data-stage='5'] .door__turn[data-onward5] {
       animation-delay: 0s;
     }
 
@@ -537,7 +605,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        headline's own font size, which is itself clamped against the
        viewport), so both beats share one column and the frame never
        moves. */
-    :is([data-stage='2'], [data-stage='3'], [data-stage='4']) .door__stage {
+    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
@@ -626,6 +694,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       1: ['[data-onward]', 'two'],
       2: ['[data-further]', 'three'],
       3: ['[data-onward3]', 'four'],
+      4: ['[data-onward4]', 'five'],
     };
 
     const advance = (from) => {
