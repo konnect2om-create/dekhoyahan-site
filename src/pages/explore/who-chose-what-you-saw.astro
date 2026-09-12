@@ -11,6 +11,18 @@ import item1Clean from '../../assets/who-chose-what-you-saw-item1-clean.webp';
 import item2Clean from '../../assets/who-chose-what-you-saw-item2-clean.webp';
 import item3Clean from '../../assets/who-chose-what-you-saw-item3-clean.webp';
 
+// "More like it", for the fifth beat: six of the feed slices that are the
+// same kind of thing as the one the visitor stopped on — food, a table, a
+// meal. They are the pictures the field is already made of, so what appears
+// is more of what was always there rather than anything new introduced to
+// make a point.
+import more1 from '../../assets/feed/07.webp';
+import more2 from '../../assets/feed/24.webp';
+import more3 from '../../assets/feed/20.webp';
+import more4 from '../../assets/feed/35.webp';
+import more5 from '../../assets/feed/16.webp';
+import more6 from '../../assets/feed/02.webp';
+
 // The permanent "Who chose what you saw?" Explore route. Two beats.
 //
 // SCENE 1 — the story is entered *after* the familiar action, not before
@@ -88,17 +100,16 @@ const ITEMS = [
   { src: item3, clean: item3Clean, alt: 'A cricketer playing a shot.', top: 60.85, height: 24.86 },
 ];
 
-// THE FOUR SIGNALS, for the fourth beat. Placed in the gutters either side
-// of the three cards — percentages of the scene box, alternating sides so
-// they read as things surfacing around the feed rather than as a column of
-// labels beside it. Nothing joins them to anything: no line, no arrow, no
-// bracket. There are four of them and three cards, and any connector would
-// promise a this-one-because-of-that mapping that does not exist.
-const SIGNALS = [
-  { word: 'Watched', side: 'left', edge: 1, top: 19 },
-  { word: 'Skipped', side: 'right', edge: 1, top: 35 },
-  { word: 'Searched', side: 'left', edge: 1, top: 55 },
-  { word: 'Stayed', side: 'right', edge: 1, top: 71 },
+// Where the similar ones arrive: in the gutters either side of the card
+// that stayed, three a side, never overlapping it. Percentages of the scene
+// box, so they hold at every width.
+const MORE = [
+  { src: more1, alt: '', side: 'left', edge: 0.5, top: 5 },
+  { src: more2, alt: '', side: 'right', edge: 0.5, top: 13 },
+  { src: more3, alt: '', side: 'left', edge: 0.5, top: 32 },
+  { src: more4, alt: '', side: 'right', edge: 0.5, top: 40 },
+  { src: more5, alt: '', side: 'left', edge: 0.5, top: 59 },
+  { src: more6, alt: '', side: 'right', edge: 0.5, top: 67 },
 ];
 
 // Two edges behind each item, stepped back far enough to be seen and no
@@ -174,25 +185,16 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
             <span data-line="one">You chose this.</span>
             <span data-line="two" hidden>You picked one.</span>
             <span data-line="three" hidden>From all of this.</span>
-            <span data-line="four" hidden>The app is guessing.</span>
+            <span data-line="four" hidden>Yesterday, you stopped on this.</span>
+            <span data-line="five" hidden>Today, you see more like it.</span>
           </h1>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
           <p class="chose__sub" data-line="three" hidden>Most of it never made it to your screen.</p>
 
-          <p class="chose__sub" data-line="four" hidden>It watches what you do.</p>
-
-          <!-- The four signals are shown in the scene, not here. This is the
-               same four words in the place a screen reader should meet them:
-               between the line they belong to and the way onward, rather
-               than after the turn, which is where the scene's own copy falls
-               in reading order. The visible ones are hidden from assistive
-               technology so they are announced once, not twice. -->
-          <ul class="chose__signals-sr" data-line="four" hidden>
-            {SIGNALS.map((s) => <li>{s.word}</li>)}
-          </ul>
-
+          <!-- The same turn treatment every story in the library uses:
+               serif, the saffron circle, the quiet underline on hover. -->
           <button type="button" class="chose__turn" data-line="one" data-onward>
             Did you? <span aria-hidden="true">&rarr;</span>
           </button>
@@ -206,8 +208,13 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
           </button>
 
           <button type="button" class="chose__turn" data-line="four" data-onward4 hidden>
-            And that changes what comes next. <span aria-hidden="true">&rarr;</span>
+            And today? <span aria-hidden="true">&rarr;</span>
           </button>
+
+          <button type="button" class="chose__turn" data-line="five" data-onward5 hidden>
+            You never asked for it. <span aria-hidden="true">&rarr;</span>
+          </button>
+
         </div>
       </div>
 
@@ -264,10 +271,16 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
           </div>
 
           <div class="chose__items" aria-hidden="true">
-            {ITEMS.map((item) => (
+            {ITEMS.map((item, i) => (
               <>
                 <Image
-                  class:list={["chose__item", "chose__item--held", item.clean && "chose__item--swapped"]}
+                  class:list={[
+                    'chose__item',
+                    'chose__item--held',
+                    item.clean && 'chose__item--swapped',
+                    i === 0 && 'chose__item--first',
+                    i === 2 && 'chose__item--last',
+                  ]}
                   src={item.src}
                   alt={item.alt}
                   widths={[280, 380, 534]}
@@ -279,7 +292,12 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
                 {item.clean && (
                   <Image
-                    class="chose__item chose__item--clean"
+                    class:list={[
+                      'chose__item',
+                      'chose__item--clean',
+                      i === 0 && 'chose__item--first',
+                      i === 2 && 'chose__item--last',
+                    ]}
                     src={item.clean}
                     alt=""
                     widths={[280, 380, 534]}
@@ -293,16 +311,22 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
             ))}
           </div>
 
-          <!-- Quiet words in the space either side of the three, arriving
-               one at a time. Hidden from assistive technology because the
-               list in the copy column above says the same four things in a
-               better reading position. -->
-          <div class="chose__signals" aria-hidden="true">
-            {SIGNALS.map((signal) => (
-              <span
-                class="chose__signal"
-                style={`top:${signal.top}%;${signal.side}:${signal.edge}%`}
-              >{signal.word}</span>
+          <!-- The similar ones. Empty until the fifth beat. Decorative:
+               the sentence beside them is what says what they are, and
+               naming six plates of food one by one would only make a
+               screen reader count them. -->
+          <div class="chose__more" aria-hidden="true">
+            {MORE.map((m) => (
+              <Image
+                class="chose__more-item"
+                src={m.src}
+                alt=""
+                widths={[180, 264]}
+                sizes="(max-width: 979px) 22vw, 150px"
+                loading="eager"
+                decoding="async"
+                style={`top:${m.top}%;${m.side}:${m.edge}%`}
+              />
             ))}
           </div>
         </div>
@@ -441,43 +465,30 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 900ms;
   }
 
-  /* THE SIGNALS, ONE AT A TIME.
-     --------------------------
-     The line lands, then what it does, then the four — each far enough
-     behind the last to be noticed on its own rather than as a group that
-     appeared. The way onward waits until the last has settled, so it never
-     invites the visitor past something they have not seen. */
+  /* Beats four and five, on the pattern the earlier ones use: the line
+     lands, then the way onward under it. Beat five holds its turn back
+     until the similar ones have finished arriving. */
   [data-stage='4'] .chose__opening span[data-line='four'],
-  [data-stage='4'] .chose__sub,
-  [data-stage='4'] .chose__signal,
-  [data-stage='4'] .chose__turn[data-onward4] {
+  [data-stage='4'] .chose__turn[data-onward4],
+  [data-stage='5'] .chose__opening span[data-line='five'],
+  [data-stage='5'] .chose__more-item,
+  [data-stage='5'] .chose__turn[data-onward5] {
     animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
-  [data-stage='4'] .chose__sub {
-    animation-delay: 200ms;
-  }
-
-  [data-stage='4'] .chose__signal:nth-child(1) { animation-delay: 700ms; }
-  [data-stage='4'] .chose__signal:nth-child(2) { animation-delay: 1050ms; }
-  [data-stage='4'] .chose__signal:nth-child(3) { animation-delay: 1400ms; }
-  [data-stage='4'] .chose__signal:nth-child(4) { animation-delay: 1750ms; }
-
   [data-stage='4'] .chose__turn[data-onward4] {
-    animation-delay: 2200ms;
+    animation-delay: 420ms;
   }
 
-  /* The four words the scene shows, repeated here for assistive technology
-     in the right reading position. Never visible. */
-  .chose__signals-sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  [data-stage='5'] .chose__more-item:nth-child(1) { animation-delay: 300ms; }
+  [data-stage='5'] .chose__more-item:nth-child(2) { animation-delay: 520ms; }
+  [data-stage='5'] .chose__more-item:nth-child(3) { animation-delay: 740ms; }
+  [data-stage='5'] .chose__more-item:nth-child(4) { animation-delay: 960ms; }
+  [data-stage='5'] .chose__more-item:nth-child(5) { animation-delay: 1180ms; }
+  [data-stage='5'] .chose__more-item:nth-child(6) { animation-delay: 1400ms; }
+
+  [data-stage='5'] .chose__turn[data-onward5] {
+    animation-delay: 1800ms;
   }
 
   /* ====================================================
@@ -538,7 +549,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      same two subjects photographed without the thumb, dropped in as
      who-chose-what-you-saw-item2/3.webp. This rule and everything around
      it is already correct. */
-  :is([data-stage='3'], [data-stage='4']) .chose__art {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__art {
     opacity: 0;
   }
 
@@ -564,7 +575,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Full opacity, and lifted off the field by a shadow rather than by
      moving: they are the one thing on screen that does not shift. */
-  :is([data-stage='2'], [data-stage='3'], [data-stage='4']) .chose__item {
+  :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item {
     opacity: 1;
     box-shadow: 0 18px 44px rgba(28, 34, 52, 0.22);
   }
@@ -600,8 +611,35 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0;
   }
 
-  :is([data-stage='3'], [data-stage='4']) .chose__item--swapped {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item--swapped {
     opacity: 0;
+  }
+
+  /* ---- The similar ones, fifth beat ---- */
+
+  .chose__more {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Smaller than the card that stayed, and set in the gutters either side
+     of it, so the one the visitor stopped on is still plainly the subject
+     and these are plainly the feed filling in around it. Same rounding and
+     a lighter version of the same shadow, because they are the same kind
+     of thing — not a different class of object. */
+  .chose__more-item {
+    position: absolute;
+    display: block;
+    width: 26%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(28, 34, 52, 0.16);
+    opacity: 0;
+  }
+
+  [data-stage='5'] .chose__more-item {
+    opacity: 1;
   }
 
   /* ---- A hint of what is behind them ---- */
@@ -632,7 +670,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
   /* Spent: the third beat shows the actual thing these were standing in
      for, so the stand-in goes. */
-  :is([data-stage='3'], [data-stage='4']) .chose__edge {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__edge {
     opacity: 0;
   }
 
@@ -667,47 +705,21 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     opacity: 0.46;
   }
 
-  /* ---- The four signals ---- */
-
-  .chose__signals {
-    position: absolute;
-    inset: 0;
-    /* The words are something the scene says, not something to click. */
-    pointer-events: none;
-  }
-
-  /* Set in the gutters beside the three, in the site's own supporting
-     colour at its supporting size. The paper-coloured glow is what lifts
-     them off the field without giving them a box, a pill or a rule — the
-     field is pale enough at this beat that a soft halo is all they need. */
-  .chose__signal {
-    position: absolute;
-    display: block;
-    max-width: 27%;
-    color: var(--ink-soft);
-    font-size: clamp(12px, 1.05vw, 14.5px);
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    line-height: 1.2;
-    white-space: nowrap;
-    text-shadow:
-      0 0 7px var(--paper),
-      0 0 14px var(--paper),
-      0 0 22px var(--paper);
+  /* Gone from the fourth beat. What the scene is about stops being the
+     size of the set and becomes one card and what happened around it, and
+     a wall of other pictures behind that would only be scenery. */
+  :is([data-stage='4'], [data-stage='5']) .chose__field {
     opacity: 0;
   }
 
-  [data-stage='4'] .chose__signal {
-    opacity: 1;
+  /* The two the visitor did not stop on go with it. The one that is left
+     is the one the thumb was resting on in the very first picture — the
+     same card, never moved, never resized. */
+  :is([data-stage='4'], [data-stage='5']) .chose__item--first,
+  :is([data-stage='4'], [data-stage='5']) .chose__item--last {
+    opacity: 0;
   }
 
-  /* Quieter again once the signals start arriving. The field has already
-     made its point — it is no longer the thing being said, it is the thing
-     being said *about* — so it steps back and leaves the three cards and
-     the reasons beside them as the only things with any weight. */
-  [data-stage='4'] .chose__field {
-    opacity: 0.26;
-  }
 
   .chose__tile {
     aspect-ratio: 3 / 2;
@@ -721,7 +733,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      a few per cent, which at this size is a couple of pixels of growth and
      a deeper shadow. Enough to keep them plainly in front, not enough to
      read as a zoom. */
-  :is([data-stage='3'], [data-stage='4']) .chose__item {
+  :is([data-stage='3'], [data-stage='4'], [data-stage='5']) .chose__item {
     scale: 1.045;
     box-shadow: 0 26px 60px rgba(28, 34, 52, 0.3);
   }
@@ -743,9 +755,10 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='3'] .chose__sub,
     [data-stage='3'] .chose__turn[data-onward3],
     [data-stage='4'] .chose__opening span[data-line='four'],
-    [data-stage='4'] .chose__sub,
-    [data-stage='4'] .chose__signal,
-    [data-stage='4'] .chose__turn[data-onward4] {
+    [data-stage='4'] .chose__turn[data-onward4],
+    [data-stage='5'] .chose__opening span[data-line='five'],
+    [data-stage='5'] .chose__more-item,
+    [data-stage='5'] .chose__turn[data-onward5] {
       animation: none;
     }
   }
@@ -784,6 +797,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       1: ['[data-onward]', 'two'],
       2: ['[data-further]', 'three'],
       3: ['[data-onward3]', 'four'],
+      4: ['[data-onward4]', 'five'],
     };
 
     const advance = (from) => {
