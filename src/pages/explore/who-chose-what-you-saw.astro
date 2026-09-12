@@ -190,42 +190,33 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
             <span data-line="four" hidden>Yesterday, you stopped on this.</span>
             <span data-line="five" hidden>Today, you see more like it.</span>
             <span data-line="six" hidden>You didn't have to tap anything.</span>
-            <span data-line="seven" hidden>To change what showed up next.</span>
+
+            <span class="chose__pair" data-line="seven" hidden>
+              <span>To say:</span>
+              <span>more like this.</span>
+            </span>
+
+            <!-- The reframe. Both lines carry the story's own weight: the
+                 first is what the visitor knows they did not do, the second
+                 is what happened anyway. Making the second one small
+                 supporting copy would hand the payoff to a caption. -->
+            <span class="chose__pair" data-line="eight" hidden>
+              <span>You didn't tap.</span>
+              <span data-payoff>But the feed still heard you.</span>
+            </span>
           </h1>
-
-          <!-- The ending. Both lines carry the same weight: the first is
-               what the visitor already believed walking in, the second is
-               what the whole story has been for. Making the second one
-               small supporting copy would hand the reframe to a caption. -->
-          <p class="chose__close" data-line="eight" hidden>
-            <span>You don't only choose with taps.</span>
-            <span>You also choose with time.</span>
-          </p>
-
-          <!-- The one line that sends the visitor back out to their own
-               feed rather than summarising what they just read. -->
-          <p class="chose__sub chose__sub--close" data-line="eight" hidden>
-            Next time you pause, notice what comes next.
-          </p>
-
-          <!-- The end of the story: the way on is another story, so these
-               are real links rather than another beat — the same treatment
-               where-is-the-5g, who-said-yes and did-your-face-leave-the-phone
-               all close on, which is this story's own turn with its
-               underline removed. -->
-          <div class="chose__end" data-line="eight" hidden>
-            <a class="chose__turn chose__turn--link" href="/explore/">
-              See another thing differently <span aria-hidden="true">&rarr;</span>
-            </a>
-
-            <a class="chose__back" href="/explore/">Back to Explore</a>
-          </div>
 
           <p class="chose__sub" data-line="two" hidden>But these three were picked for you.</p>
 
           <p class="chose__sub" data-line="three" hidden>Most of it never made it to your screen.</p>
 
           <p class="chose__sub" data-line="six" hidden>Pausing was enough.</p>
+
+          <p class="chose__sub chose__sub--pause" data-line="eight" hidden>Sometimes, a pause is a choice.</p>
+
+          <p class="chose__sub chose__sub--notice" data-line="eight" hidden>
+            Next time you stop scrolling, notice what shows up after.
+          </p>
 
 
           <!-- The same turn treatment every story in the library uses:
@@ -261,12 +252,23 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
           </button>
 
           <!-- PROVISIONAL WORDING, like the one above it: the way from the
-               seventh beat into the ending was not given. It returns to the
-               question the Explore card asked in the first place, which is
-               what the ending then answers by reframing it. -->
+               seventh beat into the reframe was not given. It takes the
+               line above it at its word — "to say: more like this" — and
+               asks the question the reframe then answers. -->
           <button type="button" class="chose__turn" data-line="seven" data-onward7 hidden>
-            So who chose? <span aria-hidden="true">&rarr;</span>
+            Did you say it? <span aria-hidden="true">&rarr;</span>
           </button>
+
+          <!-- The end of the story: the way on is another story, so this is
+               a real link rather than another beat — the same treatment
+               where-is-the-5g, who-said-yes and did-your-face-leave-the-phone
+               all close on, which is this story's own turn with its
+               underline removed. One link, as they each have. -->
+          <div class="chose__end" data-line="eight" hidden>
+            <a class="chose__turn chose__turn--link" href="/explore/">
+              Keep exploring <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
 
         </div>
       </div>
@@ -567,104 +569,75 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 700ms;
   }
 
-  /* The seventh beat is one line and the way onward. Nothing is added
-     under it: the picture is the explanation at this point — the thing the
-     visitor paused on, and the things that came because of it — and a
-     second sentence would only describe what is already on screen. */
-  [data-stage='7'] .chose__opening span[data-line='seven'],
+  /* The seventh beat answers the sixth in two short lines, then the way
+     onward. Nothing is added under it: the picture is the explanation at
+     this point — the thing the visitor paused on, and the things that came
+     because of it. */
+  [data-stage='7'] .chose__opening span[data-line='seven'] > span:nth-child(1),
+  [data-stage='7'] .chose__opening span[data-line='seven'] > span:nth-child(2),
   [data-stage='7'] .chose__turn[data-onward7] {
     animation: chose-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
-  [data-stage='7'] .chose__turn[data-onward7] {
-    animation-delay: 520ms;
+  [data-stage='7'] .chose__opening span[data-line='seven'] > span:nth-child(2) {
+    animation-delay: 340ms;
   }
 
-  /* THE ENDING.
+  [data-stage='7'] .chose__turn[data-onward7] {
+    animation-delay: 760ms;
+  }
+
+  /* THE REFRAME.
      ----------
-     Two lines, the second a beat behind the first, because the turn is in
-     the gap between them: the visitor reads back what they believed, and
-     then what was actually happening. Slower than the other reveals — 620ms
-     rather than 320 — so the second line arrives as a realisation rather
-     than as the rest of a sentence. */
-  [data-stage='8'] .chose__close span:nth-child(1),
-  [data-stage='8'] .chose__close span:nth-child(2) {
+     The turn is in the gap between the two lines: what the visitor knows
+     they did not do, then what happened anyway. 620ms, slower than any
+     other reveal in the story, so the second line arrives as a realisation
+     rather than as the rest of a sentence. What follows it — the thought,
+     the thing to try, the way on — comes after that has landed. */
+  [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(1),
+  [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(2),
+  [data-stage='8'] .chose__sub--pause,
+  [data-stage='8'] .chose__sub--notice,
+  [data-stage='8'] .chose__end {
     animation: chose-in 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
-  [data-stage='8'] .chose__close span:nth-child(2) {
+  [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(2) {
     animation-delay: 620ms;
   }
 
-  [data-stage='8'] .chose__sub--close,
-  [data-stage='8'] .chose__end {
-    animation: chose-in 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
-  }
-
-  [data-stage='8'] .chose__sub--close {
+  [data-stage='8'] .chose__sub--pause {
     animation-delay: 1320ms;
   }
 
-  [data-stage='8'] .chose__end {
-    animation-delay: 1720ms;
+  [data-stage='8'] .chose__sub--notice {
+    animation-delay: 1680ms;
   }
 
-  /* The two ways out, stacked. The first is the story's own turn with its
-     underline removed, exactly as the other stories close; the second is
-     plain navigation and is set well below it so it never competes. */
+  [data-stage='8'] .chose__end {
+    animation-delay: 2060ms;
+  }
+
+  /* A two-line heading rather than a heading and a caption: both lines are
+     the story's own serif at its own size, the second a half-step quieter
+     in the site's softer ink, the way a thought lands after the thing that
+     prompted it. */
+  .chose__pair span {
+    display: block;
+  }
+
+  .chose__pair span:nth-child(2) {
+    color: var(--ink-soft);
+  }
+
+  /* The way on, on the treatment every other story closes with. */
   .chose__end {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: clamp(14px, 2vh, 20px);
     margin-top: clamp(22px, 3.2vh, 32px);
   }
 
   .chose__turn--link {
     margin-top: 0;
     text-decoration: none;
-  }
-
-  .chose__back {
-    color: var(--muted);
-    font-size: 14.5px;
-    font-weight: 600;
-    letter-spacing: -0.003em;
-    text-decoration: none;
-  }
-
-  .chose__back:hover {
-    color: var(--cobalt);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .chose__back:focus-visible {
-    outline: 2px solid var(--cobalt);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-
-  /* The closing couplet, at the size the story's own lines carry. The
-     second sits in the site's softer ink rather than a smaller size: the
-     same voice, a half-step quieter, the way a thought lands after the
-     thing that prompted it. */
-  .chose__close {
-    margin: 0;
-    color: var(--ink);
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: clamp(27px, 3.4vw, 40px);
-    line-height: 1.18;
-    letter-spacing: -0.028em;
-  }
-
-  .chose__close span {
-    display: block;
-  }
-
-  .chose__close span:nth-child(2) {
-    color: var(--ink-soft);
   }
 
   /* ====================================================
@@ -938,15 +911,17 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='6'] .chose__opening span[data-line='six'],
     [data-stage='6'] .chose__sub,
     [data-stage='6'] .chose__turn[data-onward6],
-    [data-stage='7'] .chose__opening span[data-line='seven'],
+    /* Matched selector for selector to the rules they switch off — the
+       closing lines animate through span:nth-child(), and cancelling those
+       with a plainer selector loses on specificity and leaves the animation
+       running with motion reduced. */
+    [data-stage='7'] .chose__opening span[data-line='seven'] > span:nth-child(1),
+    [data-stage='7'] .chose__opening span[data-line='seven'] > span:nth-child(2),
     [data-stage='7'] .chose__turn[data-onward7],
-    /* Matched to the specificity of the rules they switch off: the
-       closing lines are animated through span:nth-child(), so cancelling
-       them with a plain `span` loses on specificity and the animation
-       keeps running with motion reduced. */
-    [data-stage='8'] .chose__close span:nth-child(1),
-    [data-stage='8'] .chose__close span:nth-child(2),
-    [data-stage='8'] .chose__sub--close,
+    [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(1),
+    [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(2),
+    [data-stage='8'] .chose__sub--pause,
+    [data-stage='8'] .chose__sub--notice,
     [data-stage='8'] .chose__end {
       animation: none;
     }
@@ -1029,7 +1004,11 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       // arriving; with motion reduced there is no animation to wait for
       // and the state is already whole, so it is set straight away.
       if (group === 'eight') {
-        const closing = root.querySelector('.chose__close span:last-child');
+        // The payoff line itself — "But the feed still heard you." — not
+        // the last thing on screen. What follows it is a thought, a thing
+        // to try and a way out; the story is delivered the moment that line
+        // has finished arriving.
+        const closing = root.querySelector('[data-payoff]');
         const done = () => { root.dataset.complete = '1'; };
 
         // Waits on the line's own animation rather than on an animationend
@@ -1043,10 +1022,10 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
         // already whole.
         // The animation object does not exist on the first frame after the
         // element stops being display:none, so one frame is not enough to
-        // find it -- checking there and giving up is what made this fire
-        // while the line was still arriving. Two frames, then the line's
-        // own timing read back off it as a last resort, so the wait is
-        // never a number written twice.
+        // find it -- checking there and giving up fires this while the line
+        // is still arriving. Two frames, then the line's own timing read
+        // back off it as a last resort, so the wait is never a number
+        // written down twice.
         const settle = () => {
           const running = closing.getAnimations ? closing.getAnimations() : [];
           if (!running.length) return false;
