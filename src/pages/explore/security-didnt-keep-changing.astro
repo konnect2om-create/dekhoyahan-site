@@ -72,9 +72,9 @@ const story = storyBySlug('security-didnt-keep-changing')!;
           <Image
             class="door__art"
             src={doorScene1}
-            alt="A front door, with someone knocking at it."
-            widths={[340, 430, 560, 760]}
-            sizes="(max-width: 979px) 72vw, 430px"
+            alt="A front door, with the lock, the people, the phone, the cloud, the building, the camera and a chain of smaller suppliers connected to it all around."
+            widths={[560, 760, 1000, 1336, 1672]}
+            sizes="(max-width: 979px) 92vw, 52vw"
             loading="eager"
             fetchpriority="high"
             decoding="async"
@@ -209,68 +209,55 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     display: block;
   }
 
-  /* Locked to the crop's own frame (760x850) — no letterboxing and no
-     cropping decision left to CSS, the way the other stories size their
-     scene box to their artwork's ratio.
-
-     Sized from the viewport rather than from the column, so the
-     statement, the line under it and the turn are all above the fold on a
-     normal desktop height; and pulled to the left edge of its own column,
-     so it sits beside the sentence instead of across a corridor from it. */
+  /* No frame of its own. The asset is one composition — the lock, the two
+     people, the door, the phone, the cloud, the building, the camera and
+     the chain of smaller suppliers — and all of it is part of the
+     question the scene asks, so nothing here crops it, scales it to fill
+     a box, or clips it. The box is whatever width the column gives it and
+     whatever height the picture's own ratio makes of that. */
   .door__scene {
     position: relative;
-    height: min(58vh, 481px);
-    width: auto;
-    max-width: 100%;
-    aspect-ratio: 760 / 850;
-    margin-inline: 0 auto;
+    width: 100%;
   }
 
   .door__art {
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain;
     /* The asset's own transparency is kept — no card, no panel, no
-       backdrop. The door sits on the page's cream the way the other
-       stories' artwork does.
-
-       The quieting is baked into the file's alpha rather than applied
-       here: the door and its porch are at full strength, the circles
-       around it ease back, and the three edges the crop cuts through
-       dissolve so the halved circles fade into the page instead of
-       ending on a straight line. Doing it in the picture means what is
-       on screen is what is in the file — no second treatment on top of
-       the artwork, and nothing to fail if masking is unsupported. */
+       backdrop, and no treatment of any kind over the artwork. It sits on
+       the page's cream the way the other stories' artwork does, including
+       the transparent margin it carries on its own left side. */
   }
 
   @media (min-width: 980px) {
-    /* Both columns are sized by what is in them and the pair is centred,
-       so the sentence ends where the gap starts. Sizing them as
-       fractions instead left the copy column wider than its own text and
-       opened a corridor between the statement and the door — the eye had
-       to cross empty page to get from one to the other. */
+    /* Roughly 38 / 52 between the sentence and the picture, which is what
+       it takes for the whole composition to be legible at this width —
+       the supplier nodes on its right are the smallest things in it.
+
+       The gap is deliberately tight, because the asset already brings a
+       wide transparent margin on its left edge: that margin is the space
+       between the two, and adding a real gutter on top of it would put
+       the corridor back that this layout exists to avoid. */
     .door__stage {
-      grid-template-columns: auto auto;
-      justify-content: center;
-      gap: clamp(28px, 3.4vw, 52px);
+      grid-template-columns: minmax(0, 38fr) minmax(0, 52fr);
+      gap: clamp(16px, 2vw, 28px);
+    }
+
+    /* The column sets the measure here, so the sentence reaches the edge
+       of its own half instead of stopping short inside it. */
+    .door__opening {
+      max-width: none;
     }
   }
 
   /* Stacked, copy first, the picture immediately under the turn — the
      same order and the same closeness the other stories keep below their
-     stacking point. Height goes back to the artwork's own ratio here: a
-     viewport-height cap only has a job in the two-column layout. */
+     stacking point. Full column width, its own ratio, nothing clipped. */
   @media (max-width: 979px) {
     .door__stage {
-      gap: clamp(20px, 3vh, 28px);
-    }
-
-    .door__scene {
-      height: auto;
-      width: 100%;
-      max-width: min(72vw, 340px);
-      margin-inline: 0 auto;
+      gap: clamp(16px, 2.4vh, 24px);
     }
   }
 </style>
