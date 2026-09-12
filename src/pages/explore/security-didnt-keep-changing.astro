@@ -5,8 +5,9 @@ import { storyBySlug, storyTitle } from '../../data/stories';
 import doorScene1 from '../../assets/security-door-scene1.webp';
 import doorScene2 from '../../assets/security-door-scene2.webp';
 import doorScene4 from '../../assets/security-door-scene4.webp';
+import doorScene6 from '../../assets/security-door-scene6.webp';
 
-// The Security story's permanent Explore route. Five beats.
+// The Security story's permanent Explore route. Six beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -102,8 +103,33 @@ import doorScene4 from '../../assets/security-door-scene4.webp';
 // needs the place unchanged, because that is what it says. The sentence
 // moves the attention, not the camera.
 //
-// The turn on scene 5 is real and focusable and wired to nothing,
-// because scene 6 does not exist yet — the same convention
+// SCENE 6. Two people are on the step:
+//
+//     He arrives.
+//     But he isn't alone.
+//     He brought someone to help.
+//     You've never met him.
+//     And yet he's about to enter your home. →
+//
+// Nothing is explained and nothing is named. The second man is in the
+// same uniform, carrying the same kind of bag, doing nothing unusual —
+// the discomfort has to come from the arithmetic, not from how he looks.
+//
+// The picture is the third supplied asset, the same porch at the same
+// 1122x1402 frame with a second person on it, shown whole and unpushed:
+// scene 5 had stepped in slightly, and coming back out is what makes room
+// for somebody who was not expected.
+//
+// NOTE ON THAT FILE. It arrived as a PNG with no alpha — a white matte
+// where the other two are cut out. Left as supplied it would render as a
+// white rectangle on the page's cream, so the matte was lifted before
+// conversion: a flood fill inward from the border over connected
+// near-white pixels, with a one-pixel feather. Border-connected only, so
+// the lit glass and the lamp are untouched, and no pixel of the subject
+// was altered. Composition, colour and framing are exactly as delivered.
+//
+// The turn on scene 6 is real and focusable and wired to nothing,
+// because scene 7 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -139,6 +165,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               <span>The lock didn't change.</span>
               <span>Who you trusted did.</span>
             </span>
+
+            <span data-line="six" hidden>He arrives.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -168,6 +196,12 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>The same key still opens the same door.</span>
             <span>But now someone else can use it.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="six" hidden>
+            <span>But he isn't alone.</span>
+            <span>He brought someone to help.</span>
+            <span>You've never met him.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -191,6 +225,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
         <button type="button" class="door__turn" data-line="five" data-onward5 hidden>
           Then he arrives <span aria-hidden="true">&rarr;</span>
         </button>
+
+        <button type="button" class="door__turn" data-line="six" data-onward6 hidden>
+          And yet he's about to enter your home. <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
 
       <!-- Scene 1's composition, then the door both later beats share. -->
@@ -208,14 +246,14 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             data-line="one"
           />
 
-          <!-- One window for the last four beats. The door whole in
-               scene 2, moved in on in scene 3, then the same porch with
-               someone at it for scenes 4 and 5 — each a transform on the
-               element that is already there, never a swap. Both files are
-               1122x1402, so nothing shifts between them. Served at full
-               width because the close-up magnifies 3.3x and a
-               column-sized file would go soft under that. -->
-          <div class="door__frame" data-line="two three four five" hidden>
+          <!-- One window for the last five beats. The door whole in
+               scene 2, moved in on in scene 3, the same porch with
+               someone at it for scenes 4 and 5, then two people on it in
+               scene 6. All three files are 1122x1402, so the place never
+               shifts between beats. Served at full width because the
+               close-up magnifies 3.3x and a column-sized file would go
+               soft under that. -->
+          <div class="door__frame" data-line="two three four five six" hidden>
             <Image
               class="door__art door__plain"
               src={doorScene2}
@@ -240,6 +278,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
               loading="lazy"
               decoding="async"
               data-line="four five"
+              hidden
+            />
+
+            <!-- The same porch again, same 1122x1402 frame, with a second
+                 person on it. Shown whole and unpushed: scene 5 had
+                 stepped in a little, and coming back out is what makes
+                 room for somebody who was not expected. -->
+            <Image
+              class="door__art door__plain"
+              src={doorScene6}
+              alt="Two workers in the same uniform standing at the front door, one reaching for the handle, the other waiting behind him with a toolbag."
+              widths={[1122]}
+              sizes="1122px"
+              loading="lazy"
+              decoding="async"
+              data-line="six"
               hidden
             />
           </div>
@@ -500,7 +554,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(1),
   [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
   [data-stage='5'] .door__steps,
-  [data-stage='5'] .door__turn[data-onward5] {
+  [data-stage='5'] .door__turn[data-onward5],
+  [data-stage='6'] .door__opening span[data-line='six'],
+  [data-stage='6'] .door__steps,
+  [data-stage='6'] .door__turn[data-onward6],
+  [data-stage='6'] .door__plain[data-line='six'] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -511,14 +569,16 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='2'] .door__steps,
   [data-stage='3'] .door__steps,
   [data-stage='4'] .door__steps,
-  [data-stage='5'] .door__steps {
+  [data-stage='5'] .door__steps,
+  [data-stage='6'] .door__steps {
     animation-delay: 180ms;
   }
 
   [data-stage='2'] .door__turn[data-further],
   [data-stage='3'] .door__turn[data-onward3],
   [data-stage='4'] .door__turn[data-onward4],
-  [data-stage='5'] .door__turn[data-onward5] {
+  [data-stage='5'] .door__turn[data-onward5],
+  [data-stage='6'] .door__turn[data-onward6] {
     animation-delay: 330ms;
   }
 
@@ -540,7 +600,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(1),
     [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
     [data-stage='5'] .door__steps,
-    [data-stage='5'] .door__turn[data-onward5] {
+    [data-stage='5'] .door__turn[data-onward5],
+    [data-stage='6'] .door__opening span[data-line='six'],
+    [data-stage='6'] .door__steps,
+    [data-stage='6'] .door__turn[data-onward6],
+    [data-stage='6'] .door__plain[data-line='six'] {
       animation: none;
     }
 
@@ -548,11 +612,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='3'] .door__steps,
     [data-stage='4'] .door__steps,
     [data-stage='5'] .door__steps,
+    [data-stage='6'] .door__steps,
     [data-stage='5'] .door__opening span[data-line='five'] > span:nth-child(2),
     [data-stage='2'] .door__turn[data-further],
     [data-stage='3'] .door__turn[data-onward3],
     [data-stage='4'] .door__turn[data-onward4],
-    [data-stage='5'] .door__turn[data-onward5] {
+    [data-stage='5'] .door__turn[data-onward5],
+    [data-stage='6'] .door__turn[data-onward6] {
       animation-delay: 0s;
     }
 
@@ -605,7 +671,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        headline's own font size, which is itself clamped against the
        viewport), so both beats share one column and the frame never
        moves. */
-    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5']) .door__stage {
+    :is([data-stage='2'], [data-stage='3'], [data-stage='4'], [data-stage='5'], [data-stage='6']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(52.8vh, 496px);
       justify-content: start;
     }
@@ -695,6 +761,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       2: ['[data-further]', 'three'],
       3: ['[data-onward3]', 'four'],
       4: ['[data-onward4]', 'five'],
+      5: ['[data-onward5]', 'six'],
     };
 
     const advance = (from) => {
