@@ -1,58 +1,314 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { storyBySlug, storyTitle } from '../../data/stories';
+import doorScene1 from '../../assets/security-door-scene1.webp';
 
-// The Security story's permanent Explore route — a shell, deliberately.
+// The Security story's permanent Explore route. Scene 1 only.
 //
-// It exists so the story's Explore card links to a real address instead of
-// a 404. The story itself is not built yet, so this page renders nothing
-// but the site shell and the one sentence its card already makes: the
-// headline, and the line under it.
+// The opening construction is the one looks-real-is-it established and
+// who-chose-what-you-saw reuses: one grid, the copy on the left and the
+// picture on the right, centred against each other, stacking copy-first
+// below 980px. Same shell, same spacing scale, same serif sizes, same
+// turn treatment — nothing global is touched here.
 //
-// What it does NOT do, on purpose, until the story exists:
-//   - emit a LearningResource. Structured data describes content a visitor
-//     can read, and there is none here yet.
-//   - emit a share card. There is nothing to share.
-//   - appear in the sitemap (see NOT_INDEXABLE in astro.config.mjs).
-// Title and description still come from this story's single entry in
-// src/data/stories.ts, the same source every other story page reads, so
-// there is no second copy of the copy to keep in step.
+// SCENE 1. The card has already said the sentence; the page says it again
+// as its own opening, because the second half is the part that has to
+// land slowly:
+//
+//     Security didn't keep changing.
+//     What you trusted did.
+//     And you probably didn't notice when it happened.
+//     Start with your front door →
+//
+// Nothing is explained and nothing is named. The picture is a front door
+// someone is knocking at. The circles around it are cropped and quieted
+// on purpose: the visitor should be asking why this ordinary door
+// matters, not reading a diagram.
+//
+// The turn is real and focusable and wired to nothing, because scene 2
+// does not exist yet — the same convention where-is-the-5g.astro and
+// who-chose-what-you-saw.astro use for their unbuilt scenes.
+//
+// Still deliberately absent until the story is finished: a
+// LearningResource, a share card, and a sitemap entry (see NOT_INDEXABLE
+// in astro.config.mjs). The manifest's question, shortAnswer and
+// keyTakeaway are still marked provisional there, and are still rendered
+// nowhere.
 const story = storyBySlug('security-didnt-keep-changing')!;
 ---
 
 <BaseLayout title={storyTitle(story)} description={story.description}>
-  <div class="security-shell">
-    <h1>{story.cardTitle}</h1>
-    <p>{story.cardTeaser}</p>
+  <div class="door" data-door data-stage="1">
+    <div class="door__stage shell">
+      <div class="door__copy">
+        <!-- Announced when it changes, because the change is the story
+             moving. One group today; the same container the later beats
+             will replace their lines inside. -->
+        <div class="door__lines" aria-live="polite" tabindex="-1">
+          <h1 class="door__opening">
+            <span data-line="one">
+              <span>Security didn't keep changing.</span>
+              <span>What you trusted did.</span>
+            </span>
+          </h1>
+
+          <p class="door__sub" data-line="one">
+            And you probably didn't notice when it happened.
+          </p>
+        </div>
+
+        <!-- The same turn treatment every story in the library uses:
+             serif, the saffron circle, the quiet underline on hover. -->
+        <button type="button" class="door__turn" data-line="one" data-onward>
+          Start with your front door <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+
+      <!-- Locked to the crop's own frame, so later beats can happen
+           inside the same box without anything moving under them. -->
+      <div class="door__visual">
+        <div class="door__scene">
+          <Image
+            class="door__art"
+            src={doorScene1}
+            alt="A front door, with someone knocking at it."
+            widths={[340, 430, 560, 760]}
+            sizes="(max-width: 979px) 72vw, 430px"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </BaseLayout>
 
 <style>
-  /* Matches the centred single-column measure the other Explore story
-     pages open on. Nothing here anticipates the story's own layout. */
-  .security-shell {
-    max-width: 590px;
-    margin: 0 auto;
-    padding: clamp(40px, 7vh, 86px) 24px clamp(72px, 12vh, 132px);
+  .door {
+    padding-bottom: clamp(60px, 9vh, 110px);
   }
 
-  .security-shell h1 {
+  /* The library's opening grid, at the same max-width and the same top
+     padding, so this story opens on the page at the height the others do.
+     The gap is tighter than the two-beat stories use and the copy column
+     is capped at its own measure, so the sentence and the door read as
+     one composition rather than as two columns with a corridor between
+     them. */
+  .door__stage {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(24px, 4vh, 36px);
+  }
+
+  .door__copy {
+    text-align: left;
+  }
+
+  /* Focused when a beat lands and there is no turn left to hand focus to;
+     it should never draw a ring of its own for that. */
+  .door__lines:focus {
+    outline: none;
+  }
+
+  /* The story's primary line, at the size and weight "Looks real." and
+     "You chose this." carry in this slot. Deliberately not larger: the
+     second half is the line that has to land, and it only lands if the
+     whole statement, the line under it and the turn are visible at once. */
+  .door__opening {
     margin: 0;
+    max-width: 17ch;
     color: var(--ink);
     font-family: var(--serif);
-    font-size: clamp(28px, 3.4vw, 44px);
     font-weight: 500;
-    line-height: 1.16;
-    letter-spacing: -0.03em;
+    font-size: clamp(27px, 3.2vw, 38px);
+    line-height: 1.18;
+    letter-spacing: -0.028em;
   }
 
-  .security-shell p {
-    margin: 14px 0 0;
+  /* The couplet: the claim, then the correction under it. The second line
+     takes the quieter ink the other stories give the half of a pair that
+     turns the first half around. */
+  .door__opening > span,
+  .door__opening > span > span {
+    display: block;
+  }
+
+  .door__opening > span > span:nth-child(2) {
     color: var(--ink-soft);
+  }
+
+  .door__sub {
+    margin: clamp(14px, 2vh, 20px) 0 0;
+    max-width: 34ch;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Both states live in the DOM; only one group is ever un-hidden, so
+     nothing is announced or focusable before its moment. */
+  [hidden] {
+    display: none !important;
+  }
+
+  /* The library's turn treatment, unchanged: serif, the saffron circle,
+     the quiet underline on hover. */
+  .door__turn {
+    display: inline-block;
+    margin: clamp(20px, 3vh, 30px) 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ink);
     font-family: var(--serif);
-    font-size: clamp(20px, 2.2vw, 28px);
-    font-weight: 500;
+    font-size: 17px;
+    font-weight: 600;
     line-height: 1.3;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.008em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .door__turn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    margin-left: 7px;
+    border-radius: 50%;
+    background: var(--saffron);
+    color: #fff;
+    font-size: 11px;
+    vertical-align: middle;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .door__turn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .door__turn:hover span {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(232, 117, 36, 0.35);
+  }
+
+  .door__turn:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 3px;
+  }
+
+  .door__visual {
+    display: block;
+  }
+
+  /* Locked to the crop's own frame (760x850) — no letterboxing and no
+     cropping decision left to CSS, the way the other stories size their
+     scene box to their artwork's ratio.
+
+     Sized from the viewport rather than from the column, so the
+     statement, the line under it and the turn are all above the fold on a
+     normal desktop height; and pulled to the left edge of its own column,
+     so it sits beside the sentence instead of across a corridor from it. */
+  .door__scene {
+    position: relative;
+    height: min(58vh, 481px);
+    width: auto;
+    max-width: 100%;
+    aspect-ratio: 760 / 850;
+    margin-inline: 0 auto;
+  }
+
+  .door__art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* The asset's own transparency is kept — no card, no panel, no
+       backdrop. The door sits on the page's cream the way the other
+       stories' artwork does.
+
+       The quieting is baked into the file's alpha rather than applied
+       here: the door and its porch are at full strength, the circles
+       around it ease back, and the three edges the crop cuts through
+       dissolve so the halved circles fade into the page instead of
+       ending on a straight line. Doing it in the picture means what is
+       on screen is what is in the file — no second treatment on top of
+       the artwork, and nothing to fail if masking is unsupported. */
+  }
+
+  @media (min-width: 980px) {
+    /* Both columns are sized by what is in them and the pair is centred,
+       so the sentence ends where the gap starts. Sizing them as
+       fractions instead left the copy column wider than its own text and
+       opened a corridor between the statement and the door — the eye had
+       to cross empty page to get from one to the other. */
+    .door__stage {
+      grid-template-columns: auto auto;
+      justify-content: center;
+      gap: clamp(28px, 3.4vw, 52px);
+    }
+  }
+
+  /* Stacked, copy first, the picture immediately under the turn — the
+     same order and the same closeness the other stories keep below their
+     stacking point. Height goes back to the artwork's own ratio here: a
+     viewport-height cap only has a job in the two-column layout. */
+  @media (max-width: 979px) {
+    .door__stage {
+      gap: clamp(20px, 3vh, 28px);
+    }
+
+    .door__scene {
+      height: auto;
+      width: 100%;
+      max-width: min(72vw, 340px);
+      margin-inline: 0 auto;
+    }
   }
 </style>
+
+<script define:vars={{ topic: 'security-didnt-keep-changing' }}>
+  // Analytics: story_view only, through Cloudflare Zaraz, on the same
+  // terms as every other Explore story — the story's content at least
+  // half visible for a continuous second. No story_complete: there is no
+  // completion to report yet, and firing one at the opening would make
+  // the event mean something different here than it does everywhere
+  // else. It arrives with the beat that actually ends the story.
+  const root = document.querySelector('[data-door]');
+
+  if (root instanceof HTMLElement) {
+    let fired = false;
+    let timer = null;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (fired) return;
+        const entry = entries[0];
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (timer === null) {
+            timer = window.setTimeout(() => {
+              fired = true;
+              window.zaraz?.track('story_view', { topic });
+              observer.disconnect();
+            }, 1000);
+          }
+        } else if (timer !== null) {
+          clearTimeout(timer);
+          timer = null;
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(root);
+  }
+</script>
