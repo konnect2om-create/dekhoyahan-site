@@ -202,7 +202,7 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
                  supporting copy would hand the payoff to a caption. -->
             <span class="chose__pair" data-line="eight" hidden>
               <span>You didn't tap.</span>
-              <span data-payoff>But the feed still heard you.</span>
+              <span data-payoff>But your pause still counted.</span>
             </span>
           </h1>
 
@@ -212,10 +212,8 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
 
           <p class="chose__sub" data-line="six" hidden>Pausing was enough.</p>
 
-          <p class="chose__sub chose__sub--pause" data-line="eight" hidden>Sometimes, a pause is a choice.</p>
-
           <p class="chose__sub chose__sub--notice" data-line="eight" hidden>
-            Next time you stop scrolling, notice what shows up after.
+            Next time you stop scrolling, notice what comes next.
           </p>
 
 
@@ -592,11 +590,10 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
      The turn is in the gap between the two lines: what the visitor knows
      they did not do, then what happened anyway. 620ms, slower than any
      other reveal in the story, so the second line arrives as a realisation
-     rather than as the rest of a sentence. What follows it — the thought,
-     the thing to try, the way on — comes after that has landed. */
+     rather than as the rest of a sentence. The thing to try and the way on
+     come after that has landed. */
   [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(1),
   [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(2),
-  [data-stage='8'] .chose__sub--pause,
   [data-stage='8'] .chose__sub--notice,
   [data-stage='8'] .chose__end {
     animation: chose-in 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
@@ -606,16 +603,12 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     animation-delay: 620ms;
   }
 
-  [data-stage='8'] .chose__sub--pause {
+  [data-stage='8'] .chose__sub--notice {
     animation-delay: 1320ms;
   }
 
-  [data-stage='8'] .chose__sub--notice {
-    animation-delay: 1680ms;
-  }
-
   [data-stage='8'] .chose__end {
-    animation-delay: 2060ms;
+    animation-delay: 1700ms;
   }
 
   /* A two-line heading rather than a heading and a caption: both lines are
@@ -920,7 +913,6 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
     [data-stage='7'] .chose__turn[data-onward7],
     [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(1),
     [data-stage='8'] .chose__opening span[data-line='eight'] > span:nth-child(2),
-    [data-stage='8'] .chose__sub--pause,
     [data-stage='8'] .chose__sub--notice,
     [data-stage='8'] .chose__end {
       animation: none;
@@ -1004,10 +996,10 @@ const FIELD = [...shuffled(7), ...shuffled(99)]
       // arriving; with motion reduced there is no animation to wait for
       // and the state is already whole, so it is set straight away.
       if (group === 'eight') {
-        // The payoff line itself — "But the feed still heard you." — not
-        // the last thing on screen. What follows it is a thought, a thing
-        // to try and a way out; the story is delivered the moment that line
-        // has finished arriving.
+        // The payoff line itself — "But your pause still counted." — not
+        // the last thing on screen. What follows it is a thing to try and a
+        // way out; the story is delivered the moment that line has finished
+        // arriving.
         const closing = root.querySelector('[data-payoff]');
         const done = () => { root.dataset.complete = '1'; };
 
