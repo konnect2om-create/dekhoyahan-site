@@ -350,19 +350,22 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     transition: transform 1100ms cubic-bezier(0.32, 0.7, 0.24, 1);
   }
 
-  /* The close-up. The window lands on x 230-730, y 410-1035 of the
-     1122x1402 file — the deadbolt and the handle, the door's edge and
-     its jamb on the left, and the width of a panel of wood to the right,
-     so it is plainly the same door. Same aspect ratio as the frame, so
-     nothing is stretched; a scale and an offset, so nothing is resampled
-     beyond the magnification itself.
+  /* The close-up. The window lands on x 315-655, y 515-940 of the
+     1122x1402 file: the deadbolt and the handle are the subject, the
+     door's edge and its jamb hold the left, and a panel and a half of
+     wood holds the right — enough to stay recognisably the same door
+     without the rest of it competing. The left edge starts past the
+     shrub, so nothing of it is caught in the corner.
 
-         scale      1122 / 500   = 2.244
-         translate  -230 / 1122  = -20.5%
-                    -410 / 1402  = -29.244%   (percentages of the
+     Same aspect ratio as the frame, so nothing is stretched; a scale and
+     an offset, so nothing is resampled beyond the magnification itself.
+
+         scale      1122 / 340   = 3.3
+         translate  -315 / 1122  = -28.075%
+                    -515 / 1402  = -36.734%   (percentages of the
                     element, applied before the scale) */
   [data-stage='3'] .door__plain {
-    transform: scale(2.244) translate(-20.5%, -29.244%);
+    transform: scale(3.3) translate(-28.075%, -36.734%);
   }
 
   /* ---- The beat arriving ----
