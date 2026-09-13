@@ -13,7 +13,7 @@ import doorScene18 from '../../assets/security-door-scene18.webp';
 import doorScene21 from '../../assets/security-door-scene21.webp';
 import doorScene26 from '../../assets/security-door-scene26.webp';
 
-// The Security story's permanent Explore route. Twenty-six beats.
+// The Security story's permanent Explore route. Twenty-seven beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -551,8 +551,27 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // nowhere else: nothing is drawn on top of it, nothing is labelled, and
 // nothing is flagged.
 //
-// The turn on scene 26 is real and focusable and wired to nothing,
-// because scene 27 does not exist yet — the same convention
+// SCENE 27. The difference stated plainly:
+//
+//     Before, you trusted things to work.
+//     Now you're trusting something to decide.
+//     Who gets in.
+//     Who doesn't.
+//     What happens next.
+//     Now give that a name →
+//
+// One realization: trusting something to work is not the same as
+// trusting something to decide. The three lines under it are the
+// shortest in the story on purpose — the beat is the difference itself,
+// and nothing should sit between the reader and it. Still no AI, no
+// model, no algorithm, no machine learning, no governance: the turn is
+// what offers the name.
+//
+// The same picture as scene 26, moved in on the thing the sentence is
+// about. No second asset, nothing drawn on it, nothing labelled.
+//
+// The turn on scene 27 is real and focusable and wired to nothing,
+// because scene 28 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -610,6 +629,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="twentyfour" hidden>What you trust changes with them.</span>
             <span data-line="twentyfive" hidden>Different problems. Different names.</span>
             <span data-line="twentysix" hidden>Now the system can make a judgement.</span>
+            <span data-line="twentyseven" hidden>Before, you trusted things to work.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -869,6 +889,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
           <p class="door__sub door__steps door__steps--echo" data-line="twentysix" hidden>
             <span>The answer can change what happens next.</span>
           </p>
+
+          <!-- The sentence, then the three things it decides. They are
+               deliberately the shortest lines in the story: the beat is
+               the difference between working and deciding, and nothing
+               should sit between the reader and it. -->
+          <p class="door__sub door__steps" data-line="twentyseven" hidden>
+            <span>Now you&rsquo;re trusting something to decide.</span>
+          </p>
+
+          <p class="door__sub door__steps door__steps--echo" data-line="twentyseven" hidden>
+            <span>Who gets in.</span>
+            <span>Who doesn&rsquo;t.</span>
+            <span>What happens next.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -975,6 +1009,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="twentysix" data-onward26 hidden>
           That&rsquo;s a different kind of trust <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="twentyseven" data-onward27 hidden>
+          Now give that a name <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -1142,17 +1180,17 @@ const story = storyBySlug('security-didnt-keep-changing')!;
                written on it, nothing is marked, nothing is flagged — it
                is an ordinary afternoon at an ordinary door. Whole and
                unpushed at its own 1448x1086. -->
-          <Image
-            class="door__art door__judge"
-            src={doorScene26}
-            alt="A woman standing at the same front door, with a small camera and lock beside it reading her face."
-            widths={[520, 760, 1024, 1448]}
-            sizes="(max-width: 979px) 92vw, 44vw"
-            loading="lazy"
-            decoding="async"
-            data-line="twentysix"
-            hidden
-          />
+          <div class="door__judgeframe" data-line="twentysix twentyseven" hidden>
+            <Image
+              class="door__art door__judge"
+              src={doorScene26}
+              alt="A woman standing at the same front door, with a small camera and lock beside it reading her face."
+              widths={[520, 760, 1024, 1448]}
+              sizes="(max-width: 979px) 92vw, 44vw"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -1551,6 +1589,39 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     transform: scale(1.11684) translate(-9.231%, -5.328%);
   }
 
+  /* The door's own window, at its own 1448x1086 — the fifth shape in
+     this story and the same construction as the other four. It fills the
+     box exactly at rest, so scene 26 shows all of the picture with
+     nothing cropped, and scene 27 can move without the box changing
+     size. */
+  .door__judgeframe {
+    width: 100%;
+    aspect-ratio: 1448 / 1086;
+    overflow: hidden;
+  }
+
+  .door__judge {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: 0 0;
+    transition: transform 1100ms cubic-bezier(0.32, 0.7, 0.24, 1);
+  }
+
+  /* Scene 27 moves in on the thing the sentence is about: x 220-1120,
+     y 120-795 of the 1448x1086 file. Her face and the frame drawn on it,
+     the camera looking back, the lock and the handle are all nearer, and
+     the door and its lamp stay whole — the beat is about what the system
+     is doing, not about losing the place it happens in. What falls away
+     is the ground: the step, the mat and her feet.
+
+         scale      1448 / 900   = 1.6089
+         translate  -220 / 1448  = -15.193%
+                    -120 / 1086  = -11.050%  */
+  [data-stage='27'] .door__judge {
+    transform: scale(1.6089) translate(-15.193%, -11.050%);
+  }
+
   /* ---- The beat arriving ----
      The library's settle, unchanged: the replacing copy, the turn and the
      picture all come in on the same curve at the same pace, so the change
@@ -1654,7 +1725,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='26'] .door__opening span[data-line='twentysix'],
   [data-stage='26'] .door__steps,
   [data-stage='26'] .door__turn[data-onward26],
-  [data-stage='26'] .door__judge {
+  [data-stage='26'] .door__judgeframe,
+  [data-stage='27'] .door__opening span[data-line='twentyseven'],
+  [data-stage='27'] .door__steps,
+  [data-stage='27'] .door__turn[data-onward27] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1686,7 +1760,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='23'] .door__steps,
   [data-stage='24'] .door__steps,
   [data-stage='25'] .door__name,
-  [data-stage='26'] .door__steps {
+  [data-stage='26'] .door__steps,
+  [data-stage='27'] .door__steps {
     animation-delay: 180ms;
   }
 
@@ -1727,7 +1802,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='21'] .door__steps--echo,
   [data-stage='22'] .door__steps--echo,
   [data-stage='23'] .door__steps--echo,
-  [data-stage='26'] .door__steps--echo {
+  [data-stage='26'] .door__steps--echo,
+  [data-stage='27'] .door__steps--echo {
     animation-delay: 330ms;
   }
 
@@ -1784,7 +1860,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     white-space: normal;
   }
 
-  [data-stage='26'] .door__turn[data-onward26] {
+  [data-stage='26'] .door__turn[data-onward26],
+  [data-stage='27'] .door__turn[data-onward27] {
     animation-delay: 500ms;
   }
 
@@ -1854,6 +1931,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='25'] .door__name--fourth,
     [data-stage='26'] .door__steps,
     [data-stage='26'] .door__steps--echo,
+    [data-stage='27'] .door__steps,
+    [data-stage='27'] .door__steps--echo,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -1919,7 +1998,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='26'] .door__opening span[data-line='twentysix'],
     [data-stage='26'] .door__steps,
     [data-stage='26'] .door__turn[data-onward26],
-    [data-stage='26'] .door__judge {
+    [data-stage='26'] .door__judgeframe,
+    [data-stage='27'] .door__opening span[data-line='twentyseven'],
+    [data-stage='27'] .door__steps,
+    [data-stage='27'] .door__turn[data-onward27] {
       animation: none;
     }
 
@@ -1955,7 +2037,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='23'] .door__turn[data-onward23],
     [data-stage='24'] .door__turn[data-onward24],
     [data-stage='25'] .door__turn[data-onward25],
-    [data-stage='26'] .door__turn[data-onward26] {
+    [data-stage='26'] .door__turn[data-onward26],
+    [data-stage='27'] .door__turn[data-onward27] {
       animation-delay: 0s;
     }
 
@@ -1965,6 +2048,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     .door__lockshot,
     .door__cloudshot,
     .door__chainshot,
+    .door__judge,
     .door__turn span {
       transition: none;
     }
@@ -2021,7 +2105,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        so nothing in the text moves when the beat lands — and the picture
        takes the rest of the row instead of the narrow portrait track,
        which a 1.5 image would otherwise sit in at half the size. */
-    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21'], [data-stage='22'], [data-stage='23'], [data-stage='24'], [data-stage='25'], [data-stage='26']) .door__stage {
+    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21'], [data-stage='22'], [data-stage='23'], [data-stage='24'], [data-stage='25'], [data-stage='26'], [data-stage='27']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) minmax(0, 1fr);
       justify-content: start;
     }
@@ -2033,7 +2117,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        against the viewport's height instead — the way the portrait beats
        do. The copy column is the identical clamp, so nothing in the text
        moves when the picture changes shape. */
-    [data-stage='26'] .door__stage {
+    :is([data-stage='26'], [data-stage='27']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(62vh, 620px);
       justify-content: start;
     }
@@ -2145,6 +2229,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       23: ['[data-onward23]', 'twentyfour'],
       24: ['[data-onward24]', 'twentyfive'],
       25: ['[data-onward25]', 'twentysix'],
+      26: ['[data-onward26]', 'twentyseven'],
     };
 
     const advance = (from) => {
