@@ -13,7 +13,7 @@ import doorScene18 from '../../assets/security-door-scene18.webp';
 import doorScene21 from '../../assets/security-door-scene21.webp';
 import doorScene26 from '../../assets/security-door-scene26.webp';
 
-// The Security story's permanent Explore route. Twenty-eight beats.
+// The Security story's permanent Explore route. Twenty-nine beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -595,8 +595,32 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // carry the reveal, and nothing is drawn on the artwork to help them: no
 // label, no network graphic, no diagram, no overlay, no warning mark.
 //
-// The turn on scene 28 is real and focusable and wired to nothing,
-// because scene 29 does not exist yet — the same convention
+// SCENE 29. What there now is to protect:
+//
+//     Now you trust the decision too.
+//     Did it recognise the right person?
+//     Could someone fool what it sees?
+//     Could it open when it shouldn't?
+//     That's a new security question →
+//
+// One realization: once a system starts making decisions, protecting the
+// decision becomes part of security too. The three lines are questions
+// and arrive as one block, because none of them is the answer and the
+// reader is meant to feel all three at once. They are questions rather
+// than warnings on purpose — the beat is that these are now worth
+// asking, not that anything has gone wrong.
+//
+// The name is still one beat away: nothing here about AI security, AI
+// risk, adversarial AI, model security, prompt injection, bias or
+// governance. The reader should have the problem before they have the
+// word for it.
+//
+// The picture holds the same framing, and stays calm and ordinary. No
+// attack graphic, no intruder, no warning mark, no red — the questions
+// are asked about an unremarkable afternoon, which is the point.
+//
+// The turn on scene 29 is real and focusable and wired to nothing,
+// because scene 30 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -656,6 +680,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="twentysix" hidden>Now the system can make a judgement.</span>
             <span data-line="twentyseven" hidden>Before, you trusted things to work.</span>
             <span data-line="twentyeight" hidden>This is where AI enters the story.</span>
+            <span data-line="twentynine" hidden>Now you trust the decision too.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -950,6 +975,17 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>The system compares.</span>
             <span>A judgement changes what happens next.</span>
           </p>
+
+          <!-- Three questions of equal weight, so they arrive as one
+               block rather than one at a time: none of them is the
+               answer, and the reader is meant to feel all three at once.
+               Questions, not warnings — the beat is that these are now
+               worth asking, not that anything has gone wrong. -->
+          <p class="door__sub door__steps" data-line="twentynine" hidden>
+            <span>Did it recognise the right person?</span>
+            <span>Could someone fool what it sees?</span>
+            <span>Could it open when it shouldn&rsquo;t?</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -1064,6 +1100,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="twentyeight" data-onward28 hidden>
           So what are you trusting now? <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="twentynine" data-onward29 hidden>
+          That&rsquo;s a new security question <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -1231,7 +1271,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
                written on it, nothing is marked, nothing is flagged — it
                is an ordinary afternoon at an ordinary door. Whole and
                unpushed at its own 1448x1086. -->
-          <div class="door__judgeframe" data-line="twentysix twentyseven twentyeight" hidden>
+          <div class="door__judgeframe" data-line="twentysix twentyseven twentyeight twentynine" hidden>
             <Image
               class="door__art door__judge"
               src={doorScene26}
@@ -1673,7 +1713,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      reader being handed the word for what they have just watched happen,
      and the picture is already showing it — moving now would say
      something changed, and nothing has. */
-  :is([data-stage='27'], [data-stage='28']) .door__judge {
+  :is([data-stage='27'], [data-stage='28'], [data-stage='29']) .door__judge {
     transform: scale(1.6089) translate(-15.193%, -11.050%);
   }
 
@@ -1787,7 +1827,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='28'] .door__opening span[data-line='twentyeight'],
   [data-stage='28'] .door__steps,
   [data-stage='28'] .door__lands,
-  [data-stage='28'] .door__turn[data-onward28] {
+  [data-stage='28'] .door__turn[data-onward28],
+  [data-stage='29'] .door__opening span[data-line='twentynine'],
+  [data-stage='29'] .door__steps,
+  [data-stage='29'] .door__turn[data-onward29] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1821,7 +1864,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='25'] .door__name,
   [data-stage='26'] .door__steps,
   [data-stage='27'] .door__steps,
-  [data-stage='28'] .door__steps {
+  [data-stage='28'] .door__steps,
+  [data-stage='29'] .door__steps {
     animation-delay: 180ms;
   }
 
@@ -1934,6 +1978,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     animation-delay: 640ms;
   }
 
+  [data-stage='29'] .door__turn[data-onward29] {
+    animation-delay: 500ms;
+  }
+
   /* One step later than the other turns: the sentence above it is the
      beat, and it should be read before the way out appears. */
   [data-stage='7'] .door__turn[data-onward7] {
@@ -2005,6 +2053,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='28'] .door__steps,
     [data-stage='28'] .door__steps--echo,
     [data-stage='28'] .door__lands,
+    [data-stage='29'] .door__steps,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -2077,7 +2126,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='28'] .door__opening span[data-line='twentyeight'],
     [data-stage='28'] .door__steps,
     [data-stage='28'] .door__lands,
-    [data-stage='28'] .door__turn[data-onward28] {
+    [data-stage='28'] .door__turn[data-onward28],
+    [data-stage='29'] .door__opening span[data-line='twentynine'],
+    [data-stage='29'] .door__steps,
+    [data-stage='29'] .door__turn[data-onward29] {
       animation: none;
     }
 
@@ -2115,7 +2167,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='25'] .door__turn[data-onward25],
     [data-stage='26'] .door__turn[data-onward26],
     [data-stage='27'] .door__turn[data-onward27],
-    [data-stage='28'] .door__turn[data-onward28] {
+    [data-stage='28'] .door__turn[data-onward28],
+    [data-stage='29'] .door__turn[data-onward29] {
       animation-delay: 0s;
     }
 
@@ -2182,7 +2235,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        so nothing in the text moves when the beat lands — and the picture
        takes the rest of the row instead of the narrow portrait track,
        which a 1.5 image would otherwise sit in at half the size. */
-    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21'], [data-stage='22'], [data-stage='23'], [data-stage='24'], [data-stage='25'], [data-stage='26'], [data-stage='27'], [data-stage='28']) .door__stage {
+    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21'], [data-stage='22'], [data-stage='23'], [data-stage='24'], [data-stage='25'], [data-stage='26'], [data-stage='27'], [data-stage='28'], [data-stage='29']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) minmax(0, 1fr);
       justify-content: start;
     }
@@ -2194,7 +2247,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        against the viewport's height instead — the way the portrait beats
        do. The copy column is the identical clamp, so nothing in the text
        moves when the picture changes shape. */
-    :is([data-stage='26'], [data-stage='27'], [data-stage='28']) .door__stage {
+    :is([data-stage='26'], [data-stage='27'], [data-stage='28'], [data-stage='29']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) min(62vh, 620px);
       justify-content: start;
     }
@@ -2308,6 +2361,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       25: ['[data-onward25]', 'twentysix'],
       26: ['[data-onward26]', 'twentyseven'],
       27: ['[data-onward27]', 'twentyeight'],
+      28: ['[data-onward28]', 'twentynine'],
     };
 
     const advance = (from) => {
