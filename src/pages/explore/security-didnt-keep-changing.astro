@@ -651,19 +651,26 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // SCENE 31. The callback:
 //
 //     Different names. Same pattern.
-//     Protecting the door?                     Physical security.
-//     Connecting it to software?               Cybersecurity.
-//     Relying on another company?              Third-party risk.
-//     Relying on the companies behind it?      Supply chain risk.
-//     Protecting the AI behind that decision?  AI security.
+//     Physical security.
+//     Cybersecurity.
+//     Third-party risk.
+//     Supply chain risk.
+//     AI security.
+//     Different places for things to go wrong.
+//     Different things to trust.
 //     Now read the first line again →
 //
-// Scene 25's four namings read back in the same construction, with the
-// fifth the story has since earned on the end of them. Nothing is
-// defined, nothing is expanded, and no concept arrives that the reader
-// has not already lived — the point of the list is its last line, and
-// that each name appeared because something new became part of what the
-// reader depended on.
+// The five names on their own, with no question above any of them.
+// Scene 25 already taught what they refer to; teaching the mappings a
+// second time here made the ending a lesson rather than a gathering-up,
+// and made the two lists read as the story repeating itself. What the
+// beat adds instead is what the names have in common — different places
+// for things to go wrong, different things to trust — in the aside's
+// quiet type, so it reads as the reflection on the list rather than a
+// sixth name. No definitions and no explanations.
+//
+// Each name keeps its own paragraph, so each still arrives on its own
+// beat at the timings scene 31 already used.
 //
 // The picture is scene 1's composition, the same element and the same
 // file, whole and unscaled. The reader met all of it in the first beat
@@ -1103,34 +1110,37 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>how it decides.</span>
           </p>
 
-          <!-- The callback. Scene 25's four namings, read back in the same
-               construction, with the fifth the story has since earned on
-               the end of them. Nothing is defined and nothing is added:
-               the reader has lived every one of these, and the point of
-               the list is the last line of it. -->
+          <!-- The callback: the five names on their own, one after the
+               other. No questions above them — scene 25 taught what they
+               refer to, and teaching it again here would make the ending
+               a lesson instead of a gathering-up. Each keeps its own
+               paragraph so each still arrives on its own beat. -->
           <p class="door__name" data-line="thirtyone" hidden>
-            <span>Protecting the door?</span>
             <strong>Physical security.</strong>
           </p>
 
           <p class="door__name door__name--second" data-line="thirtyone" hidden>
-            <span>Connecting it to software?</span>
             <strong>Cybersecurity.</strong>
           </p>
 
           <p class="door__name door__name--third" data-line="thirtyone" hidden>
-            <span>Relying on another company?</span>
             <strong>Third-party risk.</strong>
           </p>
 
           <p class="door__name door__name--fourth" data-line="thirtyone" hidden>
-            <span>Relying on the companies behind it?</span>
             <strong>Supply chain risk.</strong>
           </p>
 
           <p class="door__name door__name--fifth" data-line="thirtyone" hidden>
-            <span>Protecting the AI behind that decision?</span>
             <strong>AI security.</strong>
+          </p>
+
+          <!-- What the list adds up to, in the aside's quiet type so it
+               reads as the reflection on the names rather than a sixth
+               name. Two lines, no definitions. -->
+          <p class="door__sub door__steps" data-line="thirtyone" hidden>
+            <span>Different places for things to go wrong.</span>
+            <span>Different things to trust.</span>
           </p>
 
           <!-- The one sentence the ending adds, and it is quiet on
@@ -2048,6 +2058,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='30'] .door__turn[data-onward30],
   [data-stage='31'] .door__opening span[data-line='thirtyone'],
   [data-stage='31'] .door__name,
+  [data-stage='31'] .door__steps,
   [data-stage='31'] .door__turn[data-onward31],
   [data-stage='31'] .door__art[data-line='one thirtyone'],
   [data-stage='32'] .door__opening span[data-line='thirtytwo'],
@@ -2124,6 +2135,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
   [data-stage='31'] .door__name--fifth {
     animation-delay: 660ms;
+  }
+
+  [data-stage='31'] .door__steps {
+    animation-delay: 780ms;
   }
 
   /* Each naming lands, then the next, then the line that ties them
@@ -2227,9 +2242,9 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     animation-delay: 500ms;
   }
 
-  /* After all five, and the fifth is the one the story was for. */
+  /* After all five and after what they add up to. */
   [data-stage='31'] .door__turn[data-onward31] {
-    animation-delay: 820ms;
+    animation-delay: 920ms;
   }
 
   [data-stage='32'] .door__signature {
@@ -2320,6 +2335,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='31'] .door__name--third,
     [data-stage='31'] .door__name--fourth,
     [data-stage='31'] .door__name--fifth,
+    [data-stage='31'] .door__steps,
     [data-stage='32'] .door__close,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
@@ -2403,6 +2419,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='30'] .door__turn[data-onward30],
     [data-stage='31'] .door__opening span[data-line='thirtyone'],
     [data-stage='31'] .door__name,
+    [data-stage='31'] .door__steps,
     [data-stage='31'] .door__turn[data-onward31],
     [data-stage='31'] .door__art[data-line='one thirtyone'],
     [data-stage='32'] .door__opening span[data-line='thirtytwo'],
