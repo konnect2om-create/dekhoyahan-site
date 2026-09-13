@@ -12,7 +12,7 @@ import doorScene14 from '../../assets/security-door-scene14.webp';
 import doorScene18 from '../../assets/security-door-scene18.webp';
 import doorScene21 from '../../assets/security-door-scene21.webp';
 
-// The Security story's permanent Explore route. Twenty-one beats.
+// The Security story's permanent Explore route. Twenty-two beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -455,8 +455,25 @@ import doorScene21 from '../../assets/security-door-scene21.webp';
 // story, taking the width of the row and its own height, no frame, no
 // crop.
 //
-// The turn on scene 21 is real and focusable and wired to nothing,
-// because scene 22 does not exist yet — the same convention
+// SCENE 22. The second naming, on the same terms as the first:
+//
+//     This is supply chain risk.
+//     A problem starts somewhere else.
+//     It moves through the chain.
+//     And eventually, it can reach you.
+//     And that's not just about doors →
+//
+// The term is the headline and there is no definition under it — three
+// plain sentences restating what the reader has already watched happen,
+// the same construction scene 19 used to name the chain itself. Nothing
+// about cybersecurity, AI security, vendor risk management or
+// third-party risk management.
+//
+// The picture does not change. It showed the problem travelling a beat
+// ago; this beat only says what that is called.
+//
+// The turn on scene 22 is real and focusable and wired to nothing,
+// because scene 23 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -509,6 +526,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="nineteen" hidden>This is a supply chain.</span>
             <span data-line="twenty" hidden>The door didn't change.</span>
             <span data-line="twentyone" hidden>A problem there can become a problem here.</span>
+            <span data-line="twentytwo" hidden>This is supply chain risk.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -692,6 +710,15 @@ const story = storyBySlug('security-didnt-keep-changing')!;
           <p class="door__sub door__steps door__steps--echo" data-line="twentyone" hidden>
             <span>And something at your home can stop working too.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="twentytwo" hidden>
+            <span>A problem starts somewhere else.</span>
+            <span>It moves through the chain.</span>
+          </p>
+
+          <p class="door__sub door__steps door__steps--echo" data-line="twentytwo" hidden>
+            <span>And eventually, it can reach you.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -778,6 +805,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="twentyone" data-onward21 hidden>
           Now the word “risk” makes sense <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="twentytwo" data-onward22 hidden>
+          And that's not just about doors <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -934,7 +965,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             sizes="(max-width: 979px) 92vw, 62vw"
             loading="lazy"
             decoding="async"
-            data-line="twentyone"
+            data-line="twentyone twentytwo"
             hidden
           />
         </div>
@@ -1422,7 +1453,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='21'] .door__opening span[data-line='twentyone'],
   [data-stage='21'] .door__steps,
   [data-stage='21'] .door__turn[data-onward21],
-  [data-stage='21'] .door__ripple {
+  [data-stage='21'] .door__ripple,
+  [data-stage='22'] .door__opening span[data-line='twentytwo'],
+  [data-stage='22'] .door__steps,
+  [data-stage='22'] .door__turn[data-onward22] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1449,7 +1483,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='18'] .door__steps,
   [data-stage='19'] .door__steps,
   [data-stage='20'] .door__steps,
-  [data-stage='21'] .door__steps {
+  [data-stage='21'] .door__steps,
+  [data-stage='22'] .door__steps {
     animation-delay: 180ms;
   }
 
@@ -1472,7 +1507,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='18'] .door__steps--echo,
   [data-stage='19'] .door__steps--echo,
   [data-stage='20'] .door__steps--echo,
-  [data-stage='21'] .door__steps--echo {
+  [data-stage='21'] .door__steps--echo,
+  [data-stage='22'] .door__steps--echo {
     animation-delay: 330ms;
   }
 
@@ -1513,7 +1549,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
   [data-stage='19'] .door__turn[data-onward19],
   [data-stage='20'] .door__turn[data-onward20],
-  [data-stage='21'] .door__turn[data-onward21] {
+  [data-stage='21'] .door__turn[data-onward21],
+  [data-stage='22'] .door__turn[data-onward22] {
     animation-delay: 500ms;
   }
 
@@ -1572,6 +1609,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='20'] .door__steps--echo,
     [data-stage='21'] .door__steps,
     [data-stage='21'] .door__steps--echo,
+    [data-stage='22'] .door__steps,
+    [data-stage='22'] .door__steps--echo,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -1621,7 +1660,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='21'] .door__opening span[data-line='twentyone'],
     [data-stage='21'] .door__steps,
     [data-stage='21'] .door__turn[data-onward21],
-    [data-stage='21'] .door__ripple {
+    [data-stage='21'] .door__ripple,
+    [data-stage='22'] .door__opening span[data-line='twentytwo'],
+    [data-stage='22'] .door__steps,
+    [data-stage='22'] .door__turn[data-onward22] {
       animation: none;
     }
 
@@ -1652,7 +1694,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='18'] .door__turn[data-onward18],
     [data-stage='19'] .door__turn[data-onward19],
     [data-stage='20'] .door__turn[data-onward20],
-    [data-stage='21'] .door__turn[data-onward21] {
+    [data-stage='21'] .door__turn[data-onward21],
+    [data-stage='22'] .door__turn[data-onward22] {
       animation-delay: 0s;
     }
 
@@ -1718,7 +1761,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        so nothing in the text moves when the beat lands — and the picture
        takes the rest of the row instead of the narrow portrait track,
        which a 1.5 image would otherwise sit in at half the size. */
-    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21']) .door__stage {
+    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21'], [data-stage='22']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) minmax(0, 1fr);
       justify-content: start;
     }
@@ -1825,6 +1868,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       18: ['[data-onward18]', 'nineteen'],
       19: ['[data-onward19]', 'twenty'],
       20: ['[data-onward20]', 'twentyone'],
+      21: ['[data-onward21]', 'twentytwo'],
     };
 
     const advance = (from) => {
