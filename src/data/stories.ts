@@ -95,16 +95,13 @@ export const stories: Story[] = [
     cardTitle: "Security didn't keep changing.",
     cardTeaser: 'What you trusted did.',
     headline: "Security didn't keep changing.",
-    // PROVISIONAL: question, shortAnswer, keyTakeaway and description are
-    // the story's canonical meaning and are not approved yet — the story
-    // itself is not built. Nothing here is rendered or asserted anywhere:
-    // the shell route emits no LearningResource and is held out of the
-    // sitemap (see astro.config.mjs) until the story exists. The library
-    // card reads only cardTitle, cardTeaser, label and thumb.
-    question: 'What actually changed about security?',
-    shortAnswer: 'Not written yet.',
-    keyTakeaway: 'Not written yet.',
-    description: "Security didn't keep changing. What you trusted did.",
+    question:
+      'What connects cybersecurity, third-party risk, supply chain risk, and AI security?',
+    shortAnswer: "Security didn't keep changing. What you trusted did.",
+    keyTakeaway:
+      'Every new thing you depend on gives security something new to protect.',
+    description:
+      'A simple front-door story reveals how physical security, cybersecurity, third-party risk, supply chain risk, and AI security are connected by one thing: what we choose to trust.',
     publishedAt: '2026-09-12',
     image: {
       src: securityScene1,
