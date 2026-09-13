@@ -13,7 +13,8 @@ import doorScene18 from '../../assets/security-door-scene18.webp';
 import doorScene21 from '../../assets/security-door-scene21.webp';
 import doorScene26 from '../../assets/security-door-scene26.webp';
 
-// The Security story's permanent Explore route. Thirty-one beats.
+// The Security story's permanent Explore route. Thirty-two beats, and
+// scene 32 is the end of it.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -662,10 +663,37 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // before knowing what any of it was for; it comes back unlabelled and
 // unannotated, because by now it does not need explaining.
 //
-// The turn on scene 31 is real and focusable and wired to nothing,
-// because scene 32 does not exist yet — the same convention
-// where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
-// unbuilt scenes.
+// SCENE 32. The end:
+//
+//     Security didn't keep changing.
+//     What you trusted did.
+//     And every new thing you depend on
+//     gives security something new to protect.
+//     See it differently.
+//
+// The first two lines are the opening, unchanged, in the opening's own
+// construction — the same element, the same size, the second half in the
+// same softer ink. Nothing marks them as a callback and nothing explains
+// what is different about them, because what is different is the reader.
+// The list they walked to get here is not read back.
+//
+// No picture. Every image in this file belongs to a beat, this beat
+// names none of them, so the whole visual column goes — the last screen
+// is the one the reader should sit with, and the room is most of what
+// says so. Scene 31 already did the visual callback; doing it twice
+// would make the ending another step instead of a stop.
+//
+// "See it differently." is a signature, not a control: the story's serif
+// at full ink, no saffron circle, no arrow, nothing to press. The only
+// thing after it is a real link back to Explore, in the aside's quiet
+// type and held well clear of it — the way on is another story, the same
+// convention did-your-face-leave-the-phone.astro ends on.
+//
+// The beat has no turn, so focus lands on .door__lines, which is what
+// that element and its tabindex are for.
+//
+// This is the last beat. There is no scene 33, and the story does not
+// continue past it.
 //
 // Still deliberately absent until the story is finished: a
 // LearningResource, a share card, and a sitemap entry (see NOT_INDEXABLE
@@ -726,6 +754,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="twentynine" hidden>Now you trust the decision too.</span>
             <span data-line="thirty" hidden>AI changes the security question.</span>
             <span data-line="thirtyone" hidden>Different names. Same pattern.</span>
+
+            <span data-line="thirtytwo" hidden>
+              <span>Security didn&rsquo;t keep changing.</span>
+              <span>What you trusted did.</span>
+            </span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -1074,6 +1107,19 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>Protecting the AI behind that decision?</span>
             <strong>AI security.</strong>
           </p>
+
+          <!-- The one sentence the ending adds, and it is quiet on
+               purpose: the story is not explained again, and the list the
+               reader walked is not read back. -->
+          <p class="door__sub door__steps door__close" data-line="thirtytwo" hidden>
+            <span>And every new thing you depend on</span>
+            <span>gives security something new to protect.</span>
+          </p>
+
+          <!-- The signature, not a step. No arrow, no circle, nothing to
+               press — it is the last thing said, and there is nothing
+               after it. -->
+          <p class="door__signature" data-line="thirtytwo" hidden>See it differently.</p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -1201,6 +1247,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
         <button type="button" class="door__turn" data-line="thirtyone" data-onward31 hidden>
           Now read the first line again <span aria-hidden="true">&rarr;</span>
         </button>
+
+        <a class="door__again" href="/explore/" data-line="thirtytwo" hidden>
+          Explore another <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
 
       <!-- Scene 1's composition, then the door both later beats share. -->
@@ -1444,6 +1494,45 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
   .door__opening > span > span:nth-child(2) {
     color: var(--ink-soft);
+  }
+
+  /* The ending's own spacing. Everything in it is held further apart
+     than the beats before it — the last screen is the one the reader is
+     meant to sit with, and the room is most of what says so. */
+  .door__close {
+    margin-top: clamp(22px, 3.4vh, 34px);
+  }
+
+  /* The last thing said. The story's serif at full ink, a step above the
+     sentence over it and a step below the statement above that, so the
+     hierarchy runs opening / signature / support. Not a control: no
+     circle, no arrow, nothing to press. */
+  .door__signature {
+    margin: clamp(30px, 5vh, 52px) 0 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2vw, 26px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  /* Leaving the story, not continuing it: the aside's quiet type, the
+     muted ink, a plain arrow and no saffron circle, set far enough below
+     the signature that it never reads as the next step. */
+  .door__again {
+    display: inline-block;
+    margin: clamp(34px, 6vh, 62px) 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .door__again:hover {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .door__sub {
@@ -1934,7 +2023,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='31'] .door__opening span[data-line='thirtyone'],
   [data-stage='31'] .door__name,
   [data-stage='31'] .door__turn[data-onward31],
-  [data-stage='31'] .door__art[data-line='one thirtyone'] {
+  [data-stage='31'] .door__art[data-line='one thirtyone'],
+  [data-stage='32'] .door__opening span[data-line='thirtytwo'],
+  [data-stage='32'] .door__close,
+  [data-stage='32'] .door__signature,
+  [data-stage='32'] .door__again {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1971,7 +2064,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='28'] .door__steps,
   [data-stage='29'] .door__steps,
   [data-stage='30'] .door__steps,
-  [data-stage='31'] .door__name {
+  [data-stage='31'] .door__name,
+  [data-stage='32'] .door__close {
     animation-delay: 180ms;
   }
 
@@ -2111,6 +2205,14 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     animation-delay: 820ms;
   }
 
+  [data-stage='32'] .door__signature {
+    animation-delay: 520ms;
+  }
+
+  [data-stage='32'] .door__again {
+    animation-delay: 1100ms;
+  }
+
   /* One step later than the other turns: the sentence above it is the
      beat, and it should be read before the way out appears. */
   [data-stage='7'] .door__turn[data-onward7] {
@@ -2190,6 +2292,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='31'] .door__name--third,
     [data-stage='31'] .door__name--fourth,
     [data-stage='31'] .door__name--fifth,
+    [data-stage='32'] .door__close,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -2273,7 +2376,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='31'] .door__opening span[data-line='thirtyone'],
     [data-stage='31'] .door__name,
     [data-stage='31'] .door__turn[data-onward31],
-    [data-stage='31'] .door__art[data-line='one thirtyone'] {
+    [data-stage='31'] .door__art[data-line='one thirtyone'],
+    [data-stage='32'] .door__opening span[data-line='thirtytwo'],
+    [data-stage='32'] .door__close,
+    [data-stage='32'] .door__signature,
+    [data-stage='32'] .door__again {
       animation: none;
     }
 
@@ -2314,7 +2421,9 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='28'] .door__turn[data-onward28],
     [data-stage='29'] .door__turn[data-onward29],
     [data-stage='30'] .door__turn[data-onward30],
-    [data-stage='31'] .door__turn[data-onward31] {
+    [data-stage='31'] .door__turn[data-onward31],
+    [data-stage='32'] .door__signature,
+    [data-stage='32'] .door__again {
       animation-delay: 0s;
     }
 
@@ -2397,6 +2506,27 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       grid-template-columns: clamp(300px, 36vw, 424px) min(62vh, 620px);
       justify-content: start;
     }
+
+    /* One column, because there is nothing in the other one. The measure
+       is a little wider than the beats kept, which is the only change
+       the ending makes to the typography — it is a statement now rather
+       than a line with a picture beside it. */
+    [data-stage='32'] .door__stage {
+      grid-template-columns: minmax(0, 1fr);
+      justify-content: start;
+    }
+
+    [data-stage='32'] .door__opening {
+      max-width: 21ch;
+    }
+  }
+
+  [data-stage='32'] .door__visual {
+    display: none;
+  }
+
+  [data-stage='32'] .door__stage {
+    padding-top: clamp(3.5rem, 10vh, 7.5rem);
   }
 
   /* Stacked, copy first, the picture immediately under the turn — the
@@ -2434,7 +2564,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   // half visible for a continuous second. No story_complete: there is no
   // completion to report yet, and firing one at the opening would make
   // the event mean something different here than it does everywhere
-  // else. It arrives with the beat that actually ends the story.
+  // else. It arrives with the beat that actually ends the story, which
+  // is scene 32 — the reader has reached the end when the last beat is
+  // on screen, the same terms every other story in the library reports
+  // completion on.
   const root = document.querySelector('[data-door]');
 
   if (root instanceof HTMLElement) {
@@ -2463,6 +2596,18 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     );
 
     observer.observe(root);
+
+    // story_complete, once, when the story reaches its last beat.
+    let completeFired = false;
+    const completeObserver = new MutationObserver(() => {
+      if (completeFired) return;
+      if (root.dataset.stage === '32') {
+        completeFired = true;
+        window.zaraz?.track('story_complete', { topic });
+        completeObserver.disconnect();
+      }
+    });
+    completeObserver.observe(root, { attributes: true, attributeFilter: ['data-stage'] });
   }
 </script>
 
@@ -2510,6 +2655,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       28: ['[data-onward28]', 'twentynine'],
       29: ['[data-onward29]', 'thirty'],
       30: ['[data-onward30]', 'thirtyone'],
+      31: ['[data-onward31]', 'thirtytwo'],
     };
 
     const advance = (from) => {
