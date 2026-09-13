@@ -2616,8 +2616,140 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      same order and the same closeness the other stories keep below their
      stacking point. Full column width, its own ratio, nothing clipped. */
   @media (max-width: 979px) {
+    /* ---- The stacked beat: the copy, then whatever height is left ----
+
+       Two rows. The copy takes the height it needs; the picture gets the
+       rest of the story's viewport and may shrink into it rather than
+       push past the fold. The height subtracted is the header's own
+       --header-h, so this follows the real shell instead of a number
+       copied by hand, and svh so a phone showing browser chrome gets the
+       honest figure.
+
+       Nothing here uses overflow:hidden to force a fit. When the copy
+       plus the smallest useful picture is genuinely taller than the
+       screen the page scrolls, which for those beats is the right answer
+       rather than a failure. */
     .door__stage {
       gap: clamp(16px, 2.4vh, 24px);
+      /* height, not min-height: a grid only hands a 1fr row a real size
+         when its own block size is definite. A min-height leaves it
+         indefinite, the row sizes to its content instead, and the
+         picture never learns how much room it actually has. Content
+         taller than this still overflows and the page still scrolls —
+         the footer sits below the overflow, not through it. */
+      height: calc(100svh - var(--header-h));
+      grid-template-rows: auto minmax(0, 1fr);
+      align-items: start;
+    }
+
+    /* The ending has no picture and a composition of its own. */
+    [data-stage='32'] .door__stage {
+      height: auto;
+      grid-template-rows: auto;
+    }
+
+    .door__visual {
+      align-self: stretch;
+      min-height: 0;
+    }
+
+    /* The scene becomes a size container, which is what lets each frame
+       below state its own natural height as a real length: 100cqw is the
+       column's width, so 100cqw x (h / w) is exactly the height that
+       picture would have had at full column width. */
+    .door__scene {
+      height: 100%;
+      container-type: inline-size;
+    }
+
+    /* ---- How a framed picture sizes itself ----
+
+           height: min(100%, its own natural height)
+
+       100% is the row — the story height left after the copy. The second
+       term is what it would have been anyway. It takes the smaller, so
+       it never stretches when there is room to spare and it shrinks when
+       there is not. Width is auto, so the frame's own aspect-ratio
+       derives it and the ratio is never broken — which matters, because
+       every camera move in this story is a transform calibrated against
+       a frame whose ratio matches its asset exactly.
+
+       A browser without container units simply drops the height
+       declaration and the frame sizes from its width, which is what
+       these beats do today. */
+    .door__frame {
+      width: auto;
+      /* The third term is the 420px cap the stacked layout already puts
+         on this frame, stated as the height that width implies. It has
+         to live in here: as a max-width it would clamp the derived width
+         without touching the height and leave the frame the wrong
+         shape. */
+      height: min(100%, calc(100cqw * 1402 / 1122), calc(420px * 1402 / 1122));
+      min-height: 225px;
+    }
+
+    .door__lockframe {
+      width: auto;
+      height: min(100%, calc(100cqw * 1332 / 1181), calc(420px * 1332 / 1181));
+      min-height: 226px;
+    }
+
+    .door__cloudframe {
+      width: auto;
+      max-width: 100%;
+      height: min(100%, calc(100cqw * 1024 / 1536));
+      min-height: 133px;
+    }
+
+    .door__chainframe {
+      width: auto;
+      max-width: 100%;
+      height: min(100%, calc(100cqw * 807 / 1950));
+      min-height: 103px;
+    }
+
+    .door__judgeframe {
+      width: auto;
+      max-width: 100%;
+      height: min(100%, calc(100cqw * 1086 / 1448));
+      min-height: 210px;
+    }
+
+    /* The unframed pictures are images rather than boxes, so they hold
+       their own intrinsic ratio under a height cap with no arithmetic at
+       all. Their floor is a width, because forcing a height onto a
+       replaced element is the one thing that would distort it. */
+
+    /* Their floor is written into the height cap rather than as a
+       min-width. A replaced element under max-height keeps its own ratio
+       for nothing; pair that cap with a min-width and the two fight and
+       squash the picture. max(100%, floor) means the cap never asks for
+       less than the smallest useful height, and the width simply
+       follows. Each floor is the approved minimum width put through the
+       asset's own ratio: 292/1.777, 250/1.777, 250/3. */
+    .door__scene > .door__art:not(.door__webshot):not(.door__ripple),
+    .door__webshot {
+      width: auto;
+      height: min(100%, calc(100cqw * 941 / 1672));
+    }
+
+    .door__ripple {
+      width: auto;
+      height: min(100%, calc(100cqw * 724 / 2172));
+    }
+
+    /* Floors again, as heights: the approved minimum width through each
+       asset's own ratio — 292/1.777, 250/1.777, 250/3. */
+    .door__scene > .door__art:not(.door__webshot):not(.door__ripple) {
+      min-height: 164px;
+    }
+
+    .door__webshot {
+      min-height: 141px;
+    }
+
+    .door__ripple {
+      min-height: 83px;
     }
 
     /* Stacked, the door takes the column the way scene 1's composition
@@ -2640,49 +2772,6 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     }
   }
 
-  /* Scene 7 carries the longest copy of the early beats — the statement,
-     three short lines and then the two-part conclusion — and a portrait
-     door underneath it. Stacked, that copy ends somewhere between 356
-     and 386px down whatever the phone's width is, and the door wants
-     another 415 to 480 below it. On a short screen the beat runs past
-     the fold: 30px at 320x720, but 93 at 390x720 and 109 at 412x732.
-
-     So the governing variable is the height left over, not the width of
-     the phone. This beat — and only this beat — sizes its frame from
-     that:
-
-         available  = 100svh - 392px   (the copy above it, plus a margin)
-         width      = available x 0.80031   (the frame's own ratio)
-
-     One rule, no device list. It only bites when the height genuinely
-     runs out: at 390x844 it computes 361.6 against a 362px column, so
-     nothing visibly changes there, while at 412x732 it brings the frame
-     down to 272 and the whole beat inside the screen.
-
-     svh rather than vh so a phone with its browser chrome showing gets
-     the smaller number rather than the optimistic one; the vh line above
-     it is the fallback where svh is not supported. The 96px floor keeps
-     the calc from going negative — and the declaration from being
-     dropped — on a viewport shorter than the copy itself.
-
-     The 420px term is the cap the stacked layout already puts on this
-     frame. It has to be repeated here: this selector carries a
-     data-stage attribute and so outranks the plain .door__frame rule
-     above, and without it a tall tablet would compute 631 and the beat
-     would come out bigger than it started. Inside the min() the rule can
-     only ever take the frame down, never up.
-
-     Held to the story's own stacking point, so a short desktop window
-     never picks up the phone treatment. Nothing is cropped or
-     stretched: the frame keeps its 1122/1402 ratio, the picture keeps
-     object-fit: contain, the whole door stays in shot, and the gap
-     between the turn and the picture is untouched. */
-  @media (max-width: 979px) {
-    [data-stage='7'] .door__frame {
-      max-width: min(100%, 420px, max(96px, calc((100vh - 392px) * 0.80031)));
-      max-width: min(100%, 420px, max(96px, calc((100svh - 392px) * 0.80031)));
-    }
-  }
 </style>
 
 <script define:vars={{ topic: 'security-didnt-keep-changing' }}>
