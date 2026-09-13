@@ -10,8 +10,9 @@ import doorScene9 from '../../assets/security-door-scene9.webp';
 import doorScene11 from '../../assets/security-door-scene11.webp';
 import doorScene14 from '../../assets/security-door-scene14.webp';
 import doorScene18 from '../../assets/security-door-scene18.webp';
+import doorScene21 from '../../assets/security-door-scene21.webp';
 
-// The Security story's permanent Explore route. Twenty beats.
+// The Security story's permanent Explore route. Twenty-one beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -431,8 +432,31 @@ import doorScene18 from '../../assets/security-door-scene18.webp';
 // The picture does not change. It has shown the progression since scene
 // 18; this beat says what the reader has been looking at the whole time.
 //
-// The turn on scene 20 is real and focusable and wired to nothing,
-// because scene 21 does not exist yet — the same convention
+// SCENE 21. What the chain means when one link stops:
+//
+//     A problem there can become a problem here.
+//     One company stops working.
+//     Another depends on it.
+//     And something at your home can stop working too.
+//     Now the word "risk" makes sense →
+//
+// Cause, link, consequence — three plain statements, and the word the
+// reader is about to be given is still only in the turn. Nothing about
+// supply-chain risk, cyber risk, vendor risk or third-party risk: they
+// should understand what risk means here before anybody names it.
+//
+// The picture is the same chain as the beat before, with the far end
+// gone dark and the line of light fading out before it gets there.
+// Nothing is drawn on it to say so — no warning mark, no red, no
+// exclamation, no label. The lights are simply off at that end, and the
+// door is as warm and ordinary as it has been since scene 2.
+//
+// Whole and unpushed at its own 2172x724 — the fifth shape in this
+// story, taking the width of the row and its own height, no frame, no
+// crop.
+//
+// The turn on scene 21 is real and focusable and wired to nothing,
+// because scene 22 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -484,6 +508,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="eighteen" hidden>One door. Many others behind it.</span>
             <span data-line="nineteen" hidden>This is a supply chain.</span>
             <span data-line="twenty" hidden>The door didn't change.</span>
+            <span data-line="twentyone" hidden>A problem there can become a problem here.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -658,6 +683,15 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>The software needed companies.</span>
             <span>And those companies needed others.</span>
           </p>
+
+          <p class="door__sub door__steps" data-line="twentyone" hidden>
+            <span>One company stops working.</span>
+            <span>Another depends on it.</span>
+          </p>
+
+          <p class="door__sub door__steps door__steps--echo" data-line="twentyone" hidden>
+            <span>And something at your home can stop working too.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -740,6 +774,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="twenty" data-onward20 hidden>
           Same door. More things can go wrong <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="twentyone" data-onward21 hidden>
+          Now the word “risk” makes sense <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -880,6 +918,23 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             loading="lazy"
             decoding="async"
             data-line="eighteen nineteen twenty"
+            hidden
+          />
+
+          <!-- The same chain as the beat before, with the far end gone
+               dark and the link fading out before it gets there. Nothing
+               is drawn on it to say so: no warning mark, no red, no
+               label — the lights are simply off at that end. Whole and
+               unpushed at its own 2172x724. -->
+          <Image
+            class="door__art door__ripple"
+            src={doorScene21}
+            alt="The same front door and chain of companies, with the buildings at the far end unlit and the line of light between them fading out."
+            widths={[760, 1024, 1400, 2172]}
+            sizes="(max-width: 979px) 92vw, 62vw"
+            loading="lazy"
+            decoding="async"
+            data-line="twentyone"
             hidden
           />
         </div>
@@ -1363,7 +1418,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='19'] .door__turn[data-onward19],
   [data-stage='20'] .door__opening span[data-line='twenty'],
   [data-stage='20'] .door__steps,
-  [data-stage='20'] .door__turn[data-onward20] {
+  [data-stage='20'] .door__turn[data-onward20],
+  [data-stage='21'] .door__opening span[data-line='twentyone'],
+  [data-stage='21'] .door__steps,
+  [data-stage='21'] .door__turn[data-onward21],
+  [data-stage='21'] .door__ripple {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1389,7 +1448,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='17'] .door__steps,
   [data-stage='18'] .door__steps,
   [data-stage='19'] .door__steps,
-  [data-stage='20'] .door__steps {
+  [data-stage='20'] .door__steps,
+  [data-stage='21'] .door__steps {
     animation-delay: 180ms;
   }
 
@@ -1411,7 +1471,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='17'] .door__steps--echo,
   [data-stage='18'] .door__steps--echo,
   [data-stage='19'] .door__steps--echo,
-  [data-stage='20'] .door__steps--echo {
+  [data-stage='20'] .door__steps--echo,
+  [data-stage='21'] .door__steps--echo {
     animation-delay: 330ms;
   }
 
@@ -1451,7 +1512,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   }
 
   [data-stage='19'] .door__turn[data-onward19],
-  [data-stage='20'] .door__turn[data-onward20] {
+  [data-stage='20'] .door__turn[data-onward20],
+  [data-stage='21'] .door__turn[data-onward21] {
     animation-delay: 500ms;
   }
 
@@ -1508,6 +1570,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='19'] .door__steps--echo,
     [data-stage='20'] .door__steps,
     [data-stage='20'] .door__steps--echo,
+    [data-stage='21'] .door__steps,
+    [data-stage='21'] .door__steps--echo,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -1553,7 +1617,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='19'] .door__turn[data-onward19],
     [data-stage='20'] .door__opening span[data-line='twenty'],
     [data-stage='20'] .door__steps,
-    [data-stage='20'] .door__turn[data-onward20] {
+    [data-stage='20'] .door__turn[data-onward20],
+    [data-stage='21'] .door__opening span[data-line='twentyone'],
+    [data-stage='21'] .door__steps,
+    [data-stage='21'] .door__turn[data-onward21],
+    [data-stage='21'] .door__ripple {
       animation: none;
     }
 
@@ -1583,7 +1651,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='17'] .door__turn[data-onward17],
     [data-stage='18'] .door__turn[data-onward18],
     [data-stage='19'] .door__turn[data-onward19],
-    [data-stage='20'] .door__turn[data-onward20] {
+    [data-stage='20'] .door__turn[data-onward20],
+    [data-stage='21'] .door__turn[data-onward21] {
       animation-delay: 0s;
     }
 
@@ -1649,7 +1718,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        so nothing in the text moves when the beat lands — and the picture
        takes the rest of the row instead of the narrow portrait track,
        which a 1.5 image would otherwise sit in at half the size. */
-    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20']) .door__stage {
+    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15'], [data-stage='16'], [data-stage='17'], [data-stage='18'], [data-stage='19'], [data-stage='20'], [data-stage='21']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) minmax(0, 1fr);
       justify-content: start;
     }
@@ -1755,6 +1824,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       17: ['[data-onward17]', 'eighteen'],
       18: ['[data-onward18]', 'nineteen'],
       19: ['[data-onward19]', 'twenty'],
+      20: ['[data-onward20]', 'twentyone'],
     };
 
     const advance = (from) => {
