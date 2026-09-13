@@ -370,15 +370,17 @@ import doorScene18 from '../../assets/security-door-scene18.webp';
 //
 // SCENE 18. The scale, drawn once:
 //
-//     One door. Many dependencies.
-//     You chose the company behind it.
-//     But some of what keeps it working
-//     was chosen by someone else.
-//     And then by someone else again.
+//     One door. Many others behind it.
+//     You chose one company.
+//     That company chose another.
+//     And that one chose another.
+//     But your door still depends on all of them.
 //     There's a name for this →
 //
-// Three statements arriving one after another, and the turn last. Still
-// nothing named: no supply chain, no ecosystem, no nth party, no vendor
+// The three choices are one run, so they arrive as one block; the line
+// that turns it back on the reader stands apart, and the turn comes
+// last. Plain words throughout — nothing here needs a second reading.
+// Still nothing named: no supply chain, no ecosystem, no nth party, no vendor
 // risk, no cybersecurity. The reader sees how far it reaches before
 // anyone tells them what it is called.
 //
@@ -439,7 +441,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="fifteen" hidden>Same pattern. Different scale.</span>
             <span data-line="sixteen" hidden>Now the names make sense.</span>
             <span data-line="seventeen" hidden>That fourth party can depend on someone else.</span>
-            <span data-line="eighteen" hidden>One door. Many dependencies.</span>
+            <span data-line="eighteen" hidden>One door. Many others behind it.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -583,16 +585,13 @@ const story = storyBySlug('security-didnt-keep-changing')!;
           </p>
 
           <p class="door__sub door__steps" data-line="eighteen" hidden>
-            <span>You chose the company behind it.</span>
+            <span>You chose one company.</span>
+            <span>That company chose another.</span>
+            <span>And that one chose another.</span>
           </p>
 
           <p class="door__sub door__steps door__steps--echo" data-line="eighteen" hidden>
-            <span>But some of what keeps it working</span>
-            <span>was chosen by someone else.</span>
-          </p>
-
-          <p class="door__sub door__steps door__steps--close" data-line="eighteen" hidden>
-            <span>And then by someone else again.</span>
+            <span>But your door still depends on all of them.</span>
           </p>
         </div>
 
