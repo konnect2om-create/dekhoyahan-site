@@ -11,8 +11,7 @@ const NOT_INDEXABLE = [
   // until it is rebuilt or retired (see src/data/stories.ts). The sitemap
   // says what the site says.
   '/explore/ai-agent-permissions/',
-  // The Security story's route exists so its Explore card links somewhere
-  // real, but the story itself is not built yet. Listed here until it is.
+  // Security story complete; keep non-indexable until final release QA passes.
   '/explore/security-didnt-keep-changing/',
 ];
 
