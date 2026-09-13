@@ -596,20 +596,27 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // carry the reveal, and nothing is drawn on the artwork to help them: no
 // label, no network graphic, no diagram, no overlay, no warning mark.
 //
-// SCENE 29. What there now is to protect:
+// SCENE 29. What there now is to protect, and what does not count:
 //
 //     Now you trust the decision too.
-//     What if it gets it wrong?
-//     Lets someone in who shouldn't be?
-//     Keeps someone out who should be?
+//     Getting it wrong is one problem.
+//     Being fooled on purpose is another.
+//     If someone can manipulate the decision,
+//     that's a security question.
 //     That's a new security question →
 //
 // One realization: once a system starts making decisions, protecting the
-// decision becomes part of security too. The three lines are questions
-// and arrive as one block, because none of them is the answer and the
-// reader is meant to feel all three at once. They are questions rather
-// than warnings on purpose — the beat is that these are now worth
-// asking, not that anything has gone wrong.
+// decision becomes part of security too — but only the second half of
+// that is a security question. A system making an ordinary mistake is
+// not automatically a security problem; the security question is the one
+// where somebody can influence the decision on purpose. An earlier draft
+// of this beat asked three questions that were all about the answer
+// being wrong and then called that "a new security question", which read
+// as though every mistake were one.
+//
+// The distinction is drawn in the plainest words available: wrong,
+// fooled, manipulate. No adversarial AI, no spoofing, no model attacks,
+// no prompt injection, no bias, no accuracy metrics, nothing technical.
 //
 // The name is still one beat away: nothing here about AI security, AI
 // risk, adversarial AI, model security, prompt injection, bias or
@@ -1068,15 +1075,19 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>A judgement changes what happens next.</span>
           </p>
 
-          <!-- Three questions of equal weight, so they arrive as one
-               block rather than one at a time: none of them is the
-               answer, and the reader is meant to feel all three at once.
-               Questions, not warnings — the beat is that these are now
-               worth asking, not that anything has gone wrong. -->
+          <!-- The two halves of the distinction, one line each, so the
+               reader can hold them side by side. -->
           <p class="door__sub door__steps" data-line="twentynine" hidden>
-            <span>What if it gets it wrong?</span>
-            <span>Lets someone in who shouldn&rsquo;t be?</span>
-            <span>Keeps someone out who should be?</span>
+            <span>Getting it wrong is one problem.</span>
+            <span>Being fooled on purpose is another.</span>
+          </p>
+
+          <!-- And the line that says which of the two this story means.
+               The same two-stanza construction scenes 22 and 23 use: the
+               pair lands, then the sentence that turns on it. -->
+          <p class="door__sub door__steps door__steps--echo" data-line="twentynine" hidden>
+            <span>If someone can manipulate the decision,</span>
+            <span>that&rsquo;s a security question.</span>
           </p>
 
           <p class="door__sub door__steps" data-line="thirty" hidden>
@@ -2138,7 +2149,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='22'] .door__steps--echo,
   [data-stage='23'] .door__steps--echo,
   [data-stage='26'] .door__steps--echo,
-  [data-stage='27'] .door__steps--echo {
+  [data-stage='27'] .door__steps--echo,
+  [data-stage='29'] .door__steps--echo {
     animation-delay: 330ms;
   }
 
@@ -2300,6 +2312,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='28'] .door__steps--echo,
     [data-stage='28'] .door__lands,
     [data-stage='29'] .door__steps,
+    [data-stage='29'] .door__steps--echo,
     [data-stage='30'] .door__steps,
     [data-stage='30'] .door__lands,
     [data-stage='31'] .door__name,
