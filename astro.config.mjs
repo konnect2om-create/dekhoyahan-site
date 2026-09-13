@@ -11,8 +11,6 @@ const NOT_INDEXABLE = [
   // until it is rebuilt or retired (see src/data/stories.ts). The sitemap
   // says what the site says.
   '/explore/ai-agent-permissions/',
-  // Security story complete; keep non-indexable until final release QA passes.
-  '/explore/security-didnt-keep-changing/',
 ];
 
 export default defineConfig({
