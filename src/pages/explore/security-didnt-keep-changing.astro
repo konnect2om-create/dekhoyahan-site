@@ -683,10 +683,24 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // says so. Scene 31 already did the visual callback; doing it twice
 // would make the ending another step instead of a stop.
 //
+// The block is a single 600px column, centred in the row and centred in
+// what is left of the screen, with the text still ranged left inside it.
+// Ranged left because this is the same voice the story has used for
+// thirty-one beats; centred as a block because empty space only reads as
+// deliberate when it falls on both sides. Left where the copy column had
+// been, the ending read as a page with half of it missing.
+//
+// The rhythm is statement / moderate gap / supporting thought / larger
+// gap / signature: the supporting line belongs to the statement above it
+// rather than standing as its own section, and the signature needs air
+// without being marooned.
+//
 // "See it differently." is a signature, not a control: the story's serif
 // at full ink, no saffron circle, no arrow, nothing to press. The only
-// thing after it is a real link back to Explore, in the aside's quiet
-// type and held well clear of it — the way on is another story, the same
+// thing after it is a real link back to Explore — navigation after the
+// story has ended rather than the last thing the story says, so it is
+// smaller than the aside type, quieter than it, and further down than
+// anything else in the beat. The way on is another story, the same
 // convention did-your-face-leave-the-phone.astro ends on.
 //
 // The beat has no turn, so focus lands on .door__lines, which is what
@@ -1500,7 +1514,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      than the beats before it — the last screen is the one the reader is
      meant to sit with, and the room is most of what says so. */
   .door__close {
-    margin-top: clamp(22px, 3.4vh, 34px);
+    margin-top: clamp(16px, 2.2vh, 22px);
   }
 
   /* The last thing said. The story's serif at full ink, a step above the
@@ -1508,7 +1522,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      hierarchy runs opening / signature / support. Not a control: no
      circle, no arrow, nothing to press. */
   .door__signature {
-    margin: clamp(30px, 5vh, 52px) 0 0;
+    margin: clamp(34px, 5.4vh, 56px) 0 0;
     color: var(--ink);
     font-family: var(--serif);
     font-size: clamp(21px, 2vw, 26px);
@@ -1522,10 +1536,11 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      the signature that it never reads as the next step. */
   .door__again {
     display: inline-block;
-    margin: clamp(34px, 6vh, 62px) 0 0;
+    margin: clamp(46px, 8vh, 84px) 0 0;
     color: var(--muted);
-    font-size: 15px;
+    font-size: 13.5px;
     line-height: 1.5;
+    letter-spacing: 0.004em;
     text-decoration: none;
   }
 
@@ -2511,14 +2526,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        is a little wider than the beats kept, which is the only change
        the ending makes to the typography — it is a statement now rather
        than a line with a picture beside it. */
+    /* Centred in the row and centred in what is left of the screen
+       vertically: the block is short and the story area is tall, so
+       without this it sits high with a long empty stretch under it.
+       min-height is capped so the ending is still whole on a short
+       laptop screen without the page having to scroll. */
     [data-stage='32'] .door__stage {
-      grid-template-columns: minmax(0, 1fr);
-      justify-content: start;
+      grid-template-columns: minmax(0, 600px);
+      justify-content: center;
+      align-content: center;
+      min-height: min(62vh, 520px);
+      padding-top: 0;
     }
 
-    [data-stage='32'] .door__opening {
-      max-width: 21ch;
-    }
+
   }
 
   [data-stage='32'] .door__visual {
@@ -2526,7 +2547,35 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   }
 
   [data-stage='32'] .door__stage {
-    padding-top: clamp(3.5rem, 10vh, 7.5rem);
+    justify-items: center;
+    padding-top: clamp(2rem, 5vh, 3.5rem);
+  }
+
+  [data-stage='32'] .door__copy {
+    width: min(100%, 600px);
+  }
+
+  [data-stage='32'] .door__opening {
+    max-width: none;
+  }
+
+  /* Between the phone and the desktop split the story area is far taller
+     than anything the ending puts in it, so the block would otherwise sit
+     under the header with most of a screen of nothing beneath it. The
+     stage takes the height the story area actually has and centres the
+     block inside it, which is the same thing the desktop rule does — it
+     just cannot be a fixed 520px here, because that is less than half of
+     a tall tablet and centring inside it centres nothing. */
+  @media (min-width: 600px) and (max-width: 979px) {
+    [data-stage='32'] .door__stage {
+      align-content: center;
+      min-height: calc(100vh - 260px);
+      padding-top: 0;
+    }
+
+    [data-stage='32'] .door__copy {
+      width: min(100%, 540px);
+    }
   }
 
   /* Stacked, copy first, the picture immediately under the turn — the
