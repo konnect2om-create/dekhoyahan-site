@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { storyBySlug, storyTitle } from '../../data/stories';
+import { storyPageMeta } from '../../data/storyMeta';
 import doorScene1 from '../../assets/security-door-scene1.webp';
 import doorScene2 from '../../assets/security-door-scene2.webp';
 import doorScene4 from '../../assets/security-door-scene4.webp';
@@ -723,15 +723,13 @@ import doorScene26 from '../../assets/security-door-scene26.webp';
 // This is the last beat. There is no scene 33, and the story does not
 // continue past it.
 //
-// Still deliberately absent until the story is finished: a
-// LearningResource, a share card, and a sitemap entry (see NOT_INDEXABLE
-// in astro.config.mjs). The manifest's question, shortAnswer and
-// keyTakeaway are still marked provisional there, and are still rendered
-// nowhere.
-const story = storyBySlug('security-didnt-keep-changing')!;
+// Title, description and share card all come from this story's entry in
+// src/data/stories.ts, so there is one place each is written down. Canonical
+// is left to BaseLayout's own default, which is already this page's address.
+const meta = (await storyPageMeta('security-didnt-keep-changing', Astro.site))!;
 ---
 
-<BaseLayout title={storyTitle(story)} description={story.description}>
+<BaseLayout title={meta.title} description={meta.description} image={meta.image} schema={meta.schema}>
   <div class="door" data-door data-stage="1">
     <div class="door__stage shell">
       <div class="door__copy">
