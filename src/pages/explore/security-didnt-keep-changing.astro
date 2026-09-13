@@ -2639,6 +2639,28 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       white-space: normal;
     }
   }
+
+  /* Scene 7 carries the longest copy of the early beats — the statement,
+     three short lines and then the two-part conclusion — and a portrait
+     door underneath it. On the smallest screens that stack runs about
+     30px past the fold: at 320x720 the copy ends at 385.6 and leaves
+     334.4 for a frame that wants 364.9.
+
+     So on those screens alone, and for this beat alone, the frame takes
+     its size from the height that is left rather than from the width of
+     the column. 36vh of width is 259 at 720, which the frame's own ratio
+     makes 324 tall — about ten pixels clear of the bottom.
+
+     Nothing is cropped and nothing is stretched: the frame keeps its
+     1122/1402 ratio, the picture keeps object-fit: contain, and the
+     whole door is still in it, just smaller. The gap between the turn
+     and the picture is untouched, and so is every other beat, every
+     other width and the copy itself. */
+  @media (max-width: 359px) {
+    [data-stage='7'] .door__frame {
+      max-width: min(100%, 36vh);
+    }
+  }
 </style>
 
 <script define:vars={{ topic: 'security-didnt-keep-changing' }}>
