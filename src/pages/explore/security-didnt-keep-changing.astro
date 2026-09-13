@@ -10,7 +10,7 @@ import doorScene9 from '../../assets/security-door-scene9.webp';
 import doorScene11 from '../../assets/security-door-scene11.webp';
 import doorScene14 from '../../assets/security-door-scene14.webp';
 
-// The Security story's permanent Explore route. Fourteen beats.
+// The Security story's permanent Explore route. Fifteen beats.
 //
 // The opening construction is the one looks-real-is-it established and
 // who-chose-what-you-saw reuses: one grid, the copy on the left and the
@@ -300,8 +300,27 @@ import doorScene14 from '../../assets/security-door-scene14.webp';
 // height, no frame and no crop. The copy column stays exactly where the
 // other beats put it, so nothing in the text moves.
 //
-// The turn on scene 14 is real and focusable and wired to nothing,
-// because scene 15 does not exist yet — the same convention
+// SCENE 15. The callback, finally made conscious:
+//
+//     Same pattern. Different scale.
+//     You trusted the plumber.
+//     He trusted someone else.
+//     You trust the company.
+//     It trusts someone else.
+//     Now give it a name →
+//
+// Two couplets rather than four lines, the second set a beat behind the
+// first and the turn behind both: the parallel is the whole point, so
+// the second pair should be felt arriving against the shape of the
+// first, and the comparison should be complete before there is anywhere
+// to go. Neither relationship is named — that is what the turn offers.
+//
+// The picture does not change. It has said everything it needs to say
+// since scene 14, and this beat is a sentence about the pictures the
+// reader has already seen, not a new one.
+//
+// The turn on scene 15 is real and focusable and wired to nothing,
+// because scene 16 does not exist yet — the same convention
 // where-is-the-5g.astro and who-chose-what-you-saw.astro use for their
 // unbuilt scenes.
 //
@@ -347,6 +366,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span data-line="twelve" hidden>Not just the lock anymore.</span>
             <span data-line="thirteen" hidden>The company you trust depends on someone else.</span>
             <span data-line="fourteen" hidden>You never chose them.</span>
+            <span data-line="fifteen" hidden>Same pattern. Different scale.</span>
           </h1>
 
           <p class="door__sub" data-line="one">
@@ -441,6 +461,20 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             <span>But the company you trust did.</span>
             <span>And now part of your front door depends on their choice too.</span>
           </p>
+
+          <!-- Two couplets rather than four lines, and the second set a
+               beat behind the first: the parallel is the whole point, so
+               the second pair should be felt arriving against the shape
+               of the first. -->
+          <p class="door__sub door__steps" data-line="fifteen" hidden>
+            <span>You trusted the plumber.</span>
+            <span>He trusted someone else.</span>
+          </p>
+
+          <p class="door__sub door__steps door__steps--echo" data-line="fifteen" hidden>
+            <span>You trust the company.</span>
+            <span>It trusts someone else.</span>
+          </p>
         </div>
 
         <!-- The same turn treatment every story in the library uses:
@@ -499,6 +533,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
         <button type="button" class="door__turn" data-line="fourteen" data-onward14 hidden>
           Recognise this pattern? <span aria-hidden="true">&rarr;</span>
+        </button>
+
+        <button type="button" class="door__turn" data-line="fifteen" data-onward15 hidden>
+          Now give it a name <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
 
@@ -621,7 +659,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
             sizes="(max-width: 979px) 92vw, 62vw"
             loading="lazy"
             decoding="async"
-            data-line="fourteen"
+            data-line="fourteen fifteen"
             hidden
           />
         </div>
@@ -1025,7 +1063,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='14'] .door__opening span[data-line='fourteen'],
   [data-stage='14'] .door__steps,
   [data-stage='14'] .door__turn[data-onward14],
-  [data-stage='14'] .door__chainshot {
+  [data-stage='14'] .door__chainshot,
+  [data-stage='15'] .door__opening span[data-line='fifteen'],
+  [data-stage='15'] .door__steps,
+  [data-stage='15'] .door__turn[data-onward15] {
     animation: door-in 520ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
   }
 
@@ -1045,8 +1086,16 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='11'] .door__steps,
   [data-stage='12'] .door__steps,
   [data-stage='13'] .door__steps,
-  [data-stage='14'] .door__steps {
+  [data-stage='14'] .door__steps,
+  [data-stage='15'] .door__steps {
     animation-delay: 180ms;
+  }
+
+  /* The echo lands after the pair it rhymes with, and the way onward
+     after both — the comparison is the beat, so it should be complete
+     before there is anywhere to go. */
+  [data-stage='15'] .door__steps--echo {
+    animation-delay: 330ms;
   }
 
   [data-stage='7'] .door__lands {
@@ -1066,6 +1115,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
   [data-stage='13'] .door__turn[data-onward13],
   [data-stage='14'] .door__turn[data-onward14] {
     animation-delay: 330ms;
+  }
+
+  [data-stage='15'] .door__turn[data-onward15] {
+    animation-delay: 500ms;
   }
 
   /* One step later than the other turns: the sentence above it is the
@@ -1106,6 +1159,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='12'] .door__steps,
     [data-stage='13'] .door__steps,
     [data-stage='14'] .door__steps,
+    [data-stage='15'] .door__steps,
+    [data-stage='15'] .door__steps--echo,
     [data-stage='7'] .door__lands,
     [data-stage='7'] .door__turn[data-onward7],
     [data-stage='8'] .door__opening span[data-line='eight'],
@@ -1131,7 +1186,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='14'] .door__opening span[data-line='fourteen'],
     [data-stage='14'] .door__steps,
     [data-stage='14'] .door__turn[data-onward14],
-    [data-stage='14'] .door__chainshot {
+    [data-stage='14'] .door__chainshot,
+    [data-stage='15'] .door__opening span[data-line='fifteen'],
+    [data-stage='15'] .door__steps,
+    [data-stage='15'] .door__turn[data-onward15] {
       animation: none;
     }
 
@@ -1155,7 +1213,8 @@ const story = storyBySlug('security-didnt-keep-changing')!;
     [data-stage='11'] .door__turn[data-onward11],
     [data-stage='12'] .door__turn[data-onward12],
     [data-stage='13'] .door__turn[data-onward13],
-    [data-stage='14'] .door__turn[data-onward14] {
+    [data-stage='14'] .door__turn[data-onward14],
+    [data-stage='15'] .door__turn[data-onward15] {
       animation-delay: 0s;
     }
 
@@ -1220,7 +1279,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
        so nothing in the text moves when the beat lands — and the picture
        takes the rest of the row instead of the narrow portrait track,
        which a 1.5 image would otherwise sit in at half the size. */
-    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14']) .door__stage {
+    :is([data-stage='11'], [data-stage='12'], [data-stage='13'], [data-stage='14'], [data-stage='15']) .door__stage {
       grid-template-columns: clamp(300px, 36vw, 424px) minmax(0, 1fr);
       justify-content: start;
     }
@@ -1320,6 +1379,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
       11: ['[data-onward11]', 'twelve'],
       12: ['[data-onward12]', 'thirteen'],
       13: ['[data-onward13]', 'fourteen'],
+      14: ['[data-onward14]', 'fifteen'],
     };
 
     const advance = (from) => {
