@@ -1536,7 +1536,7 @@ const story = storyBySlug('security-didnt-keep-changing')!;
      the signature that it never reads as the next step. */
   .door__again {
     display: inline-block;
-    margin: clamp(46px, 8vh, 84px) 0 0;
+    margin: clamp(40px, 6.4vh, 66px) 0 0;
     color: var(--muted);
     font-size: 13.5px;
     line-height: 1.5;
@@ -2557,6 +2557,10 @@ const story = storyBySlug('security-didnt-keep-changing')!;
 
   [data-stage='32'] .door__opening {
     max-width: none;
+  }
+
+  [data-stage='32'] .door__opening span[data-line='thirtytwo'] > span:nth-child(2) {
+    color: #2f3641;
   }
 
   /* Between the phone and the desktop split the story area is far taller
